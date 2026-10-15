@@ -175,5 +175,6 @@ Detailed architectural specifications are located in `/docs/`:
 1. **Backend Dependency**: Full authentication, customer management, and appointment scheduling require the separate `flowpilot-backend` Express REST API service to be developed and deployed.
 2. **Mock Mode Isolation**: The frontend includes validation harnesses, but does not simulate production database records.
 3. **OpenAPI Generation**: Once `flowpilot-backend` publishes an OpenAPI v3 document, client types can be automatically synchronized via code generation.
-#   f l o w p i l o t  
- 
+   #   f l o w p i l o t 
+    
+    
