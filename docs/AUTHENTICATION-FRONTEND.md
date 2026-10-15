@@ -22,7 +22,7 @@ sequenceDiagram
     Browser->>Express: POST /api/v1/auth/login {email, password}
     Express->>DB: Validates Hash & Retrieves User + Tenant Memberships
     Express-->>Browser: 200 OK + Set-Cookie (HttpOnly, Secure, SameSite=Lax)
-    Browser->>Express: GET /api/v1/auth/session (Cookie included)
+    Browser->>Express: GET /api/v1/auth/me (Cookie included)
     Express-->>Browser: {user, activeOrganizationId, memberships}
     Browser->>Browser: Hydrates AuthSession State & Navigates to Dashboard
 ```
