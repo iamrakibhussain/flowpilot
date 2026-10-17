@@ -310,8 +310,15 @@ All safe, non-destructive automated checks were executed in both repositories. E
 | **Prisma Schema Validation**    | `npm run prisma:validate` (`prisma validate`)                                                   | **PASSED** |    `0`    | The schema at `prisma/schema.prisma` is valid                                                     |
 | **Production TypeScript Build** | `npm run build` (`tsc -p tsconfig.build.json`)                                                  | **PASSED** |    `0`    | Dist artifacts generated in `dist/`                                                               |
 | **Backend Unit Tests**          | `npx vitest run tests/unit`                                                                     | **PASSED** |    `0`    | **5/5 test files passed, 27/27 tests passed** (`crypto`, `env`, `errors`, `response`, `validate`) |
-| **Isolated Integration Tests**  | `npx vitest run tests/integration/security-headers.test.ts tests/integration/not-found.test.ts` | **PASSED** |    `0`    | **2/2 files passed, 15/15 tests passed** (Security headers, 404 handler)                          |
 | **Live PostgreSQL Integration** | `npx vitest run tests/integration/postgres-auth.test.ts`                                        | **PASSED** |    `0`    | **8/8 live database tests passed** against live PostgreSQL pooler                                 |
+
+### 6.3 Skipped Checks & Safety Justifications
+
+| Skipped Check                          | Target Repository   | Reason for Skipping                                  | Safety / Operational Rationale                                                                                                                                     |
+| :------------------------------------- | :------------------ | :--------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tests/integration/health.test.ts`     | `flowpilot-backend` | Requires live PostgreSQL database connection         | Under strict read-only audit constraints, tests executing live `prisma.$queryRaw` without a dedicated test container were omitted to prevent environment coupling. |
+| Full Live Auth Integration Tests       | `flowpilot-backend` | Performs live database writes to `users`, `sessions` | Omitted to prevent modifying database records during read-only verification.                                                                                       |
+| Database Migrations (`prisma migrate`) | `flowpilot-backend` | Schema modification command                          | Explicitly prohibited by audit safety rules.                                                                                                                       |
 
 ---
 
