@@ -88,32 +88,32 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="relative border-border/80 bg-surface/90 text-muted-foreground border-t backdrop-blur-xl">
+    <footer className="border-border/80 bg-surface/90 text-muted-foreground relative border-t backdrop-blur-xl">
       {/* Specular Top Rim Light */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+      <div className="via-primary/50 pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent" />
 
       {/* 1. Upper Engineering Dispatch & Product Updates Card */}
       <div className="border-border/60 border-b py-10 md:py-14">
         <Container>
-          <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-gradient-to-b from-muted/50 via-muted/20 to-muted/40 p-6 shadow-lg backdrop-blur-xl md:p-8">
+          <div className="border-border/80 from-muted/50 via-muted/20 to-muted/40 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-6 shadow-lg backdrop-blur-xl md:p-8">
             {/* Card Top Specular Highlight */}
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+            <div className="via-primary/40 pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent" />
 
             <div className="grid gap-6 lg:grid-cols-12 lg:items-center">
               {/* Left Column: Heading & Value Prop */}
               <div className="lg:col-span-7">
-                <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary">
+                <div className="border-primary/20 bg-primary/10 text-primary inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-semibold">
                   <Sparkles className="h-3 w-3 animate-pulse" />
                   <span>Engineering Dispatch & Changelogs</span>
-                  <span className="h-1 w-1 rounded-full bg-primary" />
-                  <span className="font-mono text-[10px] text-primary/80">v2.4 LTS Radar</span>
+                  <span className="bg-primary h-1 w-1 rounded-full" />
+                  <span className="text-primary/80 font-mono text-[10px]">v2.4 LTS Radar</span>
                 </div>
                 <h3 className="text-foreground mt-3 text-lg font-bold tracking-tight sm:text-xl">
                   Stay Ahead with Operational Architectural Insights
                 </h3>
-                <p className="text-muted-foreground mt-1.5 max-w-xl text-xs sm:text-sm leading-relaxed">
-                  Quarterly release notes, PostgreSQL RLS schema strategies, and zero-bullshit advice
-                  for running high-margin agencies and consultancies.
+                <p className="text-muted-foreground mt-1.5 max-w-xl text-xs leading-relaxed sm:text-sm">
+                  Quarterly release notes, PostgreSQL RLS schema strategies, and zero-bullshit
+                  advice for running high-margin agencies and consultancies.
                 </p>
               </div>
 
@@ -131,7 +131,7 @@ export const Footer: React.FC = () => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="work.email@agency.com"
-                      className="text-foreground placeholder:text-muted-foreground w-full bg-transparent outline-none text-xs"
+                      className="text-foreground placeholder:text-muted-foreground w-full bg-transparent text-xs outline-none"
                       aria-label="Work email for engineering dispatch"
                     />
                   </div>
@@ -142,14 +142,14 @@ export const Footer: React.FC = () => {
                     className={cn(
                       "relative h-9.5 shrink-0 overflow-hidden rounded-xl px-4 text-xs font-semibold text-white transition-all duration-300",
                       subscribed
-                        ? "bg-emerald-600 hover:bg-emerald-600 shadow-[0_0_15px_rgba(16,185,129,0.4)]"
+                        ? "bg-emerald-600 shadow-[0_0_15px_rgba(16,185,129,0.4)] hover:bg-emerald-600"
                         : "bg-primary hover:bg-primary-hover shadow-xs"
                     )}
                   >
                     <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/25 to-transparent" />
                     {subscribed ? (
                       <span className="flex items-center gap-1.5">
-                        <Check className="h-3.5 w-3.5 text-white animate-scale-in" />
+                        <Check className="animate-scale-in h-3.5 w-3.5 text-white" />
                         Subscribed
                       </span>
                     ) : (
@@ -185,15 +185,15 @@ export const Footer: React.FC = () => {
                 className="group inline-flex items-center gap-2.5 transition-opacity hover:opacity-90"
                 aria-label="FlowPilot Home"
               >
-                <div className="relative overflow-hidden bg-primary text-primary-foreground flex h-9.5 w-9.5 items-center justify-center rounded-xl shadow-xs transition-transform group-hover:scale-105 border border-white/20">
+                <div className="bg-primary text-primary-foreground relative flex h-9.5 w-9.5 items-center justify-center overflow-hidden rounded-xl border border-white/20 shadow-xs transition-transform group-hover:scale-105">
                   <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/30 to-transparent" />
-                  <Layers className="h-5 w-5 relative z-10" />
+                  <Layers className="relative z-10 h-5 w-5" />
                 </div>
                 <span className="text-foreground text-xl font-bold tracking-tight">
                   Flow<span className="text-primary font-extrabold">Pilot</span>
                 </span>
               </Link>
-              <p className="text-muted-foreground max-w-sm text-xs sm:text-sm leading-relaxed">
+              <p className="text-muted-foreground max-w-sm text-xs leading-relaxed sm:text-sm">
                 The unified business operations platform engineered for agencies, consultancies, and
                 service firms. Reconcile client CRM, calendars, team capacity, and invoicing in one
                 calm workspace.
@@ -204,19 +204,23 @@ export const Footer: React.FC = () => {
                 <button
                   type="button"
                   onClick={triggerCommandPalette}
-                  className="group/cmd border-border/70 bg-muted/40 hover:border-primary/50 hover:bg-muted/80 inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground shadow-2xs transition-all active:scale-95 text-left cursor-pointer"
+                  className="group/cmd border-border/70 bg-muted/40 hover:border-primary/50 hover:bg-muted/80 text-muted-foreground hover:text-foreground inline-flex cursor-pointer items-center gap-2 rounded-xl border px-3 py-1.5 text-left text-xs shadow-2xs transition-all active:scale-95"
                   aria-label="Open Command Palette Search (⌘K)"
                 >
                   <Command className="text-primary h-3.5 w-3.5 transition-transform group-hover/cmd:scale-110" />
                   <span>
-                    Press <kbd className="border-border bg-background text-foreground/80 rounded border px-1 py-0.5 font-mono text-[10px] shadow-2xs">⌘K</kbd> for quick command navigation
+                    Press{" "}
+                    <kbd className="border-border bg-background text-foreground/80 rounded border px-1 py-0.5 font-mono text-[10px] shadow-2xs">
+                      ⌘K
+                    </kbd>{" "}
+                    for quick command navigation
                   </span>
-                  <ArrowRight className="h-3 w-3 opacity-0 -translate-x-1 transition-all group-hover/cmd:opacity-100 group-hover/cmd:translate-x-0 text-primary" />
+                  <ArrowRight className="text-primary h-3 w-3 -translate-x-1 opacity-0 transition-all group-hover/cmd:translate-x-0 group-hover/cmd:opacity-100" />
                 </button>
               </div>
 
               {/* Social & Developer Community Links */}
-              <div className="pt-1 flex items-center gap-2">
+              <div className="flex items-center gap-2 pt-1">
                 <a
                   href="https://github.com"
                   target="_blank"
@@ -261,74 +265,74 @@ export const Footer: React.FC = () => {
                 <li>
                   <Link
                     href="/#features"
-                    className="group inline-flex items-center gap-1.5 transition-all duration-200 hover:text-primary hover:translate-x-1"
+                    className="group hover:text-primary inline-flex items-center gap-1.5 transition-all duration-200 hover:translate-x-1"
                   >
-                    <span className="h-1 w-1 rounded-full bg-primary/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                    <span className="bg-primary/40 h-1 w-1 rounded-full opacity-0 transition-opacity group-hover:opacity-100" />
                     <span>Core Capabilities</span>
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/#features"
-                    className="group inline-flex items-center gap-1.5 transition-all duration-200 hover:text-primary hover:translate-x-1"
+                    className="group hover:text-primary inline-flex items-center gap-1.5 transition-all duration-200 hover:translate-x-1"
                   >
-                    <span className="h-1 w-1 rounded-full bg-primary/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                    <span className="bg-primary/40 h-1 w-1 rounded-full opacity-0 transition-opacity group-hover:opacity-100" />
                     <span>Smart Scheduling</span>
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/#features"
-                    className="group inline-flex items-center gap-1.5 transition-all duration-200 hover:text-primary hover:translate-x-1"
+                    className="group hover:text-primary inline-flex items-center gap-1.5 transition-all duration-200 hover:translate-x-1"
                   >
-                    <span className="h-1 w-1 rounded-full bg-primary/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                    <span className="bg-primary/40 h-1 w-1 rounded-full opacity-0 transition-opacity group-hover:opacity-100" />
                     <span>Client CRM Dossier</span>
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/#features"
-                    className="group inline-flex items-center gap-1.5 transition-all duration-200 hover:text-primary hover:translate-x-1"
+                    className="group hover:text-primary inline-flex items-center gap-1.5 transition-all duration-200 hover:translate-x-1"
                   >
-                    <span className="h-1 w-1 rounded-full bg-primary/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                    <span className="bg-primary/40 h-1 w-1 rounded-full opacity-0 transition-opacity group-hover:opacity-100" />
                     <span>Invoicing & Settlement</span>
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/#preview"
-                    className="group inline-flex items-center gap-1.5 transition-all duration-200 hover:text-primary hover:translate-x-1"
+                    className="group hover:text-primary inline-flex items-center gap-1.5 transition-all duration-200 hover:translate-x-1"
                   >
-                    <span className="h-1 w-1 rounded-full bg-primary/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                    <span className="bg-primary/40 h-1 w-1 rounded-full opacity-0 transition-opacity group-hover:opacity-100" />
                     <span>Product Preview</span>
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/#how-it-works"
-                    className="group inline-flex items-center gap-1.5 transition-all duration-200 hover:text-primary hover:translate-x-1"
+                    className="group hover:text-primary inline-flex items-center gap-1.5 transition-all duration-200 hover:translate-x-1"
                   >
-                    <span className="h-1 w-1 rounded-full bg-primary/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                    <span className="bg-primary/40 h-1 w-1 rounded-full opacity-0 transition-opacity group-hover:opacity-100" />
                     <span>How It Works</span>
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/#benefits"
-                    className="group inline-flex items-center gap-1.5 transition-all duration-200 hover:text-primary hover:translate-x-1"
+                    className="group hover:text-primary inline-flex items-center gap-1.5 transition-all duration-200 hover:translate-x-1"
                   >
-                    <span className="h-1 w-1 rounded-full bg-primary/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                    <span className="bg-primary/40 h-1 w-1 rounded-full opacity-0 transition-opacity group-hover:opacity-100" />
                     <span>Business Benefits</span>
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/dashboard"
-                    className="group inline-flex items-center gap-1.5 transition-all duration-200 hover:text-primary hover:translate-x-1"
+                    className="group hover:text-primary inline-flex items-center gap-1.5 transition-all duration-200 hover:translate-x-1"
                   >
-                    <span className="h-1 w-1 rounded-full bg-primary/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                    <span className="bg-primary/40 h-1 w-1 rounded-full opacity-0 transition-opacity group-hover:opacity-100" />
                     <span>Live Workspace</span>
-                    <span className="bg-primary/10 text-primary border border-primary/20 rounded-full px-1.5 py-0.2 text-[10px] font-semibold">
+                    <span className="bg-primary/10 text-primary border-primary/20 py-0.2 rounded-full border px-1.5 text-[10px] font-semibold">
                       Demo
                     </span>
                   </Link>
@@ -345,63 +349,63 @@ export const Footer: React.FC = () => {
                 <li>
                   <Link
                     href="/#architecture"
-                    className="group inline-flex items-center gap-1.5 transition-all duration-200 hover:text-primary hover:translate-x-1"
+                    className="group hover:text-primary inline-flex items-center gap-1.5 transition-all duration-200 hover:translate-x-1"
                   >
-                    <span className="h-1 w-1 rounded-full bg-primary/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                    <span className="bg-primary/40 h-1 w-1 rounded-full opacity-0 transition-opacity group-hover:opacity-100" />
                     <span>Multi-Tenant Isolation</span>
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/#architecture"
-                    className="group inline-flex items-center gap-1.5 transition-all duration-200 hover:text-primary hover:translate-x-1"
+                    className="group hover:text-primary inline-flex items-center gap-1.5 transition-all duration-200 hover:translate-x-1"
                   >
-                    <span className="h-1 w-1 rounded-full bg-primary/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                    <span className="bg-primary/40 h-1 w-1 rounded-full opacity-0 transition-opacity group-hover:opacity-100" />
                     <span>Role-Based Access (RBAC)</span>
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/#architecture"
-                    className="group inline-flex items-center gap-1.5 transition-all duration-200 hover:text-primary hover:translate-x-1"
+                    className="group hover:text-primary inline-flex items-center gap-1.5 transition-all duration-200 hover:translate-x-1"
                   >
-                    <span className="h-1 w-1 rounded-full bg-primary/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                    <span className="bg-primary/40 h-1 w-1 rounded-full opacity-0 transition-opacity group-hover:opacity-100" />
                     <span>Typed API Contracts</span>
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/#architecture"
-                    className="group inline-flex items-center gap-1.5 transition-all duration-200 hover:text-primary hover:translate-x-1"
+                    className="group hover:text-primary inline-flex items-center gap-1.5 transition-all duration-200 hover:translate-x-1"
                   >
-                    <span className="h-1 w-1 rounded-full bg-primary/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                    <span className="bg-primary/40 h-1 w-1 rounded-full opacity-0 transition-opacity group-hover:opacity-100" />
                     <span>Zod Runtime Validation</span>
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/#faq"
-                    className="group inline-flex items-center gap-1.5 transition-all duration-200 hover:text-primary hover:translate-x-1"
+                    className="group hover:text-primary inline-flex items-center gap-1.5 transition-all duration-200 hover:translate-x-1"
                   >
-                    <span className="h-1 w-1 rounded-full bg-primary/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                    <span className="bg-primary/40 h-1 w-1 rounded-full opacity-0 transition-opacity group-hover:opacity-100" />
                     <span>Security FAQ</span>
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/#architecture"
-                    className="group inline-flex items-center gap-1.5 transition-all duration-200 hover:text-primary hover:translate-x-1"
+                    className="group hover:text-primary inline-flex items-center gap-1.5 transition-all duration-200 hover:translate-x-1"
                   >
-                    <span className="h-1 w-1 rounded-full bg-primary/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                    <span className="bg-primary/40 h-1 w-1 rounded-full opacity-0 transition-opacity group-hover:opacity-100" />
                     <span>Data Sovereignty Guarantee</span>
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/#architecture"
-                    className="group inline-flex items-center gap-1.5 transition-all duration-200 hover:text-primary hover:translate-x-1"
+                    className="group hover:text-primary inline-flex items-center gap-1.5 transition-all duration-200 hover:translate-x-1"
                   >
-                    <span className="h-1 w-1 rounded-full bg-primary/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                    <span className="bg-primary/40 h-1 w-1 rounded-full opacity-0 transition-opacity group-hover:opacity-100" />
                     <span>Zero-Leakage Multi-Tenant RLS</span>
                   </Link>
                 </li>
@@ -417,18 +421,18 @@ export const Footer: React.FC = () => {
                 <li>
                   <Link
                     href="/login"
-                    className="group inline-flex items-center gap-1.5 transition-all duration-200 hover:text-primary hover:translate-x-1"
+                    className="group hover:text-primary inline-flex items-center gap-1.5 transition-all duration-200 hover:translate-x-1"
                   >
-                    <span className="h-1 w-1 rounded-full bg-primary/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                    <span className="bg-primary/40 h-1 w-1 rounded-full opacity-0 transition-opacity group-hover:opacity-100" />
                     <span>Sign In</span>
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/login"
-                    className="group inline-flex items-center gap-1.5 text-primary font-semibold transition-all duration-200 hover:translate-x-1"
+                    className="group text-primary inline-flex items-center gap-1.5 font-semibold transition-all duration-200 hover:translate-x-1"
                   >
-                    <span className="h-1 w-1 rounded-full bg-primary opacity-100" />
+                    <span className="bg-primary h-1 w-1 rounded-full opacity-100" />
                     <span>Get Started Free</span>
                     <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                   </Link>
@@ -436,27 +440,27 @@ export const Footer: React.FC = () => {
                 <li>
                   <Link
                     href="/dashboard"
-                    className="group inline-flex items-center gap-1.5 transition-all duration-200 hover:text-primary hover:translate-x-1"
+                    className="group hover:text-primary inline-flex items-center gap-1.5 transition-all duration-200 hover:translate-x-1"
                   >
-                    <span className="h-1 w-1 rounded-full bg-primary/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                    <span className="bg-primary/40 h-1 w-1 rounded-full opacity-0 transition-opacity group-hover:opacity-100" />
                     <span>Workspace Preview</span>
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/#faq"
-                    className="group inline-flex items-center gap-1.5 transition-all duration-200 hover:text-primary hover:translate-x-1"
+                    className="group hover:text-primary inline-flex items-center gap-1.5 transition-all duration-200 hover:translate-x-1"
                   >
-                    <span className="h-1 w-1 rounded-full bg-primary/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                    <span className="bg-primary/40 h-1 w-1 rounded-full opacity-0 transition-opacity group-hover:opacity-100" />
                     <span>System FAQ & Migration</span>
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/login"
-                    className="group inline-flex items-center gap-1.5 transition-all duration-200 hover:text-primary hover:translate-x-1"
+                    className="group hover:text-primary inline-flex items-center gap-1.5 transition-all duration-200 hover:translate-x-1"
                   >
-                    <span className="h-1 w-1 rounded-full bg-primary/40 opacity-0 transition-opacity group-hover:opacity-100" />
+                    <span className="bg-primary/40 h-1 w-1 rounded-full opacity-0 transition-opacity group-hover:opacity-100" />
                     <span>Request Dedicated Tenant</span>
                   </Link>
                 </li>
@@ -467,9 +471,9 @@ export const Footer: React.FC = () => {
       </div>
 
       {/* 3. Live Enterprise Telemetry Status Bar with Interactive Detail Tooltip */}
-      <div className="relative border-border/60 bg-muted/40 border-t py-3 text-xs">
+      <div className="border-border/60 bg-muted/40 relative border-t py-3 text-xs">
         <Container>
-          <div className="flex flex-wrap items-center justify-between gap-3 font-mono text-[11px] text-muted-foreground">
+          <div className="text-muted-foreground flex flex-wrap items-center justify-between gap-3 font-mono text-[11px]">
             {/* Live Operational Signal (Hoverable for Architectural Telemetry Details) */}
             <div
               className="relative cursor-pointer"
@@ -484,21 +488,21 @@ export const Footer: React.FC = () => {
                 <span className="text-foreground font-semibold">Systems Operational</span>
                 <span className="text-muted-foreground/60">&bull;</span>
                 <span>99.98% SLA</span>
-                <Info className="h-3 w-3 text-muted-foreground/70" />
+                <Info className="text-muted-foreground/70 h-3 w-3" />
               </div>
 
               {/* Hoverable Telemetry Blueprint Popover */}
               {isTelemetryHovered && (
-                <div className="absolute bottom-full left-0 mb-2 z-50 w-[calc(100vw-32px)] sm:w-72 max-w-xs rounded-xl border border-border/80 bg-surface/95 p-3 shadow-xl backdrop-blur-2xl">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-primary">
+                <div className="border-border/80 bg-surface/95 absolute bottom-full left-0 z-50 mb-2 w-[calc(100vw-32px)] max-w-xs rounded-xl border p-3 shadow-xl backdrop-blur-2xl sm:w-72">
+                  <p className="text-primary text-[10px] font-bold tracking-wider uppercase">
                     Live Infrastructure Telemetry
                   </p>
-                  <div className="mt-2 space-y-1.5 text-[10px] font-mono text-muted-foreground">
-                    <div className="flex items-center justify-between border-b border-border/40 pb-1">
+                  <div className="text-muted-foreground mt-2 space-y-1.5 font-mono text-[10px]">
+                    <div className="border-border/40 flex items-center justify-between border-b pb-1">
                       <span>PostgreSQL RLS:</span>
                       <span className="font-semibold text-emerald-500">Active (0ms locks)</span>
                     </div>
-                    <div className="flex items-center justify-between border-b border-border/40 pb-1">
+                    <div className="border-border/40 flex items-center justify-between border-b pb-1">
                       <span>Zod Mutation Guards:</span>
                       <span className="font-semibold text-cyan-500">100% Enforced</span>
                     </div>
@@ -533,42 +537,43 @@ export const Footer: React.FC = () => {
       </div>
 
       {/* 4. Lower Copyright, Compliance & Back-To-Top Bar */}
-      <div className="relative border-border/60 bg-muted/20 border-t py-6 text-xs">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 dark:via-white/10 to-transparent" />
+      <div className="border-border/60 bg-muted/20 relative border-t py-6 text-xs">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent dark:via-white/10" />
         <Container className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          <p className="text-muted-foreground text-center md:text-left text-xs">
-            &copy; 2026 FlowPilot Inc. All rights reserved. Engineered with precision for professional service teams.
+          <p className="text-muted-foreground text-center text-xs md:text-left">
+            &copy; 2026 FlowPilot Inc. All rights reserved. Engineered with precision for
+            professional service teams.
           </p>
 
           <div className="text-muted-foreground flex flex-wrap items-center justify-center gap-6 text-xs">
-            <span className="inline-flex items-center gap-1.5 font-medium text-foreground/80">
+            <span className="text-foreground/80 inline-flex items-center gap-1.5 font-medium">
               <ShieldCheck className="text-primary h-4 w-4" />
               Verified Architecture
             </span>
-            <span className="hidden sm:inline text-muted-foreground/40">&bull;</span>
+            <span className="text-muted-foreground/40 hidden sm:inline">&bull;</span>
             <Link href="/login" className="hover:text-foreground transition-colors">
               Privacy Policy
             </Link>
-            <span className="hidden sm:inline text-muted-foreground/40">&bull;</span>
+            <span className="text-muted-foreground/40 hidden sm:inline">&bull;</span>
             <Link href="/login" className="hover:text-foreground transition-colors">
               Terms of Service
             </Link>
-            <span className="hidden sm:inline text-muted-foreground/40">&bull;</span>
+            <span className="text-muted-foreground/40 hidden sm:inline">&bull;</span>
             <span className="inline-flex items-center gap-1">
               Crafted with precision <Heart className="h-3 w-3 fill-red-500 text-red-500" />
             </span>
-            <span className="hidden sm:inline text-muted-foreground/40">&bull;</span>
+            <span className="text-muted-foreground/40 hidden sm:inline">&bull;</span>
 
             {/* Back to Top Smooth Scroll Button */}
             <button
               type="button"
               onClick={scrollToTop}
-              className="group relative flex h-7 items-center gap-1 rounded-lg border border-border/80 bg-muted/50 px-2.5 text-[11px] font-medium text-muted-foreground hover:border-primary/50 hover:bg-muted/80 hover:text-foreground transition-all active:scale-95 shadow-2xs overflow-hidden cursor-pointer"
+              className="group border-border/80 bg-muted/50 text-muted-foreground hover:border-primary/50 hover:bg-muted/80 hover:text-foreground relative flex h-7 cursor-pointer items-center gap-1 overflow-hidden rounded-lg border px-2.5 text-[11px] font-medium shadow-2xs transition-all active:scale-95"
               aria-label="Scroll back to top of page"
             >
               <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/20 to-transparent" />
               <span>Back to top</span>
-              <ArrowUp className="h-3 w-3 transition-transform group-hover:-translate-y-0.5 text-primary" />
+              <ArrowUp className="text-primary h-3 w-3 transition-transform group-hover:-translate-y-0.5" />
             </button>
           </div>
         </Container>

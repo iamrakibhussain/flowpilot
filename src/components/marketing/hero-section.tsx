@@ -168,7 +168,7 @@ export const HeroSection: React.FC = () => {
           {/* Primary CTA with Sweeping Shimmer Beam */}
           <Button
             size="lg"
-            className="group relative h-12 overflow-hidden rounded-full bg-primary px-7 text-base font-semibold text-white shadow-md transition-all duration-200 hover:bg-primary-hover hover:shadow-lg active:scale-[0.98]"
+            className="group bg-primary hover:bg-primary-hover relative h-12 overflow-hidden rounded-full px-7 text-base font-semibold text-white shadow-md transition-all duration-200 hover:shadow-lg active:scale-[0.98]"
             asChild
           >
             <Link href="/login" className="flex items-center gap-2">
@@ -239,8 +239,7 @@ export const HeroSection: React.FC = () => {
 
           {/* Truthful Product Audience Alignment */}
           <span className="text-muted-foreground text-xs">
-            Built for{" "}
-            <strong className="text-foreground font-semibold">Agency Founders</strong>,{" "}
+            Built for <strong className="text-foreground font-semibold">Agency Founders</strong>,{" "}
             <strong className="text-foreground font-semibold">Operations Directors</strong> &amp;{" "}
             <strong className="text-foreground font-semibold">Service Teams</strong>
           </span>
@@ -256,11 +255,11 @@ export const HeroSection: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="border-border/70 bg-surface/75 shadow-xs relative mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 overflow-hidden rounded-2xl border px-6 py-2.5 text-xs backdrop-blur-xl md:mt-5"
+          className="border-border/70 bg-surface/75 relative mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 overflow-hidden rounded-2xl border px-6 py-2.5 text-xs shadow-xs backdrop-blur-xl md:mt-5"
         >
           {/* Top Specular Rim Light */}
           <div
-            className="pointer-events-none absolute inset-x-8 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent"
+            className="pointer-events-none absolute inset-x-8 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
             aria-hidden="true"
           />
           <div className="text-foreground/85 flex items-center gap-1.5">
@@ -289,13 +288,13 @@ export const HeroSection: React.FC = () => {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.45 }}
-          className="border-border/80 bg-surface/90 shadow-xs relative mt-6 mb-2 inline-flex items-center gap-1 overflow-hidden rounded-full border p-1.5 backdrop-blur-xl md:mt-7"
+          className="border-border/80 bg-surface/90 relative mt-6 mb-2 inline-flex items-center gap-1 overflow-hidden rounded-full border p-1.5 shadow-xs backdrop-blur-xl md:mt-7"
           role="tablist"
           aria-label="Cockpit perspective mode"
         >
           {/* Subtle Lens Ambient Top Line */}
           <div
-            className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/70 dark:via-white/20 to-transparent"
+            className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/70 to-transparent dark:via-white/20"
             aria-hidden="true"
           />
           <button
@@ -390,11 +389,11 @@ export const HeroSection: React.FC = () => {
                 : `translateZ(55px) translateX(${mousePos.x * 14}px) translateY(${mousePos.y * 14}px)`,
               transition: "transform 0.18s cubic-bezier(0.16, 1, 0.3, 1)",
             }}
-            className="border-border/80 dark:border-white/15 bg-surface/95 text-foreground pointer-events-none absolute -top-6 -left-4 z-30 hidden w-70 overflow-hidden rounded-2xl border p-3.5 text-left shadow-[0_16px_36px_-6px_rgba(49,95,232,0.14),0_6px_16px_-2px_rgba(0,0,0,0.06)] backdrop-blur-2xl sm:block"
+            className="border-border/80 bg-surface/95 text-foreground pointer-events-none absolute -top-6 -left-4 z-30 hidden w-70 overflow-hidden rounded-2xl border p-3.5 text-left shadow-[0_16px_36px_-6px_rgba(49,95,232,0.14),0_6px_16px_-2px_rgba(0,0,0,0.06)] backdrop-blur-2xl sm:block dark:border-white/15"
           >
             {/* Specular Top Rim Highlight */}
             <div
-              className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/90 dark:via-white/30 to-transparent"
+              className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/90 to-transparent dark:via-white/30"
               aria-hidden="true"
             />
             <AnimatePresence mode="wait">
@@ -408,7 +407,7 @@ export const HeroSection: React.FC = () => {
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="from-primary/15 to-primary/5 text-primary border-primary/20 shadow-2xs flex h-7.5 w-7.5 items-center justify-center rounded-xl border bg-gradient-to-br">
+                      <div className="from-primary/15 to-primary/5 text-primary border-primary/20 flex h-7.5 w-7.5 items-center justify-center rounded-xl border bg-gradient-to-br shadow-2xs">
                         <Calendar className="h-3.5 w-3.5" />
                       </div>
                       <span className="text-foreground text-xs font-bold">8 Scheduled Today</span>
@@ -514,16 +513,16 @@ export const HeroSection: React.FC = () => {
                 : `translateZ(65px) translateX(${-mousePos.x * 16}px) translateY(${-mousePos.y * 16}px)`,
               transition: "transform 0.18s cubic-bezier(0.16, 1, 0.3, 1)",
             }}
-            className="border-border/80 dark:border-white/15 bg-surface/95 text-foreground pointer-events-none absolute -right-4 -bottom-6 z-30 hidden w-72 overflow-hidden rounded-2xl border p-3.5 text-left shadow-[0_16px_36px_-6px_rgba(16,185,129,0.14),0_6px_16px_-2px_rgba(0,0,0,0.06)] backdrop-blur-2xl sm:block"
+            className="border-border/80 bg-surface/95 text-foreground pointer-events-none absolute -right-4 -bottom-6 z-30 hidden w-72 overflow-hidden rounded-2xl border p-3.5 text-left shadow-[0_16px_36px_-6px_rgba(16,185,129,0.14),0_6px_16px_-2px_rgba(0,0,0,0.06)] backdrop-blur-2xl sm:block dark:border-white/15"
           >
             {/* Specular Top Rim Highlight */}
             <div
-              className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-400/80 dark:via-white/30 to-transparent"
+              className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-400/80 to-transparent dark:via-white/30"
               aria-hidden="true"
             />
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="border-emerald-500/20 shadow-2xs flex h-7.5 w-7.5 items-center justify-center rounded-xl border bg-gradient-to-br from-emerald-500/15 to-emerald-500/5 text-emerald-600">
+                <div className="flex h-7.5 w-7.5 items-center justify-center rounded-xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/15 to-emerald-500/5 text-emerald-600 shadow-2xs">
                   <DollarSign className="h-4 w-4" />
                 </div>
                 <div>
@@ -557,16 +556,16 @@ export const HeroSection: React.FC = () => {
                 : `translateZ(45px) translateX(${mousePos.x * 10}px) translateY(${mousePos.y * 10}px)`,
               transition: "transform 0.18s cubic-bezier(0.16, 1, 0.3, 1)",
             }}
-            className="border-border/80 dark:border-white/15 bg-surface/95 text-foreground pointer-events-none absolute -bottom-5 left-10 z-20 hidden w-60 overflow-hidden rounded-2xl border p-3.5 text-left shadow-[0_14px_30px_-6px_rgba(49,95,232,0.12),0_4px_14px_-2px_rgba(0,0,0,0.06)] backdrop-blur-2xl lg:block"
+            className="border-border/80 bg-surface/95 text-foreground pointer-events-none absolute -bottom-5 left-10 z-20 hidden w-60 overflow-hidden rounded-2xl border p-3.5 text-left shadow-[0_14px_30px_-6px_rgba(49,95,232,0.12),0_4px_14px_-2px_rgba(0,0,0,0.06)] backdrop-blur-2xl lg:block dark:border-white/15"
           >
             {/* Specular Top Rim Highlight */}
             <div
-              className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/90 dark:via-white/30 to-transparent"
+              className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/90 to-transparent dark:via-white/30"
               aria-hidden="true"
             />
             <div className="flex items-center justify-between text-xs">
               <div className="flex items-center gap-1.5 font-bold">
-                <div className="from-primary/15 to-primary/5 text-primary border-primary/20 shadow-2xs flex h-6 w-6 items-center justify-center rounded-lg border bg-gradient-to-br">
+                <div className="from-primary/15 to-primary/5 text-primary border-primary/20 flex h-6 w-6 items-center justify-center rounded-lg border bg-gradient-to-br shadow-2xs">
                   <Users className="h-3.5 w-3.5" />
                 </div>
                 <span>Team Utilization</span>
@@ -684,11 +683,14 @@ export const HeroSection: React.FC = () => {
                   animate={{ opacity: 1, backdropFilter: "blur(6px)" }}
                   exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
                   transition={{ duration: 0.3 }}
-                  className="from-background/90 via-background/40 absolute inset-0 flex flex-col justify-end bg-gradient-to-t to-transparent p-3 sm:p-6 text-left"
-                  >
+                  className="from-background/90 via-background/40 absolute inset-0 flex flex-col justify-end bg-gradient-to-t to-transparent p-3 text-left sm:p-6"
+                >
                   <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                    <div className="border-border/80 dark:border-white/15 bg-surface/95 relative overflow-hidden rounded-2xl border p-3.5 shadow-lg backdrop-blur-xl">
-                      <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/30 to-transparent" aria-hidden="true" />
+                    <div className="border-border/80 bg-surface/95 relative overflow-hidden rounded-2xl border p-3.5 shadow-lg backdrop-blur-xl dark:border-white/15">
+                      <div
+                        className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/30"
+                        aria-hidden="true"
+                      />
                       <p className="text-muted-foreground text-[10px] font-semibold tracking-wider uppercase">
                         MTD Billing
                       </p>
@@ -699,8 +701,11 @@ export const HeroSection: React.FC = () => {
                         +24% vs Prev Mo
                       </span>
                     </div>
-                    <div className="border-border/80 dark:border-white/15 bg-surface/95 relative overflow-hidden rounded-2xl border p-3.5 shadow-lg backdrop-blur-xl">
-                      <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/30 to-transparent" aria-hidden="true" />
+                    <div className="border-border/80 bg-surface/95 relative overflow-hidden rounded-2xl border p-3.5 shadow-lg backdrop-blur-xl dark:border-white/15">
+                      <div
+                        className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/30"
+                        aria-hidden="true"
+                      />
                       <p className="text-muted-foreground text-[10px] font-semibold tracking-wider uppercase">
                         Billable Ratio
                       </p>
@@ -709,8 +714,11 @@ export const HeroSection: React.FC = () => {
                       </p>
                       <span className="text-primary text-[10px] font-medium">Target: 85%</span>
                     </div>
-                    <div className="border-border/80 dark:border-white/15 bg-surface/95 relative overflow-hidden rounded-2xl border p-3.5 shadow-lg backdrop-blur-xl">
-                      <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/30 to-transparent" aria-hidden="true" />
+                    <div className="border-border/80 bg-surface/95 relative overflow-hidden rounded-2xl border p-3.5 shadow-lg backdrop-blur-xl dark:border-white/15">
+                      <div
+                        className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/30"
+                        aria-hidden="true"
+                      />
                       <p className="text-muted-foreground text-[10px] font-semibold tracking-wider uppercase">
                         Avg Booking Lead
                       </p>
@@ -719,8 +727,11 @@ export const HeroSection: React.FC = () => {
                         Zero Idle Time
                       </span>
                     </div>
-                    <div className="border-border/80 dark:border-white/15 bg-surface/95 relative overflow-hidden rounded-2xl border p-3.5 shadow-lg backdrop-blur-xl">
-                      <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/30 to-transparent" aria-hidden="true" />
+                    <div className="border-border/80 bg-surface/95 relative overflow-hidden rounded-2xl border p-3.5 shadow-lg backdrop-blur-xl dark:border-white/15">
+                      <div
+                        className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/30"
+                        aria-hidden="true"
+                      />
                       <p className="text-muted-foreground text-[10px] font-semibold tracking-wider uppercase">
                         Payout Velocity
                       </p>

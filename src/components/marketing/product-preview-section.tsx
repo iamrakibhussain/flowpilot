@@ -222,7 +222,7 @@ export const ProductPreviewSection: React.FC = () => {
           >
             {/* Top Specular Rim Light */}
             <div
-              className="pointer-events-none absolute inset-x-6 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent"
+              className="pointer-events-none absolute inset-x-6 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
               aria-hidden="true"
             />
             <button
@@ -418,8 +418,11 @@ export const ProductPreviewSection: React.FC = () => {
             }`}
           >
             {/* Specular Rim */}
-            <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent" aria-hidden="true" />
-            <div className="from-primary/15 to-primary/5 text-primary border-primary/20 shadow-2xs flex h-6.5 w-6.5 items-center justify-center rounded-lg border bg-gradient-to-br">
+            <div
+              className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
+              aria-hidden="true"
+            />
+            <div className="from-primary/15 to-primary/5 text-primary border-primary/20 flex h-6.5 w-6.5 items-center justify-center rounded-lg border bg-gradient-to-br shadow-2xs">
               <Zap className="h-3.5 w-3.5" />
             </div>
             <div>
@@ -450,7 +453,10 @@ export const ProductPreviewSection: React.FC = () => {
             }`}
           >
             {/* Specular Rim */}
-            <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent" aria-hidden="true" />
+            <div
+              className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
+              aria-hidden="true"
+            />
             <span className="flex h-2.5 w-2.5">
               <span className="absolute inline-flex h-2.5 w-2.5 animate-ping rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
@@ -510,7 +516,7 @@ export const ProductPreviewSection: React.FC = () => {
                 }`}
               >
                 <Lock className="text-primary h-3 w-3 shrink-0" />
-                <span className="font-medium truncate max-w-[140px] xs:max-w-[220px] sm:max-w-none">
+                <span className="xs:max-w-[220px] max-w-[140px] truncate font-medium sm:max-w-none">
                   app.flowpilot.io/workspace/acme-agency/{activeTab}
                 </span>
               </div>

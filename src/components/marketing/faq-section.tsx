@@ -485,7 +485,7 @@ export const FAQSection: React.FC = () => {
             </div>
 
             <div className="flex items-center gap-3 px-2 py-1">
-              <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-primary/40 bg-gradient-to-br from-primary/25 to-primary/10 text-cyan-300 shadow-inner ring-1 ring-cyan-400/20">
+              <div className="border-primary/40 from-primary/25 to-primary/10 relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border bg-gradient-to-br text-cyan-300 shadow-inner ring-1 ring-cyan-400/20">
                 <Search className="h-4.5 w-4.5" />
               </div>
               <input
@@ -671,7 +671,7 @@ export const FAQSection: React.FC = () => {
                 <div className="mt-5 space-y-2 border-t border-slate-800 pt-4 text-xs">
                   <div className="relative flex items-center justify-between overflow-hidden rounded-lg border border-slate-800/80 bg-slate-950/60 p-2.5">
                     <div
-                      className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 dark:via-white/10 to-transparent"
+                      className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent dark:via-white/10"
                       aria-hidden="true"
                     />
                     <span className="flex items-center gap-2 text-slate-300">
@@ -686,7 +686,7 @@ export const FAQSection: React.FC = () => {
                   </div>
                   <div className="relative flex items-center justify-between overflow-hidden rounded-lg border border-slate-800/80 bg-slate-950/60 p-2.5">
                     <div
-                      className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 dark:via-white/10 to-transparent"
+                      className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent dark:via-white/10"
                       aria-hidden="true"
                     />
                     <span className="flex items-center gap-2 text-slate-300">
@@ -701,7 +701,7 @@ export const FAQSection: React.FC = () => {
                   </div>
                   <div className="relative flex items-center justify-between overflow-hidden rounded-lg border border-slate-800/80 bg-slate-950/60 p-2.5">
                     <div
-                      className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 dark:via-white/10 to-transparent"
+                      className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent dark:via-white/10"
                       aria-hidden="true"
                     />
                     <span className="flex items-center gap-2 text-slate-300">

@@ -86,7 +86,7 @@ const SpatialGlassCard: React.FC<SpatialGlassCardProps> = ({
       >
         {/* Specular Rim Highlight Light Beam */}
         <div
-          className="pointer-events-none absolute inset-x-8 top-0 z-20 h-[1.5px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/25 to-transparent transition-opacity duration-300 group-hover:via-white dark:group-hover:via-white/50"
+          className="pointer-events-none absolute inset-x-8 top-0 z-20 h-[1.5px] bg-gradient-to-r from-transparent via-white/80 to-transparent transition-opacity duration-300 group-hover:via-white dark:via-white/25 dark:group-hover:via-white/50"
           aria-hidden="true"
         />
 
@@ -179,7 +179,7 @@ export const BusinessBenefitsSection: React.FC = () => {
               {/* Card Meta & Header */}
               <div className="flex flex-wrap items-center justify-between gap-3 pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl border border-primary/25 bg-gradient-to-br from-primary/20 via-primary/10 to-primary/5 text-primary shadow-xs ring-1 ring-primary/20">
+                  <div className="border-primary/25 from-primary/20 via-primary/10 to-primary/5 text-primary ring-primary/20 relative flex h-12 w-12 items-center justify-center rounded-2xl border bg-gradient-to-br shadow-xs ring-1">
                     <Eye className="h-6 w-6" />
                   </div>
                   <div>
@@ -259,7 +259,7 @@ export const BusinessBenefitsSection: React.FC = () => {
               {/* Dynamic Living Orbital Architecture vs Chaos Web Canvas */}
               <div className="border-border/80 bg-background/95 relative mt-6 min-h-[190px] overflow-hidden rounded-2xl border p-4.5 shadow-sm">
                 <div
-                  className="pointer-events-none absolute inset-x-6 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent"
+                  className="pointer-events-none absolute inset-x-6 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
                   aria-hidden="true"
                 />
                 <AnimatePresence mode="wait">
@@ -363,7 +363,7 @@ export const BusinessBenefitsSection: React.FC = () => {
                       {/* 3-Spoke Orbital Synchronization Diagram */}
                       <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                         <div className="border-border/80 bg-surface relative overflow-hidden rounded-xl border p-3 text-center">
-                          <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent" />
+                          <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20" />
                           <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-lg border border-blue-500/25 bg-gradient-to-br from-blue-500/20 to-blue-500/5 text-blue-600 shadow-2xs">
                             <Users className="h-4 w-4" />
                           </div>
@@ -376,7 +376,7 @@ export const BusinessBenefitsSection: React.FC = () => {
                         </div>
 
                         <div className="border-border/80 bg-surface relative overflow-hidden rounded-xl border p-3 text-center">
-                          <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent" />
+                          <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20" />
                           <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-lg border border-emerald-500/25 bg-gradient-to-br from-emerald-500/20 to-emerald-500/5 text-emerald-600 shadow-2xs">
                             <Clock className="h-4 w-4" />
                           </div>
@@ -389,7 +389,7 @@ export const BusinessBenefitsSection: React.FC = () => {
                         </div>
 
                         <div className="border-border/80 bg-surface relative overflow-hidden rounded-xl border p-3 text-center">
-                          <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent" />
+                          <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20" />
                           <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-lg border border-cyan-500/25 bg-gradient-to-br from-cyan-500/20 to-cyan-500/5 text-cyan-600 shadow-2xs">
                             <CreditCard className="h-4 w-4" />
                           </div>
@@ -519,7 +519,7 @@ export const BusinessBenefitsSection: React.FC = () => {
               {/* 3D Visual Weekly Schedule Matrix & Buffer Shield */}
               <div className="border-border/80 bg-background/95 relative mt-6 overflow-hidden rounded-2xl border p-4.5 shadow-sm">
                 <div
-                  className="pointer-events-none absolute inset-x-6 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent"
+                  className="pointer-events-none absolute inset-x-6 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
                   aria-hidden="true"
                 />
                 {/* Consultant Selector */}
@@ -720,7 +720,7 @@ export const BusinessBenefitsSection: React.FC = () => {
               {/* 3D Visual DSO Liquidity Waterfall */}
               <div className="border-border/80 bg-background/95 relative mt-6 overflow-hidden rounded-2xl border p-4.5 shadow-sm">
                 <div
-                  className="pointer-events-none absolute inset-x-6 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent"
+                  className="pointer-events-none absolute inset-x-6 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
                   aria-hidden="true"
                 />
                 <div className="flex items-center justify-between border-b pb-2.5 text-xs font-bold">
@@ -732,7 +732,7 @@ export const BusinessBenefitsSection: React.FC = () => {
 
                 <div className="mt-3.5 grid grid-cols-2 gap-2 text-center text-xs">
                   <div className="bg-surface border-border/70 relative overflow-hidden rounded-xl border p-3">
-                    <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent" />
+                    <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20" />
                     <span className="text-muted-foreground block text-[10px] font-medium">
                       Days to Bank
                     </span>
@@ -746,7 +746,7 @@ export const BusinessBenefitsSection: React.FC = () => {
                   </div>
 
                   <div className="bg-surface border-border/70 relative overflow-hidden rounded-xl border p-3">
-                    <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent" />
+                    <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20" />
                     <span className="text-muted-foreground block text-[10px] font-medium">
                       Dispute Rate
                     </span>
@@ -865,7 +865,7 @@ export const BusinessBenefitsSection: React.FC = () => {
               {/* 3D Visual Profit Margin & Interactive Rate Slider Vault */}
               <div className="border-border/80 bg-background/95 relative mt-6 overflow-hidden rounded-2xl border p-4.5 shadow-sm">
                 <div
-                  className="pointer-events-none absolute inset-x-6 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent"
+                  className="pointer-events-none absolute inset-x-6 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
                   aria-hidden="true"
                 />
                 <div className="flex flex-wrap items-center justify-between gap-2 border-b pb-2.5 text-xs font-bold">
@@ -901,7 +901,7 @@ export const BusinessBenefitsSection: React.FC = () => {
 
                 <div className="relative mt-3.5 grid grid-cols-1 gap-3 sm:grid-cols-3">
                   <div className="bg-surface border-border/70 relative overflow-hidden rounded-xl border p-3 text-center">
-                    <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent" />
+                    <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20" />
                     <span className="text-muted-foreground block text-[10px] font-medium">
                       Client Billable Rate
                     </span>
@@ -911,7 +911,7 @@ export const BusinessBenefitsSection: React.FC = () => {
                   </div>
 
                   <div className="bg-surface border-border/70 relative overflow-hidden rounded-xl border p-3 text-center">
-                    <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent" />
+                    <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20" />
                     <span className="text-muted-foreground block text-[10px] font-medium">
                       Internal Delivery Cost
                     </span>
@@ -921,7 +921,7 @@ export const BusinessBenefitsSection: React.FC = () => {
                   </div>
 
                   <div className="bg-surface border-border/70 relative overflow-hidden rounded-xl border p-3 text-center">
-                    <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent" />
+                    <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20" />
                     <span className="text-muted-foreground block text-[10px] font-medium">
                       Gross Profit Margin
                     </span>
@@ -979,11 +979,11 @@ export const BusinessBenefitsSection: React.FC = () => {
         <div className="border-border/80 bg-surface/90 relative mt-12 overflow-hidden rounded-3xl border p-6 shadow-2xl backdrop-blur-2xl sm:p-10">
           {/* Subtle Top Specular Light Beam */}
           <div
-            className="pointer-events-none absolute inset-x-8 top-0 z-20 h-[1.5px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/25 to-transparent"
+            className="pointer-events-none absolute inset-x-8 top-0 z-20 h-[1.5px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/25"
             aria-hidden="true"
           />
           <div
-            className="pointer-events-none absolute inset-x-16 top-0 z-20 h-[1.5px] bg-gradient-to-r from-transparent via-primary/50 to-transparent"
+            className="via-primary/50 pointer-events-none absolute inset-x-16 top-0 z-20 h-[1.5px] bg-gradient-to-r from-transparent to-transparent"
             aria-hidden="true"
           />
 
@@ -1050,7 +1050,7 @@ export const BusinessBenefitsSection: React.FC = () => {
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:w-1/2">
               <div className="border-border/80 bg-background/90 relative overflow-hidden rounded-2xl border p-4 text-center shadow-xs">
                 <div
-                  className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent"
+                  className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
                   aria-hidden="true"
                 />
                 <span className="text-muted-foreground block text-[11px] font-semibold">
@@ -1066,7 +1066,7 @@ export const BusinessBenefitsSection: React.FC = () => {
 
               <div className="border-border/80 bg-background/90 relative overflow-hidden rounded-2xl border p-4 text-center shadow-xs">
                 <div
-                  className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent"
+                  className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
                   aria-hidden="true"
                 />
                 <span className="text-muted-foreground block text-[11px] font-semibold">
@@ -1082,7 +1082,7 @@ export const BusinessBenefitsSection: React.FC = () => {
 
               <div className="border-border/80 bg-background/90 relative overflow-hidden rounded-2xl border p-4 text-center shadow-xs">
                 <div
-                  className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent"
+                  className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
                   aria-hidden="true"
                 />
                 <span className="text-muted-foreground block text-[11px] font-semibold">
@@ -1100,7 +1100,9 @@ export const BusinessBenefitsSection: React.FC = () => {
 
           {/* Transparent Operational Estimation Footnote */}
           <p className="border-border/50 text-muted-foreground/75 mt-6 border-t pt-3 text-center text-[11px]">
-            * Interactive operational estimation based on ~18.5 hrs/seat of eliminated manual scheduling &amp; billing friction. Actual outcomes vary by business model and service structure.
+            * Interactive operational estimation based on ~18.5 hrs/seat of eliminated manual
+            scheduling &amp; billing friction. Actual outcomes vary by business model and service
+            structure.
           </p>
         </div>
       </Container>

@@ -60,15 +60,15 @@ export const FinalCTASection: React.FC = () => {
         aria-hidden="true"
       >
         {/* Radiant Center Core Glow */}
-        <div className="absolute h-[550px] w-[900px] rounded-full bg-gradient-to-r from-primary/20 via-cyan-500/15 to-indigo-500/20 blur-[140px]" />
+        <div className="from-primary/20 absolute h-[550px] w-[900px] rounded-full bg-gradient-to-r via-cyan-500/15 to-indigo-500/20 blur-[140px]" />
 
         {/* Concentric Orbital Rings */}
         <div className="border-primary/10 absolute h-[720px] w-[720px] rounded-full border border-dashed md:h-[900px] md:w-[900px]" />
-        <div className="border-cyan-500/10 absolute h-[500px] w-[500px] rounded-full border md:h-[650px] md:w-[650px]" />
-        <div className="border-indigo-500/15 absolute h-[320px] w-[320px] rounded-full border border-dashed md:h-[420px] md:w-[420px]" />
+        <div className="absolute h-[500px] w-[500px] rounded-full border border-cyan-500/10 md:h-[650px] md:w-[650px]" />
+        <div className="absolute h-[320px] w-[320px] rounded-full border border-dashed border-indigo-500/15 md:h-[420px] md:w-[420px]" />
 
         {/* Subtle Ambient Grid Horizon */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] dark:opacity-40 opacity-20" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] bg-[size:4rem_4rem] opacity-20 dark:opacity-40" />
       </div>
 
       <Container>
@@ -76,7 +76,7 @@ export const FinalCTASection: React.FC = () => {
         <div className="relative mx-auto max-w-5xl overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-b from-slate-900/95 via-slate-950/98 to-[#030712] p-6 shadow-[0_30px_100px_-20px_rgba(0,0,0,0.6),0_0_50px_rgba(49,95,232,0.15)] backdrop-blur-2xl sm:p-12 md:p-16 dark:border-white/10">
           {/* Dual Specular Top Rim Accent Line */}
           <div
-            className="pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/90 dark:via-white/40 to-transparent"
+            className="pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/90 to-transparent dark:via-white/40"
             aria-hidden="true"
           />
           <div
@@ -104,8 +104,8 @@ export const FinalCTASection: React.FC = () => {
                 className="relative inline-flex items-center gap-2 overflow-hidden rounded-full border-cyan-500/30 bg-cyan-500/10 px-4 py-1.5 text-xs font-semibold text-cyan-300 shadow-sm backdrop-blur-md"
               >
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/25 to-transparent" />
-                <Sparkles className="h-3.5 w-3.5 text-cyan-400 animate-pulse" />
-                <span className="tracking-wide uppercase text-[11px] font-bold">
+                <Sparkles className="h-3.5 w-3.5 animate-pulse text-cyan-400" />
+                <span className="text-[11px] font-bold tracking-wide uppercase">
                   Unified Operations Engine
                 </span>
                 <span className="h-1 w-1 rounded-full bg-cyan-400" />
@@ -163,7 +163,7 @@ export const FinalCTASection: React.FC = () => {
 
               {/* Preset Selector Chips */}
               <div className="mt-3.5 flex flex-wrap items-center gap-1.5">
-                <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 mr-1">
+                <span className="mr-1 text-[10px] font-medium tracking-wider text-slate-400 uppercase">
                   Preset:
                 </span>
                 {PRESET_ORGANIZATIONS.map((preset, idx) => {
@@ -176,8 +176,8 @@ export const FinalCTASection: React.FC = () => {
                       className={cn(
                         "relative overflow-hidden rounded-lg px-2.5 py-1 text-[11px] font-medium transition-all",
                         isActive
-                          ? "bg-cyan-500/20 text-cyan-200 border border-cyan-400/40 shadow-xs"
-                          : "bg-slate-800/60 text-slate-400 border border-slate-700/60 hover:border-slate-600 hover:text-slate-200"
+                          ? "border border-cyan-400/40 bg-cyan-500/20 text-cyan-200 shadow-xs"
+                          : "border border-slate-700/60 bg-slate-800/60 text-slate-400 hover:border-slate-600 hover:text-slate-200"
                       )}
                     >
                       {isActive && (
@@ -197,11 +197,11 @@ export const FinalCTASection: React.FC = () => {
                   aria-hidden="true"
                 />
 
-                <div className="flex flex-1 items-center gap-1.5 px-2 font-mono text-xs overflow-hidden">
+                <div className="flex flex-1 items-center gap-1.5 overflow-hidden px-2 font-mono text-xs">
                   <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-cyan-400/30 bg-cyan-500/15 text-cyan-300">
                     <Globe className="h-3.5 w-3.5" />
                   </div>
-                  <span className="shrink-0 text-slate-500 hidden xs:inline">https://</span>
+                  <span className="xs:inline hidden shrink-0 text-slate-500">https://</span>
                   <input
                     type="text"
                     value={workspaceSlug}
@@ -215,7 +215,7 @@ export const FinalCTASection: React.FC = () => {
                       setActivePresetIndex(-1);
                     }}
                     placeholder="your-company"
-                    className="min-w-0 flex-1 w-24 sm:w-36 bg-transparent font-semibold text-cyan-300 outline-none placeholder:text-slate-600"
+                    className="w-24 min-w-0 flex-1 bg-transparent font-semibold text-cyan-300 outline-none placeholder:text-slate-600 sm:w-36"
                     aria-label="Workspace domain slug preview"
                   />
                   <span className="shrink-0 text-slate-500">.flowpilot.app</span>
@@ -226,7 +226,7 @@ export const FinalCTASection: React.FC = () => {
                   type="button"
                   onClick={handleCopyDomain}
                   className={cn(
-                    "relative flex items-center justify-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all duration-200 overflow-hidden",
+                    "relative flex items-center justify-center gap-1.5 overflow-hidden rounded-lg px-3 py-1.5 text-xs font-semibold transition-all duration-200",
                     copiedDomain
                       ? "bg-emerald-500 text-white shadow-[0_0_15px_rgba(16,185,129,0.4)]"
                       : "border border-slate-700 bg-slate-800 text-slate-200 hover:border-cyan-400 hover:bg-slate-700 hover:text-white"
@@ -235,7 +235,7 @@ export const FinalCTASection: React.FC = () => {
                   <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/20 to-transparent" />
                   {copiedDomain ? (
                     <>
-                      <Check className="h-3.5 w-3.5 text-white animate-scale-in" />
+                      <Check className="animate-scale-in h-3.5 w-3.5 text-white" />
                       <span>Copied!</span>
                     </>
                   ) : (
@@ -288,14 +288,17 @@ export const FinalCTASection: React.FC = () => {
             </div>
 
             {/* 4. Dual Conversion Actions */}
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row w-full sm:w-auto">
+            <div className="mt-10 flex w-full flex-col items-center justify-center gap-4 sm:w-auto sm:flex-row">
               {/* Primary Glowing Action Button */}
               <Button
                 size="lg"
-                className="group relative h-13 w-full sm:w-auto overflow-hidden rounded-2xl bg-gradient-to-r from-primary via-blue-600 to-indigo-600 px-8 text-base font-semibold text-white shadow-[0_0_30px_rgba(49,95,232,0.45)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_45px_rgba(49,95,232,0.65)] active:scale-[0.98]"
+                className="group from-primary relative h-13 w-full overflow-hidden rounded-2xl bg-gradient-to-r via-blue-600 to-indigo-600 px-8 text-base font-semibold text-white shadow-[0_0_30px_rgba(49,95,232,0.45)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_45px_rgba(49,95,232,0.65)] active:scale-[0.98] sm:w-auto"
                 asChild
               >
-                <Link href="/login" className="flex items-center justify-center gap-2 relative z-10 w-full sm:w-auto">
+                <Link
+                  href="/login"
+                  className="relative z-10 flex w-full items-center justify-center gap-2 sm:w-auto"
+                >
                   {/* Top Specular Rim */}
                   <div
                     className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent"
@@ -315,10 +318,13 @@ export const FinalCTASection: React.FC = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="group relative h-13 w-full sm:w-auto overflow-hidden rounded-2xl border border-slate-700 bg-slate-800/90 px-7 text-base font-medium text-white shadow-lg backdrop-blur-md transition-all duration-300 hover:scale-[1.02] hover:border-cyan-400/80 hover:bg-slate-800 active:scale-[0.98]"
+                className="group relative h-13 w-full overflow-hidden rounded-2xl border border-slate-700 bg-slate-800/90 px-7 text-base font-medium text-white shadow-lg backdrop-blur-md transition-all duration-300 hover:scale-[1.02] hover:border-cyan-400/80 hover:bg-slate-800 active:scale-[0.98] sm:w-auto"
                 asChild
               >
-                <Link href="/dashboard" className="flex items-center justify-center gap-2.5 relative z-10 w-full sm:w-auto">
+                <Link
+                  href="/dashboard"
+                  className="relative z-10 flex w-full items-center justify-center gap-2.5 sm:w-auto"
+                >
                   <div
                     className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent"
                     aria-hidden="true"
@@ -338,7 +344,7 @@ export const FinalCTASection: React.FC = () => {
                 <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-emerald-500/30 bg-emerald-500/15 text-emerald-400 shadow-2xs">
                   <CheckCircle2 className="h-3.5 w-3.5" />
                 </div>
-                <span className="text-left font-medium text-[11px] leading-tight">
+                <span className="text-left text-[11px] leading-tight font-medium">
                   Multi-tenant PostgreSQL RLS
                 </span>
               </div>
@@ -348,17 +354,17 @@ export const FinalCTASection: React.FC = () => {
                 <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-amber-500/30 bg-amber-500/15 text-amber-400 shadow-2xs">
                   <Zap className="h-3.5 w-3.5" />
                 </div>
-                <span className="text-left font-medium text-[11px] leading-tight">
+                <span className="text-left text-[11px] leading-tight font-medium">
                   Zero credit card required
                 </span>
               </div>
 
               {/* Trust Badge 3 */}
               <div className="flex items-center gap-2 text-slate-300">
-                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-primary/30 bg-primary/15 text-primary shadow-2xs">
+                <div className="border-primary/30 bg-primary/15 text-primary flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border shadow-2xs">
                   <ShieldCheck className="h-3.5 w-3.5" />
                 </div>
-                <span className="text-left font-medium text-[11px] leading-tight">
+                <span className="text-left text-[11px] leading-tight font-medium">
                   Instant live interactive demo
                 </span>
               </div>
@@ -368,7 +374,7 @@ export const FinalCTASection: React.FC = () => {
                 <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-cyan-500/30 bg-cyan-500/15 text-cyan-400 shadow-2xs">
                   <Globe className="h-3.5 w-3.5" />
                 </div>
-                <span className="text-left font-medium text-[11px] leading-tight">
+                <span className="text-left text-[11px] leading-tight font-medium">
                   Full JSON & CSV data export
                 </span>
               </div>

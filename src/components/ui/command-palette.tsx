@@ -189,7 +189,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
             aria-label="Command Palette Quick Search"
           >
             {/* Specular Top Rim Light */}
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 dark:via-white/25 to-transparent" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/25" />
 
             {/* Top Search Input Bar */}
             <div className="border-border/70 relative flex items-center gap-3 border-b px-4 py-3.5">
@@ -257,14 +257,14 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
                         <div className="flex items-center gap-3">
                           <div
                             className={cn(
-                              "relative flex h-8.5 w-8.5 shrink-0 items-center justify-center rounded-xl border transition-all overflow-hidden",
+                              "relative flex h-8.5 w-8.5 shrink-0 items-center justify-center overflow-hidden rounded-xl border transition-all",
                               isSelected
-                                ? "bg-white/20 text-white border-white/30 shadow-xs"
+                                ? "border-white/30 bg-white/20 text-white shadow-xs"
                                 : "bg-primary/10 text-primary border-primary/20"
                             )}
                           >
                             <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/30 to-transparent" />
-                            <Icon className="h-4 w-4 relative z-10" />
+                            <Icon className="relative z-10 h-4 w-4" />
                           </div>
                           <div>
                             <div className="flex items-center gap-2">
@@ -312,8 +312,8 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
             </div>
 
             {/* Bottom Keyboard Shortcuts Footer */}
-            <div className="relative border-border/60 bg-muted/30 text-muted-foreground flex items-center justify-between border-t px-4 py-2.5 text-[11px]">
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 dark:via-white/10 to-transparent" />
+            <div className="border-border/60 bg-muted/30 text-muted-foreground relative flex items-center justify-between border-t px-4 py-2.5 text-[11px]">
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent dark:via-white/10" />
               <div className="flex items-center gap-3">
                 <span className="flex items-center gap-1">
                   <kbd className="border-border bg-background rounded border px-1 py-0.5 font-mono text-[10px]">

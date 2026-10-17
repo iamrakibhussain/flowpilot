@@ -82,7 +82,7 @@ const SpatialGlassCard: React.FC<SpatialGlassCardProps> = ({
       >
         {/* Specular Rim Highlight Light Beam */}
         <div
-          className="pointer-events-none absolute inset-x-8 top-0 z-20 h-[1.5px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/25 to-transparent transition-opacity duration-300 group-hover:via-white dark:group-hover:via-white/50"
+          className="pointer-events-none absolute inset-x-8 top-0 z-20 h-[1.5px] bg-gradient-to-r from-transparent via-white/80 to-transparent transition-opacity duration-300 group-hover:via-white dark:via-white/25 dark:group-hover:via-white/50"
           aria-hidden="true"
         />
 
@@ -167,7 +167,7 @@ export const ArchitectureTrustSection: React.FC = () => {
         {/* ========================================================================= */}
         <div className="border-border/70 bg-surface/85 relative mt-10 grid grid-cols-2 gap-3 overflow-hidden rounded-2xl border p-4 shadow-sm backdrop-blur-xl sm:grid-cols-4 sm:p-5">
           <div
-            className="pointer-events-none absolute inset-x-6 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent"
+            className="pointer-events-none absolute inset-x-6 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
             aria-hidden="true"
           />
           <div className="flex items-center gap-2.5">
@@ -182,7 +182,9 @@ export const ArchitectureTrustSection: React.FC = () => {
 
           <div className="flex items-center gap-2.5">
             <span className="flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-            <span className="text-foreground text-xs font-bold">Strict TypeScript &amp; Zod Contracts</span>
+            <span className="text-foreground text-xs font-bold">
+              Strict TypeScript &amp; Zod Contracts
+            </span>
           </div>
 
           <div className="flex items-center gap-2.5">
@@ -203,12 +205,12 @@ export const ArchitectureTrustSection: React.FC = () => {
               {/* Card Meta & Header */}
               <div className="flex flex-wrap items-center justify-between gap-3 pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl border border-primary/25 bg-gradient-to-br from-primary/20 via-primary/10 to-primary/5 text-primary shadow-xs ring-1 ring-primary/20">
+                  <div className="border-primary/25 from-primary/20 via-primary/10 to-primary/5 text-primary ring-primary/20 relative flex h-12 w-12 items-center justify-center rounded-2xl border bg-gradient-to-br shadow-xs ring-1">
                     <ShieldCheck className="h-6 w-6" />
                   </div>
                   <div>
                     <h3 className="text-foreground text-xl font-bold">
-                       Strict Multi-Tenant Isolation
+                      Strict Multi-Tenant Isolation
                     </h3>
                     <p className="text-muted-foreground text-[11px] font-medium">
                       Cryptographic Shard Boundaries
@@ -275,7 +277,7 @@ export const ArchitectureTrustSection: React.FC = () => {
               {/* Live PostgreSQL RLS SQL Terminal Preview */}
               <div className="border-border/80 bg-background/95 relative mt-5 overflow-hidden rounded-2xl border p-4 shadow-sm">
                 <div
-                  className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent"
+                  className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
                   aria-hidden="true"
                 />
                 <div className="flex items-center justify-between border-b pb-2 text-[11px]">
@@ -286,8 +288,8 @@ export const ArchitectureTrustSection: React.FC = () => {
                   <span className="font-mono font-bold text-emerald-600">100% Isolated</span>
                 </div>
 
-                <div className="bg-muted/50 text-foreground/90 relative mt-2.5 overflow-hidden rounded-xl border border-border/50 p-3 font-mono text-[11px] leading-relaxed">
-                  <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/50 dark:via-white/10 to-transparent" />
+                <div className="bg-muted/50 text-foreground/90 border-border/50 relative mt-2.5 overflow-hidden rounded-xl border p-3 font-mono text-[11px] leading-relaxed">
+                  <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/50 to-transparent dark:via-white/10" />
                   <p className="text-blue-500">
                     SELECT <span className="text-foreground">*</span> FROM client_dossiers
                   </p>
@@ -387,13 +389,13 @@ export const ArchitectureTrustSection: React.FC = () => {
               {/* Dynamic Permission Access Matrix */}
               <div className="border-border/80 bg-background/95 relative mt-5 overflow-hidden rounded-2xl border p-4 shadow-sm">
                 <div
-                  className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent"
+                  className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
                   aria-hidden="true"
                 />
                 <div className="space-y-2.5 text-xs">
                   {/* Row 1: Client Dossiers */}
-                  <div className="bg-surface relative flex items-center justify-between overflow-hidden rounded-xl border border-border/50 p-2.5">
-                    <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/50 dark:via-white/10 to-transparent" />
+                  <div className="bg-surface border-border/50 relative flex items-center justify-between overflow-hidden rounded-xl border p-2.5">
+                    <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/50 to-transparent dark:via-white/10" />
                     <span className="text-foreground font-semibold">
                       Client Dossiers & Appointments
                     </span>
@@ -403,8 +405,8 @@ export const ArchitectureTrustSection: React.FC = () => {
                   </div>
 
                   {/* Row 2: Rate Cards & Margins (Restricted for staff) */}
-                  <div className="bg-surface relative flex items-center justify-between overflow-hidden rounded-xl border border-border/50 p-2.5">
-                    <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/50 dark:via-white/10 to-transparent" />
+                  <div className="bg-surface border-border/50 relative flex items-center justify-between overflow-hidden rounded-xl border p-2.5">
+                    <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/50 to-transparent dark:via-white/10" />
                     <span className="text-foreground font-semibold">
                       Rate Cards & Profit Margins
                     </span>
@@ -434,8 +436,8 @@ export const ArchitectureTrustSection: React.FC = () => {
                   </div>
 
                   {/* Row 3: Stripe Payouts & Transfers */}
-                  <div className="bg-surface relative flex items-center justify-between overflow-hidden rounded-xl border border-border/50 p-2.5">
-                    <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/50 dark:via-white/10 to-transparent" />
+                  <div className="bg-surface border-border/50 relative flex items-center justify-between overflow-hidden rounded-xl border p-2.5">
+                    <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/50 to-transparent dark:via-white/10" />
                     <span className="text-foreground font-semibold">Stripe Payouts & Banking</span>
                     {selectedRole === "owner" || selectedRole === "billing" ? (
                       <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-bold text-emerald-600">
@@ -556,7 +558,7 @@ export const ArchitectureTrustSection: React.FC = () => {
               {/* Live Zod Runtime Schema Validator */}
               <div className="border-border/80 bg-background/95 relative mt-5 overflow-hidden rounded-2xl border p-4 shadow-sm">
                 <div
-                  className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent"
+                  className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
                   aria-hidden="true"
                 />
                 <div className="flex items-center justify-between border-b pb-2 text-[11px]">
@@ -575,8 +577,8 @@ export const ArchitectureTrustSection: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="bg-muted/50 relative mt-2.5 overflow-hidden rounded-xl border border-border/50 p-3 font-mono text-[11px] leading-relaxed">
-                  <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/50 dark:via-white/10 to-transparent" />
+                <div className="bg-muted/50 border-border/50 relative mt-2.5 overflow-hidden rounded-xl border p-3 font-mono text-[11px] leading-relaxed">
+                  <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/50 to-transparent dark:via-white/10" />
                   {apiContractMode === "valid" ? (
                     <div className="text-emerald-700 dark:text-emerald-300">
                       <p>✓ booking_schema.parse(req.body)</p>
@@ -657,7 +659,7 @@ export const ArchitectureTrustSection: React.FC = () => {
               {/* 1-Click Encrypted Data Export Simulation */}
               <div className="border-border/80 bg-background/95 relative mt-5 overflow-hidden rounded-2xl border p-4 shadow-sm">
                 <div
-                  className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent"
+                  className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
                   aria-hidden="true"
                 />
                 <div className="flex items-center justify-between border-b pb-2 text-[11px]">
@@ -668,8 +670,8 @@ export const ArchitectureTrustSection: React.FC = () => {
                   <span className="font-mono font-bold text-cyan-600">1-Click Portable</span>
                 </div>
 
-                <div className="bg-muted/50 relative mt-2.5 flex flex-wrap items-center justify-between gap-2 overflow-hidden rounded-xl border border-border/50 p-3 text-xs">
-                  <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/50 dark:via-white/10 to-transparent" />
+                <div className="bg-muted/50 border-border/50 relative mt-2.5 flex flex-wrap items-center justify-between gap-2 overflow-hidden rounded-xl border p-3 text-xs">
+                  <div className="pointer-events-none absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/50 to-transparent dark:via-white/10" />
                   <div>
                     <span className="text-foreground block font-bold">
                       Complete Organizational Snapshot

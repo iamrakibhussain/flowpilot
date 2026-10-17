@@ -268,7 +268,7 @@ export const WorkflowSection: React.FC = () => {
                     setActiveStep(idx);
                     setIsPlaying(false);
                   }}
-                  className={`group relative z-10 cursor-pointer overflow-hidden rounded-2xl border p-5 transition-all duration-300 backdrop-blur-xl ${
+                  className={`group relative z-10 cursor-pointer overflow-hidden rounded-2xl border p-5 backdrop-blur-xl transition-all duration-300 ${
                     isActive
                       ? "border-primary/60 bg-surface shadow-[0_12px_35px_-8px_rgba(49,95,232,0.18)]"
                       : "border-border/70 bg-surface/75 hover:border-border hover:bg-surface/95 hover:shadow-xs"
@@ -278,8 +278,8 @@ export const WorkflowSection: React.FC = () => {
                   <div
                     className={`pointer-events-none absolute inset-x-4 top-0 h-[1px] transition-opacity duration-300 ${
                       isActive
-                        ? "bg-gradient-to-r from-transparent via-primary/50 to-transparent"
-                        : "bg-gradient-to-r from-transparent via-white/80 dark:via-white/10 to-transparent opacity-0 group-hover:opacity-100"
+                        ? "via-primary/50 bg-gradient-to-r from-transparent to-transparent"
+                        : "bg-gradient-to-r from-transparent via-white/80 to-transparent opacity-0 group-hover:opacity-100 dark:via-white/10"
                     }`}
                     aria-hidden="true"
                   />
@@ -484,8 +484,11 @@ export const WorkflowSection: React.FC = () => {
 
                       {/* Live Shard Telemetry Metrics */}
                       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                        <div className="border-border/80 bg-background/95 shadow-2xs relative overflow-hidden rounded-xl border p-3">
-                          <div className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent" aria-hidden="true" />
+                        <div className="border-border/80 bg-background/95 relative overflow-hidden rounded-xl border p-3 shadow-2xs">
+                          <div
+                            className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
+                            aria-hidden="true"
+                          />
                           <span className="text-muted-foreground block text-[10px] font-medium">
                             Tenant Isolation
                           </span>
@@ -493,8 +496,11 @@ export const WorkflowSection: React.FC = () => {
                             <ShieldCheck className="h-3.5 w-3.5" /> 100% RLS Isolated
                           </span>
                         </div>
-                        <div className="border-border/80 bg-background/95 shadow-2xs relative overflow-hidden rounded-xl border p-3">
-                          <div className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent" aria-hidden="true" />
+                        <div className="border-border/80 bg-background/95 relative overflow-hidden rounded-xl border p-3 shadow-2xs">
+                          <div
+                            className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
+                            aria-hidden="true"
+                          />
                           <span className="text-muted-foreground block text-[10px] font-medium">
                             Cluster Latency
                           </span>
@@ -502,8 +508,11 @@ export const WorkflowSection: React.FC = () => {
                             <Activity className="h-3.5 w-3.5 text-blue-500" /> 12ms Region US-E
                           </span>
                         </div>
-                        <div className="border-border/80 bg-background/95 shadow-2xs relative col-span-2 overflow-hidden rounded-xl border p-3 sm:col-span-1">
-                          <div className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent" aria-hidden="true" />
+                        <div className="border-border/80 bg-background/95 relative col-span-2 overflow-hidden rounded-xl border p-3 shadow-2xs sm:col-span-1">
+                          <div
+                            className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
+                            aria-hidden="true"
+                          />
                           <span className="text-muted-foreground block text-[10px] font-medium">
                             Data Leak Test
                           </span>
@@ -676,7 +685,7 @@ export const WorkflowSection: React.FC = () => {
                       <div className="border-border/80 bg-background/95 relative overflow-hidden rounded-2xl border p-4.5 shadow-sm backdrop-blur-xl">
                         {/* Specular Top Rim */}
                         <div
-                          className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent"
+                          className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
                           aria-hidden="true"
                         />
                         <div className="border-border/60 flex items-center justify-between border-b pb-3">
@@ -699,8 +708,11 @@ export const WorkflowSection: React.FC = () => {
                         </div>
 
                         {/* Automatic Briefing Memo */}
-                        <div className="bg-surface/90 border-border/80 shadow-2xs relative mt-3 overflow-hidden rounded-xl border p-3 text-xs">
-                          <div className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent" aria-hidden="true" />
+                        <div className="bg-surface/90 border-border/80 relative mt-3 overflow-hidden rounded-xl border p-3 text-xs shadow-2xs">
+                          <div
+                            className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
+                            aria-hidden="true"
+                          />
                           <span className="text-muted-foreground block text-[10px] font-bold tracking-wider uppercase">
                             Auto-Attached Context Memo:
                           </span>
@@ -757,7 +769,7 @@ export const WorkflowSection: React.FC = () => {
                       <div className="border-border/80 bg-background/95 relative overflow-hidden rounded-2xl border p-4.5 shadow-sm backdrop-blur-xl">
                         {/* Specular Top Rim */}
                         <div
-                          className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/80 dark:via-white/20 to-transparent"
+                          className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/80 to-transparent dark:via-white/20"
                           aria-hidden="true"
                         />
                         <div className="flex items-center justify-between border-b pb-3 text-xs">
@@ -774,8 +786,11 @@ export const WorkflowSection: React.FC = () => {
                           </span>
                         </div>
 
-                        <div className="bg-surface/90 border-border/80 shadow-2xs relative mt-3 space-y-2 overflow-hidden rounded-xl border p-3.5 text-xs">
-                          <div className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent" aria-hidden="true" />
+                        <div className="bg-surface/90 border-border/80 relative mt-3 space-y-2 overflow-hidden rounded-xl border p-3.5 text-xs shadow-2xs">
+                          <div
+                            className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
+                            aria-hidden="true"
+                          />
                           <div className="flex justify-between">
                             <span className="text-muted-foreground text-[11px]">
                               Strategic Advisory (12.5 hrs)

@@ -302,15 +302,15 @@ All safe, non-destructive automated checks were executed in both repositories. E
 
 ### 6.2 Backend (`flowpilot-backend`) Validation Results
 
-| Check / Command                 | Exact Command Executed                                                                          |  Outcome   | Exit Code | Details & Evidence                                                                                |
-| :------------------------------ | :---------------------------------------------------------------------------------------------- | :--------: | :-------: | :------------------------------------------------------------------------------------------------ |
-| **TypeScript Type-Check**       | `npm run type-check` (`tsc --noEmit`)                                                           | **PASSED** |    `0`    | 0 type errors across backend code                                                                 |
-| **ESLint Static Analysis**      | `npm run lint` (`eslint .`)                                                                     | **PASSED** |    `0`    | Clean; zero warnings or lint errors                                                               |
-| **Prettier Formatting**         | `npm run format:check` (`prettier --check .`)                                                   | **PASSED** |    `0`    | All source and test files clean                                                                   |
-| **Prisma Schema Validation**    | `npm run prisma:validate` (`prisma validate`)                                                   | **PASSED** |    `0`    | The schema at `prisma/schema.prisma` is valid                                                     |
-| **Production TypeScript Build** | `npm run build` (`tsc -p tsconfig.build.json`)                                                  | **PASSED** |    `0`    | Dist artifacts generated in `dist/`                                                               |
-| **Backend Unit Tests**          | `npx vitest run tests/unit`                                                                     | **PASSED** |    `0`    | **5/5 test files passed, 27/27 tests passed** (`crypto`, `env`, `errors`, `response`, `validate`) |
-| **Live PostgreSQL Integration** | `npx vitest run tests/integration/postgres-auth.test.ts`                                        | **PASSED** |    `0`    | **8/8 live database tests passed** against live PostgreSQL pooler                                 |
+| Check / Command                 | Exact Command Executed                                   |  Outcome   | Exit Code | Details & Evidence                                                                                |
+| :------------------------------ | :------------------------------------------------------- | :--------: | :-------: | :------------------------------------------------------------------------------------------------ |
+| **TypeScript Type-Check**       | `npm run type-check` (`tsc --noEmit`)                    | **PASSED** |    `0`    | 0 type errors across backend code                                                                 |
+| **ESLint Static Analysis**      | `npm run lint` (`eslint .`)                              | **PASSED** |    `0`    | Clean; zero warnings or lint errors                                                               |
+| **Prettier Formatting**         | `npm run format:check` (`prettier --check .`)            | **PASSED** |    `0`    | All source and test files clean                                                                   |
+| **Prisma Schema Validation**    | `npm run prisma:validate` (`prisma validate`)            | **PASSED** |    `0`    | The schema at `prisma/schema.prisma` is valid                                                     |
+| **Production TypeScript Build** | `npm run build` (`tsc -p tsconfig.build.json`)           | **PASSED** |    `0`    | Dist artifacts generated in `dist/`                                                               |
+| **Backend Unit Tests**          | `npx vitest run tests/unit`                              | **PASSED** |    `0`    | **5/5 test files passed, 27/27 tests passed** (`crypto`, `env`, `errors`, `response`, `validate`) |
+| **Live PostgreSQL Integration** | `npx vitest run tests/integration/postgres-auth.test.ts` | **PASSED** |    `0`    | **8/8 live database tests passed** against live PostgreSQL pooler                                 |
 
 ### 6.3 Skipped Checks & Safety Justifications
 

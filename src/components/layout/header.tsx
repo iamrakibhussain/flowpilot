@@ -335,10 +335,10 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
                             transition={{ duration: 0.2, ease: "easeOut" }}
                             onMouseEnter={handleMouseEnterDropdown}
                             onMouseLeave={handleMouseLeaveDropdown}
-                            className="relative border-border/80 bg-surface/95 absolute top-full left-0 mt-2.5 w-[580px] overflow-hidden rounded-2xl border p-4 shadow-2xl backdrop-blur-2xl"
+                            className="border-border/80 bg-surface/95 absolute relative top-full left-0 mt-2.5 w-[580px] overflow-hidden rounded-2xl border p-4 shadow-2xl backdrop-blur-2xl"
                           >
                             {/* Specular Top Rim Light */}
-                            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 dark:via-white/25 to-transparent" />
+                            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/25" />
 
                             <div className="grid grid-cols-5 gap-4">
                               {/* Left Column: 4 Core Modules */}
@@ -357,12 +357,12 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
                                     >
                                       <div
                                         className={cn(
-                                          "relative flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-white/20 dark:border-white/10 shadow-xs transition-transform group-hover:scale-105 overflow-hidden",
+                                          "relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/20 shadow-xs transition-transform group-hover:scale-105 dark:border-white/10",
                                           cap.color
                                         )}
                                       >
                                         <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/30 to-transparent" />
-                                        <Icon className="h-4 w-4 relative z-10" />
+                                        <Icon className="relative z-10 h-4 w-4" />
                                       </div>
                                       <div>
                                         <p className="text-foreground group-hover:text-primary text-xs font-semibold transition-colors">
@@ -378,13 +378,13 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
                               </div>
 
                               {/* Right Column: Spotlight Feature Card */}
-                              <div className="relative overflow-hidden border-border/70 bg-gradient-to-b from-muted/60 to-muted/20 col-span-2 flex flex-col justify-between rounded-2xl border p-3.5 shadow-sm">
+                              <div className="border-border/70 from-muted/60 to-muted/20 relative col-span-2 flex flex-col justify-between overflow-hidden rounded-2xl border bg-gradient-to-b p-3.5 shadow-sm">
                                 {/* Specular Accent Line */}
-                                <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+                                <div className="via-primary/50 pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent" />
 
                                 <div>
                                   <div className="flex items-center justify-between">
-                                    <span className="bg-primary/10 text-primary border border-primary/20 rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase">
+                                    <span className="bg-primary/10 text-primary border-primary/20 rounded-full border px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase">
                                       Spotlight
                                     </span>
                                     <Activity className="text-primary h-3.5 w-3.5 animate-pulse" />
@@ -412,10 +412,10 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
                                 <Link
                                   href="/dashboard"
                                   onClick={() => setIsFeaturesMenuOpen(false)}
-                                  className="group/cta bg-primary text-primary-foreground hover:bg-primary-hover relative overflow-hidden mt-3 flex items-center justify-between rounded-xl px-2.5 py-1.5 text-[11px] font-semibold shadow-xs transition-all"
+                                  className="group/cta bg-primary text-primary-foreground hover:bg-primary-hover relative mt-3 flex items-center justify-between overflow-hidden rounded-xl px-2.5 py-1.5 text-[11px] font-semibold shadow-xs transition-all"
                                 >
                                   <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />
-                                  <span className="flex items-center gap-1.5 relative z-10">
+                                  <span className="relative z-10 flex items-center gap-1.5">
                                     <Laptop className="h-3.5 w-3.5" />
                                     Launch Demo
                                   </span>
@@ -525,10 +525,10 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.98 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="relative border-border/90 bg-surface/95 pointer-events-auto mx-auto mt-2 max-w-6xl overflow-hidden rounded-2xl border p-5 shadow-2xl backdrop-blur-2xl md:hidden"
+              className="border-border/90 bg-surface/95 pointer-events-auto relative mx-auto mt-2 max-w-6xl overflow-hidden rounded-2xl border p-5 shadow-2xl backdrop-blur-2xl md:hidden"
             >
               {/* Specular Top Rim Light */}
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 dark:via-white/25 to-transparent" />
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/25" />
 
               <nav className="flex flex-col space-y-1.5" aria-label="Mobile Navigation">
                 {navItems.map((item) => (

@@ -248,14 +248,14 @@ export const CoreCapabilitiesSection: React.FC = () => {
               <div className="border-border/80 bg-background/95 relative mt-6 space-y-3 overflow-hidden rounded-2xl border p-4.5 shadow-sm backdrop-blur-xl">
                 {/* Specular Top Rim */}
                 <div
-                  className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent"
+                  className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
                   aria-hidden="true"
                 />
 
                 {/* Meeting Block 1 */}
-                <div className="border-border/70 bg-surface/90 shadow-2xs flex flex-col justify-between gap-2 rounded-xl border p-3 sm:flex-row sm:items-center">
+                <div className="border-border/70 bg-surface/90 flex flex-col justify-between gap-2 rounded-xl border p-3 shadow-2xs sm:flex-row sm:items-center">
                   <div className="flex items-center gap-3">
-                    <div className="from-primary/20 to-indigo-600/10 text-primary border-primary/20 flex h-9.5 w-9.5 items-center justify-center rounded-xl border bg-gradient-to-br font-mono text-xs font-bold shadow-2xs">
+                    <div className="from-primary/20 text-primary border-primary/20 flex h-9.5 w-9.5 items-center justify-center rounded-xl border bg-gradient-to-br to-indigo-600/10 font-mono text-xs font-bold shadow-2xs">
                       09:00
                     </div>
                     <div>
@@ -274,7 +274,7 @@ export const CoreCapabilitiesSection: React.FC = () => {
                 <motion.div
                   layout
                   transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                  className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 rounded-xl border border-dashed px-3.5 sm:px-4 py-2.5 transition-all duration-300 ${
+                  className={`flex flex-col items-start justify-between gap-2 rounded-xl border border-dashed px-3.5 py-2.5 transition-all duration-300 sm:flex-row sm:items-center sm:px-4 ${
                     schedulingBuffer === 0
                       ? "border-rose-500/60 bg-rose-500/10 text-rose-600"
                       : "border-emerald-500/60 bg-emerald-500/15 text-emerald-700 shadow-[0_0_20px_rgba(16,185,129,0.16)] dark:text-emerald-300"
@@ -300,7 +300,7 @@ export const CoreCapabilitiesSection: React.FC = () => {
                 </motion.div>
 
                 {/* Meeting Block 2 */}
-                <div className="border-border/70 bg-surface/90 shadow-2xs flex flex-col justify-between gap-2 rounded-xl border p-3 sm:flex-row sm:items-center">
+                <div className="border-border/70 bg-surface/90 flex flex-col justify-between gap-2 rounded-xl border p-3 shadow-2xs sm:flex-row sm:items-center">
                   <div className="flex items-center gap-3">
                     <div className="flex h-9.5 w-9.5 items-center justify-center rounded-xl border border-blue-500/20 bg-gradient-to-br from-blue-500/15 to-blue-500/5 font-mono text-xs font-bold text-blue-600 shadow-2xs">
                       {schedulingBuffer === 0
@@ -424,12 +424,12 @@ export const CoreCapabilitiesSection: React.FC = () => {
               <div className="border-border/80 bg-background/95 relative mt-6 overflow-hidden rounded-2xl border p-4.5 shadow-sm backdrop-blur-xl">
                 {/* Specular Top Rim */}
                 <div
-                  className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent"
+                  className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
                   aria-hidden="true"
                 />
                 <div className="space-y-3">
                   {/* Public CRM Scope */}
-                  <div className="border-border/70 bg-surface/90 shadow-2xs flex items-center justify-between rounded-xl border p-3 text-xs">
+                  <div className="border-border/70 bg-surface/90 flex items-center justify-between rounded-xl border p-3 text-xs shadow-2xs">
                     <div className="flex items-center gap-2.5">
                       <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600">
                         <Unlock className="h-3.5 w-3.5" />
@@ -444,7 +444,7 @@ export const CoreCapabilitiesSection: React.FC = () => {
                   </div>
 
                   {/* Confidential Financial Scope (Shuttered on Staff View) */}
-                  <div className="border-border/70 bg-surface/90 shadow-2xs relative overflow-hidden rounded-xl border p-3 text-xs">
+                  <div className="border-border/70 bg-surface/90 relative overflow-hidden rounded-xl border p-3 text-xs shadow-2xs">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2.5">
                         <div
@@ -599,7 +599,7 @@ export const CoreCapabilitiesSection: React.FC = () => {
               <div className="border-border/80 bg-background/95 relative mt-6 overflow-hidden rounded-2xl border p-4.5 shadow-sm backdrop-blur-xl">
                 {/* Specular Top Rim */}
                 <div
-                  className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent"
+                  className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
                   aria-hidden="true"
                 />
                 <AnimatePresence mode="wait">
@@ -612,7 +612,7 @@ export const CoreCapabilitiesSection: React.FC = () => {
                   >
                     <div className="border-border/60 flex items-center justify-between border-b pb-3">
                       <div className="flex items-center gap-3">
-                        <div className="from-primary/20 to-indigo-600/10 text-primary border-primary/25 shadow-2xs flex h-10 w-10 items-center justify-center rounded-xl border bg-gradient-to-br font-mono text-xs font-bold">
+                        <div className="from-primary/20 text-primary border-primary/25 flex h-10 w-10 items-center justify-center rounded-xl border bg-gradient-to-br to-indigo-600/10 font-mono text-xs font-bold shadow-2xs">
                           {selectedClient === "apex" ? "AS" : "MH"}
                         </div>
                         <div>
@@ -632,31 +632,40 @@ export const CoreCapabilitiesSection: React.FC = () => {
                     </div>
 
                     <div className="mt-3.5 grid grid-cols-3 gap-2 text-center text-xs">
-                      <div className="bg-surface/90 border-border/80 shadow-2xs relative overflow-hidden rounded-xl border p-2.5">
-                        <div className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent" aria-hidden="true" />
+                      <div className="bg-surface/90 border-border/80 relative overflow-hidden rounded-xl border p-2.5 shadow-2xs">
+                        <div
+                          className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
+                          aria-hidden="true"
+                        />
                         <span className="text-muted-foreground block text-[10px] font-medium">
                           LTV Value
                         </span>
-                        <span className="text-foreground font-mono text-xs sm:text-sm font-extrabold truncate block">
+                        <span className="text-foreground block truncate font-mono text-xs font-extrabold sm:text-sm">
                           {selectedClient === "apex" ? "$34,850.00" : "$52,400.00"}
                         </span>
                       </div>
-                      <div className="bg-surface/90 border-border/80 shadow-2xs relative overflow-hidden rounded-xl border p-2.5">
-                        <div className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent" aria-hidden="true" />
+                      <div className="bg-surface/90 border-border/80 relative overflow-hidden rounded-xl border p-2.5 shadow-2xs">
+                        <div
+                          className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
+                          aria-hidden="true"
+                        />
                         <span className="text-muted-foreground block text-[10px] font-medium">
                           Health Score
                         </span>
-                        <span className="flex items-center justify-center gap-1 font-bold text-emerald-600 text-xs sm:text-sm">
+                        <span className="flex items-center justify-center gap-1 text-xs font-bold text-emerald-600 sm:text-sm">
                           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
                           {selectedClient === "apex" ? "98%" : "94%"}
                         </span>
                       </div>
-                      <div className="bg-surface/90 border-border/80 shadow-2xs relative overflow-hidden rounded-xl border p-2.5">
-                        <div className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent" aria-hidden="true" />
+                      <div className="bg-surface/90 border-border/80 relative overflow-hidden rounded-xl border p-2.5 shadow-2xs">
+                        <div
+                          className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
+                          aria-hidden="true"
+                        />
                         <span className="text-muted-foreground block text-[10px] font-medium">
                           Renewal
                         </span>
-                        <span className="text-foreground text-[10px] sm:text-[11px] font-bold truncate block">
+                        <span className="text-foreground block truncate text-[10px] font-bold sm:text-[11px]">
                           Auto-renews Q4
                         </span>
                       </div>
@@ -723,7 +732,7 @@ export const CoreCapabilitiesSection: React.FC = () => {
               <div className="border-border/80 bg-background/95 relative mt-6 overflow-hidden rounded-2xl border p-4.5 shadow-sm backdrop-blur-xl">
                 {/* Specular Top Rim */}
                 <div
-                  className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent"
+                  className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
                   aria-hidden="true"
                 />
 
@@ -748,7 +757,7 @@ export const CoreCapabilitiesSection: React.FC = () => {
                 {/* Line Item Card */}
                 <motion.div
                   layout
-                  className={`mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 rounded-xl border p-3.5 text-xs transition-colors duration-300 ${
+                  className={`mt-3 flex flex-col justify-between gap-2.5 rounded-xl border p-3.5 text-xs transition-colors duration-300 sm:flex-row sm:items-center ${
                     isSettled
                       ? "border-emerald-500/50 bg-emerald-500/10 shadow-[0_0_20px_rgba(16,185,129,0.14)]"
                       : "border-border/80 bg-surface/90 shadow-2xs"
