@@ -171,7 +171,7 @@ export const HeroSection: React.FC = () => {
             className="group bg-primary hover:bg-primary-hover relative h-12 overflow-hidden rounded-full px-7 text-base font-semibold text-white shadow-md transition-all duration-200 hover:shadow-lg active:scale-[0.98]"
             asChild
           >
-            <Link href="/login" className="flex items-center gap-2">
+            <Link href="/register" className="flex items-center gap-2">
               <span
                 className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 ease-in-out group-hover:translate-x-full"
                 aria-hidden="true"

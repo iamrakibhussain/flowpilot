@@ -206,8 +206,12 @@ export class ApiClient {
     return this.request<T>("PATCH", endpoint, data, options);
   }
 
-  public delete<T>(endpoint: string, options?: RequestOptions): Promise<ApiResponse<T>> {
-    return this.request<T>("DELETE", endpoint, undefined, options);
+  public delete<T>(
+    endpoint: string,
+    data?: unknown,
+    options?: RequestOptions
+  ): Promise<ApiResponse<T>> {
+    return this.request<T>("DELETE", endpoint, data, options);
   }
 }
 

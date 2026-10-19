@@ -296,7 +296,7 @@ export const FinalCTASection: React.FC = () => {
                 asChild
               >
                 <Link
-                  href="/login"
+                  href="/register"
                   className="relative z-10 flex w-full items-center justify-center gap-2 sm:w-auto"
                 >
                   {/* Top Specular Rim */}

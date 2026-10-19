@@ -472,7 +472,7 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
               className="group from-primary relative h-9 shrink-0 overflow-hidden rounded-full bg-gradient-to-r via-blue-600 to-indigo-600 px-4 text-xs font-semibold whitespace-nowrap text-white shadow-[0_0_18px_rgba(49,95,232,0.35)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_28px_rgba(49,95,232,0.55)] active:scale-[0.98] sm:px-5"
               asChild
             >
-              <Link href="/login" className="flex items-center gap-1.5">
+              <Link href="/register" className="flex items-center gap-1.5">
                 {/* Sweeping Shimmer Light Beam */}
                 <span
                   className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 ease-in-out group-hover:translate-x-full"
@@ -570,7 +570,7 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
                   className="from-primary h-10 w-full rounded-xl bg-gradient-to-r via-blue-600 to-indigo-600 text-sm font-semibold text-white shadow-md"
                   asChild
                 >
-                  <Link href="/login" onClick={closeMobileMenu}>
+                  <Link href="/register" onClick={closeMobileMenu}>
                     <span>Get Started</span>
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
