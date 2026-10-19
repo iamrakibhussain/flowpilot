@@ -25,7 +25,7 @@ describe("Marketing Components Suite", () => {
     ).toBeInTheDocument();
 
     const getStartedLink = screen.getByRole("link", { name: /Get Started Free/i });
-    expect(getStartedLink).toHaveAttribute("href", "/login");
+    expect(getStartedLink).toHaveAttribute("href", "/register");
 
     const liveWorkspaceLink = screen.getByRole("link", { name: /Explore Live Workspace/i });
     expect(liveWorkspaceLink).toHaveAttribute("href", "/dashboard");
@@ -97,7 +97,7 @@ describe("Marketing Components Suite", () => {
     ).toBeInTheDocument();
 
     const getStartedLink = screen.getByRole("link", { name: /Get Started Free/i });
-    expect(getStartedLink).toHaveAttribute("href", "/login");
+    expect(getStartedLink).toHaveAttribute("href", "/register");
   });
 
   it("renders Footer with navigation landmarks and verified architecture badge", () => {

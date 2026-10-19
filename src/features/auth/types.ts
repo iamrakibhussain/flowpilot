@@ -1,14 +1,15 @@
 /**
- * Core User entity contract
+ * Core User entity contract matching FlowPilot backend
  */
 export interface User {
   id: string;
   email: string;
-  firstName: string;
-  lastName: string;
+  name: string;
+  firstName?: string;
+  lastName?: string;
   avatarUrl?: string | null;
-  isEmailVerified: boolean;
-  createdAt: string;
+  isEmailVerified?: boolean;
+  createdAt?: string;
 }
 
 /**
@@ -26,7 +27,7 @@ export interface OrganizationMembershipSummary {
 }
 
 /**
- * Session contract returned by the authentication verification endpoint
+ * Session contract returned by the authentication endpoints (/auth/me, /auth/login, /auth/register)
  */
 export interface AuthSession {
   user: User;
@@ -35,6 +36,47 @@ export interface AuthSession {
 }
 
 /**
+ * Registration API input payload
+ */
+export interface RegisterPayload {
+  name: string;
+  email: string;
+  password: string;
+  organizationName: string;
+}
+
+/**
+ * Login API input payload
+ */
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+/**
  * Authentication state machine status
  */
 export type AuthStatus = "idle" | "loading" | "authenticated" | "unauthenticated";
+
+export interface ForgotPasswordPayload {
+  email: string;
+}
+
+export interface ResetPasswordPayload {
+  token: string;
+  password: string;
+}
+
+export interface VerifyEmailPayload {
+  code: string;
+}
+
+export interface ChangePasswordPayload {
+  currentPassword: string;
+  newPassword: string;
+}
+
+export interface DeleteAccountPayload {
+  password: string;
+  confirmationText: string;
+}

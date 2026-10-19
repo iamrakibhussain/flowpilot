@@ -10,13 +10,14 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { UserNav } from "@/components/layout/user-nav";
 
 const navigationItems = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
   { name: "Customers (CRM)", href: "/dashboard", icon: Users },
   { name: "Appointments", href: "/dashboard", icon: Calendar },
   { name: "Invoices & Billing", href: "/dashboard", icon: FileText },
-  { name: "Organization Settings", href: "/dashboard", icon: Settings },
+  { name: "Organization Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -67,10 +68,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           })}
         </nav>
 
-        {/* Footer info */}
-        <div className="border-border text-muted-foreground border-t p-4 text-[11px]">
-          <p className="text-foreground font-medium">Foundation Preview</p>
-          <p className="mt-0.5">Express API integration pending</p>
+        {/* User Profile & Account Actions */}
+        <div className="border-border border-t p-3">
+          <UserNav showDetails />
         </div>
       </aside>
 
@@ -87,9 +87,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <Button variant="ghost" size="icon" aria-label="Notifications">
               <Bell className="text-muted-foreground h-4 w-4" />
             </Button>
-            <div className="bg-primary/10 text-primary flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold">
-              FP
-            </div>
+            <UserNav />
           </div>
         </header>
 

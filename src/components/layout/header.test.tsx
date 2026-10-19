@@ -47,7 +47,7 @@ describe("Header Component", () => {
 
     const getStartedLinks = screen.getAllByRole("link", { name: /Get Started/i });
     expect(getStartedLinks.length).toBeGreaterThan(0);
-    expect(getStartedLinks[0]).toHaveAttribute("href", "/login");
+    expect(getStartedLinks[0]).toHaveAttribute("href", "/register");
   });
 
   it("toggles the mobile menu on click and updates aria-expanded", () => {
