@@ -63,19 +63,26 @@ export default function DashboardOverviewPage() {
   >("all");
   const [reminderSent, setReminderSent] = React.useState(false);
   const [actionFeedback, setActionFeedback] = React.useState<string | null>(null);
-  const [onboardingDismissed, setOnboardingDismissed] = React.useState(false);
-
-  React.useEffect(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("flowpilot_onboarding_dismissed");
-      if (saved === "true") {
-        setOnboardingDismissed(true);
+  const isStorageDismissed = React.useSyncExternalStore(
+    (callback) => {
+      window.addEventListener("storage", callback);
+      return () => window.removeEventListener("storage", callback);
+    },
+    () => {
+      try {
+        return localStorage.getItem("flowpilot_onboarding_dismissed") === "true";
+      } catch {
+        return false;
       }
-    }
-  }, []);
+    },
+    () => false
+  );
+
+  const [localDismissed, setLocalDismissed] = React.useState(false);
+  const onboardingDismissed = localDismissed || isStorageDismissed;
 
   const handleDismissOnboarding = () => {
-    setOnboardingDismissed(true);
+    setLocalDismissed(true);
     try {
       localStorage.setItem("flowpilot_onboarding_dismissed", "true");
     } catch {

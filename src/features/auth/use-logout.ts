@@ -59,6 +59,7 @@ export function useLogout(): UseLogoutReturn {
         }
 
         // 5. Hard location redirection resets JavaScript heap memory and disables bfcache inspection
+        // eslint-disable-next-line @next/next/no-location-assign-relative-destination
         window.location.href = "/login?logged_out=true";
       }
     }

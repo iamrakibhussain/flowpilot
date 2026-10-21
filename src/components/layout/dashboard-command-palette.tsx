@@ -16,7 +16,6 @@ import {
   CalendarPlus,
   Download,
   Building2,
-  Clock,
   ArrowRight,
   X,
   Sparkles,
