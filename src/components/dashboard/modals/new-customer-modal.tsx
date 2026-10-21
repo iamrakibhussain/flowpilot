@@ -23,10 +23,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  useDashboardMutations,
-  useOnDutyStaffData,
-} from "@/features/dashboard/use-dashboard";
+import { useDashboardMutations, useOnDutyStaffData } from "@/features/dashboard/use-dashboard";
 
 export interface NewCustomerModalProps {
   isOpen: boolean;
@@ -129,7 +126,8 @@ export function NewCustomerModal({ isOpen, onClose, onSuccess }: NewCustomerModa
         handleClose();
       }, 1400);
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Failed to onboard customer. Please try again.";
+      const msg =
+        err instanceof Error ? err.message : "Failed to onboard customer. Please try again.";
       console.error("Customer creation failed:", err);
       setServerError(msg);
     } finally {

@@ -141,11 +141,7 @@ export default function DashboardOverviewPage() {
     color: member.avatarBg ?? member.color ?? "bg-blue-600",
     status: member.status,
     statusColor:
-      member.status === "Available"
-        ? "emerald"
-        : member.status === "In Session"
-          ? "blue"
-          : "amber",
+      member.status === "Available" ? "emerald" : member.status === "In Session" ? "blue" : "amber",
     pulse: member.status === "In Session",
     detail: member.statusNote ?? member.detail ?? "",
     sessionsToday: member.sessionsToday,
@@ -182,7 +178,9 @@ export default function DashboardOverviewPage() {
 
     setReminderSent(true);
     if (isZero) {
-      triggerActionFeedback("All client accounts are settled and up to date. No overdue reminders needed.");
+      triggerActionFeedback(
+        "All client accounts are settled and up to date. No overdue reminders needed."
+      );
     } else {
       triggerActionFeedback(`Automated reminders dispatched for ${overdueAmt} overdue balance.`);
     }
@@ -220,8 +218,7 @@ export default function DashboardOverviewPage() {
     (currentMetric.revenue !== "$0" &&
       currentMetric.revenue !== "$0.00" &&
       currentMetric.revenue !== "0");
-  const hasAppointments =
-    apptCount > 0 || activities.some((a) => a.type === "appointments");
+  const hasAppointments = apptCount > 0 || activities.some((a) => a.type === "appointments");
 
   const completedOnboardingSteps = [hasClients, hasInvoices, hasAppointments].filter(
     Boolean
@@ -349,30 +346,32 @@ export default function DashboardOverviewPage() {
 
       {/* Quick-Start Onboarding Banner */}
       {showOnboardingGuide && (
-        <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-blue-50/80 via-white/90 to-indigo-50/60 p-5 shadow-xs backdrop-blur-md transition-all">
-          <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-primary/10 blur-2xl" />
+        <div className="border-primary/20 relative overflow-hidden rounded-2xl border bg-gradient-to-r from-blue-50/80 via-white/90 to-indigo-50/60 p-5 shadow-xs backdrop-blur-md transition-all">
+          <div className="bg-primary/10 pointer-events-none absolute -top-12 -right-12 h-40 w-40 rounded-full blur-2xl" />
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-1">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex h-6 w-6 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                <span className="bg-primary/15 text-primary inline-flex h-6 w-6 items-center justify-center rounded-lg">
                   <Sparkles className="h-3.5 w-3.5" />
                 </span>
                 <h2 className="text-sm font-bold tracking-tight text-slate-900 sm:text-base">
                   Quick-Start Workspace Setup
                 </h2>
-                <span className="rounded-full border border-primary/20 bg-primary/10 px-2.5 py-0.5 text-[11px] font-bold text-primary">
-                  {completedOnboardingSteps} of 3 complete ({Math.round((completedOnboardingSteps / 3) * 100)}%)
+                <span className="border-primary/20 bg-primary/10 text-primary rounded-full border px-2.5 py-0.5 text-[11px] font-bold">
+                  {completedOnboardingSteps} of 3 complete (
+                  {Math.round((completedOnboardingSteps / 3) * 100)}%)
                 </span>
               </div>
               <p className="text-xs text-slate-500">
-                Complete these foundational operations steps to unlock full real-time telemetry and revenue insights.
+                Complete these foundational operations steps to unlock full real-time telemetry and
+                revenue insights.
               </p>
             </div>
             <div className="flex items-center gap-2 self-end sm:self-center">
               <div className="hidden w-28 sm:block">
                 <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-200/80">
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-primary to-indigo-600 transition-all duration-500"
+                    className="from-primary h-full rounded-full bg-gradient-to-r to-indigo-600 transition-all duration-500"
                     style={{ width: `${Math.round((completedOnboardingSteps / 3) * 100)}%` }}
                   />
                 </div>
@@ -380,7 +379,7 @@ export default function DashboardOverviewPage() {
               <button
                 type="button"
                 onClick={handleDismissOnboarding}
-                className="cursor-pointer rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
+                className="cursor-pointer rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
               >
                 Dismiss guide
               </button>
@@ -394,7 +393,7 @@ export default function DashboardOverviewPage() {
               className={`group relative flex flex-col justify-between rounded-xl border p-3.5 transition-all duration-200 ${
                 hasClients
                   ? "border-emerald-200/80 bg-emerald-50/40"
-                  : "border-slate-200/90 bg-white hover:border-primary/40 hover:shadow-xs cursor-pointer"
+                  : "hover:border-primary/40 cursor-pointer border-slate-200/90 bg-white hover:shadow-xs"
               }`}
               onClick={() => !hasClients && openModal("customer")}
             >
@@ -414,7 +413,7 @@ export default function DashboardOverviewPage() {
                     Done
                   </span>
                 ) : (
-                  <span className="text-[11px] font-semibold text-primary group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5">
+                  <span className="text-primary flex items-center gap-0.5 text-[11px] font-semibold transition-transform group-hover:translate-x-0.5">
                     Start <ArrowRight className="h-3 w-3" />
                   </span>
                 )}
@@ -431,7 +430,7 @@ export default function DashboardOverviewPage() {
               className={`group relative flex flex-col justify-between rounded-xl border p-3.5 transition-all duration-200 ${
                 hasInvoices
                   ? "border-emerald-200/80 bg-emerald-50/40"
-                  : "border-slate-200/90 bg-white hover:border-primary/40 hover:shadow-xs cursor-pointer"
+                  : "hover:border-primary/40 cursor-pointer border-slate-200/90 bg-white hover:shadow-xs"
               }`}
               onClick={() => !hasInvoices && openModal("invoice")}
             >
@@ -439,7 +438,9 @@ export default function DashboardOverviewPage() {
                 <div className="flex items-center gap-2">
                   <span
                     className={`flex h-7 w-7 items-center justify-center rounded-lg text-xs font-bold ${
-                      hasInvoices ? "bg-emerald-100 text-emerald-700" : "bg-indigo-50 text-indigo-600"
+                      hasInvoices
+                        ? "bg-emerald-100 text-emerald-700"
+                        : "bg-indigo-50 text-indigo-600"
                     }`}
                   >
                     {hasInvoices ? <CheckCircle2 className="h-4 w-4" /> : "2"}
@@ -451,7 +452,7 @@ export default function DashboardOverviewPage() {
                     Done
                   </span>
                 ) : (
-                  <span className="text-[11px] font-semibold text-primary group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5">
+                  <span className="text-primary flex items-center gap-0.5 text-[11px] font-semibold transition-transform group-hover:translate-x-0.5">
                     Start <ArrowRight className="h-3 w-3" />
                   </span>
                 )}
@@ -468,7 +469,7 @@ export default function DashboardOverviewPage() {
               className={`group relative flex flex-col justify-between rounded-xl border p-3.5 transition-all duration-200 ${
                 hasAppointments
                   ? "border-emerald-200/80 bg-emerald-50/40"
-                  : "border-slate-200/90 bg-white hover:border-primary/40 hover:shadow-xs cursor-pointer"
+                  : "hover:border-primary/40 cursor-pointer border-slate-200/90 bg-white hover:shadow-xs"
               }`}
               onClick={() => !hasAppointments && openModal("appointment")}
             >
@@ -476,7 +477,9 @@ export default function DashboardOverviewPage() {
                 <div className="flex items-center gap-2">
                   <span
                     className={`flex h-7 w-7 items-center justify-center rounded-lg text-xs font-bold ${
-                      hasAppointments ? "bg-emerald-100 text-emerald-700" : "bg-emerald-50 text-emerald-600"
+                      hasAppointments
+                        ? "bg-emerald-100 text-emerald-700"
+                        : "bg-emerald-50 text-emerald-600"
                     }`}
                   >
                     {hasAppointments ? <CheckCircle2 className="h-4 w-4" /> : "3"}
@@ -488,7 +491,7 @@ export default function DashboardOverviewPage() {
                     Done
                   </span>
                 ) : (
-                  <span className="text-[11px] font-semibold text-primary group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5">
+                  <span className="text-primary flex items-center gap-0.5 text-[11px] font-semibold transition-transform group-hover:translate-x-0.5">
                     Start <ArrowRight className="h-3 w-3" />
                   </span>
                 )}
@@ -506,7 +509,7 @@ export default function DashboardOverviewPage() {
       {/* 4x High-Impact Reactive KPI Metric Cards */}
       <div className="grid w-full max-w-full min-w-0 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* KPI 1: Total Revenue */}
-        <Card className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-5 shadow-xs transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(49,95,232,0.06)] hover:border-slate-300/80">
+        <Card className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-5 shadow-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300/80 hover:shadow-[0_12px_30px_rgba(49,95,232,0.06)]">
           <div className="pointer-events-none absolute top-0 right-0 h-24 w-24 rounded-full bg-blue-500/[0.04] blur-xl" />
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold tracking-wider text-slate-500 uppercase">
@@ -555,7 +558,7 @@ export default function DashboardOverviewPage() {
         </Card>
 
         {/* KPI 2: Active Clients */}
-        <Card className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-5 shadow-xs transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(49,95,232,0.06)] hover:border-slate-300/80">
+        <Card className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-5 shadow-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300/80 hover:shadow-[0_12px_30px_rgba(49,95,232,0.06)]">
           <div className="pointer-events-none absolute top-0 right-0 h-24 w-24 rounded-full bg-indigo-500/[0.04] blur-xl" />
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold tracking-wider text-slate-500 uppercase">
@@ -583,16 +586,18 @@ export default function DashboardOverviewPage() {
               <span className="text-[10px] font-medium text-slate-400">No active accounts</span>
             ) : (
               <div className="flex -space-x-1.5">
-                {(recentClientInitials.length > 0 ? recentClientInitials : ["C"]).slice(0, 3).map((initial, i) => (
-                  <div
-                    key={i}
-                    className={`flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-bold text-white ring-2 ring-white ${
-                      i === 0 ? "bg-blue-600" : i === 1 ? "bg-indigo-600" : "bg-emerald-600"
-                    }`}
-                  >
-                    {initial}
-                  </div>
-                ))}
+                {(recentClientInitials.length > 0 ? recentClientInitials : ["C"])
+                  .slice(0, 3)
+                  .map((initial, i) => (
+                    <div
+                      key={i}
+                      className={`flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-bold text-white ring-2 ring-white ${
+                        i === 0 ? "bg-blue-600" : i === 1 ? "bg-indigo-600" : "bg-emerald-600"
+                      }`}
+                    >
+                      {initial}
+                    </div>
+                  ))}
                 {clientCount > 3 && (
                   <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 text-[9px] font-bold text-slate-700 ring-2 ring-white">
                     +{clientCount - 3}
@@ -604,14 +609,12 @@ export default function DashboardOverviewPage() {
 
           <div className="mt-3 flex justify-between border-t border-slate-100 pt-2.5 text-[11px] text-slate-500">
             <span>Retention rate:</span>
-            <span className="font-bold text-slate-800">
-              {clientCount > 0 ? "98.2%" : "100.0%"}
-            </span>
+            <span className="font-bold text-slate-800">{clientCount > 0 ? "98.2%" : "100.0%"}</span>
           </div>
         </Card>
 
         {/* KPI 3: Scheduled Appointments */}
-        <Card className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-5 shadow-xs transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(49,95,232,0.06)] hover:border-slate-300/80">
+        <Card className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-5 shadow-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300/80 hover:shadow-[0_12px_30px_rgba(49,95,232,0.06)]">
           <div className="pointer-events-none absolute top-0 right-0 h-24 w-24 rounded-full bg-emerald-500/[0.04] blur-xl" />
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold tracking-wider text-slate-500 uppercase">
@@ -650,7 +653,7 @@ export default function DashboardOverviewPage() {
         </Card>
 
         {/* KPI 4: Operations SLA & Response */}
-        <Card className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-5 shadow-xs transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(49,95,232,0.06)] hover:border-slate-300/80">
+        <Card className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-5 shadow-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300/80 hover:shadow-[0_12px_30px_rgba(49,95,232,0.06)]">
           <div className="pointer-events-none absolute top-0 right-0 h-24 w-24 rounded-full bg-cyan-500/[0.04] blur-xl" />
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold tracking-wider text-slate-500 uppercase">
@@ -1431,83 +1434,84 @@ export default function DashboardOverviewPage() {
                 </div>
               ) : (
                 staffList.map((member) => {
-                const sessionsCount =
-                  typeof member.sessionsToday === "number"
-                    ? member.sessionsToday
-                    : parseInt(String(member.sessionsToday), 10) || 0;
-                return (
-                  <div
-                    key={member.id}
-                    className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/60 p-2.5 transition-colors hover:bg-slate-100/70"
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <div className="relative">
-                        <div
-                          className={`flex h-8 w-8 items-center justify-center rounded-lg text-[11px] font-bold text-white ${member.color}`}
-                        >
-                          {member.initials}
-                        </div>
-                        <span
-                          className={`absolute -right-0.5 -bottom-0.5 h-2.5 w-2.5 rounded-full border-2 border-white ${
-                            member.statusColor === "emerald"
-                              ? "bg-emerald-500"
-                              : member.statusColor === "blue"
-                                ? "bg-blue-500"
-                                : "bg-amber-500"
-                          } ${member.pulse ? "animate-pulse" : ""}`}
-                        />
-                      </div>
-                      <div>
-                        <p className="text-xs font-bold text-slate-900">{member.name}</p>
-                        <p className="text-[10px] text-slate-500">{member.role}</p>
-                        <div className="mt-1 flex items-center gap-1.5">
-                          <div className="h-1 w-14 overflow-hidden rounded-full bg-slate-200/80">
-                            <div
-                              className={`h-full rounded-full ${
-                                sessionsCount >= 4
-                                  ? "bg-amber-500"
-                                  : sessionsCount >= 2
-                                    ? "bg-blue-600"
-                                    : "bg-emerald-500"
-                              }`}
-                              style={{
-                                width: `${Math.min(100, (sessionsCount / 5) * 100)}%`,
-                              }}
-                            />
+                  const sessionsCount =
+                    typeof member.sessionsToday === "number"
+                      ? member.sessionsToday
+                      : parseInt(String(member.sessionsToday), 10) || 0;
+                  return (
+                    <div
+                      key={member.id}
+                      className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/60 p-2.5 transition-colors hover:bg-slate-100/70"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="relative">
+                          <div
+                            className={`flex h-8 w-8 items-center justify-center rounded-lg text-[11px] font-bold text-white ${member.color}`}
+                          >
+                            {member.initials}
                           </div>
-                          <span className="text-[9px] font-semibold text-slate-400">
-                            {sessionsCount}/5 sessions
-                          </span>
+                          <span
+                            className={`absolute -right-0.5 -bottom-0.5 h-2.5 w-2.5 rounded-full border-2 border-white ${
+                              member.statusColor === "emerald"
+                                ? "bg-emerald-500"
+                                : member.statusColor === "blue"
+                                  ? "bg-blue-500"
+                                  : "bg-amber-500"
+                            } ${member.pulse ? "animate-pulse" : ""}`}
+                          />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-slate-900">{member.name}</p>
+                          <p className="text-[10px] text-slate-500">{member.role}</p>
+                          <div className="mt-1 flex items-center gap-1.5">
+                            <div className="h-1 w-14 overflow-hidden rounded-full bg-slate-200/80">
+                              <div
+                                className={`h-full rounded-full ${
+                                  sessionsCount >= 4
+                                    ? "bg-amber-500"
+                                    : sessionsCount >= 2
+                                      ? "bg-blue-600"
+                                      : "bg-emerald-500"
+                                }`}
+                                style={{
+                                  width: `${Math.min(100, (sessionsCount / 5) * 100)}%`,
+                                }}
+                              />
+                            </div>
+                            <span className="text-[9px] font-semibold text-slate-400">
+                              {sessionsCount}/5 sessions
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="text-right">
-                        <span
-                          className={`rounded-md border px-1.5 py-0.5 text-[10px] font-bold ${
-                            member.statusColor === "emerald"
-                              ? "border-emerald-200 bg-emerald-50 text-emerald-800"
-                              : member.statusColor === "blue"
-                                ? "border-blue-200 bg-blue-50 text-blue-800"
-                                : "border-amber-200 bg-amber-50 text-amber-800"
-                          }`}
+                      <div className="flex items-center gap-2">
+                        <div className="text-right">
+                          <span
+                            className={`rounded-md border px-1.5 py-0.5 text-[10px] font-bold ${
+                              member.statusColor === "emerald"
+                                ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+                                : member.statusColor === "blue"
+                                  ? "border-blue-200 bg-blue-50 text-blue-800"
+                                  : "border-amber-200 bg-amber-50 text-amber-800"
+                            }`}
+                          >
+                            {member.status}
+                          </span>
+                          <p className="mt-0.5 text-[10px] text-slate-400">{member.detail}</p>
+                        </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => openModal("appointment")}
+                          className="h-7 cursor-pointer rounded-lg px-2 text-[10px] font-bold text-blue-600 hover:bg-blue-50"
                         >
-                          {member.status}
-                        </span>
-                        <p className="mt-0.5 text-[10px] text-slate-400">{member.detail}</p>
+                          Book
+                        </Button>
                       </div>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => openModal("appointment")}
-                        className="h-7 cursor-pointer rounded-lg px-2 text-[10px] font-bold text-blue-600 hover:bg-blue-50"
-                      >
-                        Book
-                      </Button>
                     </div>
-                  </div>
-                );
-              }))}
+                  );
+                })
+              )}
             </div>
 
             <Button

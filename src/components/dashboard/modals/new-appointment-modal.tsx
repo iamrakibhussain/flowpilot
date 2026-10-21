@@ -1,7 +1,16 @@
 "use client";
 
 import * as React from "react";
-import { Calendar, Clock, Users, Video, Sparkles, CheckCircle2, CalendarPlus, AlertCircle } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  Users,
+  Video,
+  Sparkles,
+  CheckCircle2,
+  CalendarPlus,
+  AlertCircle,
+} from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -37,8 +46,10 @@ export function NewAppointmentModal({ isOpen, onClose }: NewAppointmentModalProp
 
   const activeClient =
     customers.length > 0
-      ? (selectedClient === "__new__" ? customClientName : (selectedClient || customers[0]?.name || ""))
-      : (customClientName || selectedClient);
+      ? selectedClient === "__new__"
+        ? customClientName
+        : selectedClient || customers[0]?.name || ""
+      : customClientName || selectedClient;
 
   const [service, setService] = React.useState("Strategy Audit (60 min • $500)");
 
@@ -84,7 +95,8 @@ export function NewAppointmentModal({ isOpen, onClose }: NewAppointmentModalProp
         onClose();
       }, 1500);
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Failed to schedule appointment. Please try again.";
+      const msg =
+        err instanceof Error ? err.message : "Failed to schedule appointment. Please try again.";
       console.error("Appointment creation failed:", err);
       setErrorMessage(msg);
     } finally {

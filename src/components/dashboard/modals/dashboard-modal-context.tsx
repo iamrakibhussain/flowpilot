@@ -27,33 +27,36 @@ export function DashboardModalProvider({ children }: { children: React.ReactNode
     setActiveModal(null);
   }, []);
 
-  const exportCsv = React.useCallback((customRows?: Array<string[]>, filename = "FlowPilot_Operations_Telemetry.csv") => {
-    // Generate real CSV rows for multi-tenant telemetry from real database records
-    const headers = [
-      "Record ID",
-      "Client Name",
-      "Service / Engagement",
-      "Type",
-      "Status",
-      "Value",
-      "Date",
-    ];
-    const rows = customRows && customRows.length > 0 ? customRows : [];
+  const exportCsv = React.useCallback(
+    (customRows?: Array<string[]>, filename = "FlowPilot_Operations_Telemetry.csv") => {
+      // Generate real CSV rows for multi-tenant telemetry from real database records
+      const headers = [
+        "Record ID",
+        "Client Name",
+        "Service / Engagement",
+        "Type",
+        "Status",
+        "Value",
+        "Date",
+      ];
+      const rows = customRows && customRows.length > 0 ? customRows : [];
 
-    const csvContent =
-      "data:text/csv;charset=utf-8," +
-      [headers.join(","), ...rows.map((row) => row.map((cell) => `"${cell}"`).join(","))].join(
-        "\n"
-      );
+      const csvContent =
+        "data:text/csv;charset=utf-8," +
+        [headers.join(","), ...rows.map((row) => row.map((cell) => `"${cell}"`).join(","))].join(
+          "\n"
+        );
 
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", filename);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }, []);
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
+    []
+  );
 
   return (
     <DashboardModalContext.Provider value={{ activeModal, openModal, closeModal, exportCsv }}>

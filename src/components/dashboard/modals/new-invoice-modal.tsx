@@ -62,8 +62,10 @@ export function NewInvoiceModal({ isOpen, onClose }: NewInvoiceModalProps) {
   const customers = customersQuery.data ?? [];
   const activeClient =
     customers.length > 0
-      ? (selectedClient === "__new__" ? customClientName : (selectedClient || customers[0]?.name || ""))
-      : (customClientName || selectedClient);
+      ? selectedClient === "__new__"
+        ? customClientName
+        : selectedClient || customers[0]?.name || ""
+      : customClientName || selectedClient;
 
   const [lineItems, setLineItems] = React.useState<LineItem[]>([
     {
@@ -142,7 +144,8 @@ export function NewInvoiceModal({ isOpen, onClose }: NewInvoiceModalProps) {
         onClose();
       }, 1500);
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Failed to create invoice. Please try again.";
+      const msg =
+        err instanceof Error ? err.message : "Failed to create invoice. Please try again.";
       console.error("Invoice creation failed:", err);
       setErrorMessage(msg);
     } finally {
