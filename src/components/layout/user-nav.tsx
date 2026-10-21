@@ -8,13 +8,11 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useLogout } from "@/features/auth/use-logout";
-import { getCurrentUser } from "@/features/auth/api";
-import type { AuthSession } from "@/features/auth/types";
+import { useWorkspaceSession } from "@/features/organizations/use-workspace-session";
 import { cn } from "@/lib/utils/cn";
 
 export interface UserNavProps {
@@ -24,53 +22,12 @@ export interface UserNavProps {
 
 export function UserNav({ className, showDetails = false }: UserNavProps) {
   const { logout, isLoggingOut } = useLogout();
-  const [session, setSession] = React.useState<AuthSession | null>(null);
-  const [isLoading, setIsLoading] = React.useState(true);
-
-  React.useEffect(() => {
-    let isMounted = true;
-    async function fetchUser() {
-      try {
-        const data = await getCurrentUser();
-        if (isMounted) {
-          setSession(data);
-        }
-      } catch {
-        // Fallback session when running in decoupled or preview mode
-        if (isMounted) {
-          setSession({
-            user: {
-              id: "usr-current",
-              email: "operator@flowpilot.io",
-              name: "Operations Lead",
-            },
-            activeOrganizationId: "org-preview",
-            memberships: [
-              {
-                organizationId: "org-preview",
-                organizationName: "Acme Services Ltd.",
-                role: "OWNER",
-              },
-            ],
-          });
-        }
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
-    }
-
-    fetchUser();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
-  const userName = session?.user?.name || "Operator";
-  const userEmail = session?.user?.email || "operator@flowpilot.io";
-  const orgName = session?.memberships?.[0]?.organizationName || "Acme Services Ltd.";
-  const userRole = session?.memberships?.[0]?.role || "OWNER";
+  const {
+    userName,
+    userEmail,
+    organizationName: orgName,
+    organizationRole: userRole,
+  } = useWorkspaceSession();
 
   // Derive initials for avatar display
   const initials =
@@ -181,6 +138,10 @@ export function UserNav({ className, showDetails = false }: UserNavProps) {
           <DropdownMenuGroup>
             <DropdownMenuItem
               disabled={isLoggingOut}
+              onSelect={(e) => {
+                e.preventDefault();
+                logout();
+              }}
               onClick={() => logout()}
               className="text-destructive hover:bg-destructive/10 focus:bg-destructive/10 focus:text-destructive flex cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-2 text-xs font-medium transition-colors"
             >
@@ -194,6 +155,10 @@ export function UserNav({ className, showDetails = false }: UserNavProps) {
 
             <DropdownMenuItem
               disabled={isLoggingOut}
+              onSelect={(e) => {
+                e.preventDefault();
+                logout({ allDevices: true });
+              }}
               onClick={() => logout({ allDevices: true })}
               className="text-destructive hover:bg-destructive/10 focus:bg-destructive/10 focus:text-destructive flex cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-2 text-xs font-medium transition-colors"
             >

@@ -87,10 +87,14 @@ function LoginForm() {
   const onSubmit = async (data: LoginFormData) => {
     setErrorMessage(null);
     try {
-      await loginUser({
+      const session = await loginUser({
         email: data.email,
         password: data.password,
       });
+
+      if (session?.activeOrganizationId && typeof window !== "undefined") {
+        localStorage.setItem("flowpilot_active_org", session.activeOrganizationId);
+      }
 
       // Navigate to safe validated redirect target or default dashboard
       const safeRedirect = getSafeRedirectUrl(searchParams.get("redirect"));

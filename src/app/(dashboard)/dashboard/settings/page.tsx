@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -298,13 +297,13 @@ export default function SecuritySettingsPage() {
             <div className="border-border/60 bg-muted/20 rounded-xl border p-3">
               <span className="text-muted-foreground block text-[11px]">User Name</span>
               <span className="text-foreground text-sm font-semibold">
-                {session?.user?.name || "Operator"}
+                {session?.user?.name || "User"}
               </span>
             </div>
             <div className="border-border/60 bg-muted/20 rounded-xl border p-3">
               <span className="text-muted-foreground block text-[11px]">Corporate Email</span>
               <span className="text-foreground text-sm font-semibold">
-                {session?.user?.email || "operator@flowpilot.io"}
+                {session?.user?.email || "—"}
               </span>
             </div>
           </div>

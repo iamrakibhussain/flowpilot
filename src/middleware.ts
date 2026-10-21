@@ -11,6 +11,15 @@ export function middleware(request: NextRequest) {
 
   const isAuthenticated = Boolean(sessionCookie && sessionCookie.trim().length > 0);
 
+  const isExplicitLogout = request.nextUrl.searchParams.get("logged_out") === "true";
+
+  // If user arrives with ?logged_out=true from clicking the Logout button, purge cookie and allow /login
+  if (isExplicitLogout && pathname === "/login") {
+    const response = NextResponse.next();
+    response.cookies.delete("flowpilot_session");
+    return response;
+  }
+
   // 1. Protect tenant workspace and dashboard routes
   if (pathname.startsWith("/dashboard")) {
     if (!isAuthenticated) {
@@ -21,9 +30,9 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // 2. Prevent authenticated users from accessing login or register
+  // 2. Prevent authenticated users from accessing login or register (unless explicitly logging out)
   if (pathname === "/login" || pathname === "/register") {
-    if (isAuthenticated) {
+    if (isAuthenticated && !isExplicitLogout) {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
     return NextResponse.next();

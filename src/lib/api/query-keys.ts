@@ -37,4 +37,14 @@ export const queryKeys = {
       [...queryKeys.invoices.all, "list", filters ?? {}] as const,
     detail: (id: string) => [...queryKeys.invoices.all, "detail", id] as const,
   },
+  dashboard: {
+    all: ["dashboard"] as const,
+    metrics: (timeframe: string, orgId?: string) =>
+      [...queryKeys.dashboard.all, "metrics", timeframe, orgId ?? "default"] as const,
+    activities: (type?: string, orgId?: string) =>
+      [...queryKeys.dashboard.all, "activities", type ?? "all", orgId ?? "default"] as const,
+    schedule: (orgId?: string) =>
+      [...queryKeys.dashboard.all, "schedule", orgId ?? "default"] as const,
+    staff: (orgId?: string) => [...queryKeys.dashboard.all, "staff", orgId ?? "default"] as const,
+  },
 };

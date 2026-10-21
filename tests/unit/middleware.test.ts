@@ -58,6 +58,18 @@ describe("Next.js Auth Guard Middleware", () => {
     expect(middleware(registerRequest).status).toBe(200);
   });
 
+  it("allows access to /login when logged_out=true and purges lingering cookie", () => {
+    const logoutRequest = new NextRequest("http://localhost:3000/login?logged_out=true", {
+      headers: {
+        cookie: "flowpilot_session=old_stale_session_token",
+      },
+    });
+    const response = middleware(logoutRequest);
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get("location")).toBeNull();
+  });
+
   it("allows public routes to proceed without redirect", () => {
     const publicRequest = new NextRequest("http://localhost:3000/");
     expect(middleware(publicRequest).status).toBe(200);
