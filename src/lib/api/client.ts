@@ -85,7 +85,10 @@ export class ApiClient {
       headers["Content-Type"] = "application/json";
     }
 
-    const organizationId = options.organizationId ?? this.getOrganizationId?.();
+    const organizationId =
+      options.organizationId ??
+      this.getOrganizationId?.() ??
+      (typeof window !== "undefined" ? localStorage.getItem("flowpilot_active_org") : null);
     if (organizationId) {
       headers["X-Organization-Id"] = organizationId;
     }

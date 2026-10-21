@@ -32,24 +32,34 @@ export function useLogout(): UseLogoutReturn {
       // Graceful client fallback: even if the network or backend is unreachable,
       // client-side security teardown MUST continue to protect the user.
     } finally {
-      // 2. Clear client query cache (protects customer CRM, invoices, appointment details)
+      // 2. Clear Next.js origin cookies via internal route
+      try {
+        await fetch("/api/auth/logout", { method: "POST" });
+      } catch {
+        // Ignore API route failures
+      }
+
+      // 3. Clear client query cache (protects customer CRM, invoices, appointment details)
       try {
         await clearSessionCache();
       } catch {
         // Ignore cache cleanup failures
       }
 
-      // 3. Wipe client storage
+      // 4. Wipe client storage and document cookies
       if (typeof window !== "undefined") {
         try {
           sessionStorage.clear();
           localStorage.removeItem("flowpilot_active_org");
           localStorage.removeItem("flowpilot_user_preferences");
+          document.cookie =
+            "flowpilot_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; max-age=0";
         } catch {
           // Ignore storage access restrictions
         }
 
-        // 4. Hard location redirection resets JavaScript heap memory and disables bfcache inspection
+        // 5. Hard location redirection resets JavaScript heap memory and disables bfcache inspection
+        // eslint-disable-next-line @next/next/no-location-assign-relative-destination
         window.location.href = "/login?logged_out=true";
       }
     }
