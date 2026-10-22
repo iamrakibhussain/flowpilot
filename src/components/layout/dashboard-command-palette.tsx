@@ -100,7 +100,7 @@ const staticCommandEntries: CommandEntry[] = [
     title: "Appointments & Calendar",
     description: "Inspect upcoming agenda and room availability.",
     category: "Navigation",
-    href: "/dashboard",
+    href: "/dashboard/calendar",
     icon: Calendar,
   },
   {
@@ -231,6 +231,8 @@ export function DashboardCommandPalette({ isOpen, onClose }: DashboardCommandPal
         openModal("customer");
       } else if (entry.actionType === "export_csv") {
         exportCsv();
+      } else if (entry.actionType === "view_appointment") {
+        router.push("/dashboard/calendar");
       } else if (entry.href) {
         router.push(entry.href);
       }

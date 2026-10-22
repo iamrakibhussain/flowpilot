@@ -68,7 +68,13 @@ const navSections: NavSection[] = [
         badge: "Live",
         badgeVariant: "warning",
       },
-      { name: "Appointments", href: "/dashboard#schedule", icon: Calendar },
+      {
+        name: "Appointments & Calendar",
+        href: "/dashboard/calendar",
+        icon: Calendar,
+        badge: "Live",
+        badgeVariant: "success",
+      },
       {
         name: "Customers (CRM)",
         href: "/dashboard/customers",

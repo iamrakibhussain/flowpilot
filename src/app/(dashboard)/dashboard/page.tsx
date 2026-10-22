@@ -1372,7 +1372,10 @@ export default function DashboardOverviewPage() {
                               : "bg-slate-400 ring-slate-100"
                       }`}
                     />
-                    <div className="group flex-1 rounded-xl border border-slate-200/90 bg-slate-50/70 p-3 transition-all hover:border-slate-300 hover:bg-white hover:shadow-2xs">
+                    <Link
+                      href="/dashboard/calendar"
+                      className="group flex-1 rounded-xl border border-slate-200/90 bg-slate-50/70 p-3 transition-all hover:border-slate-300 hover:bg-white hover:shadow-2xs"
+                    >
                       <div className="flex items-center justify-between">
                         <span
                           className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-bold ${
@@ -1402,25 +1405,37 @@ export default function DashboardOverviewPage() {
                           {item.status}
                         </span>
                       </div>
-                      <p className="mt-1.5 text-xs font-bold text-slate-900">{item.title}</p>
+                      <p className="group-hover:text-primary mt-1.5 text-xs font-bold text-slate-900 transition-colors">
+                        {item.title}
+                      </p>
                       <p className="text-[11px] text-slate-500">
                         {item.client} • {item.venue}
                       </p>
-                    </div>
+                    </Link>
                   </div>
                 ))
               )}
             </div>
 
-            <Button
-              variant="outline"
-              size="sm"
-              className="mt-4 w-full cursor-pointer rounded-xl text-xs font-semibold text-slate-700"
-              onClick={() => openModal("appointment")}
-            >
-              <CalendarPlus className="mr-1.5 h-3.5 w-3.5" />
-              <span>Book Appointment Slot</span>
-            </Button>
+            <div className="mt-4 flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex-1 cursor-pointer rounded-xl text-xs font-semibold text-slate-700"
+                onClick={() => openModal("appointment")}
+              >
+                <CalendarPlus className="mr-1.5 h-3.5 w-3.5" />
+                <span>Book Slot</span>
+              </Button>
+              <Link
+                href="/dashboard/calendar"
+                className="hover:text-primary inline-flex h-8 items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 text-xs font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-white"
+                title="Open Interactive Calendar Hub"
+              >
+                <span>Calendar</span>
+                <ArrowRight className="h-3 w-3" />
+              </Link>
+            </div>
           </Card>
 
           {/* Card 2: Staff On-Duty Today & Workload (SERV-05 & SERV-06) */}
