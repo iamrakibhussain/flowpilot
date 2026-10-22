@@ -26,12 +26,7 @@ import {
   ShieldCheck,
   FileText,
   User,
-  MapPin,
-  TrendingUp,
   Activity,
-  Layers,
-  Zap,
-  Lock,
   History,
   UserPlus,
 } from "lucide-react";
@@ -114,7 +109,6 @@ export default function CustomerProfileDetailPage() {
     isLoading: isCustomerLoading,
     isPending: isCustomerPending,
     isError,
-    error,
     refetch,
   } = useCustomer(customerId);
   const addNoteMutation = useAddCustomerNote(customerId);
@@ -347,7 +341,7 @@ export default function CustomerProfileDetailPage() {
       </div>
 
       {/* 360° Executive Dossier Identity Header Card */}
-      <Card className="relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white/85 p-4 sm:p-7 shadow-[0_16px_36px_-12px_rgba(15,23,42,0.08)] backdrop-blur-xl">
+      <Card className="relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white/85 p-4 shadow-[0_16px_36px_-12px_rgba(15,23,42,0.08)] backdrop-blur-xl sm:p-7">
         {/* Subtle Ambient Decorative Glow Spot */}
         <div className="pointer-events-none absolute -top-16 -right-16 h-56 w-56 rounded-full bg-blue-500/10 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-16 left-1/3 h-48 w-48 rounded-full bg-indigo-500/10 blur-3xl" />
@@ -358,7 +352,7 @@ export default function CustomerProfileDetailPage() {
             {/* Multi-Tone Gradient Avatar with Glow */}
             <div className="relative shrink-0">
               <div
-                className={`flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-2xl bg-gradient-to-br text-xl sm:text-2xl font-black text-white shadow-xl ${getAvatarGradient(
+                className={`flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br text-xl font-black text-white shadow-xl sm:h-20 sm:w-20 sm:text-2xl ${getAvatarGradient(
                   customer.name
                 )}`}
               >
@@ -367,18 +361,18 @@ export default function CustomerProfileDetailPage() {
               {/* VIP Crown Floating Indicator */}
               {isHighValue && (
                 <div
-                  className="absolute -top-2 -right-2 flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-full border-2 border-white bg-gradient-to-r from-amber-400 to-amber-500 text-amber-950 shadow-md shadow-amber-500/30"
+                  className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-gradient-to-r from-amber-400 to-amber-500 text-amber-950 shadow-md shadow-amber-500/30 sm:h-7 sm:w-7"
                   title="VIP High-Value Client"
                 >
-                  <Crown className="h-3 w-3 sm:h-3.5 sm:w-3.5 fill-amber-950" />
+                  <Crown className="h-3 w-3 fill-amber-950 sm:h-3.5 sm:w-3.5" />
                 </div>
               )}
             </div>
 
             {/* Profile Typography & Pills */}
-            <div className="space-y-2 min-w-0">
+            <div className="min-w-0 space-y-2">
               <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
-                <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-slate-900 break-words">
+                <h1 className="text-xl font-extrabold tracking-tight break-words text-slate-900 sm:text-2xl lg:text-3xl">
                   {customer.name}
                 </h1>
 
@@ -420,7 +414,7 @@ export default function CustomerProfileDetailPage() {
               </div>
 
               {/* Company & Meta Subline */}
-              <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-slate-600">
+              <div className="flex flex-wrap items-center gap-2 text-xs text-slate-600 sm:gap-3">
                 {customer.company ? (
                   <div className="flex items-center gap-1.5 font-semibold text-slate-800">
                     <Building2 className="text-primary h-3.5 w-3.5" />
@@ -462,16 +456,18 @@ export default function CustomerProfileDetailPage() {
               )}
 
               {/* 1-Click Interactive Contact Actions */}
-              <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-1 text-xs">
+              <div className="flex flex-wrap items-center gap-2 pt-1 text-xs sm:gap-3">
                 {/* Email with copy */}
                 <button
                   type="button"
                   onClick={(e) => handleCopy(customer.email, "email", e)}
-                  className="hover:border-primary/50 hover:text-primary group flex cursor-pointer items-center gap-1.5 rounded-lg border border-slate-200/80 bg-slate-50/80 px-2.5 py-1 text-slate-600 transition-all hover:bg-white max-w-full"
+                  className="hover:border-primary/50 hover:text-primary group flex max-w-full cursor-pointer items-center gap-1.5 rounded-lg border border-slate-200/80 bg-slate-50/80 px-2.5 py-1 text-slate-600 transition-all hover:bg-white"
                   title="Click to copy email address"
                 >
                   <Mail className="group-hover:text-primary h-3.5 w-3.5 shrink-0 text-slate-400" />
-                  <span className="font-medium truncate max-w-[200px] sm:max-w-none">{customer.email}</span>
+                  <span className="max-w-[200px] truncate font-medium sm:max-w-none">
+                    {customer.email}
+                  </span>
                   {copiedKey === "email" ? (
                     <Check className="h-3 w-3 shrink-0 text-emerald-600" />
                   ) : (
@@ -509,12 +505,12 @@ export default function CustomerProfileDetailPage() {
           </div>
 
           {/* Contextual Executive Action Toolbar */}
-          <div className="grid grid-cols-2 gap-2 w-full sm:flex sm:w-auto sm:items-center sm:gap-2.5 self-start lg:self-center">
+          <div className="grid w-full grid-cols-2 gap-2 self-start sm:flex sm:w-auto sm:items-center sm:gap-2.5 lg:self-center">
             <Button
               size="sm"
               variant="outline"
               onClick={() => setIsEditModalOpen(true)}
-              className="cursor-pointer rounded-xl border-slate-200/90 bg-white px-3 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 justify-center"
+              className="cursor-pointer justify-center rounded-xl border-slate-200/90 bg-white px-3 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50"
             >
               <Edit3 className="mr-1.5 h-3.5 w-3.5 text-slate-500" />
               <span>Edit Record</span>
@@ -524,7 +520,7 @@ export default function CustomerProfileDetailPage() {
               size="sm"
               variant="outline"
               onClick={() => openModal("appointment")}
-              className="cursor-pointer rounded-xl border-blue-200/90 bg-blue-50/60 px-3 text-xs font-semibold text-blue-700 shadow-2xs hover:bg-blue-100/60 justify-center"
+              className="cursor-pointer justify-center rounded-xl border-blue-200/90 bg-blue-50/60 px-3 text-xs font-semibold text-blue-700 shadow-2xs hover:bg-blue-100/60"
             >
               <CalendarPlus className="mr-1.5 h-3.5 w-3.5 text-blue-600" />
               <span>Book</span>
@@ -533,7 +529,7 @@ export default function CustomerProfileDetailPage() {
             <Button
               size="sm"
               onClick={() => openModal("invoice")}
-              className="from-primary to-primary/90 hover:from-primary/95 hover:to-primary/85 cursor-pointer rounded-xl bg-gradient-to-r px-3.5 text-xs font-semibold text-white shadow-md shadow-blue-500/20 justify-center"
+              className="from-primary to-primary/90 hover:from-primary/95 hover:to-primary/85 cursor-pointer justify-center rounded-xl bg-gradient-to-r px-3.5 text-xs font-semibold text-white shadow-md shadow-blue-500/20"
             >
               <CreditCard className="mr-1.5 h-3.5 w-3.5" />
               <span>Invoice</span>
@@ -547,7 +543,7 @@ export default function CustomerProfileDetailPage() {
                   setArchiveMode("archive");
                   setIsArchiveDialogOpen(true);
                 }}
-                className="cursor-pointer rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 hover:text-rose-700 justify-center border border-rose-100 sm:border-0"
+                className="cursor-pointer justify-center rounded-xl border border-rose-100 text-xs font-semibold text-rose-600 hover:bg-rose-50 hover:text-rose-700 sm:border-0"
                 title="Archive client record"
               >
                 <Archive className="mr-1 h-3.5 w-3.5 sm:mr-0" />
@@ -561,7 +557,7 @@ export default function CustomerProfileDetailPage() {
                   setArchiveMode("reactivate");
                   setIsArchiveDialogOpen(true);
                 }}
-                className="cursor-pointer rounded-xl text-xs font-semibold text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700 justify-center border border-emerald-100 sm:border-0"
+                className="cursor-pointer justify-center rounded-xl border border-emerald-100 text-xs font-semibold text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700 sm:border-0"
                 title="Reactivate client record"
               >
                 <RefreshCw className="mr-1 h-3.5 w-3.5 sm:mr-0" />
@@ -673,8 +669,8 @@ export default function CustomerProfileDetailPage() {
       </div>
 
       {/* Floating Modern Pill Dock Navigation with Unified Timeline Tab */}
-      <div className="flex items-center justify-between border-b border-slate-200/80 pb-3 min-w-0">
-        <div className="flex w-full sm:w-auto items-center gap-1.5 overflow-x-auto max-w-full rounded-2xl border border-slate-200/80 bg-slate-100/90 p-1.5 shadow-inner backdrop-blur-md no-scrollbar">
+      <div className="flex min-w-0 items-center justify-between border-b border-slate-200/80 pb-3">
+        <div className="no-scrollbar flex w-full max-w-full items-center gap-1.5 overflow-x-auto rounded-2xl border border-slate-200/80 bg-slate-100/90 p-1.5 shadow-inner backdrop-blur-md sm:w-auto">
           {(
             [
               { key: "overview", label: "Dossier Overview", count: null },
@@ -698,7 +694,7 @@ export default function CustomerProfileDetailPage() {
                 key={tab.key}
                 type="button"
                 onClick={() => setActiveTab(tab.key)}
-                className={`flex shrink-0 whitespace-nowrap cursor-pointer items-center gap-2 rounded-xl px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs font-bold transition-all ${
+                className={`flex shrink-0 cursor-pointer items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-bold whitespace-nowrap transition-all sm:px-4 sm:py-2 ${
                   isActive
                     ? "bg-white text-slate-900 shadow-sm ring-1 shadow-slate-900/5 ring-slate-900/5"
                     : "text-slate-600 hover:bg-white/50 hover:text-slate-900"
@@ -719,7 +715,7 @@ export default function CustomerProfileDetailPage() {
           })}
         </div>
 
-        <div className="hidden items-center gap-2 text-xs text-slate-500 sm:flex shrink-0">
+        <div className="hidden shrink-0 items-center gap-2 text-xs text-slate-500 sm:flex">
           <ShieldCheck className="h-4 w-4 text-emerald-600" />
           <span className="font-medium">Strict Multi-Tenant Isolated</span>
         </div>

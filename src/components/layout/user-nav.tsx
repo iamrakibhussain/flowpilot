@@ -55,14 +55,14 @@ export function UserNav({ className, showDetails = false }: UserNavProps) {
           >
             <div className="flex items-center gap-2.5 truncate">
               {/* Refractive gradient avatar capsule */}
-              <div className="from-primary relative flex h-7.5 w-7.5 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr via-blue-600 to-indigo-600 text-[11px] sm:text-xs font-bold text-white shadow-xs">
+              <div className="from-primary relative flex h-7.5 w-7.5 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr via-blue-600 to-indigo-600 text-[11px] font-bold text-white shadow-xs sm:h-8 sm:w-8 sm:text-xs">
                 {isLoggingOut ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
                   <span>{initials}</span>
                 )}
                 {/* Active status pulse */}
-                <span className="border-background absolute -right-0.5 -bottom-0.5 h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full border-2 bg-emerald-500" />
+                <span className="border-background absolute -right-0.5 -bottom-0.5 h-2 w-2 rounded-full border-2 bg-emerald-500 sm:h-2.5 sm:w-2.5" />
               </div>
 
               {showDetails && (

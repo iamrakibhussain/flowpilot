@@ -11,9 +11,7 @@ import {
   AlertCircle,
   Loader2,
   CheckCircle2,
-  Sparkles,
   X,
-  Plus,
 } from "lucide-react";
 import {
   Dialog,

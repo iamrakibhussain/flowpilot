@@ -5,37 +5,25 @@ import Link from "next/link";
 import {
   X,
   ExternalLink,
-  Mail,
-  Phone,
   Building2,
-  Calendar,
   CreditCard,
   CalendarPlus,
-  DollarSign,
   CheckCircle2,
   Clock,
   Crown,
-  Sparkles,
   Copy,
   Check,
   Send,
   Edit3,
   Activity,
-  Layers,
-  ShieldCheck,
   ChevronRight,
-  TrendingUp,
 } from "lucide-react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useCustomer, useAddCustomerNote } from "@/features/customers/use-customers";
 import { calculateCustomerHealth } from "@/features/customers/customer-health";
-import type {
-  CustomerStatusType,
-  CustomerListItem,
-  CustomerDetailResponse,
-} from "@/features/customers/types";
+import type { CustomerDetailResponse } from "@/features/customers/types";
 
 export interface CustomerQuickPeekDrawerProps {
   isOpen: boolean;
@@ -352,11 +340,11 @@ export function CustomerQuickPeekDrawer({
                 </div>
 
                 {/* Mini Segmented Tabs */}
-                <div className="flex items-center gap-1 overflow-x-auto max-w-full rounded-xl border border-slate-200/80 bg-slate-100/90 p-1 text-xs font-bold no-scrollbar">
+                <div className="no-scrollbar flex max-w-full items-center gap-1 overflow-x-auto rounded-xl border border-slate-200/80 bg-slate-100/90 p-1 text-xs font-bold">
                   <button
                     type="button"
                     onClick={() => setActiveTab("health")}
-                    className={`flex-1 shrink-0 whitespace-nowrap cursor-pointer rounded-lg px-2.5 py-1.5 text-center transition-all ${
+                    className={`flex-1 shrink-0 cursor-pointer rounded-lg px-2.5 py-1.5 text-center whitespace-nowrap transition-all ${
                       activeTab === "health"
                         ? "bg-white text-slate-900 shadow-xs"
                         : "text-slate-600 hover:text-slate-900"
@@ -367,7 +355,7 @@ export function CustomerQuickPeekDrawer({
                   <button
                     type="button"
                     onClick={() => setActiveTab("invoices")}
-                    className={`flex-1 shrink-0 whitespace-nowrap cursor-pointer rounded-lg px-2.5 py-1.5 text-center transition-all ${
+                    className={`flex-1 shrink-0 cursor-pointer rounded-lg px-2.5 py-1.5 text-center whitespace-nowrap transition-all ${
                       activeTab === "invoices"
                         ? "bg-white text-slate-900 shadow-xs"
                         : "text-slate-600 hover:text-slate-900"
@@ -378,7 +366,7 @@ export function CustomerQuickPeekDrawer({
                   <button
                     type="button"
                     onClick={() => setActiveTab("appointments")}
-                    className={`flex-1 shrink-0 whitespace-nowrap cursor-pointer rounded-lg px-2.5 py-1.5 text-center transition-all ${
+                    className={`flex-1 shrink-0 cursor-pointer rounded-lg px-2.5 py-1.5 text-center whitespace-nowrap transition-all ${
                       activeTab === "appointments"
                         ? "bg-white text-slate-900 shadow-xs"
                         : "text-slate-600 hover:text-slate-900"
@@ -389,7 +377,7 @@ export function CustomerQuickPeekDrawer({
                   <button
                     type="button"
                     onClick={() => setActiveTab("notes")}
-                    className={`flex-1 shrink-0 whitespace-nowrap cursor-pointer rounded-lg px-2.5 py-1.5 text-center transition-all ${
+                    className={`flex-1 shrink-0 cursor-pointer rounded-lg px-2.5 py-1.5 text-center whitespace-nowrap transition-all ${
                       activeTab === "notes"
                         ? "bg-white text-slate-900 shadow-xs"
                         : "text-slate-600 hover:text-slate-900"

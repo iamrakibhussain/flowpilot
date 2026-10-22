@@ -10,10 +10,7 @@ import {
   Mail,
   Phone,
   Building2,
-  Calendar,
-  FileText,
   ArrowRight,
-  UserPlus,
   LayoutGrid,
   List,
   MoreVertical,
@@ -22,22 +19,17 @@ import {
   RefreshCw,
   CreditCard,
   CalendarPlus,
-  Copy,
   DollarSign,
   TrendingUp,
   Activity,
   UserCheck,
   Sparkles,
-  SlidersHorizontal,
   X,
   ExternalLink,
   Crown,
-  ChevronRight,
-  Zap,
   Eye,
   CheckSquare,
   Square,
-  ShieldCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
@@ -46,7 +38,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -282,13 +273,13 @@ export default function CustomersDirectoryPage() {
         </div>
 
         {/* Global CTA Actions */}
-        <div className="grid grid-cols-2 gap-2 w-full sm:flex sm:w-auto sm:items-center sm:gap-2.5">
+        <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:items-center sm:gap-2.5">
           <Button
             variant="outline"
             size="sm"
             onClick={handleExportAll}
             disabled={customers.length === 0}
-            className="cursor-pointer rounded-xl border-slate-200/90 bg-white/80 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 justify-center"
+            className="cursor-pointer justify-center rounded-xl border-slate-200/90 bg-white/80 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50"
           >
             <Download className="mr-1.5 h-3.5 w-3.5 text-slate-500" />
             <span>Export CSV</span>
@@ -297,7 +288,7 @@ export default function CustomersDirectoryPage() {
           <Button
             size="sm"
             onClick={() => openModal("customer")}
-            className="from-primary to-primary/90 hover:from-primary/95 hover:to-primary/85 cursor-pointer rounded-xl bg-gradient-to-r px-4 text-xs font-bold text-white shadow-md shadow-blue-500/20 justify-center"
+            className="from-primary to-primary/90 hover:from-primary/95 hover:to-primary/85 cursor-pointer justify-center rounded-xl bg-gradient-to-r px-4 text-xs font-bold text-white shadow-md shadow-blue-500/20"
           >
             <Plus className="mr-1.5 h-4 w-4" />
             <span>New Customer</span>
@@ -435,13 +426,13 @@ export default function CustomersDirectoryPage() {
       <div className="space-y-3">
         <div className="flex flex-col gap-3 rounded-2xl border border-slate-200/80 bg-white/85 p-3.5 shadow-sm backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between">
           {/* Search Input with Shortcut Badge */}
-          <div className="relative flex-1 w-full">
+          <div className="relative w-full flex-1">
             <Search className="pointer-events-none absolute top-2.5 left-3.5 h-4 w-4 text-slate-400" />
             <Input
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search clients by name, corporate email, company, or phone..."
-              className="h-9.5 rounded-xl border-slate-200 bg-slate-50/70 pr-14 pl-9.5 text-xs transition-colors focus:bg-white w-full"
+              className="h-9.5 w-full rounded-xl border-slate-200 bg-slate-50/70 pr-14 pl-9.5 text-xs transition-colors focus:bg-white"
             />
             {searchTerm ? (
               <button
@@ -459,7 +450,7 @@ export default function CustomersDirectoryPage() {
           </div>
 
           {/* Sliding Pill Status Tabs */}
-          <div className="flex w-full sm:w-auto items-center gap-1 overflow-x-auto max-w-full rounded-xl border border-slate-200/80 bg-slate-100/90 p-1 text-xs no-scrollbar">
+          <div className="no-scrollbar flex w-full max-w-full items-center gap-1 overflow-x-auto rounded-xl border border-slate-200/80 bg-slate-100/90 p-1 text-xs sm:w-auto">
             {(
               [
                 { key: "ALL", label: "All Records", count: totalCount },
@@ -478,7 +469,7 @@ export default function CustomersDirectoryPage() {
                   key={tab.key}
                   type="button"
                   onClick={() => setStatusFilter(tab.key)}
-                  className={`flex shrink-0 whitespace-nowrap cursor-pointer items-center gap-1.5 rounded-lg px-2.5 sm:px-3 py-1.5 font-bold transition-all ${
+                  className={`flex shrink-0 cursor-pointer items-center gap-1.5 rounded-lg px-2.5 py-1.5 font-bold whitespace-nowrap transition-all sm:px-3 ${
                     isActive
                       ? "bg-white text-slate-900 shadow-xs"
                       : "text-slate-600 hover:text-slate-900"
@@ -498,18 +489,18 @@ export default function CustomersDirectoryPage() {
           </div>
 
           {/* Sort & View Mode Toggle */}
-          <div className="flex items-center justify-between sm:justify-start gap-2 w-full sm:w-auto">
+          <div className="flex w-full items-center justify-between gap-2 sm:w-auto sm:justify-start">
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="flex-1 sm:flex-initial h-9 cursor-pointer rounded-xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 shadow-2xs outline-none hover:bg-slate-50"
+              className="h-9 flex-1 cursor-pointer rounded-xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 shadow-2xs outline-none hover:bg-slate-50 sm:flex-initial"
             >
               <option value="createdAt">Sort: Recent Onboarding</option>
               <option value="ltv">Sort: Highest LTV</option>
               <option value="name">Sort: Alphabetical (A-Z)</option>
             </select>
 
-            <div className="flex items-center rounded-xl border border-slate-200 bg-slate-100/90 p-1 shrink-0">
+            <div className="flex shrink-0 items-center rounded-xl border border-slate-200 bg-slate-100/90 p-1">
               <button
                 type="button"
                 onClick={() => setViewMode("grid")}
@@ -1214,8 +1205,8 @@ export default function CustomersDirectoryPage() {
 
       {/* Floating Executive Bulk Selection Dock */}
       {selectedIds.size > 0 && (
-        <div className="animate-in fade-in slide-in-from-bottom-4 fixed bottom-5 sm:bottom-7 left-1/2 z-40 -translate-x-1/2 duration-300 w-[calc(100vw-1.5rem)] max-w-md sm:w-auto">
-          <div className="flex items-center justify-between sm:justify-start gap-2.5 sm:gap-3 rounded-2xl border border-slate-800 bg-slate-900/95 px-3.5 sm:px-5 py-2.5 sm:py-3 text-white shadow-2xl backdrop-blur-xl">
+        <div className="animate-in fade-in slide-in-from-bottom-4 fixed bottom-5 left-1/2 z-40 w-[calc(100vw-1.5rem)] max-w-md -translate-x-1/2 duration-300 sm:bottom-7 sm:w-auto">
+          <div className="flex items-center justify-between gap-2.5 rounded-2xl border border-slate-800 bg-slate-900/95 px-3.5 py-2.5 text-white shadow-2xl backdrop-blur-xl sm:justify-start sm:gap-3 sm:px-5 sm:py-3">
             <div className="flex items-center gap-2 text-xs font-bold">
               <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-500 text-[11px] font-black text-white">
                 {selectedIds.size}

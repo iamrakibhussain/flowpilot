@@ -295,7 +295,7 @@ export default function DashboardOverviewPage() {
         </div>
 
         {/* Dynamic Date Filters & CSV Export */}
-        <div className="flex flex-wrap items-center justify-between sm:justify-end gap-2 w-full sm:w-auto">
+        <div className="flex w-full flex-wrap items-center justify-between gap-2 sm:w-auto sm:justify-end">
           <div className="flex rounded-xl border border-slate-200 bg-white/90 p-1 text-xs shadow-xs">
             <button
               type="button"
