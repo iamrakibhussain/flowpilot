@@ -984,14 +984,27 @@ export default function CustomerProfileDetailPage() {
                 Past sessions, upcoming consultations, and operations appointments
               </CardDescription>
             </div>
-            <Button
-              size="sm"
-              onClick={() => openModal("appointment")}
-              className="bg-primary hover:bg-primary/90 cursor-pointer rounded-xl text-xs font-semibold text-white shadow-md shadow-blue-500/20"
-            >
-              <CalendarPlus className="mr-1.5 h-3.5 w-3.5" />
-              <span>Book Appointment</span>
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                asChild
+                className="cursor-pointer rounded-xl border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+              >
+                <Link href="/dashboard/calendar">
+                  <Calendar className="mr-1.5 h-3.5 w-3.5 text-blue-600" />
+                  <span>Open Calendar</span>
+                </Link>
+              </Button>
+              <Button
+                size="sm"
+                onClick={() => openModal("appointment")}
+                className="bg-primary hover:bg-primary/90 cursor-pointer rounded-xl text-xs font-semibold text-white shadow-md shadow-blue-500/20"
+              >
+                <CalendarPlus className="mr-1.5 h-3.5 w-3.5" />
+                <span>Book Appointment</span>
+              </Button>
+            </div>
           </div>
 
           {customer.appointments.length === 0 ? (
@@ -1019,9 +1032,10 @@ export default function CustomerProfileDetailPage() {
           ) : (
             <div className="mt-5 divide-y divide-slate-100">
               {customer.appointments.map((apt) => (
-                <div
+                <Link
                   key={apt.id}
-                  className="flex flex-col gap-3 py-4 text-xs sm:flex-row sm:items-center sm:justify-between"
+                  href="/dashboard/calendar"
+                  className="group -mx-3 flex flex-col gap-3 rounded-2xl px-3 py-4 text-xs transition-colors hover:bg-slate-50/80 sm:flex-row sm:items-center sm:justify-between"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
@@ -1064,7 +1078,7 @@ export default function CustomerProfileDetailPage() {
                   >
                     {apt.status}
                   </Badge>
-                </div>
+                </Link>
               ))}
             </div>
           )}

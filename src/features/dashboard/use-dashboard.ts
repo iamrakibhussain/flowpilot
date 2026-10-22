@@ -275,6 +275,7 @@ export function useDashboardMutations() {
     mutationFn: (payload: CreateAppointmentPayload) => createDashboardAppointment(payload, orgId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.all });
+      queryClient.invalidateQueries({ queryKey: ["appointments"] });
     },
   });
 
