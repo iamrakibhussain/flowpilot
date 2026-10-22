@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Search, Plus, Calendar, Users, FileText, ChevronRight } from "lucide-react";
+import { Menu, Search, Plus, Calendar, Users, FileText, ChevronRight, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { UserNav } from "@/components/layout/user-nav";
 import { DashboardNotifications } from "@/components/layout/dashboard-notifications";
@@ -39,23 +39,34 @@ export function DashboardHeader({ onOpenMobile, onOpenCommand }: DashboardHeader
   }, [pathname]);
 
   return (
-    <header className="border-border/80 sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b bg-white/90 px-4 shadow-2xs backdrop-blur-xl sm:px-6">
-      {/* Left: Mobile Toggle & Dynamic Breadcrumbs */}
-      <div className="flex items-center gap-2 sm:gap-3">
+    <header className="border-border/80 sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b bg-white/90 px-3 shadow-2xs backdrop-blur-xl sm:px-6">
+      {/* Left: Mobile Toggle, Brand & Dynamic Breadcrumbs */}
+      <div className="flex min-w-0 items-center gap-1.5 sm:gap-3">
         <button
           type="button"
           onClick={onOpenMobile}
-          className="-ml-2 rounded-xl p-2 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 lg:hidden"
+          className="-ml-1 rounded-xl p-1.5 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 sm:-ml-2 sm:p-2 lg:hidden"
           aria-label="Open navigation sidebar"
         >
           <Menu className="h-5 w-5" />
         </button>
 
-        {/* Compact Mobile Breadcrumb */}
-        <div className="flex items-center gap-1.5 sm:hidden">
-          <span className="max-w-[140px] truncate text-xs font-bold text-slate-800">
-            {breadcrumbName}
-          </span>
+        {/* Compact Mobile Brand Mark & Section Title */}
+        <div className="flex min-w-0 items-center gap-1.5 sm:hidden">
+          <Link
+            href="/dashboard"
+            className="flex shrink-0 items-center"
+            aria-label="FlowPilot Home"
+          >
+            <div className="from-primary flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br via-blue-600 to-indigo-600 text-white shadow-xs">
+              <Layers className="h-3.5 w-3.5" />
+            </div>
+          </Link>
+          <div className="flex min-w-0 flex-col">
+            <span className="truncate text-xs leading-tight font-bold text-slate-900">
+              {breadcrumbName}
+            </span>
+          </div>
         </div>
 
         {/* Dynamic Breadcrumbs with Real Company Name (Desktop/Tablet) */}
@@ -98,12 +109,12 @@ export function DashboardHeader({ onOpenMobile, onOpenCommand }: DashboardHeader
       </div>
 
       {/* Right: Quick Action, Cloud Status, Notifications & User */}
-      <div className="flex items-center gap-2 sm:gap-3">
+      <div className="flex items-center gap-1.5 sm:gap-2.5">
         {/* Mobile Search Icon Trigger */}
         <button
           type="button"
           onClick={onOpenCommand}
-          className="flex h-9 w-9 items-center justify-center rounded-xl text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 md:hidden"
+          className="flex h-8 w-8 items-center justify-center rounded-xl text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 sm:h-9 sm:w-9 md:hidden"
           aria-label="Open search palette"
         >
           <Search className="h-4 w-4" />
@@ -123,7 +134,7 @@ export function DashboardHeader({ onOpenMobile, onOpenCommand }: DashboardHeader
           <DropdownMenuTrigger asChild>
             <Button
               size="sm"
-              className="from-primary shadow-primary/20 hover:shadow-primary/30 relative h-9 cursor-pointer gap-1.5 rounded-xl bg-gradient-to-r via-blue-600 to-indigo-600 px-3 text-xs font-bold text-white shadow-md transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="from-primary shadow-primary/20 hover:shadow-primary/30 relative h-8 cursor-pointer gap-1 rounded-lg bg-gradient-to-r via-blue-600 to-indigo-600 px-2 text-xs font-bold text-white shadow-xs transition-all hover:scale-[1.02] active:scale-[0.98] sm:h-9 sm:gap-1.5 sm:rounded-xl sm:px-3 sm:shadow-md"
             >
               <Plus className="h-4 w-4" />
               <span className="hidden sm:inline">New</span>
@@ -133,7 +144,7 @@ export function DashboardHeader({ onOpenMobile, onOpenCommand }: DashboardHeader
           <DropdownMenuContent
             align="end"
             sideOffset={6}
-            className="w-56 rounded-xl border border-slate-200 bg-white/95 p-1.5 shadow-xl backdrop-blur-md"
+            className="w-56 max-w-[calc(100vw-2rem)] rounded-xl border border-slate-200 bg-white/95 p-1.5 shadow-xl backdrop-blur-md"
           >
             <DropdownMenuLabel className="px-2 py-1 text-[11px] font-semibold tracking-wider text-slate-400 uppercase">
               Quick Operations
