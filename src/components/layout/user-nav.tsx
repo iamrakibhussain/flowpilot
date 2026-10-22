@@ -55,14 +55,14 @@ export function UserNav({ className, showDetails = false }: UserNavProps) {
           >
             <div className="flex items-center gap-2.5 truncate">
               {/* Refractive gradient avatar capsule */}
-              <div className="from-primary relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr via-blue-600 to-indigo-600 text-xs font-bold text-white shadow-xs">
+              <div className="from-primary relative flex h-7.5 w-7.5 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr via-blue-600 to-indigo-600 text-[11px] sm:text-xs font-bold text-white shadow-xs">
                 {isLoggingOut ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
                   <span>{initials}</span>
                 )}
                 {/* Active status pulse */}
-                <span className="border-background absolute -right-0.5 -bottom-0.5 h-2.5 w-2.5 rounded-full border-2 bg-emerald-500" />
+                <span className="border-background absolute -right-0.5 -bottom-0.5 h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full border-2 bg-emerald-500" />
               </div>
 
               {showDetails && (
@@ -82,7 +82,7 @@ export function UserNav({ className, showDetails = false }: UserNavProps) {
         <DropdownMenuContent
           align={showDetails ? "start" : "end"}
           sideOffset={8}
-          className="border-border/80 bg-surface/95 text-foreground w-64 rounded-xl p-1.5 shadow-xl backdrop-blur-xl"
+          className="border-border/80 bg-surface/95 text-foreground w-64 max-w-[calc(100vw-2rem)] rounded-xl p-1.5 shadow-xl backdrop-blur-xl"
         >
           {/* Identity & Workspace Card */}
           <div className="from-muted/50 to-muted/20 border-border/50 rounded-lg border bg-gradient-to-b p-3">

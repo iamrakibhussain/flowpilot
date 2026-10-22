@@ -295,7 +295,7 @@ export default function DashboardOverviewPage() {
         </div>
 
         {/* Dynamic Date Filters & CSV Export */}
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex flex-wrap items-center justify-between sm:justify-end gap-2 w-full sm:w-auto">
           <div className="flex rounded-xl border border-slate-200 bg-white/90 p-1 text-xs shadow-xs">
             <button
               type="button"
@@ -558,60 +558,73 @@ export default function DashboardOverviewPage() {
         </Card>
 
         {/* KPI 2: Active Clients */}
-        <Card className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-5 shadow-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300/80 hover:shadow-[0_12px_30px_rgba(49,95,232,0.06)]">
-          <div className="pointer-events-none absolute top-0 right-0 h-24 w-24 rounded-full bg-indigo-500/[0.04] blur-xl" />
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold tracking-wider text-slate-500 uppercase">
-              Active CRM Clients
-            </span>
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-indigo-100 bg-indigo-50 text-indigo-600">
-              <Users className="h-4.5 w-4.5" />
+        <Link
+          href="/dashboard/customers"
+          className="group block focus-visible:outline-hidden"
+          title="Open Customers CRM Directory"
+        >
+          <Card className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-5 shadow-xs transition-all duration-300 group-hover:-translate-y-0.5 group-hover:border-indigo-300/80 group-hover:shadow-[0_12px_30px_rgba(79,70,229,0.08)]">
+            <div className="pointer-events-none absolute top-0 right-0 h-24 w-24 rounded-full bg-indigo-500/[0.04] blur-xl" />
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold tracking-wider text-slate-500 uppercase">
+                Active CRM Clients
+              </span>
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-indigo-100 bg-indigo-50 text-indigo-600 transition-colors group-hover:bg-indigo-600 group-hover:text-white">
+                <Users className="h-4.5 w-4.5" />
+              </div>
             </div>
-          </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
-              {currentMetric.clients}
-            </span>
-          </div>
-          <div className="mt-2 flex items-center justify-between">
-            <div className="flex items-center gap-1.5">
-              <span className="inline-flex items-center gap-0.5 rounded-md border border-emerald-200/80 bg-emerald-50 px-1.5 py-0.5 text-[11px] font-bold text-emerald-700">
-                <TrendingUp className="h-3 w-3" />
-                {currentMetric.clientsGrowth}
+            <div className="mt-3 flex items-baseline gap-2">
+              <span className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+                {currentMetric.clients}
               </span>
             </div>
-
-            {/* Client Avatar Stack */}
-            {clientCount === 0 ? (
-              <span className="text-[10px] font-medium text-slate-400">No active accounts</span>
-            ) : (
-              <div className="flex -space-x-1.5">
-                {(recentClientInitials.length > 0 ? recentClientInitials : ["C"])
-                  .slice(0, 3)
-                  .map((initial, i) => (
-                    <div
-                      key={i}
-                      className={`flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-bold text-white ring-2 ring-white ${
-                        i === 0 ? "bg-blue-600" : i === 1 ? "bg-indigo-600" : "bg-emerald-600"
-                      }`}
-                    >
-                      {initial}
-                    </div>
-                  ))}
-                {clientCount > 3 && (
-                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 text-[9px] font-bold text-slate-700 ring-2 ring-white">
-                    +{clientCount - 3}
-                  </div>
-                )}
+            <div className="mt-2 flex items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                <span className="inline-flex items-center gap-0.5 rounded-md border border-emerald-200/80 bg-emerald-50 px-1.5 py-0.5 text-[11px] font-bold text-emerald-700">
+                  <TrendingUp className="h-3 w-3" />
+                  {currentMetric.clientsGrowth}
+                </span>
               </div>
-            )}
-          </div>
 
-          <div className="mt-3 flex justify-between border-t border-slate-100 pt-2.5 text-[11px] text-slate-500">
-            <span>Retention rate:</span>
-            <span className="font-bold text-slate-800">{clientCount > 0 ? "98.2%" : "100.0%"}</span>
-          </div>
-        </Card>
+              {/* Client Avatar Stack */}
+              {clientCount === 0 ? (
+                <span className="text-[10px] font-medium text-slate-400">No active accounts</span>
+              ) : (
+                <div className="flex -space-x-1.5">
+                  {(recentClientInitials.length > 0 ? recentClientInitials : ["C"])
+                    .slice(0, 3)
+                    .map((initial, i) => (
+                      <div
+                        key={i}
+                        className={`flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-bold text-white ring-2 ring-white ${
+                          i === 0 ? "bg-blue-600" : i === 1 ? "bg-indigo-600" : "bg-emerald-600"
+                        }`}
+                      >
+                        {initial}
+                      </div>
+                    ))}
+                  {clientCount > 3 && (
+                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 text-[9px] font-bold text-slate-700 ring-2 ring-white">
+                      +{clientCount - 3}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-2.5 text-[11px] text-slate-500">
+              <span className="flex items-center gap-1">
+                Retention:{" "}
+                <strong className="font-bold text-slate-800">
+                  {clientCount > 0 ? "98.2%" : "100.0%"}
+                </strong>
+              </span>
+              <span className="flex items-center gap-0.5 font-bold text-indigo-600 transition-transform group-hover:translate-x-0.5">
+                Manage CRM <ArrowRight className="h-3 w-3" />
+              </span>
+            </div>
+          </Card>
+        </Link>
 
         {/* KPI 3: Scheduled Appointments */}
         <Card className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-5 shadow-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300/80 hover:shadow-[0_12px_30px_rgba(49,95,232,0.06)]">

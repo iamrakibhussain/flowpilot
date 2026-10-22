@@ -10,6 +10,7 @@ export interface WorkspaceSessionState {
   session: AuthSession | null;
   userName: string;
   userEmail: string;
+  organizationId: string;
   organizationName: string;
   organizationRole: string;
   memberships: OrganizationMembershipSummary[];
@@ -42,6 +43,7 @@ export function useWorkspaceSession(): WorkspaceSessionState {
     );
   }, [session]);
 
+  const organizationId = activeMembership?.organizationId || session?.activeOrganizationId || "";
   const organizationName = activeMembership?.organizationName || "Company Workspace";
   const organizationRole = activeMembership?.role || "OWNER";
   const userName = session?.user?.name || "User";
@@ -52,6 +54,7 @@ export function useWorkspaceSession(): WorkspaceSessionState {
     session: session ?? null,
     userName,
     userEmail,
+    organizationId,
     organizationName,
     organizationRole,
     memberships,

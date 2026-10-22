@@ -92,7 +92,7 @@ const staticCommandEntries: CommandEntry[] = [
     title: "Customers (CRM)",
     description: "View client records, interaction history, and active tiers.",
     category: "Navigation",
-    href: "/dashboard",
+    href: "/dashboard/customers",
     icon: Users,
   },
   {
@@ -172,6 +172,7 @@ export function DashboardCommandPalette({ isOpen, onClose }: DashboardCommandPal
           badge: cust.tier ?? "Active",
           badgeVariant: "success",
           actionType: "view_customer",
+          href: `/dashboard/customers/${cust.id}`,
         });
       });
     }

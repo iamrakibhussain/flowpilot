@@ -85,12 +85,12 @@ export function DashboardNotifications() {
         <Button
           variant="ghost"
           size="icon"
-          className="focus-visible:ring-primary relative h-9 w-9 rounded-xl text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:ring-2 focus-visible:ring-offset-2"
+          className="focus-visible:ring-primary relative h-8 w-8 sm:h-9 sm:w-9 rounded-lg sm:rounded-xl text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:ring-2 focus-visible:ring-offset-2"
           aria-label={`Notifications: ${unreadCount} unread`}
         >
           <Bell className="h-4 w-4" />
           {unreadCount > 0 && (
-            <span className="absolute top-1.5 right-1.5 flex h-2 w-2">
+            <span className="absolute top-1 right-1 sm:top-1.5 sm:right-1.5 flex h-2 w-2">
               <span className="bg-primary absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" />
               <span className="bg-primary relative inline-flex h-2 w-2 rounded-full" />
             </span>
