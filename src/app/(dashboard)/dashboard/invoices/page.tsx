@@ -63,13 +63,13 @@ const STATUS_TABS: Array<{ id: "ALL" | InvoiceStatusType; label: string }> = [
   { id: "CANCELLED", label: "Void / Cancelled" },
 ];
 
+const subscribeNoop = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
+
 export default function InvoicesDashboardPage() {
   const { organizationId, organizationName, isLoading: isSessionLoading } = useWorkspaceSession();
-  const [hasMounted, setHasMounted] = React.useState(false);
-
-  React.useEffect(() => {
-    setHasMounted(true);
-  }, []);
+  const isClient = React.useSyncExternalStore(subscribeNoop, getClientSnapshot, getServerSnapshot);
 
   // View Mode: cards (ideal for mobile / visual grid) vs table (high-density spreadsheet)
   const [viewMode, setViewMode] = React.useState<"cards" | "table">("cards");
@@ -111,10 +111,7 @@ export default function InvoicesDashboardPage() {
   );
 
   const isActuallyLoading =
-    !hasMounted ||
-    isSessionLoading ||
-    isLoadingInvoices ||
-    (isPendingInvoices && !invoicesResponse);
+    !isClient || isSessionLoading || isLoadingInvoices || (isPendingInvoices && !invoicesResponse);
 
   const { data: stats } = useInvoiceStats(organizationId);
   const invoices = invoicesResponse?.invoices ?? [];
