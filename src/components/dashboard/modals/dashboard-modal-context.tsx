@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { NewInvoiceModal } from "./new-invoice-modal";
+import { InvoiceBuilderModal } from "../invoices/invoice-builder-modal";
 import { NewAppointmentModal } from "./new-appointment-modal";
 import { NewCustomerModal } from "./new-customer-modal";
 
@@ -63,7 +63,7 @@ export function DashboardModalProvider({ children }: { children: React.ReactNode
       {children}
 
       {/* Real Interactive Modals */}
-      <NewInvoiceModal isOpen={activeModal === "invoice"} onClose={closeModal} />
+      <InvoiceBuilderModal isOpen={activeModal === "invoice"} onClose={closeModal} />
       <NewAppointmentModal isOpen={activeModal === "appointment"} onClose={closeModal} />
       <NewCustomerModal isOpen={activeModal === "customer"} onClose={closeModal} />
     </DashboardModalContext.Provider>

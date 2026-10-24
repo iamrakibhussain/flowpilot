@@ -35,6 +35,7 @@ import { useAppointments, useStaffMembers } from "@/features/appointments/use-ap
 import { AppointmentQuickPeekDrawer } from "@/components/dashboard/appointments/appointment-quick-peek-drawer";
 import { BookingWizardModal } from "@/components/dashboard/appointments/booking-wizard-modal";
 import { RescheduleModal } from "@/components/dashboard/appointments/reschedule-modal";
+import { InvoiceBuilderModal } from "@/components/dashboard/invoices/invoice-builder-modal";
 import type {
   AppointmentListItem,
   AppointmentStatusType,
@@ -86,6 +87,9 @@ export default function CalendarPage() {
   );
   const [rescheduleAppointment, setRescheduleAppointment] =
     React.useState<AppointmentListItem | null>(null);
+  const [invoiceAppointment, setInvoiceAppointment] = React.useState<AppointmentListItem | null>(
+    null
+  );
   const [isMobileRailOpen, setIsMobileRailOpen] = React.useState(false);
 
   // Current time position for live laser indicator
@@ -1518,6 +1522,10 @@ export default function CalendarPage() {
           setSelectedAppointment(null);
           setRescheduleAppointment(apt);
         }}
+        onOpenInvoiceModal={(apt) => {
+          setSelectedAppointment(null);
+          setInvoiceAppointment(apt);
+        }}
         organizationId={currentOrganizationId}
       />
 
@@ -1533,6 +1541,30 @@ export default function CalendarPage() {
         onClose={() => setIsBookingModalOpen(false)}
         initialDate={bookingInitialDate}
         initialTime={bookingInitialTime}
+        organizationId={currentOrganizationId}
+      />
+
+      <InvoiceBuilderModal
+        isOpen={Boolean(invoiceAppointment)}
+        onClose={() => setInvoiceAppointment(null)}
+        initialCustomerId={invoiceAppointment?.customerId}
+        initialCustomerName={invoiceAppointment?.customerName}
+        initialItems={
+          invoiceAppointment
+            ? [
+                {
+                  description: `${invoiceAppointment.title}${invoiceAppointment.serviceName ? ` (${invoiceAppointment.serviceName})` : ""}`,
+                  quantity: 1,
+                  unitPrice: invoiceAppointment.servicePrice || 150,
+                },
+              ]
+            : undefined
+        }
+        initialNotes={
+          invoiceAppointment
+            ? `Billing for session on ${new Date(invoiceAppointment.scheduledAt).toLocaleDateString()} with ${invoiceAppointment.staffMemberName || "Specialist Staff"}`
+            : undefined
+        }
         organizationId={currentOrganizationId}
       />
     </div>

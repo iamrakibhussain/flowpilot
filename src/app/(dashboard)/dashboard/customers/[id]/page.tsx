@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import {
   ArrowLeft,
+  ArrowRight,
   Mail,
   Phone,
   Building2,
@@ -1166,6 +1167,13 @@ export default function CustomerProfileDetailPage() {
                     >
                       {inv.status}
                     </Badge>
+                    <Link
+                      href="/dashboard/invoices"
+                      className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-600 hover:text-blue-700 hover:underline"
+                    >
+                      <span>Ledger</span>
+                      <ArrowRight className="h-3 w-3" />
+                    </Link>
                   </div>
                 </div>
               ))}
