@@ -64,9 +64,9 @@ const commandItems: CommandItem[] = [
   {
     id: "invoicing",
     title: "Invoicing & Revenue Settlement",
-    description: "One-click conversion of sessions to itemized PDF invoices.",
+    description: "Itemized client billing statements, receivables aging & PDF export.",
     category: "Platform",
-    href: "/#features",
+    href: "/dashboard/invoices",
     icon: FileText,
   },
   {

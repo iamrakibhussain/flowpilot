@@ -106,12 +106,12 @@ const staticCommandEntries: CommandEntry[] = [
   {
     id: "nav-invoices",
     title: "Invoices & Billing",
-    description: "Audit pending invoices, payment receipts, and Stripe sync.",
+    description: "Audit pending invoices, payment receipts, and revenue ledger.",
     category: "Navigation",
-    href: "/dashboard",
+    href: "/dashboard/invoices",
     icon: FileText,
-    badge: "3 Pending",
-    badgeVariant: "warning",
+    badge: "Live",
+    badgeVariant: "success",
   },
   {
     id: "nav-team",

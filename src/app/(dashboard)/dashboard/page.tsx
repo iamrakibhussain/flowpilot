@@ -739,6 +739,14 @@ export default function DashboardOverviewPage() {
                 </span>
               )}
             </Button>
+            <Link
+              href="/dashboard/invoices"
+              className="inline-flex h-8 items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 text-xs font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-white"
+              title="Open Dedicated Invoices & Billing Hub"
+            >
+              <span>Invoices Hub</span>
+              <ArrowRight className="h-3 w-3" />
+            </Link>
             <Button
               size="sm"
               onClick={() => openModal("invoice")}
