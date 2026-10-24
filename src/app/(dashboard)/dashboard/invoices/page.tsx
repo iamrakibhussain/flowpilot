@@ -3,7 +3,6 @@
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  CreditCard,
   Plus,
   Search,
   CheckCircle2,
@@ -16,24 +15,21 @@ import {
   ChevronRight,
   Copy,
   Check,
-  Building2,
-  DollarSign,
-  ArrowUpRight,
-  ShieldCheck,
-  Sparkles,
-  SlidersHorizontal,
   Keyboard,
   Share2,
-  CheckSquare,
-  Square,
   LayoutGrid,
   List,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { useInvoices, useInvoiceStats } from "@/features/invoices/use-invoices";
 import { useWorkspaceSession } from "@/features/organizations/use-workspace-session";
 import type { InvoiceListItem, InvoiceStatusType } from "@/features/invoices/types";
@@ -68,7 +64,12 @@ const STATUS_TABS: Array<{ id: "ALL" | InvoiceStatusType; label: string }> = [
 ];
 
 export default function InvoicesDashboardPage() {
-  const { organizationId, organizationName } = useWorkspaceSession();
+  const { organizationId, organizationName, isLoading: isSessionLoading } = useWorkspaceSession();
+  const [hasMounted, setHasMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   // View Mode: cards (ideal for mobile / visual grid) vs table (high-density spreadsheet)
   const [viewMode, setViewMode] = React.useState<"cards" | "table">("cards");
@@ -98,6 +99,7 @@ export default function InvoicesDashboardPage() {
   const {
     data: invoicesResponse,
     isLoading: isLoadingInvoices,
+    isPending: isPendingInvoices,
     refetch: refetchInvoices,
     isRefetching,
   } = useInvoices(
@@ -107,6 +109,12 @@ export default function InvoicesDashboardPage() {
     },
     organizationId
   );
+
+  const isActuallyLoading =
+    !hasMounted ||
+    isSessionLoading ||
+    isLoadingInvoices ||
+    (isPendingInvoices && !invoicesResponse);
 
   const { data: stats } = useInvoiceStats(organizationId);
   const invoices = invoicesResponse?.invoices ?? [];
@@ -487,7 +495,7 @@ export default function InvoicesDashboardPage() {
                 className="group cursor-pointer rounded-xl border border-slate-200/80 bg-slate-50/70 p-3 transition-all hover:border-blue-300 hover:bg-blue-50/40 sm:p-3.5"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold tracking-wider text-slate-500 uppercase truncate">
+                  <span className="truncate text-[10px] font-bold tracking-wider text-slate-500 uppercase">
                     Current (On-Track)
                   </span>
                   <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
@@ -507,7 +515,7 @@ export default function InvoicesDashboardPage() {
                 className="group cursor-pointer rounded-xl border border-amber-200/80 bg-amber-50/50 p-3 transition-all hover:border-amber-400 hover:bg-amber-50/80 sm:p-3.5"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold tracking-wider text-amber-800 uppercase truncate">
+                  <span className="truncate text-[10px] font-bold tracking-wider text-amber-800 uppercase">
                     1 – 30 Days Overdue
                   </span>
                   <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500" />
@@ -527,7 +535,7 @@ export default function InvoicesDashboardPage() {
                 className="group cursor-pointer rounded-xl border border-rose-200/80 bg-rose-50/50 p-3 transition-all hover:border-rose-400 hover:bg-rose-50/80 sm:p-3.5"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold tracking-wider text-rose-800 uppercase truncate">
+                  <span className="truncate text-[10px] font-bold tracking-wider text-rose-800 uppercase">
                     31 – 60 Days Overdue
                   </span>
                   <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-rose-500" />
@@ -547,7 +555,7 @@ export default function InvoicesDashboardPage() {
                 className="group cursor-pointer rounded-xl border border-rose-300 bg-rose-100/60 p-3 transition-all hover:border-rose-500 hover:bg-rose-100/90 sm:p-3.5"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold tracking-wider text-rose-900 uppercase truncate">
+                  <span className="truncate text-[10px] font-bold tracking-wider text-rose-900 uppercase">
                     60+ Days (Critical)
                   </span>
                   <span className="h-1.5 w-1.5 shrink-0 animate-ping rounded-full bg-rose-600" />
@@ -566,19 +574,19 @@ export default function InvoicesDashboardPage() {
         {/* Interactive Controls & Segmented Filters */}
         <div className="flex flex-col gap-3.5 sm:flex-row sm:items-center sm:justify-between">
           {/* Sliding Pill Segmented Switcher with Live Record Counts */}
-          <div className="flex max-w-full items-center gap-1 overflow-x-auto rounded-2xl border border-slate-200/90 bg-white/90 p-1.5 shadow-2xs backdrop-blur-md whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex max-w-full [scrollbar-width:none] items-center gap-1 overflow-x-auto rounded-2xl border border-slate-200/90 bg-white/90 p-1.5 whitespace-nowrap shadow-2xs backdrop-blur-md [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             {STATUS_TABS.map((tab) => {
               const isSelected = selectedStatusTab === tab.id;
               const count =
                 tab.id === "ALL"
-                  ? stats?.counts.total ?? invoices.length
+                  ? (stats?.counts.total ?? invoices.length)
                   : tab.id === "PAID"
-                    ? stats?.counts.paid ?? 0
+                    ? (stats?.counts.paid ?? 0)
                     : tab.id === "PENDING"
-                      ? stats?.counts.pending ?? 0
+                      ? (stats?.counts.pending ?? 0)
                       : tab.id === "OVERDUE"
-                        ? stats?.counts.overdue ?? 0
-                        : stats?.counts.cancelled ?? 0;
+                        ? (stats?.counts.overdue ?? 0)
+                        : (stats?.counts.cancelled ?? 0);
 
               return (
                 <button
@@ -599,10 +607,8 @@ export default function InvoicesDashboardPage() {
                   <span className="relative z-10">{tab.label}</span>
                   {stats && (
                     <span
-                      className={`relative z-10 rounded-full px-1.5 py-0.2 text-[10px] font-black ${
-                        isSelected
-                          ? "bg-blue-600 text-white"
-                          : "bg-slate-200/80 text-slate-600"
+                      className={`py-0.2 relative z-10 rounded-full px-1.5 text-[10px] font-black ${
+                        isSelected ? "bg-blue-600 text-white" : "bg-slate-200/80 text-slate-600"
                       }`}
                     >
                       {count}
@@ -657,7 +663,7 @@ export default function InvoicesDashboardPage() {
         </div>
 
         {/* Ledger Statements: Loading, Empty, Cards & Table Views */}
-        {isLoadingInvoices ? (
+        {isActuallyLoading ? (
           <Card className="overflow-hidden rounded-3xl border-slate-200/80 bg-white/95 shadow-2xs backdrop-blur-xl">
             <div className="flex flex-col items-center justify-center space-y-3 p-20">
               <RefreshCw className="h-7 w-7 animate-spin text-blue-600" />
@@ -735,7 +741,7 @@ export default function InvoicesDashboardPage() {
                 <Card
                   key={inv.id}
                   onClick={() => setDrawerInvoice(inv)}
-                  className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl border bg-white/95 p-4 sm:p-5 shadow-2xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md cursor-pointer ${
+                  className={`group relative flex cursor-pointer flex-col justify-between overflow-hidden rounded-2xl border bg-white/95 p-4 shadow-2xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md sm:p-5 ${
                     isSelected
                       ? "border-blue-400 bg-blue-50/20 ring-2 ring-blue-500/20"
                       : "border-slate-200/90 hover:border-slate-300"
@@ -1284,9 +1290,9 @@ export default function InvoicesDashboardPage() {
                 <DialogTitle className="text-base font-bold text-slate-900">
                   Power-User Keyboard Shortcuts
                 </DialogTitle>
-                <p className="text-xs text-slate-500">
+                <DialogDescription className="text-xs text-slate-500">
                   Navigate FlowPilot Cash Ledger with lightning speed.
-                </p>
+                </DialogDescription>
               </div>
             </div>
           </DialogHeader>

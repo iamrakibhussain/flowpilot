@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useWorkspaceSession } from "@/features/organizations/use-workspace-session";
 import {
   getInvoices,
   getInvoiceStats,
@@ -29,27 +30,51 @@ export const invoiceKeys = {
   detail: (orgId?: string, id?: string) => [...invoiceKeys.details(), orgId, id] as const,
 };
 
-export function useInvoices(params?: ListInvoicesParams, organizationId?: string) {
+/**
+ * Helper to resolve active organization ID from active session or cached storage
+ */
+export function useResolvedOrgId(): string {
+  const { organizationId } = useWorkspaceSession();
+  if (organizationId) return organizationId;
+  if (typeof window !== "undefined") {
+    const cached = localStorage.getItem("flowpilot_active_org");
+    if (cached) return cached;
+  }
+  return "";
+}
+
+export function useInvoices(params?: ListInvoicesParams, explicitOrgId?: string) {
+  const resolvedOrgId = useResolvedOrgId();
+  const organizationId = explicitOrgId || resolvedOrgId;
+
   return useQuery({
     queryKey: invoiceKeys.list(organizationId, params),
     queryFn: () => getInvoices(params, organizationId),
+    enabled: Boolean(organizationId),
     staleTime: 1000 * 30, // 30 seconds
   });
 }
 
-export function useInvoiceStats(organizationId?: string) {
+export function useInvoiceStats(explicitOrgId?: string) {
+  const resolvedOrgId = useResolvedOrgId();
+  const organizationId = explicitOrgId || resolvedOrgId;
+
   return useQuery({
     queryKey: invoiceKeys.stats(organizationId),
     queryFn: () => getInvoiceStats(organizationId),
+    enabled: Boolean(organizationId),
     staleTime: 1000 * 30,
   });
 }
 
-export function useInvoice(id: string, organizationId?: string) {
+export function useInvoice(id: string, explicitOrgId?: string) {
+  const resolvedOrgId = useResolvedOrgId();
+  const organizationId = explicitOrgId || resolvedOrgId;
+
   return useQuery({
     queryKey: invoiceKeys.detail(organizationId, id),
     queryFn: () => getInvoiceById(id, organizationId),
-    enabled: Boolean(id),
+    enabled: Boolean(id) && Boolean(organizationId),
   });
 }
 

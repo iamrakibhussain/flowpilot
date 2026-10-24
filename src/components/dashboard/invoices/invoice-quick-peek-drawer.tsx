@@ -4,10 +4,8 @@ import * as React from "react";
 import Link from "next/link";
 import {
   X,
-  CreditCard,
   Building2,
   Calendar,
-  Clock,
   CheckCircle2,
   AlertCircle,
   ExternalLink,
@@ -15,14 +13,9 @@ import {
   Copy,
   Check,
   Ban,
-  ShieldCheck,
   Receipt,
-  Mail,
-  User,
-  ArrowRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useUpdateInvoiceStatus } from "@/features/invoices/use-invoices";
 import type { InvoiceListItem } from "@/features/invoices/types";

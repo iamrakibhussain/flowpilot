@@ -12,7 +12,13 @@ import {
   FileText,
   BadgeCheck,
 } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import type { InvoiceListItem } from "@/features/invoices/types";
 
@@ -51,10 +57,10 @@ export function InvoicePrintModal({
               <DialogTitle className="text-base font-bold text-white">
                 Bank-Grade Statement Studio
               </DialogTitle>
-              <p className="text-xs text-slate-300">
+              <DialogDescription className="text-xs text-slate-300">
                 Pixel-perfect Swiss classic statement formatted for client dispatch, archival, and
                 physical printing.
-              </p>
+              </DialogDescription>
             </div>
           </div>
           <div className="flex w-full items-center justify-end gap-2 sm:w-auto">
