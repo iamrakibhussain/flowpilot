@@ -114,6 +114,16 @@ const staticCommandEntries: CommandEntry[] = [
     badgeVariant: "success",
   },
   {
+    id: "nav-payments",
+    title: "Online Payments & Treasury",
+    description: "Manage Stripe gateway, client payment links, and transaction ledger.",
+    category: "Navigation",
+    href: "/dashboard/payments",
+    icon: CreditCard,
+    badge: "Live",
+    badgeVariant: "success",
+  },
+  {
     id: "nav-team",
     title: "Team & Staff Directory",
     description: "Manage organization memberships, staff roles, and permissions.",

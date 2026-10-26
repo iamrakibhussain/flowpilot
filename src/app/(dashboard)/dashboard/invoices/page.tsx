@@ -38,6 +38,7 @@ import { InvoiceQuickPeekDrawer } from "@/components/dashboard/invoices/invoice-
 import { InvoiceBuilderModal } from "@/components/dashboard/invoices/invoice-builder-modal";
 import { RecordPaymentModal } from "@/components/dashboard/invoices/record-payment-modal";
 import { InvoicePrintModal } from "@/components/dashboard/invoices/invoice-print-modal";
+import { SharePaymentLinkModal } from "@/components/dashboard/invoices/share-payment-link-modal";
 
 function getAvatarGradient(name: string): string {
   const gradients = [
@@ -80,7 +81,6 @@ export default function InvoicesDashboardPage() {
   );
   const [searchQuery, setSearchQuery] = React.useState("");
   const [copiedInvoiceId, setCopiedInvoiceId] = React.useState<string | null>(null);
-  const [copiedPayLinkId, setCopiedPayLinkId] = React.useState<string | null>(null);
 
   // Multi-select state
   const [selectedInvoiceIds, setSelectedInvoiceIds] = React.useState<Set<string>>(new Set());
@@ -94,6 +94,7 @@ export default function InvoicesDashboardPage() {
   const [drawerInvoice, setDrawerInvoice] = React.useState<InvoiceListItem | null>(null);
   const [paymentInvoice, setPaymentInvoice] = React.useState<InvoiceListItem | null>(null);
   const [printInvoice, setPrintInvoice] = React.useState<InvoiceListItem | null>(null);
+  const [shareModalInvoice, setShareModalInvoice] = React.useState<InvoiceListItem | null>(null);
 
   // Queries
   const {
@@ -718,7 +719,6 @@ export default function InvoicesDashboardPage() {
               const isOverdue = inv.status === "OVERDUE";
               const isCancelled = inv.status === "CANCELLED";
               const isCopied = copiedInvoiceId === inv.id;
-              const isCopiedPay = copiedPayLinkId === inv.id;
               const isSelected = selectedInvoiceIds.has(inv.id);
 
               const dueDate = new Date(inv.dueDate);
@@ -906,21 +906,12 @@ export default function InvoicesDashboardPage() {
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={async () => {
-                          const payUrl = `https://flowpilot.app/pay/tok_${inv.id.slice(0, 10)}`;
-                          await navigator.clipboard.writeText(payUrl);
-                          setCopiedPayLinkId(inv.id);
-                          setTimeout(() => setCopiedPayLinkId(null), 1800);
-                        }}
-                        className="h-8 cursor-pointer gap-1 rounded-lg border-slate-200 bg-white px-2.5 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50"
-                        title="Copy client checkout link"
+                        onClick={() => setShareModalInvoice(inv)}
+                        className="h-8 cursor-pointer gap-1 rounded-lg border-slate-200 bg-white px-2.5 text-xs font-semibold text-slate-700 shadow-2xs hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                        title="Share payment portal & QR code"
                       >
-                        {isCopiedPay ? (
-                          <Check className="h-3.5 w-3.5 text-emerald-600" />
-                        ) : (
-                          <Share2 className="h-3.5 w-3.5 text-slate-500" />
-                        )}
-                        <span>{isCopiedPay ? "Copied" : "Link"}</span>
+                        <Share2 className="h-3.5 w-3.5 text-blue-600" />
+                        <span>Share</span>
                       </Button>
                     </div>
 
@@ -1130,24 +1121,15 @@ export default function InvoicesDashboardPage() {
                               </Button>
                             )}
 
-                            {/* Quick Hosted Link Copy */}
+                            {/* Share Hosted Pay Portal */}
                             <Button
                               size="icon"
                               variant="ghost"
-                              title="Copy hosted pay link"
-                              onClick={async () => {
-                                const payUrl = `https://flowpilot.app/pay/tok_${inv.id.slice(0, 10)}`;
-                                await navigator.clipboard.writeText(payUrl);
-                                setCopiedPayLinkId(inv.id);
-                                setTimeout(() => setCopiedPayLinkId(null), 1800);
-                              }}
+                              title="Share secure payment portal & QR code"
+                              onClick={() => setShareModalInvoice(inv)}
                               className="h-7.5 w-7.5 cursor-pointer rounded-lg text-slate-400 hover:bg-blue-50 hover:text-blue-700"
                             >
-                              {copiedPayLinkId === inv.id ? (
-                                <Check className="h-3.5 w-3.5 text-emerald-600" />
-                              ) : (
-                                <Share2 className="h-3.5 w-3.5" />
-                              )}
+                              <Share2 className="h-3.5 w-3.5" />
                             </Button>
 
                             <Button
@@ -1335,6 +1317,9 @@ export default function InvoicesDashboardPage() {
         onOpenPrintModal={(inv) => {
           setPrintInvoice(inv);
         }}
+        onOpenShareModal={(inv) => {
+          setShareModalInvoice(inv);
+        }}
         organizationId={organizationId}
       />
 
@@ -1356,6 +1341,12 @@ export default function InvoicesDashboardPage() {
         isOpen={Boolean(printInvoice)}
         onClose={() => setPrintInvoice(null)}
         organizationName={organizationName || "FlowPilot Operations"}
+      />
+
+      <SharePaymentLinkModal
+        invoice={shareModalInvoice}
+        isOpen={Boolean(shareModalInvoice)}
+        onClose={() => setShareModalInvoice(null)}
       />
     </div>
   );

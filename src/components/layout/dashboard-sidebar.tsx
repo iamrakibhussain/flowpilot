@@ -23,6 +23,7 @@ import {
   Zap,
   Globe,
   ArrowUpRight,
+  CreditCard,
 } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import {
@@ -65,6 +66,13 @@ const navSections: NavSection[] = [
         name: "Invoices & Billing",
         href: "/dashboard/invoices",
         icon: FileText,
+        badge: "Live",
+        badgeVariant: "success",
+      },
+      {
+        name: "Online Payments",
+        href: "/dashboard/payments",
+        icon: CreditCard,
         badge: "Live",
         badgeVariant: "success",
       },
