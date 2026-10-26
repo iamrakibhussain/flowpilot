@@ -28,6 +28,7 @@ export interface InvoiceListItem {
   items: InvoiceItem[];
   isOverdue: boolean;
   daysOverdue: number;
+  paymentToken?: string | null;
 }
 
 export interface InvoiceStats {

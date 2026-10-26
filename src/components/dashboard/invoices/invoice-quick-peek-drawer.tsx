@@ -26,6 +26,7 @@ interface InvoiceQuickPeekDrawerProps {
   onClose: () => void;
   onOpenRecordPayment: (invoice: InvoiceListItem) => void;
   onOpenPrintModal: (invoice: InvoiceListItem) => void;
+  onOpenShareModal?: (invoice: InvoiceListItem) => void;
   organizationId?: string;
 }
 
@@ -35,6 +36,7 @@ export function InvoiceQuickPeekDrawer({
   onClose,
   onOpenRecordPayment,
   onOpenPrintModal,
+  onOpenShareModal,
   organizationId,
 }: InvoiceQuickPeekDrawerProps) {
   const updateStatusMutation = useUpdateInvoiceStatus();
@@ -275,25 +277,15 @@ ${invoice.items.map((it) => `• ${it.description} — ${it.quantity}x @ $${it.u
 
               <Button
                 variant="outline"
-                onClick={async () => {
-                  const payUrl = `https://flowpilot.app/pay/tok_${invoice.id.slice(0, 10)}`;
-                  await navigator.clipboard.writeText(payUrl);
-                  setCopiedNumber(true);
-                  setTimeout(() => setCopiedNumber(false), 2000);
+                onClick={() => {
+                  if (onOpenShareModal) {
+                    onOpenShareModal(invoice);
+                  }
                 }}
                 className="cursor-pointer gap-1.5 rounded-xl border-blue-200 bg-blue-50/70 text-xs font-bold text-blue-700 shadow-2xs hover:bg-blue-100"
               >
-                {copiedNumber ? (
-                  <>
-                    <Check className="h-3.5 w-3.5 text-emerald-600" />
-                    <span>Link Copied!</span>
-                  </>
-                ) : (
-                  <>
-                    <ExternalLink className="h-3.5 w-3.5 text-blue-600" />
-                    <span>Share Pay Link</span>
-                  </>
-                )}
+                <ExternalLink className="h-3.5 w-3.5 text-blue-600" />
+                <span>Share Pay Link</span>
               </Button>
             </div>
 
@@ -301,10 +293,10 @@ ${invoice.items.map((it) => `• ${it.description} — ${it.quantity}x @ $${it.u
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">
-                  Hosted Client Checkout Simulator
+                  Hosted Client Checkout Portal
                 </span>
-                <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-bold text-blue-700">
-                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-blue-500" />
+                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
                   Stripe & Apple Pay Ready
                 </span>
               </div>
@@ -313,24 +305,23 @@ ${invoice.items.map((it) => `• ${it.description} — ${it.quantity}x @ $${it.u
                 <div className="flex items-center justify-between gap-3">
                   <div className="min-w-0">
                     <p className="truncate font-mono text-xs font-semibold text-slate-800">
-                      https://flowpilot.app/pay/tok_{invoice.id.slice(0, 10)}
+                      /pay/[token] • Multi-Tenant Online Settlement
                     </p>
                     <p className="text-[10px] text-slate-400">
-                      Client-facing zero-friction hosted portal with automated HMAC verification
+                      Zero-friction client checkout with WhatsApp, Email & dynamic QR code
                     </p>
                   </div>
                   <Button
                     size="sm"
                     variant="outline"
-                    onClick={async () => {
-                      const payUrl = `https://flowpilot.app/pay/tok_${invoice.id.slice(0, 10)}`;
-                      await navigator.clipboard.writeText(payUrl);
-                      setCopiedSummary(true);
-                      setTimeout(() => setCopiedSummary(false), 2000);
+                    onClick={() => {
+                      if (onOpenShareModal) {
+                        onOpenShareModal(invoice);
+                      }
                     }}
-                    className="h-7.5 shrink-0 rounded-lg border-slate-200 bg-white text-[11px] font-bold text-slate-700 shadow-2xs hover:bg-slate-100"
+                    className="h-7.5 shrink-0 rounded-lg border-blue-200 bg-blue-50 text-[11px] font-bold text-blue-700 shadow-2xs hover:bg-blue-100"
                   >
-                    Copy Link
+                    Open Share Hub
                   </Button>
                 </div>
               </div>
