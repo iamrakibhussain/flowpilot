@@ -126,10 +126,12 @@ const staticCommandEntries: CommandEntry[] = [
   {
     id: "nav-team",
     title: "Team & Staff Directory",
-    description: "Manage organization memberships, staff roles, and permissions.",
+    description: "Manage workforce capacity, specialist qualifications, and attributed revenue.",
     category: "Navigation",
-    href: "/dashboard",
+    href: "/dashboard/staff",
     icon: ShieldCheck,
+    badge: "Live",
+    badgeVariant: "success",
   },
   {
     id: "nav-settings",
