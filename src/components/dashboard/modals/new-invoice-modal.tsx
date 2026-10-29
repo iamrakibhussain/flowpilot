@@ -26,6 +26,7 @@ import {
   useDashboardCustomersData,
   useDashboardMutations,
 } from "@/features/dashboard/use-dashboard";
+import { useServices } from "@/features/services/use-services";
 
 interface LineItem {
   id: string;
@@ -41,6 +42,7 @@ export interface NewInvoiceModalProps {
 
 export function NewInvoiceModal({ isOpen, onClose }: NewInvoiceModalProps) {
   const customersQuery = useDashboardCustomersData();
+  const servicesQuery = useServices({ activeOnly: true });
   const { createInvoice } = useDashboardMutations();
 
   const [selectedClient, setSelectedClient] = React.useState<string>("");
@@ -60,6 +62,7 @@ export function NewInvoiceModal({ isOpen, onClose }: NewInvoiceModalProps) {
   const [createdRefCode, setCreatedRefCode] = React.useState("");
 
   const customers = customersQuery.data ?? [];
+  const services = servicesQuery.data ?? [];
   const activeClient =
     customers.length > 0
       ? selectedClient === "__new__"
@@ -83,6 +86,18 @@ export function NewInvoiceModal({ isOpen, onClose }: NewInvoiceModalProps) {
         id: `item-${Date.now()}`,
         description: "Consultation / Service Hours",
         rate: 200,
+        quantity: 1,
+      },
+    ]);
+  };
+
+  const addServiceLineItem = (srv: { name: string; price: number }) => {
+    setLineItems((prev) => [
+      ...prev,
+      {
+        id: `item-${Date.now()}-${prev.length + 1}`,
+        description: srv.name,
+        rate: Number(srv.price) || 0,
         quantity: 1,
       },
     ]);
@@ -259,18 +274,42 @@ export function NewInvoiceModal({ isOpen, onClose }: NewInvoiceModalProps) {
 
             {/* Line Items Table Builder */}
             <div className="space-y-2">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-wrap items-center justify-between gap-2">
                 <Label className="text-xs font-semibold text-slate-700">Itemized Line Items</Label>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={addLineItem}
-                  className="text-primary h-7 rounded-lg text-[11px] font-semibold"
-                >
-                  <Plus className="mr-1 h-3 w-3" />
-                  Add Line
-                </Button>
+                <div className="flex items-center gap-2">
+                  {services.length > 0 && (
+                    <select
+                      defaultValue=""
+                      onChange={(e) => {
+                        const selected = services.find((s) => s.id === e.target.value);
+                        if (selected) {
+                          addServiceLineItem(selected);
+                          e.target.value = "";
+                        }
+                      }}
+                      className="h-7 rounded-lg border border-slate-200 bg-white px-2 text-[11px] font-semibold text-slate-700 shadow-2xs outline-none hover:bg-slate-50 focus:ring-1 focus:ring-blue-500"
+                    >
+                      <option value="" disabled>
+                        + Add from Service...
+                      </option>
+                      {services.map((s) => (
+                        <option key={s.id} value={s.id}>
+                          {s.name} (${s.price})
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={addLineItem}
+                    className="text-primary h-7 rounded-lg text-[11px] font-semibold"
+                  >
+                    <Plus className="mr-1 h-3 w-3" />
+                    Add Line
+                  </Button>
+                </div>
               </div>
 
               <div className="overflow-x-auto rounded-xl border border-slate-200 bg-slate-50/50 p-2">

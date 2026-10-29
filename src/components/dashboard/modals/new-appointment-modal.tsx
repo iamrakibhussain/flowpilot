@@ -27,6 +27,7 @@ import {
   useOnDutyStaffData,
   useDashboardMutations,
 } from "@/features/dashboard/use-dashboard";
+import { useServices } from "@/features/services/use-services";
 
 export interface NewAppointmentModalProps {
   isOpen: boolean;
@@ -36,6 +37,7 @@ export interface NewAppointmentModalProps {
 export function NewAppointmentModal({ isOpen, onClose }: NewAppointmentModalProps) {
   const customersQuery = useDashboardCustomersData();
   const staffQuery = useOnDutyStaffData();
+  const servicesQuery = useServices({ activeOnly: true });
   const { createAppointment } = useDashboardMutations();
 
   const [selectedClient, setSelectedClient] = React.useState<string>("");
@@ -43,6 +45,7 @@ export function NewAppointmentModal({ isOpen, onClose }: NewAppointmentModalProp
 
   const customers = customersQuery.data ?? [];
   const staffMembers = staffQuery.data ?? [];
+  const services = servicesQuery.data ?? [];
 
   const activeClient =
     customers.length > 0
@@ -51,7 +54,10 @@ export function NewAppointmentModal({ isOpen, onClose }: NewAppointmentModalProp
         : selectedClient || customers[0]?.name || ""
       : customClientName || selectedClient;
 
-  const [service, setService] = React.useState("Strategy Audit (60 min • $500)");
+  const [selectedServiceId, setSelectedServiceId] = React.useState<string>("");
+  const [fallbackService, setFallbackService] = React.useState("Strategy Audit (60 min • $500)");
+
+  const activeService = services.find((s) => s.id === selectedServiceId) || services[0];
 
   const [selectedStaff, setSelectedStaff] = React.useState<string>("");
   const activeStaff = selectedStaff || (staffMembers[0]?.name ?? "Account Specialist");
@@ -82,12 +88,13 @@ export function NewAppointmentModal({ isOpen, onClose }: NewAppointmentModalProp
     try {
       await createAppointment({
         customerName: activeClient,
-        serviceTitle: service.split("(")[0].trim(),
+        serviceId: activeService?.id,
+        serviceTitle: activeService ? activeService.name : fallbackService.split("(")[0].trim(),
         staffName: activeStaff.split("(")[0].trim(),
         date: date,
         time: time,
         locationType: locationType,
-        durationMinutes: 60,
+        durationMinutes: activeService?.durationMinutes ?? 60,
       });
       setIsSuccess(true);
       setTimeout(() => {
@@ -198,22 +205,37 @@ export function NewAppointmentModal({ isOpen, onClose }: NewAppointmentModalProp
                 <Label htmlFor="apt-service" className="text-xs font-semibold text-slate-700">
                   Service Package
                 </Label>
-                <select
-                  id="apt-service"
-                  value={service}
-                  onChange={(e) => setService(e.target.value)}
-                  className="focus:border-primary focus:ring-primary/20 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-xs font-medium text-slate-800 shadow-2xs outline-none focus:ring-2"
-                >
-                  <option value="Strategy Audit (60 min • $500)">
-                    Strategy Audit (60 min • $500)
-                  </option>
-                  <option value="Operations Review (90 min • $1,450)">
-                    Operations Review (90 min • $1,450)
-                  </option>
-                  <option value="Workflow Consultation (45 min • $350)">
-                    Workflow Consultation (45 min • $350)
-                  </option>
-                </select>
+                {services.length > 0 ? (
+                  <select
+                    id="apt-service"
+                    value={activeService?.id ?? ""}
+                    onChange={(e) => setSelectedServiceId(e.target.value)}
+                    className="focus:border-primary focus:ring-primary/20 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-xs font-medium text-slate-800 shadow-2xs outline-none focus:ring-2"
+                  >
+                    {services.map((s) => (
+                      <option key={s.id} value={s.id}>
+                        {s.name} ({s.durationMinutes} min • ${s.price})
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <select
+                    id="apt-service"
+                    value={fallbackService}
+                    onChange={(e) => setFallbackService(e.target.value)}
+                    className="focus:border-primary focus:ring-primary/20 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-xs font-medium text-slate-800 shadow-2xs outline-none focus:ring-2"
+                  >
+                    <option value="Strategy Audit (60 min • $500)">
+                      Strategy Audit (60 min • $500)
+                    </option>
+                    <option value="Operations Review (90 min • $1,450)">
+                      Operations Review (90 min • $1,450)
+                    </option>
+                    <option value="Workflow Consultation (45 min • $350)">
+                      Workflow Consultation (45 min • $350)
+                    </option>
+                  </select>
+                )}
               </div>
 
               <div className="space-y-1.5">

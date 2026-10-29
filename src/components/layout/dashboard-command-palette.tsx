@@ -88,6 +88,16 @@ const staticCommandEntries: CommandEntry[] = [
     icon: LayoutDashboard,
   },
   {
+    id: "nav-services",
+    title: "Services & Offerings Catalog",
+    description: "Manage bookable services, buffer timing, and deposit rules.",
+    category: "Navigation",
+    href: "/dashboard/services",
+    icon: Sparkles,
+    badge: "Live",
+    badgeVariant: "success",
+  },
+  {
     id: "nav-customers",
     title: "Customers (CRM)",
     description: "View client records, interaction history, and active tiers.",

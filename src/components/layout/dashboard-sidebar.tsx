@@ -63,6 +63,13 @@ const navSections: NavSection[] = [
     items: [
       { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
       {
+        name: "Services & Catalog",
+        href: "/dashboard/services",
+        icon: Sparkles,
+        badge: "Live",
+        badgeVariant: "success",
+      },
+      {
         name: "Invoices & Billing",
         href: "/dashboard/invoices",
         icon: FileText,
