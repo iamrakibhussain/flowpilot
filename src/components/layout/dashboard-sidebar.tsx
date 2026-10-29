@@ -95,7 +95,13 @@ const navSections: NavSection[] = [
   {
     title: "Management & Growth",
     items: [
-      { name: "Team & Staff", href: "/dashboard#staff", icon: ShieldCheck },
+      {
+        name: "Team & Staff",
+        href: "/dashboard/staff",
+        icon: ShieldCheck,
+        badge: "Live",
+        badgeVariant: "success",
+      },
       {
         name: "Analytics & Reports",
         href: "/dashboard#analytics",

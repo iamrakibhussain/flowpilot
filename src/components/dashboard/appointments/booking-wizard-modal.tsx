@@ -12,7 +12,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Calendar, Video, MapPin, Phone, AlertTriangle, RefreshCw, Search, X } from "lucide-react";
+import {
+  Calendar,
+  Video,
+  MapPin,
+  Phone,
+  AlertTriangle,
+  RefreshCw,
+  Search,
+  X,
+  Clock,
+} from "lucide-react";
 import { useCustomers } from "@/features/customers/use-customers";
 import {
   useCreateAppointment,
@@ -28,6 +38,7 @@ interface BookingWizardModalProps {
   initialDate?: string;
   initialTime?: string;
   preselectedCustomerId?: string;
+  preselectedStaffId?: string;
   organizationId?: string;
 }
 
@@ -36,6 +47,7 @@ interface BookingWizardFormProps {
   initialDate?: string;
   initialTime?: string;
   preselectedCustomerId?: string;
+  preselectedStaffId?: string;
   organizationId?: string;
 }
 
@@ -44,6 +56,7 @@ function BookingWizardForm({
   initialDate,
   initialTime,
   preselectedCustomerId,
+  preselectedStaffId,
   organizationId,
 }: BookingWizardFormProps) {
   const { data: customerData } = useCustomers({ status: "ACTIVE", limit: 100 });
@@ -70,7 +83,7 @@ function BookingWizardForm({
   const [isCustomerDropdownOpen, setIsCustomerDropdownOpen] = React.useState(false);
 
   const [serviceId, setServiceId] = React.useState("");
-  const [staffMemberId, setStaffMemberId] = React.useState("");
+  const [staffMemberId, setStaffMemberId] = React.useState(preselectedStaffId ?? "");
   const [date, setDate] = React.useState(defaultDate);
   const [time, setTime] = React.useState(initialTime ?? "10:00");
   const [duration, setDuration] = React.useState(60);
@@ -109,6 +122,32 @@ function BookingWizardForm({
       }
     }
   };
+
+  // Selected specialist details for smart schedule validation
+  const selectedStaff = React.useMemo(
+    () => staffMembers.find((sm) => sm.id === staffMemberId),
+    [staffMembers, staffMemberId]
+  );
+
+  const scheduleNotice = React.useMemo(() => {
+    if (!selectedStaff || !date) return null;
+    const dayMap = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+    const d = new Date(`${date}T12:00:00`);
+    if (isNaN(d.getTime())) return null;
+    const dayCode = dayMap[d.getDay()];
+
+    if (selectedStaff.workingDays && selectedStaff.workingDays.length > 0) {
+      if (!selectedStaff.workingDays.includes(dayCode)) {
+        return `Schedule Notice: ${selectedStaff.name} does not regularly work on ${dayCode}s (Active shift: ${selectedStaff.workingDays.join(", ")}).`;
+      }
+    }
+    if (selectedStaff.shiftStart && selectedStaff.shiftEnd && time) {
+      if (time < selectedStaff.shiftStart || time > selectedStaff.shiftEnd) {
+        return `Outside Shift: ${selectedStaff.name}'s standard hours are ${selectedStaff.shiftStart} – ${selectedStaff.shiftEnd}.`;
+      }
+    }
+    return null;
+  }, [selectedStaff, date, time]);
 
   // Instant Conflict Pre-flight Check
   React.useEffect(() => {
@@ -217,6 +256,19 @@ function BookingWizardForm({
           <div>
             <p className="font-extrabold text-rose-900">Scheduling Collision Warning</p>
             <p className="mt-0.5 text-[11px] leading-relaxed text-rose-700">{conflictAlert}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Schedule Shift Warning */}
+      {scheduleNotice && !conflictAlert && (
+        <div className="flex items-start gap-3 rounded-2xl border border-amber-200/90 bg-amber-50/95 p-3.5 text-xs text-amber-800 shadow-xs">
+          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-600">
+            <Clock className="h-3.5 w-3.5" />
+          </div>
+          <div>
+            <p className="font-extrabold text-amber-900">Shift Availability Notice</p>
+            <p className="mt-0.5 text-[11px] leading-relaxed text-amber-700">{scheduleNotice}</p>
           </div>
         </div>
       )}
@@ -353,11 +405,16 @@ function BookingWizardForm({
             className="flex h-10 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-800 shadow-2xs focus:border-blue-500 focus:outline-none"
           >
             <option value="">General Staff Pool / Unassigned</option>
-            {staffMembers.map((sm) => (
-              <option key={sm.id} value={sm.id}>
-                {sm.name} ({sm.roleTitle})
-              </option>
-            ))}
+            {staffMembers.map((sm) => {
+              const isCertified = serviceId
+                ? (sm.services || []).some((s) => s.id === serviceId)
+                : false;
+              return (
+                <option key={sm.id} value={sm.id}>
+                  {sm.name} ({sm.roleTitle}){serviceId ? (isCertified ? " • Certified" : "") : ""}
+                </option>
+              );
+            })}
           </select>
         </div>
       </div>
@@ -533,6 +590,7 @@ export function BookingWizardModal({
   initialDate,
   initialTime,
   preselectedCustomerId,
+  preselectedStaffId,
   organizationId,
 }: BookingWizardModalProps) {
   if (!isOpen) return null;
@@ -564,6 +622,7 @@ export function BookingWizardModal({
           initialDate={initialDate}
           initialTime={initialTime}
           preselectedCustomerId={preselectedCustomerId}
+          preselectedStaffId={preselectedStaffId}
           organizationId={organizationId}
         />
       </DialogContent>

@@ -91,6 +91,7 @@ export interface ConflictCheckResult {
 export interface ServiceItem {
   id: string;
   organizationId: string;
+  userId?: string | null;
   name: string;
   description?: string | null;
   price: number;
@@ -100,15 +101,33 @@ export interface ServiceItem {
   updatedAt: string;
 }
 
+export interface StaffServiceItem {
+  id: string;
+  name: string;
+  price: number;
+  durationMinutes: number;
+}
+
 export interface StaffItem {
   id: string;
   organizationId: string;
   name: string;
   roleTitle: string;
   email?: string | null;
+  phone?: string | null;
   initials: string;
   avatarBg: string;
   status: StaffStatusType;
+  tier?: "FULL_TIME" | "PART_TIME" | "CONTRACTOR";
+  hourlyRate?: number | null;
+  commissionRate?: number | null;
+  workingDays?: string[];
+  shiftStart?: string;
+  shiftEnd?: string;
+  bio?: string | null;
+  services?: StaffServiceItem[];
+  appointmentCount?: number;
+  revenueGenerated?: number;
   createdAt: string;
   updatedAt: string;
 }

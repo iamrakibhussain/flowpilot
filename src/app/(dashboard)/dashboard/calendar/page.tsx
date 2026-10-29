@@ -93,6 +93,20 @@ export default function CalendarPage() {
   const [isMobileRailOpen, setIsMobileRailOpen] = React.useState(false);
 
   // Current time position for live laser indicator
+  // Auto-filter by staff member if passed in URL query parameter (?staffId=...)
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const staffParam = urlParams.get("staffId");
+      if (staffParam) {
+        const timer = setTimeout(() => {
+          setSelectedStaffId(staffParam);
+        }, 0);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, []);
+
   const [nowDate, setNowDate] = React.useState<Date>(() => new Date());
   React.useEffect(() => {
     const timer = setInterval(() => setNowDate(new Date()), 30000); // 30s precision
@@ -1541,6 +1555,7 @@ export default function CalendarPage() {
         onClose={() => setIsBookingModalOpen(false)}
         initialDate={bookingInitialDate}
         initialTime={bookingInitialTime}
+        preselectedStaffId={selectedStaffId !== "ALL" ? selectedStaffId : undefined}
         organizationId={currentOrganizationId}
       />
 

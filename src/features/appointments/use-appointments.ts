@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useWorkspaceSession } from "@/features/organizations/use-workspace-session";
 import {
   getAppointments,
   getAppointmentById,
@@ -33,19 +34,36 @@ export const appointmentKeys = {
   staff: (orgId?: string) => ["staff", orgId] as const,
 };
 
-export function useAppointments(params?: ListAppointmentsParams, organizationId?: string) {
+export function useResolvedOrgId(): string {
+  const { organizationId } = useWorkspaceSession();
+  if (organizationId) return organizationId;
+  if (typeof window !== "undefined") {
+    const cached = localStorage.getItem("flowpilot_active_org");
+    if (cached) return cached;
+  }
+  return "";
+}
+
+export function useAppointments(params?: ListAppointmentsParams, explicitOrgId?: string) {
+  const resolvedOrgId = useResolvedOrgId();
+  const organizationId = explicitOrgId || resolvedOrgId;
+
   return useQuery({
     queryKey: appointmentKeys.list(organizationId, params),
     queryFn: () => getAppointments(params, organizationId),
+    enabled: Boolean(organizationId),
     staleTime: 1000 * 30, // 30 seconds
   });
 }
 
-export function useAppointment(id: string, organizationId?: string) {
+export function useAppointment(id: string, explicitOrgId?: string) {
+  const resolvedOrgId = useResolvedOrgId();
+  const organizationId = explicitOrgId || resolvedOrgId;
+
   return useQuery({
     queryKey: appointmentKeys.detail(organizationId, id),
     queryFn: () => getAppointmentById(id, organizationId),
-    enabled: Boolean(id),
+    enabled: Boolean(id) && Boolean(organizationId),
   });
 }
 
@@ -171,18 +189,26 @@ export function useCheckConflict() {
   });
 }
 
-export function useServices(activeOnly = false, organizationId?: string) {
+export function useServices(activeOnly = false, explicitOrgId?: string) {
+  const resolvedOrgId = useResolvedOrgId();
+  const organizationId = explicitOrgId || resolvedOrgId;
+
   return useQuery({
     queryKey: appointmentKeys.services(organizationId, activeOnly),
     queryFn: () => getServices(activeOnly, organizationId),
+    enabled: Boolean(organizationId),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 }
 
-export function useStaffMembers(organizationId?: string) {
+export function useStaffMembers(explicitOrgId?: string) {
+  const resolvedOrgId = useResolvedOrgId();
+  const organizationId = explicitOrgId || resolvedOrgId;
+
   return useQuery({
     queryKey: appointmentKeys.staff(organizationId),
     queryFn: () => getStaffMembers(organizationId),
+    enabled: Boolean(organizationId),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 }
