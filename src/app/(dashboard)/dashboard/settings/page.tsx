@@ -34,6 +34,10 @@ import {
   Globe,
   Sun,
   Moon,
+  Copy,
+  CheckCheck,
+  Landmark,
+  Activity,
 } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
@@ -149,6 +153,7 @@ export default function WorkspaceSettingsPage() {
 
   const [activeTab, setActiveTab] = React.useState<SettingsTab>("general");
   const [copiedLink, setCopiedLink] = React.useState(false);
+  const [copiedCname, setCopiedCname] = React.useState(false);
 
   // Settings Queries & Mutations
   const { data: settings, isLoading: isSettingsLoading } = useOrganizationSettings();
@@ -407,6 +412,16 @@ export default function WorkspaceSettingsPage() {
     }
   };
 
+  const handleCopyCname = async () => {
+    try {
+      await navigator.clipboard.writeText("cname.flowpilot.app");
+      setCopiedCname(true);
+      setTimeout(() => setCopiedCname(false), 2000);
+    } catch {
+      // Fallback
+    }
+  };
+
   // ==========================================
   // SECURITY & CREDENTIALS TAB STATE & LOGIC
   // ==========================================
@@ -584,29 +599,41 @@ export default function WorkspaceSettingsPage() {
       />
 
       {/* Enterprise Multi-Tenant Telemetry Strip */}
-      <div className="border-border/80 bg-card/70 text-muted-foreground flex w-full max-w-full min-w-0 flex-col justify-between gap-2 rounded-xl border px-3.5 py-2 text-[11px] shadow-2xs backdrop-blur-md sm:flex-row sm:items-center">
+      <div className="border-border/70 from-card/90 via-card/75 to-card/90 flex w-full max-w-full min-w-0 flex-col justify-between gap-2.5 rounded-2xl border bg-gradient-to-r p-3 text-[11px] shadow-xs backdrop-blur-xl sm:flex-row sm:items-center">
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-          <span className="text-foreground flex items-center gap-1.5 font-semibold">
+          <span className="flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 font-semibold text-emerald-600 dark:text-emerald-400">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
             </span>
-            Workspace Configuration Engine Active
+            Configuration Engine Live
           </span>
           <span className="text-border hidden sm:inline">•</span>
-          <span className="font-mono text-[10px]">Multi-Tenant: {organizationName}</span>
+          <div className="flex items-center gap-1.5 font-mono text-[11px]">
+            <span className="text-muted-foreground">Tenant:</span>
+            <span className="text-foreground font-bold">{organizationName}</span>
+          </div>
           <span className="text-border hidden md:inline">•</span>
-          <span className="text-primary font-mono text-[10px] font-bold">
-            Role: {organizationRole}
-          </span>
+          <div className="flex items-center gap-1.5">
+            <span className="text-muted-foreground text-[10px]">Privilege:</span>
+            <Badge
+              variant="outline"
+              className="border-blue-500/30 bg-blue-500/10 font-mono text-[10px] font-bold text-blue-600 dark:text-blue-400"
+            >
+              {organizationRole}
+            </Badge>
+          </div>
         </div>
-        <div className="flex items-center gap-2 font-medium">
+        <div className="flex items-center gap-2.5 font-medium">
           <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
             <ShieldCheck className="h-3.5 w-3.5" />
-            RBAC Protected
+            <span>RBAC Protected</span>
           </span>
           <span className="text-border">•</span>
-          <span className="text-primary font-semibold">PostgreSQL Isolated</span>
+          <span className="flex items-center gap-1 text-blue-600 dark:text-blue-400">
+            <Activity className="h-3.5 w-3.5" />
+            <span>PostgreSQL Isolated</span>
+          </span>
         </div>
       </div>
 
@@ -658,16 +685,21 @@ export default function WorkspaceSettingsPage() {
         </div>
       )}
 
-      {/* Tab Navigation Segmented Bar */}
-      <div className="border-border/80 border-b">
-        <div className="no-scrollbar flex items-center gap-1.5 overflow-x-auto pb-2 text-xs font-semibold">
+      {/* Modern Segmented Pill Track Navigation */}
+      <div className="border-border/70 bg-muted/40 rounded-2xl border p-1.5 shadow-2xs backdrop-blur-md">
+        <div className="no-scrollbar flex items-center gap-1 overflow-x-auto text-xs font-semibold">
           {[
             { id: "general", label: "General & Branding", icon: Building2 },
             { id: "finance", label: "Finance & Invoicing", icon: DollarSign },
             { id: "booking", label: "Scheduling & Policies", icon: Calendar },
             { id: "notifications", label: "Alerts & Notifications", icon: Bell },
             { id: "security", label: "Security & Credentials", icon: Shield },
-            { id: "audit", label: "Audit & History", icon: History },
+            {
+              id: "audit",
+              label: "Audit & History",
+              icon: History,
+              count: auditLogs.length,
+            },
           ].map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -676,14 +708,33 @@ export default function WorkspaceSettingsPage() {
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveTab(tab.id as SettingsTab)}
-                className={`flex shrink-0 cursor-pointer items-center gap-1.5 rounded-xl border px-3.5 py-2 transition-all ${
+                className={`group flex shrink-0 cursor-pointer items-center gap-2 rounded-xl px-4 py-2.5 text-xs transition-all duration-200 ${
                   isActive
-                    ? "border-blue-600 bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xs"
-                    : "border-border/80 bg-card text-muted-foreground hover:border-border hover:text-foreground"
+                    ? "bg-background text-foreground ring-border/80 font-bold shadow-xs ring-1"
+                    : "text-muted-foreground hover:bg-background/60 hover:text-foreground font-medium"
                 }`}
               >
-                <Icon className="h-3.5 w-3.5" />
+                <div
+                  className={`flex h-6 w-6 items-center justify-center rounded-lg transition-colors ${
+                    isActive
+                      ? "bg-primary/10 text-primary"
+                      : "text-muted-foreground group-hover:text-foreground"
+                  }`}
+                >
+                  <Icon className="h-3.5 w-3.5" />
+                </div>
                 <span>{tab.label}</span>
+                {tab.count !== undefined && tab.count > 0 && (
+                  <span
+                    className={`py-0.2 ml-1 rounded-full px-1.5 font-mono text-[10px] ${
+                      isActive
+                        ? "bg-primary/15 text-primary font-bold"
+                        : "bg-muted text-muted-foreground"
+                    }`}
+                  >
+                    {tab.count}
+                  </span>
+                )}
               </button>
             );
           })}
@@ -714,13 +765,18 @@ export default function WorkspaceSettingsPage() {
           {/* Main Form Inputs */}
           <div className="space-y-6 lg:col-span-2">
             <Card className="border-border/80 from-card to-card/95 bg-gradient-to-b shadow-xs">
-              <CardHeader>
-                <CardTitle className="text-foreground text-base font-bold">
-                  Company Profile &amp; Identity
-                </CardTitle>
-                <CardDescription className="text-muted-foreground text-xs">
-                  Legal enterprise name, logo asset, and client-facing branding details.
-                </CardDescription>
+              <CardHeader className="flex flex-row items-start gap-3.5 pb-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-blue-500/20 bg-blue-500/10 text-blue-600 shadow-2xs dark:text-blue-400">
+                  <Building2 className="h-5 w-5" />
+                </div>
+                <div className="space-y-1">
+                  <CardTitle className="text-foreground text-base font-bold">
+                    Company Profile &amp; Identity
+                  </CardTitle>
+                  <CardDescription className="text-muted-foreground text-xs">
+                    Legal enterprise name, logo asset, and client-facing branding details.
+                  </CardDescription>
+                </div>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -1113,13 +1169,27 @@ export default function WorkspaceSettingsPage() {
                               : "book"}
                           </span>
                         </div>
-                        <div className="border-border/60 bg-background rounded-lg border p-2">
-                          <span className="text-muted-foreground block text-[9px] uppercase">
-                            Target / Value
-                          </span>
-                          <span className="text-primary block truncate font-bold">
-                            cname.flowpilot.app
-                          </span>
+                        <div className="border-border/60 bg-background flex items-center justify-between rounded-lg border p-2">
+                          <div className="min-w-0 flex-1">
+                            <span className="text-muted-foreground block text-[9px] uppercase">
+                              Target / Value
+                            </span>
+                            <span className="text-primary block truncate font-bold">
+                              cname.flowpilot.app
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={handleCopyCname}
+                            className="text-muted-foreground hover:text-foreground hover:bg-muted ml-1 flex h-6 w-6 items-center justify-center rounded-md p-0.5 transition"
+                            title="Copy CNAME target"
+                          >
+                            {copiedCname ? (
+                              <Check className="h-3 w-3 text-emerald-500" />
+                            ) : (
+                              <Copy className="h-3 w-3" />
+                            )}
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -1131,26 +1201,40 @@ export default function WorkspaceSettingsPage() {
 
           {/* Right Column: Live Brand & Portal Preview Card */}
           <div className="space-y-6">
-            <Card className="border-border/80 from-card to-card/90 sticky top-6 overflow-hidden bg-gradient-to-b shadow-xs">
+            <Card className="border-border/80 from-card to-card/90 sticky top-6 overflow-hidden bg-gradient-to-b shadow-md">
+              {/* Browser Window Header Mockup */}
+              <div className="border-border/60 bg-muted/40 flex items-center justify-between border-b px-3.5 py-2.5">
+                <div className="flex items-center gap-1.5">
+                  <div className="h-2.5 w-2.5 rounded-full bg-rose-500/80 shadow-2xs" />
+                  <div className="h-2.5 w-2.5 rounded-full bg-amber-500/80 shadow-2xs" />
+                  <div className="h-2.5 w-2.5 rounded-full bg-emerald-500/80 shadow-2xs" />
+                </div>
+                <div className="border-border/60 bg-background/80 text-muted-foreground flex max-w-[210px] flex-1 items-center justify-center gap-1.5 truncate rounded-lg border px-2 py-0.5 font-mono text-[10px]">
+                  <Globe className="h-2.5 w-2.5 shrink-0 text-blue-500" />
+                  <span className="truncate">
+                    flowpilot.app/book/{formData.slug || settings?.slug || "my-business"}
+                  </span>
+                </div>
+                <a
+                  href={`/book/${formData.slug || settings?.slug || "my-business"}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-foreground flex h-6 w-6 items-center justify-center rounded-md transition"
+                  title="Open live preview in new tab"
+                >
+                  <ExternalLink className="h-3 w-3" />
+                </a>
+              </div>
+
               {/* Dynamic Brand Color Accent Strip */}
               <div
                 className="h-1.5 w-full transition-colors duration-300"
                 style={{ backgroundColor: formData.brandColor || "#2563eb" }}
               />
-              <div className="border-border/60 bg-muted/30 border-b px-4 py-3">
-                <div className="flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                  <p className="text-foreground text-xs font-bold tracking-tight">
-                    Live Brand Card Preview
-                  </p>
-                </div>
-                <p className="text-muted-foreground text-[10px]">
-                  Real-time preview of your brand identity
-                </p>
-              </div>
+
               <CardContent className="space-y-4 p-5">
+                {/* Brand Monogram or Uploaded Image */}
                 <div className="border-border/80 bg-card space-y-4 rounded-2xl border p-4 shadow-2xs">
-                  {/* Brand Monogram or Image */}
                   <div className="flex items-center gap-3">
                     {formData.logoUrl ? (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -1180,22 +1264,40 @@ export default function WorkspaceSettingsPage() {
                     </div>
                   </div>
 
-                  <div className="border-border/60 border-t pt-3 text-[11px]">
-                    <span className="text-muted-foreground block font-medium">
-                      Public Client Portal:
-                    </span>
-                    <span className="text-primary truncate font-mono font-semibold">
-                      flowpilot.app/book/{formData.slug || settings?.slug || "my-business"}
-                    </span>
-                    {formData.customDomain && (
-                      <div className="mt-1 flex items-center gap-1 text-[10px]">
-                        <span className="text-muted-foreground">White-Label:</span>
-                        <span className="truncate font-mono font-medium text-emerald-600 dark:text-emerald-400">
-                          https://{formData.customDomain}
-                        </span>
-                      </div>
-                    )}
+                  {/* Simulated Client Booking Experience Mini-Widget */}
+                  <div className="border-border/60 bg-muted/20 space-y-2.5 rounded-xl border p-3">
+                    <div className="flex items-center justify-between text-[11px]">
+                      <span className="text-muted-foreground font-medium">Selected Offering:</span>
+                      <span className="text-foreground font-semibold">Strategy Consultation</span>
+                    </div>
+
+                    {/* Simulated Dynamic CTA Button */}
+                    <div
+                      className="flex h-8 w-full items-center justify-center rounded-lg text-xs font-bold text-white shadow-xs transition-colors duration-300"
+                      style={{ backgroundColor: formData.brandColor || "#2563eb" }}
+                    >
+                      <Sparkles className="mr-1.5 h-3 w-3" />
+                      Book Client Session
+                    </div>
+
+                    <div className="text-muted-foreground flex items-center justify-between pt-0.5 text-[10px]">
+                      <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
+                        <CheckCircle2 className="h-3 w-3" /> Verified Gateway
+                      </span>
+                      <span className="font-mono">{formData.brandColor || "#2563eb"}</span>
+                    </div>
                   </div>
+
+                  {formData.customDomain && (
+                    <div className="border-border/60 border-t pt-2.5 text-[11px]">
+                      <span className="text-muted-foreground block text-[10px]">
+                        Custom Domain Route:
+                      </span>
+                      <span className="truncate font-mono text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                        https://{formData.customDomain}
+                      </span>
+                    </div>
+                  )}
 
                   <div className="border-border/60 grid grid-cols-2 gap-2 border-t pt-2.5 text-[10px]">
                     <div>
@@ -1214,8 +1316,8 @@ export default function WorkspaceSettingsPage() {
                 </div>
 
                 <p className="text-muted-foreground text-center text-[10px] leading-relaxed">
-                  ✦ This brand identity is dynamically rendered across all customer invoice PDFs,
-                  self-scheduling portals, and executive statements.
+                  ✦ Dynamic brand styles propagate across client-facing booking interfaces, invoice
+                  statements, and digital receipts.
                 </p>
               </CardContent>
             </Card>
@@ -1227,14 +1329,19 @@ export default function WorkspaceSettingsPage() {
       {activeTab === "finance" && (
         <div className="space-y-6">
           <Card className="border-border/80 from-card to-card/95 bg-gradient-to-b shadow-xs">
-            <CardHeader>
-              <CardTitle className="text-foreground text-base font-bold">
-                Currency &amp; Tax Localization
-              </CardTitle>
-              <CardDescription className="text-muted-foreground text-xs">
-                Configure primary billing currency, business tax identification number, and default
-                invoice rates.
-              </CardDescription>
+            <CardHeader className="flex flex-row items-start gap-3.5 pb-4">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-500/10 text-emerald-600 shadow-2xs dark:text-emerald-400">
+                <DollarSign className="h-5 w-5" />
+              </div>
+              <div className="space-y-1">
+                <CardTitle className="text-foreground text-base font-bold">
+                  Currency &amp; Tax Localization
+                </CardTitle>
+                <CardDescription className="text-muted-foreground text-xs">
+                  Configure primary billing currency, business tax identification number, and
+                  default invoice rates.
+                </CardDescription>
+              </div>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -1341,17 +1448,19 @@ export default function WorkspaceSettingsPage() {
 
           {/* Bank Wire & Remittance Details */}
           <Card className="border-border/80 from-card to-card/95 bg-gradient-to-b shadow-xs">
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <CreditCard className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+            <CardHeader className="flex flex-row items-start gap-3.5 pb-4">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-blue-500/20 bg-blue-500/10 text-blue-600 shadow-2xs dark:text-blue-400">
+                <Landmark className="h-5 w-5" />
+              </div>
+              <div className="space-y-1">
                 <CardTitle className="text-foreground text-base font-bold">
                   Bank Remittance &amp; Payout Coordinates
                 </CardTitle>
+                <CardDescription className="text-muted-foreground text-xs">
+                  Rendered on client invoices for B2B direct bank deposit, ACH, and SWIFT wire
+                  transfers.
+                </CardDescription>
               </div>
-              <CardDescription className="text-muted-foreground text-xs">
-                Rendered on client invoices for B2B direct bank deposit, ACH, and SWIFT wire
-                transfers.
-              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -1467,14 +1576,19 @@ export default function WorkspaceSettingsPage() {
       {activeTab === "booking" && (
         <div className="space-y-6">
           <Card className="border-border/80 from-card to-card/95 bg-gradient-to-b shadow-xs">
-            <CardHeader>
-              <CardTitle className="text-foreground text-base font-bold">
-                Client Self-Scheduling Gateway Controls
-              </CardTitle>
-              <CardDescription className="text-muted-foreground text-xs">
-                Configure your public booking portal availability and client preparation
-                instructions.
-              </CardDescription>
+            <CardHeader className="flex flex-row items-start gap-3.5 pb-4">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-indigo-500/20 bg-indigo-500/10 text-indigo-600 shadow-2xs dark:text-indigo-400">
+                <Calendar className="h-5 w-5" />
+              </div>
+              <div className="space-y-1">
+                <CardTitle className="text-foreground text-base font-bold">
+                  Client Self-Scheduling Gateway Controls
+                </CardTitle>
+                <CardDescription className="text-muted-foreground text-xs">
+                  Configure your public booking portal availability and client preparation
+                  instructions.
+                </CardDescription>
+              </div>
             </CardHeader>
             <CardContent className="space-y-5">
               {/* Master Gateway Toggle */}
@@ -1628,14 +1742,19 @@ export default function WorkspaceSettingsPage() {
       {activeTab === "notifications" && (
         <div className="space-y-6">
           <Card className="border-border/80 from-card to-card/95 bg-gradient-to-b shadow-xs">
-            <CardHeader>
-              <CardTitle className="text-foreground text-base font-bold">
-                Automated Operational Alerts
-              </CardTitle>
-              <CardDescription className="text-muted-foreground text-xs">
-                Configure automated email dispatches for customer appointments, payment settlements,
-                and team updates.
-              </CardDescription>
+            <CardHeader className="flex flex-row items-start gap-3.5 pb-4">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-purple-500/20 bg-purple-500/10 text-purple-600 shadow-2xs dark:text-purple-400">
+                <Bell className="h-5 w-5" />
+              </div>
+              <div className="space-y-1">
+                <CardTitle className="text-foreground text-base font-bold">
+                  Automated Operational Alerts
+                </CardTitle>
+                <CardDescription className="text-muted-foreground text-xs">
+                  Configure automated email dispatches for customer appointments, payment
+                  settlements, and team updates.
+                </CardDescription>
+              </div>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="divide-border/60 divide-y">
@@ -1708,13 +1827,18 @@ export default function WorkspaceSettingsPage() {
           {/* Account Identity Card */}
           <Card className="border-border/80 from-card to-card/95 bg-gradient-to-b shadow-xs">
             <CardHeader className="flex flex-row items-center justify-between pb-4">
-              <div>
-                <CardTitle className="text-foreground text-base font-semibold">
-                  Account Identity
-                </CardTitle>
-                <CardDescription className="text-muted-foreground text-xs">
-                  Primary profile credentials associated with your authenticated session.
-                </CardDescription>
+              <div className="flex items-center gap-3.5">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-rose-500/20 bg-rose-500/10 text-rose-600 shadow-2xs dark:text-rose-400">
+                  <Shield className="h-5 w-5" />
+                </div>
+                <div>
+                  <CardTitle className="text-foreground text-base font-semibold">
+                    Account Identity
+                  </CardTitle>
+                  <CardDescription className="text-muted-foreground text-xs">
+                    Primary profile credentials associated with your authenticated session.
+                  </CardDescription>
+                </div>
               </div>
               <div className="flex items-center gap-2">
                 {session?.user?.isEmailVerified ? (
@@ -2119,7 +2243,7 @@ export default function WorkspaceSettingsPage() {
                   </p>
                 </div>
               ) : (
-                <div className="divide-border/60 divide-y">
+                <div className="before:bg-border/60 relative space-y-3 before:absolute before:top-3 before:bottom-3 before:left-4 before:w-[1.5px]">
                   {auditLogs.map((log) => {
                     const dateFormatted = new Date(log.createdAt).toLocaleString(undefined, {
                       year: "numeric",
@@ -2151,11 +2275,11 @@ export default function WorkspaceSettingsPage() {
                     return (
                       <div
                         key={log.id}
-                        className="hover:bg-muted/40 flex flex-col gap-2 py-3.5 transition-colors sm:flex-row sm:items-center sm:justify-between"
+                        className="hover:bg-muted/30 relative flex flex-col gap-2 rounded-xl p-2.5 transition-colors sm:flex-row sm:items-center sm:justify-between"
                       >
-                        <div className="flex items-start gap-3">
-                          <div className="border-border/80 bg-background mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border text-xs font-bold">
-                            <span className="text-muted-foreground font-mono text-[11px]">
+                        <div className="flex items-start gap-3.5">
+                          <div className="border-border/80 bg-card z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-xs font-bold shadow-2xs">
+                            <span className="text-primary font-mono text-[10px]">
                               {log.userName.slice(0, 2).toUpperCase()}
                             </span>
                           </div>
@@ -2203,23 +2327,25 @@ export default function WorkspaceSettingsPage() {
 
       {/* Floating Save / Discard Changes Action Bar */}
       {isDirty && (
-        <div className="animate-in fade-in slide-in-from-bottom-5 fixed right-0 bottom-4 left-0 z-40 flex justify-center px-4">
-          <div className="border-border/80 bg-card/90 flex w-full max-w-2xl items-center justify-between gap-4 rounded-2xl border p-3 shadow-2xl backdrop-blur-md sm:px-5 sm:py-3.5">
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-2 w-2">
+        <div className="animate-in fade-in slide-in-from-bottom-5 fixed right-0 bottom-5 left-0 z-40 flex justify-center px-4">
+          <div className="border-border/80 bg-card/90 flex w-full max-w-xl items-center justify-between gap-4 rounded-full border p-2 pl-4 shadow-2xl backdrop-blur-xl sm:py-2 sm:pr-2.5 sm:pl-5">
+            <div className="flex items-center gap-2.5">
+              <span className="relative flex h-2.5 w-2.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-amber-500" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-amber-500 shadow-xs shadow-amber-500/50" />
               </span>
-              <span className="text-foreground text-xs font-bold">Unsaved workspace changes</span>
+              <span className="text-foreground text-xs font-bold tracking-tight">
+                Unsaved workspace changes
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <Button
                 type="button"
-                variant="outline"
+                variant="ghost"
                 size="sm"
                 onClick={handleDiscard}
                 disabled={updateSettingsMutation.isPending}
-                className="border-border/80 hover:bg-muted h-8.5 text-xs font-semibold"
+                className="hover:bg-muted/70 h-8 rounded-full px-3 text-xs font-semibold"
               >
                 <RotateCcw className="mr-1.5 h-3.5 w-3.5" />
                 Discard
@@ -2229,10 +2355,10 @@ export default function WorkspaceSettingsPage() {
                 size="sm"
                 onClick={handleSaveSettings}
                 disabled={updateSettingsMutation.isPending}
-                className="h-8.5 bg-gradient-to-r from-blue-600 to-indigo-600 px-4 text-xs font-bold text-white shadow-md shadow-blue-500/20 hover:from-blue-700 hover:to-indigo-700"
+                className="h-8.5 rounded-full bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 px-4.5 text-xs font-bold text-white shadow-md shadow-blue-500/25 transition-transform hover:scale-[1.02] active:scale-[0.98]"
               >
                 <Save className="mr-1.5 h-3.5 w-3.5" />
-                {updateSettingsMutation.isPending ? "Saving..." : "Save Workspace Changes"}
+                {updateSettingsMutation.isPending ? "Saving..." : "Save Changes"}
               </Button>
             </div>
           </div>
