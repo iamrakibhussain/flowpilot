@@ -111,7 +111,7 @@ const navSections: NavSection[] = [
       },
       {
         name: "Analytics & Reports",
-        href: "/dashboard#analytics",
+        href: "/dashboard/analytics",
         icon: BarChart3,
         badge: "Live",
         badgeVariant: "success",
@@ -190,28 +190,28 @@ export function DashboardSidebar({
             <button
               type="button"
               className={cn(
-                "group focus-visible:ring-primary flex w-full items-center rounded-xl border border-slate-200/80 bg-slate-50/70 p-2 text-left text-slate-800 shadow-2xs transition-all outline-none hover:bg-slate-100/80 focus-visible:ring-2",
+                "group focus-visible:ring-primary border-border/80 bg-muted/40 text-foreground hover:bg-muted/70 flex w-full items-center rounded-xl border p-2 text-left shadow-2xs transition-all outline-none focus-visible:ring-2",
                 collapsed ? "justify-center px-0 py-2" : "justify-between"
               )}
               title={displayOrgName}
             >
               <div className="flex items-center gap-2.5 truncate">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-tr from-slate-800 to-slate-900 text-xs font-bold text-white shadow-xs">
+                <div className="from-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-tr to-indigo-600 text-xs font-bold text-white shadow-xs">
                   {displayOrgName.charAt(0).toUpperCase()}
                 </div>
                 {!collapsed && (
                   <div className="truncate">
-                    <p className="truncate text-xs leading-tight font-bold text-slate-900">
+                    <p className="text-foreground truncate text-xs leading-tight font-bold">
                       {displayOrgName}
                     </p>
-                    <p className="text-[10px] font-medium tracking-wide text-slate-500 uppercase">
+                    <p className="text-muted-foreground text-[10px] font-medium tracking-wide uppercase">
                       {organizationRole} WORKSPACE
                     </p>
                   </div>
                 )}
               </div>
               {!collapsed && (
-                <ChevronDown className="h-3.5 w-3.5 shrink-0 text-slate-400 transition-transform group-data-[state=open]:rotate-180" />
+                <ChevronDown className="text-muted-foreground h-3.5 w-3.5 shrink-0 transition-transform group-data-[state=open]:rotate-180" />
               )}
             </button>
           </DropdownMenuTrigger>
@@ -219,9 +219,9 @@ export function DashboardSidebar({
           <DropdownMenuContent
             align="start"
             sideOffset={6}
-            className="w-64 rounded-xl border border-slate-200 bg-white/95 p-1.5 shadow-xl backdrop-blur-md"
+            className="border-border/80 bg-popover/95 text-popover-foreground w-64 rounded-xl border p-1.5 shadow-2xl backdrop-blur-xl"
           >
-            <DropdownMenuLabel className="px-2 py-1 text-[11px] font-semibold tracking-wider text-slate-400 uppercase">
+            <DropdownMenuLabel className="text-muted-foreground px-2 py-1 text-[11px] font-semibold tracking-wider uppercase">
               Active Company Workspace
             </DropdownMenuLabel>
 
@@ -230,13 +230,13 @@ export function DashboardSidebar({
                 <DropdownMenuItem
                   key={org.organizationId}
                   onClick={() => setSelectedOrgName(org.organizationName)}
-                  className="flex cursor-pointer items-center justify-between rounded-lg px-2.5 py-2 text-xs font-medium"
+                  className="hover:bg-muted/60 focus:bg-muted/60 text-foreground flex cursor-pointer items-center justify-between rounded-lg px-2.5 py-2 text-xs font-medium"
                 >
                   <div className="flex items-center gap-2 truncate">
-                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-100 text-[10px] font-bold text-slate-700">
+                    <div className="bg-primary/10 text-primary flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[10px] font-bold">
                       {org.organizationName.charAt(0).toUpperCase()}
                     </div>
-                    <span className="truncate text-slate-900">{org.organizationName}</span>
+                    <span className="truncate">{org.organizationName}</span>
                   </div>
                   {org.organizationName === displayOrgName && (
                     <Check className="text-primary h-4 w-4 shrink-0" />
@@ -246,26 +246,26 @@ export function DashboardSidebar({
             ) : (
               <DropdownMenuItem
                 onClick={() => setSelectedOrgName(displayOrgName)}
-                className="flex cursor-pointer items-center justify-between rounded-lg px-2.5 py-2 text-xs font-medium"
+                className="hover:bg-muted/60 focus:bg-muted/60 text-foreground flex cursor-pointer items-center justify-between rounded-lg px-2.5 py-2 text-xs font-medium"
               >
                 <div className="flex items-center gap-2 truncate">
-                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-100 text-[10px] font-bold text-slate-700">
+                  <div className="bg-primary/10 text-primary flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[10px] font-bold">
                     {displayOrgName.charAt(0).toUpperCase()}
                   </div>
-                  <span className="truncate text-slate-900">{displayOrgName}</span>
+                  <span className="truncate">{displayOrgName}</span>
                 </div>
                 <Check className="text-primary h-4 w-4 shrink-0" />
               </DropdownMenuItem>
             )}
 
-            <DropdownMenuSeparator className="my-1 bg-slate-100" />
+            <DropdownMenuSeparator className="bg-border/60 my-1" />
             <DropdownMenuItem asChild>
               <Link
                 href="/dashboard/settings"
                 onClick={() => isMobile && onCloseMobile()}
-                className="flex cursor-pointer items-center gap-2 rounded-lg px-2.5 py-2 text-xs text-slate-700 hover:text-slate-900"
+                className="hover:bg-muted/60 focus:bg-muted/60 text-foreground flex cursor-pointer items-center gap-2 rounded-lg px-2.5 py-2 text-xs"
               >
-                <Settings className="h-3.5 w-3.5 text-slate-400" />
+                <Settings className="text-muted-foreground h-3.5 w-3.5" />
                 <span>Workspace Settings</span>
               </Link>
             </DropdownMenuItem>
@@ -273,7 +273,7 @@ export function DashboardSidebar({
               <Link
                 href="/dashboard/settings"
                 onClick={() => isMobile && onCloseMobile()}
-                className="text-primary hover:bg-primary/5 flex cursor-pointer items-center gap-2 rounded-lg px-2.5 py-2 text-xs font-semibold"
+                className="text-primary hover:bg-primary/10 flex cursor-pointer items-center gap-2 rounded-lg px-2.5 py-2 text-xs font-semibold"
               >
                 <Plus className="h-3.5 w-3.5" />
                 <span>Manage Workspaces</span>
@@ -288,7 +288,7 @@ export function DashboardSidebar({
         {navSections.map((section, idx) => (
           <div key={idx} className="space-y-1">
             {!collapsed && (
-              <p className="px-2 pb-1 text-[10px] font-bold tracking-wider text-slate-400 uppercase">
+              <p className="text-muted-foreground/70 px-2 pb-1 text-[10px] font-bold tracking-wider uppercase">
                 {section.title}
               </p>
             )}
@@ -314,15 +314,17 @@ export function DashboardSidebar({
                         ? "mx-auto h-10 w-10 justify-center"
                         : "h-10 justify-between gap-3 px-3",
                       isActive
-                        ? "from-primary/10 via-primary/5 text-primary border-primary border-l-3 bg-gradient-to-r to-transparent font-bold shadow-2xs"
-                        : "text-slate-600 hover:bg-slate-100/70 hover:text-slate-900"
+                        ? "from-primary/15 via-primary/5 text-primary border-primary glow-primary border-l-[3px] bg-gradient-to-r to-transparent font-bold shadow-2xs"
+                        : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
                     )}
                   >
                     <div className="flex items-center gap-3 truncate">
                       <Icon
                         className={cn(
                           "h-4 w-4 shrink-0 transition-transform duration-200 group-hover:scale-110",
-                          isActive ? "text-primary" : "text-slate-400 group-hover:text-slate-600"
+                          isActive
+                            ? "text-primary"
+                            : "text-muted-foreground group-hover:text-foreground"
                         )}
                       />
                       {!collapsed && <span className="truncate">{item.name}</span>}
@@ -333,9 +335,9 @@ export function DashboardSidebar({
                         className={cn(
                           "inline-flex shrink-0 items-center justify-center rounded-full px-2 py-0.5 text-[10px] font-bold",
                           item.badgeVariant === "warning" &&
-                            "border border-amber-200 bg-amber-100 text-amber-800",
+                            "border border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-400",
                           item.badgeVariant === "success" &&
-                            "border border-emerald-200 bg-emerald-100 text-emerald-800"
+                            "border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
                         )}
                       >
                         {item.badge}
@@ -350,23 +352,23 @@ export function DashboardSidebar({
 
         {/* Workspace Resource & Capacity Meter (Visible when expanded) */}
         {!collapsed && (
-          <div className="mt-4 rounded-2xl border border-slate-200/90 bg-gradient-to-b from-slate-50 to-white p-3.5 shadow-2xs">
+          <div className="border-border/80 from-card to-card/90 mt-4 rounded-2xl border bg-gradient-to-b p-3.5 shadow-2xs">
             <div className="flex items-center justify-between text-xs">
-              <span className="flex items-center gap-1.5 font-bold text-slate-800">
+              <span className="text-foreground flex items-center gap-1.5 font-bold">
                 <Zap className="h-3.5 w-3.5 fill-amber-500 text-amber-500" />
                 Growth Tier
               </span>
               <span className="text-primary text-[11px] font-semibold">64% Capacity</span>
             </div>
 
-            <div className="mt-2.5 h-1.5 w-full overflow-hidden rounded-full bg-slate-200">
+            <div className="bg-muted/70 mt-2.5 h-1.5 w-full overflow-hidden rounded-full">
               <div
                 className="h-full rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 transition-all duration-500"
                 style={{ width: "64%" }}
               />
             </div>
 
-            <div className="mt-2 flex items-center justify-between text-[11px] text-slate-500">
+            <div className="text-muted-foreground mt-2 flex items-center justify-between text-[11px]">
               <span>1,280 / 2,000 Clients</span>
               <Link
                 href="/dashboard/settings"
@@ -380,23 +382,23 @@ export function DashboardSidebar({
         )}
 
         {/* Back to Public Website Link */}
-        <div className="mt-auto border-t border-slate-100 pt-3">
+        <div className="border-border/60 mt-auto border-t pt-3">
           <Link
             href="/"
             onClick={() => isMobile && onCloseMobile()}
             className={cn(
-              "group flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-xs font-semibold text-slate-500 transition-all hover:bg-slate-100 hover:text-slate-900",
+              "group text-muted-foreground hover:bg-muted/60 hover:text-foreground flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-xs font-semibold transition-all",
               collapsed && "justify-center px-0"
             )}
             title="Return to Public Website"
           >
-            <div className="group-hover:bg-primary/10 group-hover:text-primary flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500 transition-colors">
+            <div className="group-hover:bg-primary/10 group-hover:text-primary bg-muted/60 text-muted-foreground flex h-6 w-6 shrink-0 items-center justify-center rounded-lg transition-colors">
               <Globe className="h-3.5 w-3.5" />
             </div>
             {!collapsed && (
               <div className="flex flex-1 items-center justify-between">
                 <span>Back to Main Site</span>
-                <ArrowUpRight className="h-3 w-3 text-slate-400 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-slate-700" />
+                <ArrowUpRight className="text-muted-foreground/60 group-hover:text-foreground h-3 w-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </div>
             )}
           </Link>
@@ -404,7 +406,7 @@ export function DashboardSidebar({
       </div>
 
       {/* Footer: User Profile & Collapse Toggle */}
-      <div className="border-border/70 shrink-0 border-t bg-slate-50/50 p-2.5">
+      <div className="border-border/60 bg-muted/20 shrink-0 border-t p-2.5">
         <div className="flex items-center justify-between">
           <div className={cn("truncate", collapsed ? "mx-auto" : "flex-1")}>
             <UserNav showDetails={!collapsed} />
@@ -414,7 +416,7 @@ export function DashboardSidebar({
             <button
               type="button"
               onClick={onToggleCollapse}
-              className="hidden h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-200/60 hover:text-slate-800 lg:flex"
+              className="text-muted-foreground hover:bg-muted/60 hover:text-foreground hidden h-8 w-8 items-center justify-center rounded-lg transition-colors lg:flex"
               title="Collapse sidebar"
               aria-label="Collapse sidebar"
             >
@@ -427,7 +429,7 @@ export function DashboardSidebar({
           <button
             type="button"
             onClick={onToggleCollapse}
-            className="mx-auto mt-2 hidden h-7 w-7 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-200/60 hover:text-slate-800 lg:flex"
+            className="text-muted-foreground hover:bg-muted/60 hover:text-foreground mx-auto mt-2 hidden h-7 w-7 items-center justify-center rounded-lg transition-colors lg:flex"
             title="Expand sidebar"
             aria-label="Expand sidebar"
           >
@@ -443,7 +445,7 @@ export function DashboardSidebar({
       {/* Desktop Persistent Fixed Sidebar (Never scrolls with window) */}
       <aside
         className={cn(
-          "border-border/80 sticky top-0 z-30 hidden h-screen shrink-0 flex-col border-r bg-white/95 backdrop-blur-xl transition-[width] duration-300 ease-in-out lg:flex",
+          "border-border/60 bg-card/85 sticky top-0 z-30 hidden h-screen shrink-0 flex-col border-r backdrop-blur-xl transition-[width] duration-300 ease-in-out lg:flex",
           isCollapsed ? "w-[76px]" : "w-[260px]"
         )}
       >
@@ -461,7 +463,7 @@ export function DashboardSidebar({
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               onClick={onCloseMobile}
-              className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs"
+              className="fixed inset-0 bg-slate-950/50 backdrop-blur-xs"
               aria-hidden="true"
             />
 
@@ -471,7 +473,7 @@ export function DashboardSidebar({
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", damping: 28, stiffness: 300 }}
-              className="relative flex h-full w-72 max-w-[85vw] flex-col bg-white shadow-2xl"
+              className="border-border/80 bg-card text-foreground relative flex h-full w-72 max-w-[85vw] flex-col border-r shadow-2xl"
             >
               {renderSidebarContent(false, true)}
             </motion.div>

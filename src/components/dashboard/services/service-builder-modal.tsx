@@ -252,12 +252,12 @@ function ServiceBuilderForm({ serviceToEdit, onClose, onSuccess }: InnerFormProp
       </div>
 
       {/* Tab Bar Navigation */}
-      <div className="border-border/80 bg-muted/30 border-b px-2.5 py-2 sm:px-6 sm:py-2.5">
-        <div className="grid grid-cols-4 gap-1 text-[11px] font-semibold sm:flex sm:min-w-max sm:gap-2 sm:text-xs">
+      <div className="border-border/80 bg-muted/30 no-scrollbar overflow-x-auto border-b px-2 py-2 sm:px-6 sm:py-2.5">
+        <div className="flex min-w-full items-center gap-1 text-[11px] font-semibold sm:grid sm:grid-cols-4 sm:gap-2 sm:text-xs">
           <button
             type="button"
             onClick={() => setActiveTab("basics")}
-            className={`flex cursor-pointer items-center justify-center gap-1 rounded-lg px-1.5 py-1.5 transition-all sm:px-3 sm:py-1.5 ${
+            className={`flex flex-1 shrink-0 cursor-pointer items-center justify-center gap-1 rounded-lg px-2 py-1.5 transition-all sm:flex-initial sm:px-3 sm:py-1.5 ${
               activeTab === "basics"
                 ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xs"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -270,7 +270,7 @@ function ServiceBuilderForm({ serviceToEdit, onClose, onSuccess }: InnerFormProp
           <button
             type="button"
             onClick={() => setActiveTab("pricing")}
-            className={`flex cursor-pointer items-center justify-center gap-1 rounded-lg px-1.5 py-1.5 transition-all sm:px-3 sm:py-1.5 ${
+            className={`flex flex-1 shrink-0 cursor-pointer items-center justify-center gap-1 rounded-lg px-2 py-1.5 transition-all sm:flex-initial sm:px-3 sm:py-1.5 ${
               activeTab === "pricing"
                 ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xs"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -283,7 +283,7 @@ function ServiceBuilderForm({ serviceToEdit, onClose, onSuccess }: InnerFormProp
           <button
             type="button"
             onClick={() => setActiveTab("timing")}
-            className={`flex cursor-pointer items-center justify-center gap-1 rounded-lg px-1.5 py-1.5 transition-all sm:px-3 sm:py-1.5 ${
+            className={`flex flex-1 shrink-0 cursor-pointer items-center justify-center gap-1 rounded-lg px-2 py-1.5 transition-all sm:flex-initial sm:px-3 sm:py-1.5 ${
               activeTab === "timing"
                 ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xs"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -296,7 +296,7 @@ function ServiceBuilderForm({ serviceToEdit, onClose, onSuccess }: InnerFormProp
           <button
             type="button"
             onClick={() => setActiveTab("specialists")}
-            className={`flex cursor-pointer items-center justify-center gap-1 rounded-lg px-1.5 py-1.5 transition-all sm:px-3 sm:py-1.5 ${
+            className={`flex flex-1 shrink-0 cursor-pointer items-center justify-center gap-1 rounded-lg px-2 py-1.5 transition-all sm:flex-initial sm:px-3 sm:py-1.5 ${
               activeTab === "specialists"
                 ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xs"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground"

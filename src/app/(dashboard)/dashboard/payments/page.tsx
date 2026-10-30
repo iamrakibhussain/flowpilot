@@ -157,7 +157,7 @@ function GatewaySettingsForm({ settings, onRefetch }: GatewayFormProps) {
           {/* Interactive Sandbox Switch Box */}
           <div className="flex items-center justify-between gap-3 rounded-xl border border-indigo-500/20 bg-indigo-500/5 p-3.5 sm:p-4">
             <div className="min-w-0 space-y-0.5">
-              <span className="text-xs font-semibold text-slate-900 dark:text-white">
+              <span className="text-foreground text-xs font-semibold">
                 Interactive Sandbox Test Mode
               </span>
               <p className="text-muted-foreground text-[11px] leading-relaxed">
@@ -172,7 +172,7 @@ function GatewaySettingsForm({ settings, onRefetch }: GatewayFormProps) {
                 onChange={(e) => setIsTestMode(e.target.checked)}
                 className="peer sr-only"
               />
-              <div className="peer h-6 w-11 shrink-0 rounded-full bg-slate-200 peer-checked:bg-indigo-600 peer-focus:outline-none after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-slate-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white"></div>
+              <div className="peer bg-muted peer-checked:bg-primary after:border-border after:bg-card peer-checked:after:border-card h-6 w-11 shrink-0 rounded-full peer-focus:outline-none after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:transition-all after:content-[''] peer-checked:after:translate-x-full"></div>
             </label>
           </div>
 
@@ -602,14 +602,14 @@ export default function PaymentsDashboardPage() {
           onClick={() => setActiveTab("ledger")}
           className={`flex shrink-0 cursor-pointer items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold transition ${
             activeTab === "ledger"
-              ? "bg-slate-900 text-white shadow-2xs dark:bg-white dark:text-slate-900"
+              ? "bg-foreground text-background shadow-2xs"
               : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
           }`}
         >
           <Receipt className="h-4 w-4" />
           <span>Transactions Ledger</span>
           {transactions.length > 0 && (
-            <span className="py-0.2 rounded-full bg-blue-500/20 px-1.5 font-mono text-[10px] text-blue-400">
+            <span className="py-0.2 bg-primary/20 text-primary rounded-full px-1.5 font-mono text-[10px]">
               {transactions.length}
             </span>
           )}
@@ -620,7 +620,7 @@ export default function PaymentsDashboardPage() {
           onClick={() => setActiveTab("gateways")}
           className={`flex shrink-0 cursor-pointer items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold transition ${
             activeTab === "gateways"
-              ? "bg-slate-900 text-white shadow-2xs dark:bg-white dark:text-slate-900"
+              ? "bg-foreground text-background shadow-2xs"
               : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
           }`}
         >
@@ -633,7 +633,7 @@ export default function PaymentsDashboardPage() {
           onClick={() => setActiveTab("links")}
           className={`flex shrink-0 cursor-pointer items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold transition ${
             activeTab === "links"
-              ? "bg-slate-900 text-white shadow-2xs dark:bg-white dark:text-slate-900"
+              ? "bg-foreground text-background shadow-2xs"
               : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
           }`}
         >
@@ -646,7 +646,7 @@ export default function PaymentsDashboardPage() {
           onClick={() => setActiveTab("rules")}
           className={`flex shrink-0 cursor-pointer items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold transition ${
             activeTab === "rules"
-              ? "bg-slate-900 text-white shadow-2xs dark:bg-white dark:text-slate-900"
+              ? "bg-foreground text-background shadow-2xs"
               : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
           }`}
         >

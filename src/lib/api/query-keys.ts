@@ -47,4 +47,17 @@ export const queryKeys = {
       [...queryKeys.dashboard.all, "schedule", orgId ?? "default"] as const,
     staff: (orgId?: string) => [...queryKeys.dashboard.all, "staff", orgId ?? "default"] as const,
   },
+  analytics: {
+    all: ["analytics"] as const,
+    overview: (timeframe?: string, orgId?: string) =>
+      [...queryKeys.analytics.all, "overview", timeframe ?? "30d", orgId ?? "default"] as const,
+    cashflow: (timeframe?: string, orgId?: string) =>
+      [...queryKeys.analytics.all, "cashflow", timeframe ?? "30d", orgId ?? "default"] as const,
+    services: (timeframe?: string, orgId?: string) =>
+      [...queryKeys.analytics.all, "services", timeframe ?? "30d", orgId ?? "default"] as const,
+    staff: (timeframe?: string, orgId?: string) =>
+      [...queryKeys.analytics.all, "staff", timeframe ?? "30d", orgId ?? "default"] as const,
+    customers: (timeframe?: string, orgId?: string) =>
+      [...queryKeys.analytics.all, "customers", timeframe ?? "30d", orgId ?? "default"] as const,
+  },
 };

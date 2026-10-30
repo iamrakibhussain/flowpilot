@@ -215,14 +215,14 @@ export default function CustomersDirectoryPage() {
         );
       case "INACTIVE":
         return (
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-100 px-2.5 py-0.5 text-[11px] font-bold text-slate-600">
-            <span className="h-1.5 w-1.5 rounded-full bg-slate-400" />
+          <span className="border-border/80 bg-muted/60 text-muted-foreground inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] font-bold">
+            <span className="bg-muted-foreground/60 h-1.5 w-1.5 rounded-full" />
             Archived
           </span>
         );
       default:
         return (
-          <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-[11px] font-medium text-slate-600">
+          <span className="border-border/80 bg-muted/40 text-muted-foreground inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium">
             {status}
           </span>
         );
@@ -232,17 +232,17 @@ export default function CustomersDirectoryPage() {
   const tagBadgeStyle = (tag: string) => {
     switch (tag.toLowerCase()) {
       case "vip":
-        return "border-purple-200/90 bg-purple-50/90 text-purple-700 shadow-purple-500/10";
+        return "border-purple-200/90 bg-purple-50/90 text-purple-700 shadow-purple-500/10 dark:border-purple-500/30 dark:bg-purple-500/15 dark:text-purple-300";
       case "enterprise":
-        return "border-blue-200/90 bg-blue-50/90 text-blue-700 shadow-blue-500/10";
+        return "border-blue-200/90 bg-blue-50/90 text-blue-700 shadow-blue-500/10 dark:border-blue-500/30 dark:bg-blue-500/15 dark:text-blue-300";
       case "retainer":
-        return "border-emerald-200/90 bg-emerald-50/90 text-emerald-700 shadow-emerald-500/10";
+        return "border-emerald-200/90 bg-emerald-50/90 text-emerald-700 shadow-emerald-500/10 dark:border-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-300";
       case "commercial":
-        return "border-indigo-200/90 bg-indigo-50/90 text-indigo-700 shadow-indigo-500/10";
+        return "border-indigo-200/90 bg-indigo-50/90 text-indigo-700 shadow-indigo-500/10 dark:border-indigo-500/30 dark:bg-indigo-500/15 dark:text-indigo-300";
       case "residential":
-        return "border-cyan-200/90 bg-cyan-50/90 text-cyan-700 shadow-cyan-500/10";
+        return "border-cyan-200/90 bg-cyan-50/90 text-cyan-700 shadow-cyan-500/10 dark:border-cyan-500/30 dark:bg-cyan-500/15 dark:text-cyan-300";
       default:
-        return "border-slate-200 bg-slate-100/90 text-slate-700";
+        return "border-border/80 bg-muted/60 text-muted-foreground";
     }
   };
 
@@ -258,17 +258,18 @@ export default function CustomersDirectoryPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2.5">
-            <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+            <h1 className="text-foreground text-2xl font-extrabold tracking-tight sm:text-3xl">
               Customer CRM Directory
             </h1>
-            <span className="hidden items-center gap-1 rounded-full border border-blue-200/80 bg-blue-50/80 px-2.5 py-0.5 text-[11px] font-bold text-blue-700 sm:inline-flex">
-              <Sparkles className="h-3 w-3 text-blue-600" />
+            <span className="border-primary/20 bg-primary/10 text-primary hidden items-center gap-1 rounded-full border px-2.5 py-0.5 text-[11px] font-bold sm:inline-flex">
+              <Sparkles className="text-primary h-3 w-3" />
               Linear Precision
             </span>
           </div>
-          <p className="mt-1 text-xs text-slate-500 sm:text-sm">
+          <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
             Unified multi-tenant client dossiers, operational engagements, and reconciled Lifetime
-            Values for <strong className="font-semibold text-slate-800">{organizationName}</strong>.
+            Values for <strong className="text-foreground font-semibold">{organizationName}</strong>
+            .
           </p>
         </div>
 
@@ -279,16 +280,16 @@ export default function CustomersDirectoryPage() {
             size="sm"
             onClick={handleExportAll}
             disabled={customers.length === 0}
-            className="cursor-pointer justify-center rounded-xl border-slate-200/90 bg-white/80 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50"
+            className="border-border/80 bg-card/80 text-foreground hover:bg-muted/50 cursor-pointer justify-center rounded-xl text-xs font-semibold shadow-2xs"
           >
-            <Download className="mr-1.5 h-3.5 w-3.5 text-slate-500" />
+            <Download className="text-muted-foreground mr-1.5 h-3.5 w-3.5" />
             <span>Export CSV</span>
           </Button>
 
           <Button
             size="sm"
             onClick={() => openModal("customer")}
-            className="from-primary to-primary/90 hover:from-primary/95 hover:to-primary/85 cursor-pointer justify-center rounded-xl bg-gradient-to-r px-4 text-xs font-bold text-white shadow-md shadow-blue-500/20"
+            className="from-primary to-primary/90 hover:from-primary/95 hover:to-primary/85 shadow-primary/20 cursor-pointer justify-center rounded-xl bg-gradient-to-r px-4 text-xs font-bold text-white shadow-md"
           >
             <Plus className="mr-1.5 h-4 w-4" />
             <span>New Customer</span>
@@ -299,30 +300,30 @@ export default function CustomersDirectoryPage() {
       {/* 4x Executive Telemetry KPI Cards with Embedded Micro-Visualizations */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* KPI 1: Active Accounts Ratio */}
-        <Card className="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white/85 p-5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_12px_28px_-8px_rgba(49,95,232,0.08)]">
+        <Card className="group border-border/80 from-card to-card/90 hover:border-primary/40 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-5 shadow-2xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+            <span className="text-muted-foreground text-[11px] font-bold tracking-wider uppercase">
               Active Accounts
             </span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 shadow-inner transition-transform group-hover:scale-105">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 shadow-inner transition-transform group-hover:scale-105 dark:text-emerald-400">
               <UserCheck className="h-4 w-4" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-2xl font-black tracking-tight text-slate-900 tabular-nums">
+            <span className="text-foreground text-2xl font-black tracking-tight tabular-nums">
               {activeCount}
             </span>
-            <span className="text-xs text-slate-400">/ {totalCount} total</span>
+            <span className="text-muted-foreground text-xs">/ {totalCount} total</span>
           </div>
           {/* Micro Progress Track */}
           <div className="mt-2.5 space-y-1">
-            <div className="flex justify-between text-[10px] text-slate-500">
+            <div className="text-muted-foreground flex justify-between text-[10px]">
               <span>Operational Share</span>
-              <span className="font-bold text-emerald-700">
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">
                 {totalCount > 0 ? Math.round((activeCount / totalCount) * 100) : 0}%
               </span>
             </div>
-            <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
+            <div className="bg-muted/60 h-1.5 w-full overflow-hidden rounded-full">
               <div
                 className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 transition-all duration-500"
                 style={{ width: `${totalCount > 0 ? (activeCount / totalCount) * 100 : 0}%` }}
@@ -332,20 +333,22 @@ export default function CustomersDirectoryPage() {
         </Card>
 
         {/* KPI 2: Pipeline Leads */}
-        <Card className="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white/85 p-5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_12px_28px_-8px_rgba(49,95,232,0.08)]">
+        <Card className="group border-border/80 from-card to-card/90 hover:border-primary/40 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-5 shadow-2xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+            <span className="text-muted-foreground text-[11px] font-bold tracking-wider uppercase">
               Pipeline Leads
             </span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600 shadow-inner transition-transform group-hover:scale-105">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 shadow-inner transition-transform group-hover:scale-105 dark:text-blue-400">
               <Activity className="h-4 w-4" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-2xl font-black tracking-tight text-slate-900 tabular-nums">
+            <span className="text-foreground text-2xl font-black tracking-tight tabular-nums">
               {leadsCount}
             </span>
-            <span className="text-xs font-semibold text-blue-600">Active Prospects</span>
+            <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">
+              Active Prospects
+            </span>
           </div>
           {/* Conversion Stepper */}
           <div className="mt-2.5 flex items-center gap-1.5">
@@ -353,7 +356,7 @@ export default function CustomersDirectoryPage() {
               <div
                 key={step}
                 className={`h-1.5 flex-1 rounded-full ${
-                  leadsCount >= step ? "bg-blue-600" : "bg-slate-100"
+                  leadsCount >= step ? "bg-primary" : "bg-muted/60"
                 }`}
               />
             ))}
@@ -361,17 +364,17 @@ export default function CustomersDirectoryPage() {
         </Card>
 
         {/* KPI 3: Settled Portfolio LTV with Embedded Sparkline */}
-        <Card className="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white/85 p-5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_12px_28px_-8px_rgba(49,95,232,0.08)]">
+        <Card className="group border-border/80 from-card to-card/90 hover:border-primary/40 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-5 shadow-2xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+            <span className="text-muted-foreground text-[11px] font-bold tracking-wider uppercase">
               Settled Portfolio LTV
             </span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 shadow-inner transition-transform group-hover:scale-105">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 shadow-inner transition-transform group-hover:scale-105 dark:text-indigo-400">
               <DollarSign className="h-4 w-4" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline justify-between">
-            <span className="text-2xl font-black tracking-tight text-slate-900 tabular-nums">
+            <span className="text-foreground text-2xl font-black tracking-tight tabular-nums">
               ${totalPaidSum.toLocaleString("en-US", { minimumFractionDigits: 0 })}
             </span>
             {/* Embedded Micro SVG Sparkline */}
@@ -392,28 +395,28 @@ export default function CustomersDirectoryPage() {
               />
             </svg>
           </div>
-          <p className="mt-1 text-[11px] text-slate-500">Reconciled cash payments</p>
+          <p className="text-muted-foreground mt-1 text-[11px]">Reconciled cash payments</p>
         </Card>
 
         {/* KPI 4: Repeat Client Retention */}
-        <Card className="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white/85 p-5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_12px_28px_-8px_rgba(49,95,232,0.08)]">
+        <Card className="group border-border/80 from-card to-card/90 hover:border-primary/40 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-5 shadow-2xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+            <span className="text-muted-foreground text-[11px] font-bold tracking-wider uppercase">
               Repeat Client Rate
             </span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-50 text-purple-600 shadow-inner transition-transform group-hover:scale-105">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-500/10 text-purple-600 shadow-inner transition-transform group-hover:scale-105 dark:text-purple-400">
               <TrendingUp className="h-4 w-4" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-2xl font-black tracking-tight text-slate-900 tabular-nums">
+            <span className="text-foreground text-2xl font-black tracking-tight tabular-nums">
               {repeatRate}%
             </span>
-            <span className="text-xs font-bold text-purple-700">
+            <span className="text-xs font-bold text-purple-600 dark:text-purple-400">
               {repeatClientCount} loyalty accounts
             </span>
           </div>
-          <div className="mt-2.5 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
+          <div className="bg-muted/60 mt-2.5 h-1.5 w-full overflow-hidden rounded-full">
             <div
               className="h-full rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 transition-all duration-500"
               style={{ width: `${repeatRate}%` }}
@@ -424,33 +427,33 @@ export default function CustomersDirectoryPage() {
 
       {/* Floating Modern Control Dock */}
       <div className="space-y-3">
-        <div className="flex flex-col gap-3 rounded-2xl border border-slate-200/80 bg-white/85 p-3.5 shadow-sm backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between">
+        <div className="border-border/80 bg-card/90 flex flex-col gap-3 rounded-2xl border p-3.5 shadow-2xs backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between">
           {/* Search Input with Shortcut Badge */}
           <div className="relative w-full flex-1">
-            <Search className="pointer-events-none absolute top-2.5 left-3.5 h-4 w-4 text-slate-400" />
+            <Search className="text-muted-foreground pointer-events-none absolute top-2.5 left-3.5 h-4 w-4" />
             <Input
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search clients by name, corporate email, company, or phone..."
-              className="h-9.5 w-full rounded-xl border-slate-200 bg-slate-50/70 pr-14 pl-9.5 text-xs transition-colors focus:bg-white"
+              className="border-border/80 bg-muted/40 text-foreground placeholder:text-muted-foreground focus:bg-background h-9.5 w-full rounded-xl pr-14 pl-9.5 text-xs transition-colors"
             />
             {searchTerm ? (
               <button
                 type="button"
                 onClick={() => setSearchTerm("")}
-                className="absolute top-2.5 right-3 cursor-pointer text-slate-400 hover:text-slate-600"
+                className="text-muted-foreground hover:text-foreground absolute top-2.5 right-3 cursor-pointer"
               >
                 <X className="h-4 w-4" />
               </button>
             ) : (
-              <div className="pointer-events-none absolute top-2 right-3 hidden items-center rounded-md border border-slate-200 bg-white px-1.5 py-0.5 font-mono text-[10px] text-slate-400 sm:flex">
+              <div className="border-border/80 bg-card text-muted-foreground pointer-events-none absolute top-2 right-3 hidden items-center rounded-md border px-1.5 py-0.5 font-mono text-[10px] sm:flex">
                 /
               </div>
             )}
           </div>
 
           {/* Sliding Pill Status Tabs */}
-          <div className="no-scrollbar flex w-full max-w-full items-center gap-1 overflow-x-auto rounded-xl border border-slate-200/80 bg-slate-100/90 p-1 text-xs sm:w-auto">
+          <div className="no-scrollbar border-border/80 bg-muted/40 flex w-full max-w-full items-center gap-1 overflow-x-auto rounded-xl border p-1 text-xs sm:w-auto">
             {(
               [
                 { key: "ALL", label: "All Records", count: totalCount },
@@ -471,14 +474,16 @@ export default function CustomersDirectoryPage() {
                   onClick={() => setStatusFilter(tab.key)}
                   className={`flex shrink-0 cursor-pointer items-center gap-1.5 rounded-lg px-2.5 py-1.5 font-bold whitespace-nowrap transition-all sm:px-3 ${
                     isActive
-                      ? "bg-white text-slate-900 shadow-xs"
-                      : "text-slate-600 hover:text-slate-900"
+                      ? "bg-card text-foreground shadow-2xs"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   <span>{tab.label}</span>
                   <span
                     className={`py-0.2 rounded-full px-1.5 text-[10px] font-black ${
-                      isActive ? "bg-primary text-white" : "bg-slate-200 text-slate-600"
+                      isActive
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground"
                     }`}
                   >
                     {tab.count}
@@ -493,21 +498,21 @@ export default function CustomersDirectoryPage() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="h-9 flex-1 cursor-pointer rounded-xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 shadow-2xs outline-none hover:bg-slate-50 sm:flex-initial"
+              className="border-border/80 bg-card text-foreground hover:bg-muted/50 h-9 flex-1 cursor-pointer rounded-xl border px-3 text-xs font-semibold shadow-2xs outline-none sm:flex-initial"
             >
               <option value="createdAt">Sort: Recent Onboarding</option>
               <option value="ltv">Sort: Highest LTV</option>
               <option value="name">Sort: Alphabetical (A-Z)</option>
             </select>
 
-            <div className="flex shrink-0 items-center rounded-xl border border-slate-200 bg-slate-100/90 p-1">
+            <div className="border-border/80 bg-muted/40 flex shrink-0 items-center rounded-xl border p-1">
               <button
                 type="button"
                 onClick={() => setViewMode("grid")}
                 className={`flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg transition-all ${
                   viewMode === "grid"
-                    ? "bg-white text-slate-900 shadow-2xs"
-                    : "text-slate-500 hover:text-slate-900"
+                    ? "bg-card text-foreground shadow-2xs"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
                 title="Visual Card Grid"
               >
@@ -518,8 +523,8 @@ export default function CustomersDirectoryPage() {
                 onClick={() => setViewMode("table")}
                 className={`flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg transition-all ${
                   viewMode === "table"
-                    ? "bg-white text-slate-900 shadow-2xs"
-                    : "text-slate-500 hover:text-slate-900"
+                    ? "bg-card text-foreground shadow-2xs"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
                 title="High-Density Table"
               >
@@ -532,14 +537,14 @@ export default function CustomersDirectoryPage() {
         {/* Dynamic Segment Tags Bar */}
         {allTags.length > 0 && (
           <div className="flex flex-wrap items-center gap-1.5 px-1 text-xs">
-            <span className="mr-1 font-semibold text-slate-400">Filter by Tag:</span>
+            <span className="text-muted-foreground mr-1 font-semibold">Filter by Tag:</span>
             <button
               type="button"
               onClick={() => setSelectedTag("ALL")}
               className={`cursor-pointer rounded-lg px-2.5 py-1 font-semibold transition-all ${
                 selectedTag === "ALL"
-                  ? "bg-slate-900 text-white shadow-2xs"
-                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  ? "bg-foreground text-background shadow-2xs"
+                  : "bg-muted/60 text-muted-foreground hover:bg-muted"
               }`}
             >
               All Segments
@@ -554,7 +559,7 @@ export default function CustomersDirectoryPage() {
                   className={`inline-flex cursor-pointer items-center gap-1.5 rounded-lg px-2.5 py-1 font-semibold transition-all ${
                     selectedTag === tag
                       ? "from-primary bg-gradient-to-r to-indigo-600 text-white shadow-xs"
-                      : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                      : "bg-muted/60 text-muted-foreground hover:bg-muted"
                   }`}
                 >
                   <span>{tag}</span>
@@ -563,7 +568,7 @@ export default function CustomersDirectoryPage() {
                       className={`py-0.2 rounded-full px-1.5 text-[9px] font-bold ${
                         selectedTag === tag
                           ? "bg-white/20 text-white"
-                          : "bg-slate-200 text-slate-700"
+                          : "bg-muted text-muted-foreground"
                       }`}
                     >
                       {count}
@@ -582,7 +587,7 @@ export default function CustomersDirectoryPage() {
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <div
               key={i}
-              className="h-52 animate-pulse rounded-2xl border border-slate-200/80 bg-white/70 p-5 shadow-2xs backdrop-blur-md"
+              className="border-border/80 bg-card/60 h-52 animate-pulse rounded-2xl border p-5 shadow-2xs backdrop-blur-md"
             />
           ))}
         </div>
@@ -590,16 +595,16 @@ export default function CustomersDirectoryPage() {
 
       {/* Pristine Empty State */}
       {!isActuallyLoading && customers.length === 0 && (
-        <Card className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300/80 bg-white/80 py-16 text-center shadow-xs backdrop-blur-md">
+        <Card className="border-border/80 bg-card/60 flex flex-col items-center justify-center rounded-2xl border border-dashed py-16 text-center shadow-xs backdrop-blur-md">
           <div className="from-primary/10 text-primary flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br to-indigo-500/10 shadow-2xs">
             <Users className="h-8 w-8" />
           </div>
-          <CardTitle className="mt-4 text-base font-bold text-slate-900">
+          <CardTitle className="text-foreground mt-4 text-base font-bold">
             {searchTerm || statusFilter !== "ALL" || selectedTag !== "ALL"
               ? "No matching client records found"
               : "No customer records registered yet"}
           </CardTitle>
-          <p className="mt-1.5 max-w-sm text-xs text-slate-500">
+          <p className="text-muted-foreground mt-1.5 max-w-sm text-xs">
             {searchTerm || statusFilter !== "ALL" || selectedTag !== "ALL"
               ? "Try adjusting your search query, clearing segment filters, or changing status tabs."
               : "Create your first client profile to attach quotes, manage bookings, and start generating revenue."}
@@ -614,7 +619,7 @@ export default function CustomersDirectoryPage() {
                   setStatusFilter("ALL");
                   setSelectedTag("ALL");
                 }}
-                className="cursor-pointer rounded-xl border-slate-200 text-xs font-semibold shadow-2xs"
+                className="border-border/80 cursor-pointer rounded-xl text-xs font-semibold shadow-2xs"
               >
                 Reset Search & Filters
               </Button>
@@ -622,7 +627,7 @@ export default function CustomersDirectoryPage() {
               <Button
                 size="sm"
                 onClick={() => openModal("customer")}
-                className="from-primary hover:from-primary/95 cursor-pointer rounded-xl bg-gradient-to-r to-indigo-600 text-xs font-bold text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/30"
+                className="from-primary hover:from-primary/95 shadow-primary/20 hover:shadow-primary/30 cursor-pointer rounded-xl bg-gradient-to-r to-indigo-600 text-xs font-bold text-white shadow-md transition-all hover:shadow-lg"
               >
                 <Plus className="mr-1.5 h-3.5 w-3.5" />
                 <span>Add First Customer</span>
@@ -634,20 +639,20 @@ export default function CustomersDirectoryPage() {
 
       {/* View Mode 1: High-Density Modern Table View */}
       {!isActuallyLoading && customers.length > 0 && viewMode === "table" && (
-        <div className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.04)] backdrop-blur-md">
+        <div className="border-border/80 bg-card/90 overflow-hidden rounded-2xl border shadow-2xs backdrop-blur-md">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-b border-slate-100 bg-slate-50/80 text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+              <thead className="border-border/60 bg-muted/30 text-muted-foreground border-b text-[11px] font-bold tracking-wider uppercase">
                 <tr>
                   <th className="w-10 px-3.5 py-3.5 text-center">
                     <button
                       type="button"
                       onClick={toggleSelectAll}
-                      className="cursor-pointer text-slate-400 hover:text-slate-700"
+                      className="text-muted-foreground hover:text-foreground cursor-pointer"
                       title={selectedIds.size === customers.length ? "Deselect All" : "Select All"}
                     >
                       {selectedIds.size > 0 && selectedIds.size === customers.length ? (
-                        <CheckSquare className="h-4 w-4 text-blue-600" />
+                        <CheckSquare className="text-primary h-4 w-4" />
                       ) : (
                         <Square className="h-4 w-4" />
                       )}
@@ -663,7 +668,7 @@ export default function CustomersDirectoryPage() {
                   <th className="px-4 py-3.5 text-center">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100/90">
+              <tbody className="divide-border/60 divide-y">
                 {customers.map((customer) => {
                   const initials = customer.name
                     .split(" ")
@@ -682,7 +687,7 @@ export default function CustomersDirectoryPage() {
                       key={customer.id}
                       onClick={() => setPeekCustomerId(customer.id)}
                       className={`group cursor-pointer transition-colors ${
-                        isSelected ? "bg-blue-50/40 hover:bg-blue-50/60" : "hover:bg-slate-50/80"
+                        isSelected ? "bg-primary/10 hover:bg-primary/15" : "hover:bg-muted/40"
                       }`}
                     >
                       {/* Checkbox Column */}
@@ -693,10 +698,10 @@ export default function CustomersDirectoryPage() {
                         <button
                           type="button"
                           onClick={(e) => toggleSelectId(customer.id, e)}
-                          className="cursor-pointer text-slate-400 hover:text-slate-700"
+                          className="text-muted-foreground hover:text-foreground cursor-pointer"
                         >
                           {isSelected ? (
-                            <CheckSquare className="h-4 w-4 text-blue-600" />
+                            <CheckSquare className="text-primary h-4 w-4" />
                           ) : (
                             <Square className="h-4 w-4 opacity-50 group-hover:opacity-100" />
                           )}
@@ -712,21 +717,23 @@ export default function CustomersDirectoryPage() {
                             {initials}
                           </div>
                           <div className="min-w-0">
-                            <span className="group-hover:text-primary flex items-center gap-1.5 font-bold text-slate-900 transition-colors">
+                            <span className="group-hover:text-primary text-foreground flex items-center gap-1.5 font-bold transition-colors">
                               {customer.name}
                               {isHighValue && (
-                                <span className="py-0.2 inline-flex items-center gap-0.5 rounded-full border border-amber-300/80 bg-amber-50 px-1.5 text-[9px] font-bold text-amber-700 shadow-2xs">
-                                  <Crown className="h-2.5 w-2.5 fill-amber-700 text-amber-700" />
+                                <span className="py-0.2 inline-flex items-center gap-0.5 rounded-full border border-amber-300/80 bg-amber-50 px-1.5 text-[9px] font-bold text-amber-700 shadow-2xs dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400">
+                                  <Crown className="h-2.5 w-2.5 fill-amber-700 text-amber-700 dark:fill-amber-400 dark:text-amber-400" />
                                   VIP
                                 </span>
                               )}
                             </span>
                             {customer.company ? (
-                              <p className="truncate text-[11px] text-slate-500">
+                              <p className="text-muted-foreground truncate text-[11px]">
                                 {customer.company}
                               </p>
                             ) : (
-                              <p className="text-[11px] text-slate-400 italic">Individual</p>
+                              <p className="text-muted-foreground/60 text-[11px] italic">
+                                Individual
+                              </p>
                             )}
                           </div>
                         </div>
@@ -745,7 +752,7 @@ export default function CustomersDirectoryPage() {
                             style={{ backgroundColor: health.ringColor }}
                           />
                           <span>{health.score}</span>
-                          <span className="font-normal text-slate-400">·</span>
+                          <span className="text-muted-foreground/50 font-normal">·</span>
                           <span>{health.tierLabel}</span>
                         </span>
                       </td>
@@ -765,24 +772,24 @@ export default function CustomersDirectoryPage() {
                               </span>
                             ))
                           ) : (
-                            <span className="text-[11px] text-slate-400">—</span>
+                            <span className="text-muted-foreground/50 text-[11px]">—</span>
                           )}
                         </div>
                       </td>
 
                       {/* Contact */}
                       <td className="px-4 py-3.5" onClick={(e) => e.stopPropagation()}>
-                        <div className="space-y-1 text-[11px] text-slate-600">
+                        <div className="text-muted-foreground space-y-1 text-[11px]">
                           <button
                             type="button"
                             onClick={(e) => handleCopy(customer.email, e)}
                             className="hover:text-primary flex cursor-pointer items-center gap-1.5 transition-colors"
                             title="Click to copy email"
                           >
-                            <Mail className="h-3 w-3 text-slate-400" />
+                            <Mail className="text-muted-foreground h-3 w-3" />
                             <span className="max-w-[170px] truncate">{customer.email}</span>
                             {copiedText === customer.email && (
-                              <span className="rounded-md bg-emerald-50 px-1 text-[10px] font-bold text-emerald-600">
+                              <span className="rounded-md bg-emerald-500/10 px-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
                                 Copied!
                               </span>
                             )}
@@ -794,10 +801,10 @@ export default function CustomersDirectoryPage() {
                               className="hover:text-primary flex cursor-pointer items-center gap-1.5 transition-colors"
                               title="Click to copy phone"
                             >
-                              <Phone className="h-3 w-3 text-slate-400" />
+                              <Phone className="text-muted-foreground h-3 w-3" />
                               <span className="max-w-[170px] truncate">{customer.phone}</span>
                               {copiedText === customer.phone && (
-                                <span className="rounded-md bg-emerald-50 px-1 text-[10px] font-bold text-emerald-600">
+                                <span className="rounded-md bg-emerald-500/10 px-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
                                   Copied!
                                 </span>
                               )}
@@ -808,13 +815,13 @@ export default function CustomersDirectoryPage() {
 
                       {/* Engagements */}
                       <td className="px-4 py-3.5 text-right">
-                        <div className="text-[11px] text-slate-600">
-                          <span className="font-bold text-slate-900">
+                        <div className="text-muted-foreground text-[11px]">
+                          <span className="text-foreground font-bold">
                             {customer.appointmentsCount}
                           </span>{" "}
                           appt
-                          <span className="mx-1 text-slate-300">·</span>
-                          <span className="font-bold text-slate-900">
+                          <span className="text-muted-foreground/40 mx-1">·</span>
+                          <span className="text-foreground font-bold">
                             {customer.invoicesCount}
                           </span>{" "}
                           inv
@@ -823,7 +830,7 @@ export default function CustomersDirectoryPage() {
 
                       {/* Settled LTV */}
                       <td className="px-4 py-3.5 text-right">
-                        <span className="font-extrabold text-slate-900 tabular-nums">
+                        <span className="text-foreground font-extrabold tabular-nums">
                           {customer.totalPaid}
                         </span>
                       </td>
@@ -835,7 +842,7 @@ export default function CustomersDirectoryPage() {
                             variant="ghost"
                             size="sm"
                             onClick={() => setPeekCustomerId(customer.id)}
-                            className="h-7 w-7 cursor-pointer rounded-lg p-0 text-slate-400 hover:bg-slate-100 hover:text-slate-800"
+                            className="text-muted-foreground hover:bg-muted hover:text-foreground h-7 w-7 cursor-pointer rounded-lg p-0"
                             title="Quick Peek (Drawer)"
                           >
                             <Eye className="h-3.5 w-3.5" />
@@ -843,7 +850,7 @@ export default function CustomersDirectoryPage() {
 
                           <Link
                             href={`/dashboard/customers/${customer.id}`}
-                            className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-800"
+                            className="text-muted-foreground hover:bg-muted hover:text-foreground flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg"
                             title="Full 360° Profile"
                           >
                             <ExternalLink className="h-3.5 w-3.5" />
@@ -854,7 +861,7 @@ export default function CustomersDirectoryPage() {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                className="h-7 w-7 cursor-pointer rounded-lg p-0 text-slate-400 hover:bg-slate-100 hover:text-slate-800"
+                                className="text-muted-foreground hover:bg-muted hover:text-foreground h-7 w-7 cursor-pointer rounded-lg p-0"
                               >
                                 <MoreVertical className="h-3.5 w-3.5" />
                               </Button>
@@ -864,7 +871,7 @@ export default function CustomersDirectoryPage() {
                                 onClick={() => setPeekCustomerId(customer.id)}
                                 className="flex cursor-pointer items-center gap-2"
                               >
-                                <Eye className="h-3.5 w-3.5 text-slate-400" />
+                                <Eye className="text-muted-foreground h-3.5 w-3.5" />
                                 <span>Quick Peek Drawer</span>
                               </DropdownMenuItem>
                               <DropdownMenuItem asChild>
@@ -872,7 +879,7 @@ export default function CustomersDirectoryPage() {
                                   href={`/dashboard/customers/${customer.id}`}
                                   className="flex cursor-pointer items-center gap-2"
                                 >
-                                  <Users className="h-3.5 w-3.5 text-slate-400" />
+                                  <Users className="text-muted-foreground h-3.5 w-3.5" />
                                   <span>View 360° Profile</span>
                                 </Link>
                               </DropdownMenuItem>
@@ -880,21 +887,21 @@ export default function CustomersDirectoryPage() {
                                 onClick={() => setEditingCustomer(customer)}
                                 className="flex cursor-pointer items-center gap-2"
                               >
-                                <Edit3 className="h-3.5 w-3.5 text-slate-400" />
+                                <Edit3 className="text-muted-foreground h-3.5 w-3.5" />
                                 <span>Edit Details</span>
                               </DropdownMenuItem>
                               <DropdownMenuItem
                                 onClick={() => openModal("invoice")}
                                 className="flex cursor-pointer items-center gap-2"
                               >
-                                <CreditCard className="h-3.5 w-3.5 text-blue-600" />
+                                <CreditCard className="text-primary h-3.5 w-3.5" />
                                 <span>Create Invoice</span>
                               </DropdownMenuItem>
                               <DropdownMenuItem
                                 onClick={() => openModal("appointment")}
                                 className="flex cursor-pointer items-center gap-2"
                               >
-                                <CalendarPlus className="h-3.5 w-3.5 text-emerald-600" />
+                                <CalendarPlus className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                                 <span>Book Appointment</span>
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
@@ -904,7 +911,7 @@ export default function CustomersDirectoryPage() {
                                     setArchivingCustomer(customer);
                                     setArchiveMode("archive");
                                   }}
-                                  className="flex cursor-pointer items-center gap-2 text-rose-600 focus:text-rose-700"
+                                  className="flex cursor-pointer items-center gap-2 text-rose-600 focus:text-rose-700 dark:text-rose-400"
                                 >
                                   <Archive className="h-3.5 w-3.5" />
                                   <span>Archive Client</span>
@@ -915,7 +922,7 @@ export default function CustomersDirectoryPage() {
                                     setArchivingCustomer(customer);
                                     setArchiveMode("reactivate");
                                   }}
-                                  className="flex cursor-pointer items-center gap-2 text-emerald-600 focus:text-emerald-700"
+                                  className="flex cursor-pointer items-center gap-2 text-emerald-600 focus:text-emerald-700 dark:text-emerald-400"
                                 >
                                   <RefreshCw className="h-3.5 w-3.5" />
                                   <span>Reactivate Client</span>
@@ -954,14 +961,14 @@ export default function CustomersDirectoryPage() {
               <div
                 key={customer.id}
                 onClick={() => setPeekCustomerId(customer.id)}
-                className={`group relative flex cursor-pointer flex-col justify-between overflow-hidden rounded-2xl border p-5 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.04)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-[0_20px_40px_-12px_rgba(49,95,232,0.12)] ${
+                className={`group hover:border-primary/40 relative flex cursor-pointer flex-col justify-between overflow-hidden rounded-2xl border p-5 shadow-2xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-md ${
                   isSelected
-                    ? "border-blue-400 bg-blue-50/30 ring-2 ring-blue-500/20"
-                    : "border-slate-200/90 bg-white/90"
+                    ? "border-primary bg-primary/10 ring-primary/20 ring-2"
+                    : "border-border/80 bg-card/90"
                 }`}
               >
                 {/* Ambient Aura */}
-                <div className="pointer-events-none absolute top-0 right-0 h-32 w-32 rounded-full bg-blue-500/[0.04] blur-xl transition-all group-hover:scale-125" />
+                <div className="bg-primary/[0.04] pointer-events-none absolute top-0 right-0 h-32 w-32 rounded-full blur-xl transition-all group-hover:scale-125" />
 
                 <div>
                   {/* Top Row: Avatar + Name + Checkbox + Dropdown */}
@@ -974,23 +981,25 @@ export default function CustomersDirectoryPage() {
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-1.5">
-                          <h3 className="group-hover:text-primary truncate text-sm font-bold text-slate-900 transition-colors">
+                          <h3 className="group-hover:text-primary text-foreground truncate text-sm font-bold transition-colors">
                             {customer.name}
                           </h3>
                           {isHighValue && (
-                            <span className="py-0.2 inline-flex items-center gap-0.5 rounded-full border border-amber-300/80 bg-amber-50 px-1.5 text-[9px] font-bold text-amber-700 shadow-2xs">
-                              <Crown className="h-2.5 w-2.5 fill-amber-700 text-amber-700" />
+                            <span className="py-0.2 inline-flex items-center gap-0.5 rounded-full border border-amber-300/80 bg-amber-50 px-1.5 text-[9px] font-bold text-amber-700 shadow-2xs dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400">
+                              <Crown className="h-2.5 w-2.5 fill-amber-700 text-amber-700 dark:fill-amber-400 dark:text-amber-400" />
                               VIP
                             </span>
                           )}
                         </div>
                         {customer.company ? (
-                          <div className="flex items-center gap-1 text-[11px] text-slate-500">
-                            <Building2 className="h-3 w-3 shrink-0 text-slate-400" />
+                          <div className="text-muted-foreground flex items-center gap-1 text-[11px]">
+                            <Building2 className="text-muted-foreground h-3 w-3 shrink-0" />
                             <span className="truncate">{customer.company}</span>
                           </div>
                         ) : (
-                          <span className="text-[11px] text-slate-400">Individual Client</span>
+                          <span className="text-muted-foreground/60 text-[11px] italic">
+                            Individual Client
+                          </span>
                         )}
                       </div>
                     </div>
@@ -1002,11 +1011,11 @@ export default function CustomersDirectoryPage() {
                       <button
                         type="button"
                         onClick={(e) => toggleSelectId(customer.id, e)}
-                        className="cursor-pointer p-1 text-slate-400 hover:text-slate-700"
+                        className="text-muted-foreground hover:text-foreground cursor-pointer p-1"
                         title={isSelected ? "Deselect" : "Select"}
                       >
                         {isSelected ? (
-                          <CheckSquare className="h-4 w-4 text-blue-600" />
+                          <CheckSquare className="text-primary h-4 w-4" />
                         ) : (
                           <Square className="h-4 w-4 opacity-50 group-hover:opacity-100" />
                         )}
@@ -1017,7 +1026,7 @@ export default function CustomersDirectoryPage() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="h-7 w-7 cursor-pointer rounded-lg p-0 text-slate-400 hover:bg-slate-100 hover:text-slate-800"
+                            className="text-muted-foreground hover:bg-muted hover:text-foreground h-7 w-7 cursor-pointer rounded-lg p-0"
                           >
                             <MoreVertical className="h-4 w-4" />
                           </Button>
@@ -1027,7 +1036,7 @@ export default function CustomersDirectoryPage() {
                             onClick={() => setPeekCustomerId(customer.id)}
                             className="flex cursor-pointer items-center gap-2"
                           >
-                            <Eye className="h-3.5 w-3.5 text-slate-400" />
+                            <Eye className="text-muted-foreground h-3.5 w-3.5" />
                             <span>Quick Peek Drawer</span>
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild>
@@ -1035,7 +1044,7 @@ export default function CustomersDirectoryPage() {
                               href={`/dashboard/customers/${customer.id}`}
                               className="flex cursor-pointer items-center gap-2"
                             >
-                              <Users className="h-3.5 w-3.5 text-slate-400" />
+                              <Users className="text-muted-foreground h-3.5 w-3.5" />
                               <span>View 360° Profile</span>
                             </Link>
                           </DropdownMenuItem>
@@ -1043,21 +1052,21 @@ export default function CustomersDirectoryPage() {
                             onClick={() => setEditingCustomer(customer)}
                             className="flex cursor-pointer items-center gap-2"
                           >
-                            <Edit3 className="h-3.5 w-3.5 text-slate-400" />
+                            <Edit3 className="text-muted-foreground h-3.5 w-3.5" />
                             <span>Edit Details</span>
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             onClick={() => openModal("invoice")}
                             className="flex cursor-pointer items-center gap-2"
                           >
-                            <CreditCard className="h-3.5 w-3.5 text-blue-600" />
+                            <CreditCard className="text-primary h-3.5 w-3.5" />
                             <span>Create Invoice</span>
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             onClick={() => openModal("appointment")}
                             className="flex cursor-pointer items-center gap-2"
                           >
-                            <CalendarPlus className="h-3.5 w-3.5 text-emerald-600" />
+                            <CalendarPlus className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                             <span>Book Appointment</span>
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
@@ -1067,7 +1076,7 @@ export default function CustomersDirectoryPage() {
                                 setArchivingCustomer(customer);
                                 setArchiveMode("archive");
                               }}
-                              className="flex cursor-pointer items-center gap-2 text-rose-600 focus:text-rose-700"
+                              className="flex cursor-pointer items-center gap-2 text-rose-600 focus:text-rose-700 dark:text-rose-400"
                             >
                               <Archive className="h-3.5 w-3.5" />
                               <span>Archive Client</span>
@@ -1078,7 +1087,7 @@ export default function CustomersDirectoryPage() {
                                 setArchivingCustomer(customer);
                                 setArchiveMode("reactivate");
                               }}
-                              className="flex cursor-pointer items-center gap-2 text-emerald-600 focus:text-emerald-700"
+                              className="flex cursor-pointer items-center gap-2 text-emerald-600 focus:text-emerald-700 dark:text-emerald-400"
                             >
                               <RefreshCw className="h-3.5 w-3.5" />
                               <span>Reactivate Client</span>
@@ -1101,7 +1110,7 @@ export default function CustomersDirectoryPage() {
                         style={{ backgroundColor: health.ringColor }}
                       />
                       <span>{health.score}</span>
-                      <span className="font-normal text-slate-400">·</span>
+                      <span className="text-muted-foreground/50 font-normal">·</span>
                       <span>{health.velocityLabel}</span>
                     </span>
                   </div>
@@ -1124,7 +1133,7 @@ export default function CustomersDirectoryPage() {
 
                   {/* Contact Chips with 1-click clipboard */}
                   <div
-                    className="mt-3.5 space-y-1.5 text-xs text-slate-600"
+                    className="text-muted-foreground mt-3.5 space-y-1.5 text-xs"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <button
@@ -1133,10 +1142,10 @@ export default function CustomersDirectoryPage() {
                       className="hover:text-primary flex cursor-pointer items-center gap-1.5 transition-colors"
                       title="Click to copy email"
                     >
-                      <Mail className="h-3.5 w-3.5 text-slate-400" />
+                      <Mail className="text-muted-foreground h-3.5 w-3.5" />
                       <span className="truncate">{customer.email}</span>
                       {copiedText === customer.email && (
-                        <span className="rounded-md bg-emerald-50 px-1 text-[10px] font-bold text-emerald-600">
+                        <span className="rounded-md bg-emerald-500/10 px-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
                           Copied!
                         </span>
                       )}
@@ -1148,10 +1157,10 @@ export default function CustomersDirectoryPage() {
                         className="hover:text-primary flex cursor-pointer items-center gap-1.5 transition-colors"
                         title="Click to copy phone"
                       >
-                        <Phone className="h-3.5 w-3.5 text-slate-400" />
+                        <Phone className="text-muted-foreground h-3.5 w-3.5" />
                         <span className="truncate">{customer.phone}</span>
                         {copiedText === customer.phone && (
-                          <span className="rounded-md bg-emerald-50 px-1 text-[10px] font-bold text-emerald-600">
+                          <span className="rounded-md bg-emerald-500/10 px-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
                             Copied!
                           </span>
                         )}
@@ -1161,13 +1170,13 @@ export default function CustomersDirectoryPage() {
                 </div>
 
                 {/* Footer Metrics & Direct Profile Link */}
-                <div className="mt-5 border-t border-slate-100 pt-3">
+                <div className="border-border/60 mt-5 border-t pt-3">
                   <div className="flex items-center justify-between text-xs">
                     <div>
-                      <p className="text-[10px] font-bold tracking-wider text-slate-400 uppercase">
+                      <p className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
                         Settled LTV
                       </p>
-                      <p className="text-sm font-extrabold text-slate-900 tabular-nums">
+                      <p className="text-foreground text-sm font-extrabold tabular-nums">
                         {customer.totalPaid}
                       </p>
                     </div>
@@ -1180,7 +1189,7 @@ export default function CustomersDirectoryPage() {
                           e.stopPropagation();
                           setPeekCustomerId(customer.id);
                         }}
-                        className="h-8 cursor-pointer rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                        className="text-muted-foreground hover:bg-muted hover:text-foreground h-8 cursor-pointer rounded-xl text-xs font-bold"
                       >
                         <Eye className="mr-1 h-3.5 w-3.5" />
                         <span>Quick Peek</span>
@@ -1189,7 +1198,7 @@ export default function CustomersDirectoryPage() {
                       <Link
                         href={`/dashboard/customers/${customer.id}`}
                         onClick={(e) => e.stopPropagation()}
-                        className="hover:text-primary group/link flex items-center gap-1 font-bold text-slate-700"
+                        className="hover:text-primary group/link text-foreground flex items-center gap-1 font-bold"
                       >
                         <span className="text-xs">Profile</span>
                         <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/link:translate-x-0.5" />
@@ -1206,21 +1215,21 @@ export default function CustomersDirectoryPage() {
       {/* Floating Executive Bulk Selection Dock */}
       {selectedIds.size > 0 && (
         <div className="animate-in fade-in slide-in-from-bottom-4 fixed bottom-5 left-1/2 z-40 w-[calc(100vw-1.5rem)] max-w-md -translate-x-1/2 duration-300 sm:bottom-7 sm:w-auto">
-          <div className="flex items-center justify-between gap-2.5 rounded-2xl border border-slate-800 bg-slate-900/95 px-3.5 py-2.5 text-white shadow-2xl backdrop-blur-xl sm:justify-start sm:gap-3 sm:px-5 sm:py-3">
+          <div className="border-border/80 bg-card/95 text-foreground flex items-center justify-between gap-2.5 rounded-2xl border px-3.5 py-2.5 shadow-2xl backdrop-blur-xl sm:justify-start sm:gap-3 sm:px-5 sm:py-3">
             <div className="flex items-center gap-2 text-xs font-bold">
-              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-500 text-[11px] font-black text-white">
+              <span className="bg-primary text-primary-foreground flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] font-black">
                 {selectedIds.size}
               </span>
               <span className="truncate">{selectedIds.size === 1 ? "Selected" : "Selected"}</span>
             </div>
 
-            <div className="h-4 w-px bg-slate-700" />
+            <div className="bg-border/80 h-4 w-px" />
 
             <Button
               size="sm"
               variant="ghost"
               onClick={handleExportSelected}
-              className="h-8 cursor-pointer rounded-xl text-xs font-bold text-slate-200 hover:bg-slate-800 hover:text-white"
+              className="text-foreground hover:bg-muted h-8 cursor-pointer rounded-xl text-xs font-bold"
             >
               <Download className="mr-1.5 h-3.5 w-3.5" />
               <span>Export CSV ({selectedIds.size})</span>
@@ -1229,7 +1238,7 @@ export default function CustomersDirectoryPage() {
             <button
               type="button"
               onClick={() => setSelectedIds(new Set())}
-              className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-800 hover:text-white"
+              className="text-muted-foreground hover:bg-muted hover:text-foreground flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg transition-colors"
               title="Clear Selection"
             >
               <X className="h-4 w-4" />
