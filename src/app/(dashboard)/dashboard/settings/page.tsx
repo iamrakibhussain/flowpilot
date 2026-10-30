@@ -396,17 +396,35 @@ export default function WorkspaceSettingsPage() {
     }
   };
 
-  // Copy portal link
-  const publicPortalUrl =
+  // Public booking & Client Portal links
+  const activeSlug = formData.slug || settings?.slug || "my-business";
+  const publicBookingUrl =
     typeof window !== "undefined"
-      ? `${window.location.origin}/book/${formData.slug || settings?.slug || "my-business"}`
-      : `/book/${formData.slug || settings?.slug || "my-business"}`;
+      ? `${window.location.origin}/book/${activeSlug}`
+      : `/book/${activeSlug}`;
+
+  const clientPortalUrl =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/portal/${activeSlug}`
+      : `/portal/${activeSlug}`;
+
+  const [copiedPortalLink, setCopiedPortalLink] = React.useState(false);
 
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(publicPortalUrl);
+      await navigator.clipboard.writeText(publicBookingUrl);
       setCopiedLink(true);
       setTimeout(() => setCopiedLink(false), 2500);
+    } catch {
+      // Fallback
+    }
+  };
+
+  const handleCopyPortalLink = async () => {
+    try {
+      await navigator.clipboard.writeText(clientPortalUrl);
+      setCopiedPortalLink(true);
+      setTimeout(() => setCopiedPortalLink(false), 2500);
     } catch {
       // Fallback
     }
@@ -651,25 +669,59 @@ export default function WorkspaceSettingsPage() {
         title="Workspace Configuration &amp; Brand Operating Hub"
         description="Manage company branding, public self-scheduling gateway URL, currency localization, invoice bank details, and security policies."
         actions={
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Button
               type="button"
               variant="outline"
               size="sm"
               onClick={handleCopyLink}
               className="border-border/80 bg-background/80 hover:bg-muted/60 flex h-8.5 cursor-pointer items-center gap-1.5 rounded-xl text-xs font-semibold shadow-2xs transition"
+              title="Copy public booking link"
             >
               {copiedLink ? (
                 <>
                   <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-                  <span className="text-emerald-600 dark:text-emerald-400">Link Copied!</span>
+                  <span className="text-emerald-600 dark:text-emerald-400">Booking Copied!</span>
                 </>
               ) : (
                 <>
-                  <ExternalLink className="text-muted-foreground h-3.5 w-3.5" />
-                  <span>Public Portal</span>
+                  <Copy className="text-muted-foreground h-3.5 w-3.5" />
+                  <span>Copy Booking Link</span>
                 </>
               )}
+            </Button>
+
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={handleCopyPortalLink}
+              className="border-border/80 bg-background/80 hover:bg-muted/60 flex h-8.5 cursor-pointer items-center gap-1.5 rounded-xl text-xs font-semibold shadow-2xs transition"
+              title="Copy client self-service portal link"
+            >
+              {copiedPortalLink ? (
+                <>
+                  <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <span className="text-emerald-600 dark:text-emerald-400">Portal Copied!</span>
+                </>
+              ) : (
+                <>
+                  <Globe className="text-blue-500 h-3.5 w-3.5" />
+                  <span>Copy Portal Link</span>
+                </>
+              )}
+            </Button>
+
+            <Button
+              variant="default"
+              size="sm"
+              asChild
+              className="bg-blue-600 hover:bg-blue-700 text-white flex h-8.5 cursor-pointer items-center gap-1.5 rounded-xl text-xs font-bold shadow-2xs transition"
+            >
+              <a href={clientPortalUrl} target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="h-3.5 w-3.5" />
+                <span>Open Portal</span>
+              </a>
             </Button>
           </div>
         }
@@ -829,6 +881,15 @@ export default function WorkspaceSettingsPage() {
                         placeholder="my-company"
                         className="border-border/80 bg-background text-foreground pl-16 font-mono text-xs"
                       />
+                    </div>
+                    <div className="mt-2 flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground">
+                      <span className="inline-flex items-center gap-1 font-mono">
+                        <span className="font-semibold text-foreground">Public Booking:</span> /book/{formData.slug || "slug"}
+                      </span>
+                      <span className="text-muted-foreground/40">•</span>
+                      <span className="inline-flex items-center gap-1 font-mono">
+                        <span className="font-semibold text-blue-600 dark:text-blue-400">Client Portal:</span> /portal/{formData.slug || "slug"}
+                      </span>
                     </div>
                   </div>
                 </div>
