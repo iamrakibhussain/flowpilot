@@ -703,7 +703,7 @@ export default function WorkspaceSettingsPage() {
                 </>
               ) : (
                 <>
-                  <Globe className="text-blue-500 h-3.5 w-3.5" />
+                  <Globe className="h-3.5 w-3.5 text-blue-500" />
                   <span>Copy Portal Link</span>
                 </>
               )}
@@ -713,7 +713,7 @@ export default function WorkspaceSettingsPage() {
               variant="default"
               size="sm"
               asChild
-              className="bg-blue-600 hover:bg-blue-700 text-white flex h-8.5 cursor-pointer items-center gap-1.5 rounded-xl text-xs font-bold shadow-2xs transition"
+              className="flex h-8.5 cursor-pointer items-center gap-1.5 rounded-xl bg-blue-600 text-xs font-bold text-white shadow-2xs transition hover:bg-blue-700"
             >
               <a href={clientPortalUrl} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="h-3.5 w-3.5" />
@@ -879,13 +879,17 @@ export default function WorkspaceSettingsPage() {
                         className="border-border/80 bg-background text-foreground pl-16 font-mono text-xs"
                       />
                     </div>
-                    <div className="mt-2 flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground">
+                    <div className="text-muted-foreground mt-2 flex flex-wrap items-center gap-3 text-[11px]">
                       <span className="inline-flex items-center gap-1 font-mono">
-                        <span className="font-semibold text-foreground">Public Booking:</span> /book/{formData.slug || "slug"}
+                        <span className="text-foreground font-semibold">Public Booking:</span>{" "}
+                        /book/{formData.slug || "slug"}
                       </span>
                       <span className="text-muted-foreground/40">•</span>
                       <span className="inline-flex items-center gap-1 font-mono">
-                        <span className="font-semibold text-blue-600 dark:text-blue-400">Client Portal:</span> /portal/{formData.slug || "slug"}
+                        <span className="font-semibold text-blue-600 dark:text-blue-400">
+                          Client Portal:
+                        </span>{" "}
+                        /portal/{formData.slug || "slug"}
                       </span>
                     </div>
                   </div>

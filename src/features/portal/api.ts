@@ -70,4 +70,3 @@ export async function logoutPortal() {
   const response = await apiClient.post<null>("/portal/auth/logout");
   return response.data;
 }
-

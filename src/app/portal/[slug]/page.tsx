@@ -94,23 +94,23 @@ export default function ClientPortalLoginPage() {
 
       <div className="relative z-10 w-full max-w-md space-y-6">
         {/* Back Link to Booking */}
-        <div className="flex justify-between items-center px-1">
+        <div className="flex items-center justify-between px-1">
           <Link
             href={`/book/${slug}`}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 transition"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400"
           >
             <ChevronLeft className="h-4 w-4" />
             <span>Public Booking Gateway</span>
           </Link>
-          <span className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+          <span className="flex items-center gap-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
             Live Gateway
           </span>
         </div>
 
         {/* Workspace Brand Header */}
         <div className="space-y-3 text-center">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-violet-600 text-xl font-black text-white shadow-lg shadow-blue-500/25 ring-4 ring-blue-500/10 dark:ring-blue-500/20">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-violet-600 text-xl font-black text-white shadow-lg ring-4 shadow-blue-500/25 ring-blue-500/10 dark:ring-blue-500/20">
             {slug.charAt(0).toUpperCase()}
           </div>
           <div className="space-y-1">
@@ -165,7 +165,8 @@ export default function ClientPortalLoginPage() {
                     />
                   </div>
                   <p className="text-[11px] text-slate-500">
-                    Please enter the email address used during your appointment booking or invoice receipt.
+                    Please enter the email address used during your appointment booking or invoice
+                    receipt.
                   </p>
                 </div>
 

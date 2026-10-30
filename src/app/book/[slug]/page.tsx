@@ -378,11 +378,13 @@ export default function PublicBookingPortalPage() {
           <div className="flex items-center gap-2">
             <Link
               href={`/portal/${slug}`}
-              className="border-border/80 bg-card text-foreground hover:bg-muted/80 flex items-center gap-1.5 rounded-full border px-2.5 sm:px-3 py-1 text-xs font-semibold shadow-2xs transition"
+              className="border-border/80 bg-card text-foreground hover:bg-muted/80 flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold shadow-2xs transition sm:px-3"
               title="Already a client? Sign in to manage bookings & invoices"
             >
               <User className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
-              <span><span className="hidden sm:inline">Client </span>Portal</span>
+              <span>
+                <span className="hidden sm:inline">Client </span>Portal
+              </span>
             </Link>
             <div className="border-border/80 bg-card text-muted-foreground hidden items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium shadow-2xs sm:flex">
               <Globe className="h-3 w-3 text-blue-500" />
@@ -1185,17 +1187,16 @@ export default function PublicBookingPortalPage() {
                 Need to reschedule, cancel, or download your invoice receipt later?
               </p>
               <p className="mt-0.5 text-[11px] text-slate-600 dark:text-slate-400">
-                Manage all your upcoming and past bookings in your personal 24/7 Client Self-Service Portal.
+                Manage all your upcoming and past bookings in your personal 24/7 Client Self-Service
+                Portal.
               </p>
               <div className="mt-3 flex justify-center">
                 <Button
                   size="sm"
                   asChild
-                  className="rounded-xl bg-blue-600 px-4 py-2 text-xs font-bold text-white shadow-md shadow-blue-500/20 hover:bg-blue-700 cursor-pointer"
+                  className="cursor-pointer rounded-xl bg-blue-600 px-4 py-2 text-xs font-bold text-white shadow-md shadow-blue-500/20 hover:bg-blue-700"
                 >
-                  <Link href={`/portal/${slug}`}>
-                    Access Client Portal &rarr;
-                  </Link>
+                  <Link href={`/portal/${slug}`}>Access Client Portal &rarr;</Link>
                 </Button>
               </div>
             </div>

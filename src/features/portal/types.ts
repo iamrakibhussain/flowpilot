@@ -122,4 +122,3 @@ export interface UpdatePortalProfileInput {
   phone?: string | null;
   company?: string | null;
 }
-

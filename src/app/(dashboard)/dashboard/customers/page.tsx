@@ -335,7 +335,7 @@ export default function CustomersDirectoryPage() {
       </div>
 
       {/* Client Self-Service Operations Hub Banner */}
-      <div className="relative overflow-hidden rounded-2xl border border-blue-500/20 bg-gradient-to-r from-blue-600/10 via-indigo-500/10 to-purple-600/10 p-4 sm:p-5 backdrop-blur-xl">
+      <div className="relative overflow-hidden rounded-2xl border border-blue-500/20 bg-gradient-to-r from-blue-600/10 via-indigo-500/10 to-purple-600/10 p-4 backdrop-blur-xl sm:p-5">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-start gap-3.5">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-white shadow-md shadow-blue-500/20">
@@ -343,24 +343,28 @@ export default function CustomersDirectoryPage() {
             </div>
             <div>
               <div className="flex flex-wrap items-center gap-2">
-                <h3 className="text-sm font-bold text-foreground">Client Self-Service Portal Hub</h3>
+                <h3 className="text-foreground text-sm font-bold">
+                  Client Self-Service Portal Hub
+                </h3>
                 <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
                   <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
                   Live &amp; Secure
                 </span>
               </div>
-              <p className="mt-1 text-xs text-muted-foreground leading-relaxed max-w-2xl">
-                Dedicated 24/7 self-service gateway for your clients to view appointments, reschedule or cancel sessions, inspect line-item invoices, and download tax receipts without calling your team.
+              <p className="text-muted-foreground mt-1 max-w-2xl text-xs leading-relaxed">
+                Dedicated 24/7 self-service gateway for your clients to view appointments,
+                reschedule or cancel sessions, inspect line-item invoices, and download tax receipts
+                without calling your team.
               </p>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full lg:w-auto">
-            <div className="flex items-center gap-1.5 rounded-xl border border-border/80 bg-background/90 px-3 py-2 sm:py-1.5 text-xs font-mono text-muted-foreground shadow-2xs w-full sm:w-auto overflow-hidden">
-              <span className="text-blue-600 dark:text-blue-400 font-bold shrink-0">Portal:</span>
-              <span className="truncate max-w-[220px] sm:max-w-[280px]">{portalFullUrl}</span>
+          <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center lg:w-auto">
+            <div className="border-border/80 bg-background/90 text-muted-foreground flex w-full items-center gap-1.5 overflow-hidden rounded-xl border px-3 py-2 font-mono text-xs shadow-2xs sm:w-auto sm:py-1.5">
+              <span className="shrink-0 font-bold text-blue-600 dark:text-blue-400">Portal:</span>
+              <span className="max-w-[220px] truncate sm:max-w-[280px]">{portalFullUrl}</span>
             </div>
-            <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full sm:w-auto">
+            <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:items-center">
               <Button
                 type="button"
                 variant="outline"
@@ -371,11 +375,13 @@ export default function CustomersDirectoryPage() {
                 {copiedPortalLink ? (
                   <>
                     <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-                    <span className="text-emerald-600 dark:text-emerald-400 font-bold">Copied!</span>
+                    <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                      Copied!
+                    </span>
                   </>
                 ) : (
                   <>
-                    <Copy className="h-3.5 w-3.5 text-muted-foreground" />
+                    <Copy className="text-muted-foreground h-3.5 w-3.5" />
                     <span>Copy Link</span>
                   </>
                 )}
@@ -383,7 +389,7 @@ export default function CustomersDirectoryPage() {
               <Button
                 size="sm"
                 asChild
-                className="bg-blue-600 hover:bg-blue-700 text-white flex h-9 cursor-pointer items-center justify-center gap-1.5 rounded-xl text-xs font-bold shadow-md shadow-blue-500/20 transition"
+                className="flex h-9 cursor-pointer items-center justify-center gap-1.5 rounded-xl bg-blue-600 text-xs font-bold text-white shadow-md shadow-blue-500/20 transition hover:bg-blue-700"
               >
                 <a href={portalFullUrl} target="_blank" rel="noopener noreferrer">
                   <ExternalLink className="h-3.5 w-3.5" />
