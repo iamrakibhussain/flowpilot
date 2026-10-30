@@ -250,7 +250,7 @@ export default function ServicesPage() {
               </div>
               <div className="text-muted-foreground mt-1 flex flex-wrap items-center gap-1.5 text-xs">
                 <span className="text-[11px] font-medium">Direct Portal:</span>
-                <span className="border-border/60 bg-muted/50 text-primary max-w-full truncate rounded-md border px-2 py-0.5 font-mono text-[10px] font-semibold sm:text-[11px]">
+                <span className="border-border/60 bg-muted/50 text-primary max-w-[210px] truncate rounded-md border px-2 py-0.5 font-mono text-[10px] font-semibold sm:max-w-xs sm:text-[11px] md:max-w-md">
                   {publicBookingUrl}
                 </span>
               </div>
@@ -272,7 +272,7 @@ export default function ServicesPage() {
                 </>
               ) : (
                 <>
-                  <Copy className="h-3.5 w-3.5 text-slate-500" />
+                  <Copy className="text-muted-foreground h-3.5 w-3.5" />
                   <span>Copy Link</span>
                 </>
               )}

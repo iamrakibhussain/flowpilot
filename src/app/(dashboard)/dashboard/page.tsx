@@ -250,29 +250,29 @@ export default function DashboardOverviewPage() {
       )}
 
       {/* Enterprise Multi-Tenant Telemetry Strip */}
-      <div className="flex w-full max-w-full min-w-0 flex-col justify-between gap-2 rounded-xl border border-slate-200/80 bg-white/70 px-3.5 py-2 text-[11px] text-slate-500 shadow-2xs backdrop-blur-md sm:flex-row sm:items-center">
+      <div className="border-border/80 bg-card/70 text-muted-foreground flex w-full max-w-full min-w-0 flex-col justify-between gap-2 rounded-xl border px-3.5 py-2 text-[11px] shadow-2xs backdrop-blur-md sm:flex-row sm:items-center">
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-          <span className="flex items-center gap-1.5 font-semibold text-slate-700">
+          <span className="text-foreground flex items-center gap-1.5 font-semibold">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
             </span>
             Active Multi-Tenant Node
           </span>
-          <span className="hidden text-slate-300 sm:inline">•</span>
+          <span className="text-border hidden sm:inline">•</span>
           <span className="font-mono text-[10px]">Region: us-east-multi-az</span>
-          <span className="hidden text-slate-300 md:inline">•</span>
+          <span className="text-border hidden md:inline">•</span>
           <span className="hidden font-mono text-[10px] md:inline">
             API Latency: 22ms (p99 &lt; 40ms)
           </span>
         </div>
         <div className="flex items-center gap-2 font-medium">
-          <span className="flex items-center gap-1 text-emerald-700">
+          <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
             <ShieldCheck className="h-3.5 w-3.5" />
             PCI-DSS Compliant
           </span>
-          <span className="text-slate-300">•</span>
-          <span className="text-blue-700">Encrypted AES-256</span>
+          <span className="text-border">•</span>
+          <span className="text-primary font-semibold">Encrypted AES-256</span>
         </div>
       </div>
 
@@ -280,7 +280,7 @@ export default function DashboardOverviewPage() {
       <div className="flex w-full max-w-full min-w-0 flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+            <h1 className="text-foreground text-2xl font-black tracking-tight sm:text-3xl">
               Welcome back, {userName}
             </h1>
             <span className="border-primary/20 bg-primary/10 text-primary inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[11px] font-bold">
@@ -288,22 +288,22 @@ export default function DashboardOverviewPage() {
               Live Hub
             </span>
           </div>
-          <p className="mt-1 text-xs text-slate-500 sm:text-sm">
+          <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
             Real-time multi-tenant telemetry for{" "}
-            <span className="font-semibold text-slate-800">{organizationName}</span>
+            <span className="text-foreground font-semibold">{organizationName}</span>
           </p>
         </div>
 
         {/* Dynamic Date Filters & CSV Export */}
         <div className="flex w-full flex-wrap items-center justify-between gap-2 sm:w-auto sm:justify-end">
-          <div className="flex rounded-xl border border-slate-200 bg-white/90 p-1 text-xs shadow-xs">
+          <div className="border-border/80 bg-muted/40 flex rounded-xl border p-1 text-xs shadow-2xs">
             <button
               type="button"
               onClick={() => setTimeframe("7d")}
-              className={`cursor-pointer rounded-lg px-2.5 py-1 font-semibold transition-colors ${
+              className={`cursor-pointer rounded-lg px-2.5 py-1 font-semibold transition-all ${
                 timeframe === "7d"
-                  ? "bg-slate-900 text-white shadow-xs"
-                  : "text-slate-600 hover:text-slate-900"
+                  ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               7 Days
@@ -311,10 +311,10 @@ export default function DashboardOverviewPage() {
             <button
               type="button"
               onClick={() => setTimeframe("30d")}
-              className={`cursor-pointer rounded-lg px-2.5 py-1 font-semibold transition-colors ${
+              className={`cursor-pointer rounded-lg px-2.5 py-1 font-semibold transition-all ${
                 timeframe === "30d"
-                  ? "bg-slate-900 text-white shadow-xs"
-                  : "text-slate-600 hover:text-slate-900"
+                  ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               30 Days
@@ -322,10 +322,10 @@ export default function DashboardOverviewPage() {
             <button
               type="button"
               onClick={() => setTimeframe("90d")}
-              className={`cursor-pointer rounded-lg px-2.5 py-1 font-semibold transition-colors ${
+              className={`cursor-pointer rounded-lg px-2.5 py-1 font-semibold transition-all ${
                 timeframe === "90d"
-                  ? "bg-slate-900 text-white shadow-xs"
-                  : "text-slate-600 hover:text-slate-900"
+                  ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               Quarter
@@ -335,10 +335,10 @@ export default function DashboardOverviewPage() {
           <Button
             variant="outline"
             size="sm"
-            className="cursor-pointer rounded-xl border-slate-200 bg-white text-xs font-semibold text-slate-700 shadow-xs hover:bg-slate-50"
+            className="border-border/80 text-muted-foreground hover:text-foreground cursor-pointer text-xs font-semibold"
             onClick={handleExportTelemetryCsv}
           >
-            <Download className="mr-1.5 h-3.5 w-3.5 text-slate-500" />
+            <Download className="mr-1.5 h-3.5 w-3.5" />
             <span>Export Report</span>
           </Button>
         </div>
@@ -354,7 +354,7 @@ export default function DashboardOverviewPage() {
                 <span className="bg-primary/15 text-primary inline-flex h-6 w-6 items-center justify-center rounded-lg">
                   <Sparkles className="h-3.5 w-3.5" />
                 </span>
-                <h2 className="text-sm font-bold tracking-tight text-slate-900 sm:text-base">
+                <h2 className="text-foreground text-sm font-bold tracking-tight sm:text-base">
                   Quick-Start Workspace Setup
                 </h2>
                 <span className="border-primary/20 bg-primary/10 text-primary rounded-full border px-2.5 py-0.5 text-[11px] font-bold">
@@ -362,14 +362,14 @@ export default function DashboardOverviewPage() {
                   {Math.round((completedOnboardingSteps / 3) * 100)}%)
                 </span>
               </div>
-              <p className="text-xs text-slate-500">
+              <p className="text-muted-foreground text-xs">
                 Complete these foundational operations steps to unlock full real-time telemetry and
                 revenue insights.
               </p>
             </div>
-            <div className="flex items-center gap-2 self-end sm:self-center">
+            <div className="sm:center flex items-center gap-2 self-end">
               <div className="hidden w-28 sm:block">
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-200/80">
+                <div className="bg-muted/80 h-1.5 w-full overflow-hidden rounded-full">
                   <div
                     className="from-primary h-full rounded-full bg-gradient-to-r to-indigo-600 transition-all duration-500"
                     style={{ width: `${Math.round((completedOnboardingSteps / 3) * 100)}%` }}
@@ -379,7 +379,7 @@ export default function DashboardOverviewPage() {
               <button
                 type="button"
                 onClick={handleDismissOnboarding}
-                className="cursor-pointer rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+                className="text-muted-foreground hover:bg-muted hover:text-foreground cursor-pointer rounded-lg px-2.5 py-1 text-xs font-semibold transition-colors"
               >
                 Dismiss guide
               </button>
@@ -392,8 +392,8 @@ export default function DashboardOverviewPage() {
             <div
               className={`group relative flex flex-col justify-between rounded-xl border p-3.5 transition-all duration-200 ${
                 hasClients
-                  ? "border-emerald-200/80 bg-emerald-50/40"
-                  : "hover:border-primary/40 cursor-pointer border-slate-200/90 bg-white hover:shadow-xs"
+                  ? "border-emerald-500/30 bg-emerald-500/10"
+                  : "hover:border-primary/40 border-border/80 bg-card/90 cursor-pointer hover:shadow-xs"
               }`}
               onClick={() => !hasClients && openModal("customer")}
             >
@@ -401,15 +401,17 @@ export default function DashboardOverviewPage() {
                 <div className="flex items-center gap-2">
                   <span
                     className={`flex h-7 w-7 items-center justify-center rounded-lg text-xs font-bold ${
-                      hasClients ? "bg-emerald-100 text-emerald-700" : "bg-blue-50 text-blue-600"
+                      hasClients
+                        ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+                        : "bg-primary/10 text-primary"
                     }`}
                   >
                     {hasClients ? <CheckCircle2 className="h-4 w-4" /> : "1"}
                   </span>
-                  <span className="text-xs font-bold text-slate-900">Add First Client</span>
+                  <span className="text-foreground text-xs font-bold">Add First Client</span>
                 </div>
                 {hasClients ? (
-                  <span className="rounded-full bg-emerald-100/80 px-2 py-0.5 text-[10px] font-bold text-emerald-700">
+                  <span className="rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
                     Done
                   </span>
                 ) : (
@@ -418,7 +420,7 @@ export default function DashboardOverviewPage() {
                   </span>
                 )}
               </div>
-              <p className="mt-2 text-[11px] text-slate-500">
+              <p className="text-muted-foreground mt-2 text-[11px]">
                 {hasClients
                   ? `${clientCount} active client record${clientCount > 1 ? "s" : ""} securely in CRM`
                   : "Create your first client profile to attach quotes, appointments, and billing"}
@@ -429,8 +431,8 @@ export default function DashboardOverviewPage() {
             <div
               className={`group relative flex flex-col justify-between rounded-xl border p-3.5 transition-all duration-200 ${
                 hasInvoices
-                  ? "border-emerald-200/80 bg-emerald-50/40"
-                  : "hover:border-primary/40 cursor-pointer border-slate-200/90 bg-white hover:shadow-xs"
+                  ? "border-emerald-500/30 bg-emerald-500/10"
+                  : "hover:border-primary/40 border-border/80 bg-card/90 cursor-pointer hover:shadow-xs"
               }`}
               onClick={() => !hasInvoices && openModal("invoice")}
             >
@@ -439,16 +441,16 @@ export default function DashboardOverviewPage() {
                   <span
                     className={`flex h-7 w-7 items-center justify-center rounded-lg text-xs font-bold ${
                       hasInvoices
-                        ? "bg-emerald-100 text-emerald-700"
-                        : "bg-indigo-50 text-indigo-600"
+                        ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+                        : "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400"
                     }`}
                   >
                     {hasInvoices ? <CheckCircle2 className="h-4 w-4" /> : "2"}
                   </span>
-                  <span className="text-xs font-bold text-slate-900">Issue an Invoice</span>
+                  <span className="text-foreground text-xs font-bold">Issue an Invoice</span>
                 </div>
                 {hasInvoices ? (
-                  <span className="rounded-full bg-emerald-100/80 px-2 py-0.5 text-[10px] font-bold text-emerald-700">
+                  <span className="rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
                     Done
                   </span>
                 ) : (
@@ -457,7 +459,7 @@ export default function DashboardOverviewPage() {
                   </span>
                 )}
               </div>
-              <p className="mt-2 text-[11px] text-slate-500">
+              <p className="text-muted-foreground mt-2 text-[11px]">
                 {hasInvoices
                   ? "Invoicing engine active and tracking real cash flow"
                   : "Generate your first itemized invoice or estimate with automated payment terms"}
@@ -468,8 +470,8 @@ export default function DashboardOverviewPage() {
             <div
               className={`group relative flex flex-col justify-between rounded-xl border p-3.5 transition-all duration-200 ${
                 hasAppointments
-                  ? "border-emerald-200/80 bg-emerald-50/40"
-                  : "hover:border-primary/40 cursor-pointer border-slate-200/90 bg-white hover:shadow-xs"
+                  ? "border-emerald-500/30 bg-emerald-500/10"
+                  : "hover:border-primary/40 border-border/80 bg-card/90 cursor-pointer hover:shadow-xs"
               }`}
               onClick={() => !hasAppointments && openModal("appointment")}
             >
@@ -478,16 +480,16 @@ export default function DashboardOverviewPage() {
                   <span
                     className={`flex h-7 w-7 items-center justify-center rounded-lg text-xs font-bold ${
                       hasAppointments
-                        ? "bg-emerald-100 text-emerald-700"
-                        : "bg-emerald-50 text-emerald-600"
+                        ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+                        : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
                     }`}
                   >
                     {hasAppointments ? <CheckCircle2 className="h-4 w-4" /> : "3"}
                   </span>
-                  <span className="text-xs font-bold text-slate-900">Schedule Booking</span>
+                  <span className="text-foreground text-xs font-bold">Schedule Booking</span>
                 </div>
                 {hasAppointments ? (
-                  <span className="rounded-full bg-emerald-100/80 px-2 py-0.5 text-[10px] font-bold text-emerald-700">
+                  <span className="rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
                     Done
                   </span>
                 ) : (
@@ -496,7 +498,7 @@ export default function DashboardOverviewPage() {
                   </span>
                 )}
               </div>
-              <p className="mt-2 text-[11px] text-slate-500">
+              <p className="text-muted-foreground mt-2 text-[11px]">
                 {hasAppointments
                   ? `${apptCount} booking${apptCount > 1 ? "s" : ""} scheduled on the live calendar`
                   : "Book a client session to test automatic calendar dispatch and staff allocation"}
@@ -509,27 +511,27 @@ export default function DashboardOverviewPage() {
       {/* 4x High-Impact Reactive KPI Metric Cards */}
       <div className="grid w-full max-w-full min-w-0 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* KPI 1: Total Revenue */}
-        <Card className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-5 shadow-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300/80 hover:shadow-[0_12px_30px_rgba(49,95,232,0.06)]">
+        <Card className="border-border/80 from-card to-card/90 hover:border-primary/40 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-5 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xs">
           <div className="pointer-events-none absolute top-0 right-0 h-24 w-24 rounded-full bg-blue-500/[0.04] blur-xl" />
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold tracking-wider text-slate-500 uppercase">
+            <span className="text-muted-foreground text-xs font-bold tracking-wider uppercase">
               Invoiced Volume
             </span>
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-blue-100 bg-blue-50 text-blue-600">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
               <DollarSign className="h-4.5 w-4.5" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+            <span className="text-foreground text-2xl font-black tracking-tight sm:text-3xl">
               {currentMetric.revenue}
             </span>
           </div>
           <div className="mt-2 flex items-center gap-2">
-            <span className="inline-flex items-center gap-0.5 rounded-md border border-emerald-200/80 bg-emerald-50 px-1.5 py-0.5 text-[11px] font-bold text-emerald-700">
+            <span className="inline-flex items-center gap-0.5 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-1.5 py-0.5 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
               <TrendingUp className="h-3 w-3" />
               {currentMetric.revenueGrowth}
             </span>
-            <span className="text-[11px] text-slate-500">vs last period</span>
+            <span className="text-muted-foreground text-[11px]">vs last period</span>
           </div>
 
           {/* Mini Sparkline SVG */}
@@ -541,15 +543,15 @@ export default function DashboardOverviewPage() {
             >
               <defs>
                 <linearGradient id="grad-blue" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#315fe8" stopOpacity="0.3" />
-                  <stop offset="100%" stopColor="#315fe8" stopOpacity="0.0" />
+                  <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.3" />
+                  <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.0" />
                 </linearGradient>
               </defs>
               <path d={currentMetric.sparklineFill} fill="url(#grad-blue)" />
               <path
                 d={currentMetric.sparklineD}
                 fill="none"
-                stroke="#315fe8"
+                stroke="#3b82f6"
                 strokeWidth="2"
                 strokeLinecap="round"
               />
@@ -563,24 +565,24 @@ export default function DashboardOverviewPage() {
           className="group block focus-visible:outline-hidden"
           title="Open Customers CRM Directory"
         >
-          <Card className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-5 shadow-xs transition-all duration-300 group-hover:-translate-y-0.5 group-hover:border-indigo-300/80 group-hover:shadow-[0_12px_30px_rgba(79,70,229,0.08)]">
+          <Card className="border-border/80 from-card to-card/90 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-5 shadow-2xs transition-all duration-300 group-hover:-translate-y-0.5 group-hover:border-indigo-500/40 group-hover:shadow-xs">
             <div className="pointer-events-none absolute top-0 right-0 h-24 w-24 rounded-full bg-indigo-500/[0.04] blur-xl" />
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold tracking-wider text-slate-500 uppercase">
+              <span className="text-muted-foreground text-xs font-bold tracking-wider uppercase">
                 Active CRM Clients
               </span>
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-indigo-100 bg-indigo-50 text-indigo-600 transition-colors group-hover:bg-indigo-600 group-hover:text-white">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 transition-colors group-hover:bg-indigo-600 group-hover:text-white dark:text-indigo-400">
                 <Users className="h-4.5 w-4.5" />
               </div>
             </div>
             <div className="mt-3 flex items-baseline gap-2">
-              <span className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+              <span className="text-foreground text-2xl font-black tracking-tight sm:text-3xl">
                 {currentMetric.clients}
               </span>
             </div>
             <div className="mt-2 flex items-center justify-between">
               <div className="flex items-center gap-1.5">
-                <span className="inline-flex items-center gap-0.5 rounded-md border border-emerald-200/80 bg-emerald-50 px-1.5 py-0.5 text-[11px] font-bold text-emerald-700">
+                <span className="inline-flex items-center gap-0.5 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-1.5 py-0.5 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
                   <TrendingUp className="h-3 w-3" />
                   {currentMetric.clientsGrowth}
                 </span>
@@ -588,7 +590,9 @@ export default function DashboardOverviewPage() {
 
               {/* Client Avatar Stack */}
               {clientCount === 0 ? (
-                <span className="text-[10px] font-medium text-slate-400">No active accounts</span>
+                <span className="text-muted-foreground text-[10px] font-medium">
+                  No active accounts
+                </span>
               ) : (
                 <div className="flex -space-x-1.5">
                   {(recentClientInitials.length > 0 ? recentClientInitials : ["C"])
@@ -596,7 +600,7 @@ export default function DashboardOverviewPage() {
                     .map((initial, i) => (
                       <div
                         key={i}
-                        className={`flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-bold text-white ring-2 ring-white ${
+                        className={`ring-background flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-bold text-white ring-2 ${
                           i === 0 ? "bg-blue-600" : i === 1 ? "bg-indigo-600" : "bg-emerald-600"
                         }`}
                       >
@@ -604,7 +608,7 @@ export default function DashboardOverviewPage() {
                       </div>
                     ))}
                   {clientCount > 3 && (
-                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 text-[9px] font-bold text-slate-700 ring-2 ring-white">
+                    <div className="bg-muted ring-background text-muted-foreground flex h-6 w-6 items-center justify-center rounded-full text-[9px] font-bold ring-2">
                       +{clientCount - 3}
                     </div>
                   )}
@@ -612,14 +616,14 @@ export default function DashboardOverviewPage() {
               )}
             </div>
 
-            <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-2.5 text-[11px] text-slate-500">
+            <div className="border-border/60 text-muted-foreground mt-3 flex items-center justify-between border-t pt-2.5 text-[11px]">
               <span className="flex items-center gap-1">
                 Retention:{" "}
-                <strong className="font-bold text-slate-800">
+                <strong className="text-foreground font-bold">
                   {clientCount > 0 ? "98.2%" : "100.0%"}
                 </strong>
               </span>
-              <span className="flex items-center gap-0.5 font-bold text-indigo-600 transition-transform group-hover:translate-x-0.5">
+              <span className="flex items-center gap-0.5 font-bold text-indigo-600 transition-transform group-hover:translate-x-0.5 dark:text-indigo-400">
                 Manage CRM <ArrowRight className="h-3 w-3" />
               </span>
             </div>
@@ -627,38 +631,38 @@ export default function DashboardOverviewPage() {
         </Link>
 
         {/* KPI 3: Scheduled Appointments */}
-        <Card className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-5 shadow-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300/80 hover:shadow-[0_12px_30px_rgba(49,95,232,0.06)]">
+        <Card className="border-border/80 from-card to-card/90 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-5 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-500/40 hover:shadow-xs">
           <div className="pointer-events-none absolute top-0 right-0 h-24 w-24 rounded-full bg-emerald-500/[0.04] blur-xl" />
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold tracking-wider text-slate-500 uppercase">
+            <span className="text-muted-foreground text-xs font-bold tracking-wider uppercase">
               Appointments
             </span>
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-emerald-100 bg-emerald-50 text-emerald-600">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
               <Calendar className="h-4.5 w-4.5" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+            <span className="text-foreground text-2xl font-black tracking-tight sm:text-3xl">
               {currentMetric.appointments}
             </span>
-            <span className="text-xs font-medium text-slate-500">booked</span>
+            <span className="text-muted-foreground text-xs font-medium">booked</span>
           </div>
           <div className="mt-2 flex items-center gap-2">
-            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-slate-700">
-              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+            <span className="text-foreground inline-flex items-center gap-1 text-[11px] font-semibold">
+              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
               {apptCount > 0 ? "94% completion rate" : "0 bookings recorded"}
             </span>
           </div>
 
           {/* Progress bar */}
           <div className="mt-3.5 space-y-1">
-            <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
+            <div className="bg-muted/70 h-1.5 w-full overflow-hidden rounded-full">
               <div
                 className="h-full rounded-full bg-emerald-500 transition-all duration-500"
                 style={{ width: `${apptCount > 0 ? 94 : 0}%` }}
               />
             </div>
-            <div className="flex justify-between text-[10px] text-slate-400">
+            <div className="text-muted-foreground flex justify-between text-[10px]">
               <span>{currentMetric.appointmentsToday}</span>
               <span>{currentMetric.appointmentsUpcoming}</span>
             </div>
@@ -666,31 +670,31 @@ export default function DashboardOverviewPage() {
         </Card>
 
         {/* KPI 4: Operations SLA & Response */}
-        <Card className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-5 shadow-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300/80 hover:shadow-[0_12px_30px_rgba(49,95,232,0.06)]">
+        <Card className="border-border/80 from-card to-card/90 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-5 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-500/40 hover:shadow-xs">
           <div className="pointer-events-none absolute top-0 right-0 h-24 w-24 rounded-full bg-cyan-500/[0.04] blur-xl" />
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold tracking-wider text-slate-500 uppercase">
+            <span className="text-muted-foreground text-xs font-bold tracking-wider uppercase">
               Avg Response Time
             </span>
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-cyan-100 bg-cyan-50 text-cyan-600">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400">
               <Activity className="h-4.5 w-4.5" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+            <span className="text-foreground text-2xl font-black tracking-tight sm:text-3xl">
               {currentMetric.responseTime}
             </span>
           </div>
           <div className="mt-2 flex items-center gap-2">
-            <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700">
+            <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
               SLA Met (Target &lt; 30m)
             </span>
           </div>
 
-          <div className="mt-3 flex justify-between border-t border-slate-100 pt-2.5 text-[11px] text-slate-500">
+          <div className="border-border/60 text-muted-foreground mt-3 flex justify-between border-t pt-2.5 text-[11px]">
             <span>Tenant Multi-Zone SLA:</span>
-            <span className="font-bold text-emerald-600">99.98%</span>
+            <span className="font-bold text-emerald-600 dark:text-emerald-400">99.98%</span>
           </div>
         </Card>
       </div>
@@ -698,22 +702,22 @@ export default function DashboardOverviewPage() {
       {/* Cash Flow & Invoicing Aging Health Widget (ANLYT-01 & INV-01) */}
       <Card
         id="receivables"
-        className="w-full max-w-full min-w-0 overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-4 shadow-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300/80 hover:shadow-[0_12px_30px_rgba(49,95,232,0.06)] sm:p-6"
+        className="border-border/80 from-card to-card/90 w-full max-w-full min-w-0 overflow-hidden rounded-2xl border bg-gradient-to-b p-4 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xs sm:p-6"
       >
-        <div className="flex flex-col gap-3 border-b border-slate-100 pb-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="border-border/60 flex flex-col gap-3 border-b pb-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <CardTitle className="text-base font-bold text-slate-900">
-                Cash Flow & Receivables Aging Analysis
+              <CardTitle className="text-foreground text-base font-bold">
+                Cash Flow &amp; Receivables Aging Analysis
               </CardTitle>
               <Badge
                 variant="outline"
-                className="border-emerald-200 bg-emerald-50 text-[10px] font-bold text-emerald-800"
+                className="border-emerald-500/20 bg-emerald-500/10 text-[10px] font-bold text-emerald-600 dark:text-emerald-400"
               >
                 Healthy Liquidity
               </Badge>
             </div>
-            <CardDescription className="mt-0.5 text-xs text-slate-500">
+            <CardDescription className="text-muted-foreground mt-0.5 text-xs">
               Real-time settlement telemetry across collected cash, active net-30 terms, and overdue
               aging balances
             </CardDescription>
@@ -725,24 +729,24 @@ export default function DashboardOverviewPage() {
               size="sm"
               disabled={reminderSent}
               onClick={handleSendReminders}
-              className="h-8 cursor-pointer rounded-xl border-slate-200 text-xs font-semibold text-slate-700 hover:border-slate-300 hover:bg-slate-50"
+              className="border-border/80 text-muted-foreground hover:text-foreground h-8 cursor-pointer rounded-xl text-xs font-semibold"
             >
               {reminderSent ? (
-                <span className="flex items-center gap-1.5 text-emerald-600">
+                <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
                   <Check className="h-3.5 w-3.5" />
                   Reminders Sent
                 </span>
               ) : (
                 <span className="flex items-center gap-1.5">
-                  <Send className="h-3 w-3 text-slate-500" />
+                  <Send className="text-muted-foreground h-3 w-3" />
                   Send Smart Reminders
                 </span>
               )}
             </Button>
             <Link
               href="/dashboard/invoices"
-              className="inline-flex h-8 items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 text-xs font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-white"
-              title="Open Dedicated Invoices & Billing Hub"
+              className="border-border/80 bg-muted/40 text-muted-foreground hover:text-foreground inline-flex h-8 items-center gap-1.5 rounded-xl border px-3 text-xs font-semibold transition-colors"
+              title="Open Dedicated Invoices &amp; Billing Hub"
             >
               <span>Invoices Hub</span>
               <ArrowRight className="h-3 w-3" />
@@ -761,19 +765,19 @@ export default function DashboardOverviewPage() {
         {/* Multi-Segment Horizontal Stacked Bar */}
         <div className="mt-5 space-y-2">
           <div className="flex flex-col gap-1 text-xs sm:flex-row sm:items-baseline sm:justify-between">
-            <span className="font-semibold text-slate-600">
+            <span className="text-muted-foreground font-semibold">
               Total Receivables ({timeframe.toUpperCase()}):{" "}
-              <strong className="text-slate-900">
+              <strong className="text-foreground">
                 {currentMetric.receivables?.total ?? currentMetric.revenue}
               </strong>
             </span>
-            <span className="text-[11px] font-medium text-slate-500">
+            <span className="text-muted-foreground text-[11px] font-medium">
               {currentMetric.receivables?.collectionEfficiency ?? "100.0%"} Collection Efficiency •
               Avg DSO: {currentMetric.receivables?.avgDso ?? "0 Days"}
             </span>
           </div>
 
-          <div className="flex h-3.5 w-full overflow-hidden rounded-full bg-slate-100 p-0.5 shadow-inner">
+          <div className="bg-muted/70 flex h-3.5 w-full overflow-hidden rounded-full p-0.5 shadow-inner">
             <div
               className="h-full rounded-l-full bg-emerald-500 transition-all duration-500"
               style={{ width: `${currentMetric.receivables?.settled.percentage ?? 0}%` }}
@@ -811,23 +815,23 @@ export default function DashboardOverviewPage() {
                 document.getElementById("activity")?.scrollIntoView({ behavior: "smooth" });
               }
             }}
-            className="group min-w-0 cursor-pointer rounded-xl border border-emerald-100 bg-emerald-50/50 p-3.5 transition-all duration-200 hover:scale-[1.01] hover:border-emerald-300/80 hover:bg-emerald-50/80 hover:shadow-xs active:scale-[0.99]"
+            className="group min-w-0 cursor-pointer rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-3.5 transition-all duration-200 hover:scale-[1.01] hover:border-emerald-500/40 hover:shadow-xs active:scale-[0.99]"
           >
             <div className="flex items-center justify-between">
-              <span className="flex items-center gap-1.5 text-xs font-bold text-emerald-900">
+              <span className="flex items-center gap-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400">
                 <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
                 Settled / Paid
               </span>
-              <span className="text-[11px] font-bold text-emerald-700">
+              <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
                 {currentMetric.receivables?.settled.percentage ?? 0}%
               </span>
             </div>
-            <div className="mt-2 text-xl font-extrabold text-slate-900">
+            <div className="text-foreground mt-2 text-xl font-black">
               {currentMetric.receivables?.settled.amount ?? "$0.00"}
             </div>
-            <div className="mt-1 flex items-center justify-between text-[11px] text-slate-500">
+            <div className="text-muted-foreground mt-1 flex items-center justify-between text-[11px]">
               <span>{currentMetric.receivables?.settled.count ?? 0} settled invoices</span>
-              <span className="font-semibold text-emerald-700 group-hover:underline">
+              <span className="font-semibold text-emerald-600 group-hover:underline dark:text-emerald-400">
                 Filter activity →
               </span>
             </div>
@@ -850,23 +854,23 @@ export default function DashboardOverviewPage() {
                 document.getElementById("activity")?.scrollIntoView({ behavior: "smooth" });
               }
             }}
-            className="group min-w-0 cursor-pointer rounded-xl border border-blue-100 bg-blue-50/50 p-3.5 transition-all duration-200 hover:scale-[1.01] hover:border-blue-300/80 hover:bg-blue-50/80 hover:shadow-xs active:scale-[0.99]"
+            className="group min-w-0 cursor-pointer rounded-xl border border-blue-500/20 bg-blue-500/10 p-3.5 transition-all duration-200 hover:scale-[1.01] hover:border-blue-500/40 hover:shadow-xs active:scale-[0.99]"
           >
             <div className="flex items-center justify-between">
-              <span className="flex items-center gap-1.5 text-xs font-bold text-blue-900">
+              <span className="flex items-center gap-1.5 text-xs font-bold text-blue-600 dark:text-blue-400">
                 <span className="h-2 w-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]" />
                 Current Terms (1-30d)
               </span>
-              <span className="text-[11px] font-bold text-blue-700">
+              <span className="text-[11px] font-bold text-blue-600 dark:text-blue-400">
                 {currentMetric.receivables?.pending.percentage ?? 0}%
               </span>
             </div>
-            <div className="mt-2 text-xl font-extrabold text-slate-900">
+            <div className="text-foreground mt-2 text-xl font-black">
               {currentMetric.receivables?.pending.amount ?? "$0.00"}
             </div>
-            <div className="mt-1 flex items-center justify-between text-[11px] text-slate-500">
+            <div className="text-muted-foreground mt-1 flex items-center justify-between text-[11px]">
               <span>{currentMetric.receivables?.pending.count ?? 0} active invoices</span>
-              <span className="font-semibold text-blue-700 group-hover:underline">
+              <span className="font-semibold text-blue-600 group-hover:underline dark:text-blue-400">
                 Filter activity →
               </span>
             </div>
@@ -889,27 +893,27 @@ export default function DashboardOverviewPage() {
                 document.getElementById("activity")?.scrollIntoView({ behavior: "smooth" });
               }
             }}
-            className="group min-w-0 cursor-pointer rounded-xl border border-rose-200 bg-rose-50/60 p-3.5 transition-all duration-200 hover:scale-[1.01] hover:border-rose-400 hover:bg-rose-50/90 hover:shadow-xs active:scale-[0.99]"
+            className="group min-w-0 cursor-pointer rounded-xl border border-rose-500/20 bg-rose-500/10 p-3.5 transition-all duration-200 hover:scale-[1.01] hover:border-rose-500/40 hover:shadow-xs active:scale-[0.99]"
           >
             <div className="flex items-center justify-between">
-              <span className="flex items-center gap-1.5 text-xs font-bold text-rose-900">
+              <span className="flex items-center gap-1.5 text-xs font-bold text-rose-600 dark:text-rose-400">
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-rose-400 opacity-75" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-rose-500" />
                 </span>
                 Overdue (&gt;30 Days)
               </span>
-              <span className="text-[11px] font-bold text-rose-700">
+              <span className="text-[11px] font-bold text-rose-600 dark:text-rose-400">
                 {currentMetric.receivables?.overdue.percentage ?? 0}%
               </span>
             </div>
-            <div className="mt-2 text-xl font-extrabold text-slate-900">
+            <div className="text-foreground mt-2 text-xl font-black">
               {currentMetric.receivables?.overdue.amount ?? "$0.00"}
             </div>
-            <div className="mt-1 flex items-center justify-between text-[11px] text-slate-500">
+            <div className="text-muted-foreground mt-1 flex items-center justify-between text-[11px]">
               <span>{currentMetric.receivables?.overdue.count ?? 0} accounts pending</span>
-              <span className="font-semibold text-rose-700 group-hover:underline">
-                Filter & Escalate →
+              <span className="font-semibold text-rose-600 group-hover:underline dark:text-rose-400">
+                Filter &amp; Escalate →
               </span>
             </div>
           </div>
@@ -923,28 +927,28 @@ export default function DashboardOverviewPage() {
           {/* Card: Revenue & Bookings Trend Visualizer */}
           <Card
             id="analytics"
-            className="w-full max-w-full min-w-0 overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-4 shadow-sm transition-all duration-300 hover:border-slate-300/80 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] sm:p-6"
+            className="border-border/80 from-card to-card/90 w-full max-w-full min-w-0 overflow-hidden rounded-2xl border bg-gradient-to-b p-4 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xs sm:p-6"
           >
-            <div className="flex flex-col gap-3 border-b border-slate-100 pb-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="border-border/60 flex flex-col gap-3 border-b pb-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <CardTitle className="text-base font-bold text-slate-900">
-                  Operations Growth & Revenue Trajectory
+                <CardTitle className="text-foreground text-base font-bold">
+                  Operations Growth &amp; Revenue Trajectory
                 </CardTitle>
-                <CardDescription className="text-xs text-slate-500">
+                <CardDescription className="text-muted-foreground text-xs">
                   Weekly billing volume and scheduled appointments over time (
                   {timeframe.toUpperCase()})
                 </CardDescription>
               </div>
 
               {/* Metric Tab Selector */}
-              <div className="flex rounded-xl border border-slate-200 bg-slate-50/70 p-1 text-xs">
+              <div className="border-border/80 bg-muted/40 flex rounded-xl border p-1 text-xs">
                 <button
                   type="button"
                   onClick={() => setMetricTab("revenue")}
                   className={`cursor-pointer rounded-lg px-2.5 py-1 font-semibold transition-all sm:px-3 ${
                     metricTab === "revenue"
-                      ? "text-primary bg-white shadow-xs"
-                      : "text-slate-500 hover:text-slate-900"
+                      ? "bg-card text-foreground font-bold shadow-xs"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   Revenue ($)
@@ -954,8 +958,8 @@ export default function DashboardOverviewPage() {
                   onClick={() => setMetricTab("appointments")}
                   className={`cursor-pointer rounded-lg px-2.5 py-1 font-semibold transition-all sm:px-3 ${
                     metricTab === "appointments"
-                      ? "text-primary bg-white shadow-xs"
-                      : "text-slate-500 hover:text-slate-900"
+                      ? "bg-card text-foreground font-bold shadow-xs"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   Appointments (Qty)
@@ -965,24 +969,24 @@ export default function DashboardOverviewPage() {
 
             {/* Interactive Area Chart Display */}
             <div className="w-full max-w-full min-w-0 pt-4 sm:pt-6">
-              <div className="flex flex-col gap-2 pb-2 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+              <div className="text-muted-foreground flex flex-col gap-2 pb-2 text-xs sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-3 sm:gap-4">
                   <div>
-                    <span className="block text-[10px] font-bold text-slate-400 uppercase">
+                    <span className="text-muted-foreground/70 block text-[10px] font-bold uppercase">
                       Period Total
                     </span>
-                    <span className="text-sm font-extrabold text-slate-900 sm:text-base">
+                    <span className="text-foreground text-sm font-black sm:text-base">
                       {metricTab === "revenue"
                         ? currentMetric.periodTotalRevenue
                         : currentMetric.periodTotalAppointments}
                     </span>
                   </div>
-                  <div className="h-6 w-px bg-slate-200" />
+                  <div className="bg-border/60 h-6 w-px" />
                   <div>
-                    <span className="block text-[10px] font-bold text-slate-400 uppercase">
+                    <span className="text-muted-foreground/70 block text-[10px] font-bold uppercase">
                       Daily Average
                     </span>
-                    <span className="text-sm font-extrabold text-slate-900 sm:text-base">
+                    <span className="text-foreground text-sm font-black sm:text-base">
                       {metricTab === "revenue"
                         ? currentMetric.dailyAvgRevenue
                         : currentMetric.dailyAvgAppointments}
@@ -992,7 +996,9 @@ export default function DashboardOverviewPage() {
 
                 <div className="flex items-center gap-2">
                   <span className="bg-primary inline-block h-2 w-2 rounded-full" />
-                  <span className="text-[11px] font-medium text-slate-600">Actual Performance</span>
+                  <span className="text-muted-foreground text-[11px] font-medium">
+                    Actual Performance
+                  </span>
                 </div>
               </div>
 
@@ -1005,24 +1011,48 @@ export default function DashboardOverviewPage() {
                 >
                   <defs>
                     <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#315fe8" stopOpacity="0.32" />
-                      <stop offset="100%" stopColor="#315fe8" stopOpacity="0.0" />
+                      <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.32" />
+                      <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.0" />
                     </linearGradient>
                     <filter id="laserGlow" x="-20%" y="-20%" width="140%" height="140%">
                       <feDropShadow
                         dx="0"
                         dy="4"
                         stdDeviation="5"
-                        floodColor="#315fe8"
+                        floodColor="#3b82f6"
                         floodOpacity="0.35"
                       />
                     </filter>
                   </defs>
 
                   {/* Horizontal Grid lines */}
-                  <line x1="0" y1="40" x2="500" y2="40" stroke="#f1f5f9" strokeDasharray="4 4" />
-                  <line x1="0" y1="80" x2="500" y2="80" stroke="#f1f5f9" strokeDasharray="4 4" />
-                  <line x1="0" y1="120" x2="500" y2="120" stroke="#f1f5f9" strokeDasharray="4 4" />
+                  <line
+                    x1="0"
+                    y1="40"
+                    x2="500"
+                    y2="40"
+                    stroke="currentColor"
+                    className="text-border/40"
+                    strokeDasharray="4 4"
+                  />
+                  <line
+                    x1="0"
+                    y1="80"
+                    x2="500"
+                    y2="80"
+                    stroke="currentColor"
+                    className="text-border/40"
+                    strokeDasharray="4 4"
+                  />
+                  <line
+                    x1="0"
+                    y1="120"
+                    x2="500"
+                    y2="120"
+                    stroke="currentColor"
+                    className="text-border/40"
+                    strokeDasharray="4 4"
+                  />
 
                   {/* Gradient Area Path */}
                   <path d={currentMetric.chartAreaD} fill="url(#chartGradient)" />
@@ -1031,7 +1061,7 @@ export default function DashboardOverviewPage() {
                   <path
                     d={currentMetric.chartPathD}
                     fill="none"
-                    stroke="#315fe8"
+                    stroke="#3b82f6"
                     strokeWidth="3.2"
                     strokeLinecap="round"
                     filter="url(#laserGlow)"
@@ -1046,7 +1076,7 @@ export default function DashboardOverviewPage() {
                         y1="20"
                         x2={currentMetric.dataPoints[activeHoverIndex].cx}
                         y2="155"
-                        stroke="#315fe8"
+                        stroke="#3b82f6"
                         strokeWidth="1.5"
                         strokeDasharray="3 3"
                         opacity="0.65"
@@ -1061,7 +1091,7 @@ export default function DashboardOverviewPage() {
                         cx={point.cx}
                         cy={point.cy}
                         r={activeHoverIndex === idx ? "7" : "5.5"}
-                        className="cursor-pointer fill-white stroke-blue-600 stroke-2 transition-all hover:scale-150 hover:fill-blue-600"
+                        className="fill-card stroke-primary hover:fill-primary cursor-pointer stroke-2 transition-all hover:scale-150"
                         onMouseEnter={() => setActiveHoverIndex(idx)}
                         onMouseLeave={() => setActiveHoverIndex(null)}
                       />
@@ -1072,9 +1102,9 @@ export default function DashboardOverviewPage() {
                 {hoveredPoint && (
                   <div className="mt-1 flex items-center justify-center">
                     <div className="border-primary/20 bg-primary/10 inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-0.5 text-xs shadow-2xs sm:gap-2 sm:px-3 sm:py-1">
-                      <span className="font-bold text-slate-800">{hoveredPoint.label}:</span>
-                      <span className="text-primary font-extrabold">{hoveredPoint.value}</span>
-                      <span className="hidden text-[10px] text-slate-500 sm:inline">
+                      <span className="text-foreground font-bold">{hoveredPoint.label}:</span>
+                      <span className="text-primary font-black">{hoveredPoint.value}</span>
+                      <span className="text-muted-foreground hidden text-[10px] sm:inline">
                         • (Hover points to inspect)
                       </span>
                     </div>
@@ -1082,7 +1112,7 @@ export default function DashboardOverviewPage() {
                 )}
 
                 {/* X-Axis Labels */}
-                <div className="flex justify-between pt-3 text-[10px] font-medium text-slate-400 sm:text-[11px]">
+                <div className="text-muted-foreground/70 flex justify-between pt-3 text-[10px] font-medium sm:text-[11px]">
                   {currentMetric.xAxisLabels.map((lbl) => (
                     <span key={lbl.full} className="text-center">
                       <span className="hidden sm:inline">{lbl.full}</span>
@@ -1097,14 +1127,14 @@ export default function DashboardOverviewPage() {
           {/* Card: Operations Activity Queue Table */}
           <Card
             id="activity"
-            className="w-full max-w-full min-w-0 overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-4 shadow-sm transition-all duration-300 hover:border-slate-300/80 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] sm:p-6"
+            className="border-border/80 from-card to-card/90 w-full max-w-full min-w-0 overflow-hidden rounded-2xl border bg-gradient-to-b p-4 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xs sm:p-6"
           >
-            <div className="flex flex-col gap-4 border-b border-slate-100 pb-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="border-border/60 flex flex-col gap-4 border-b pb-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <CardTitle className="text-base font-bold text-slate-900">
+                <CardTitle className="text-foreground text-base font-bold">
                   Recent Operations Activity
                 </CardTitle>
-                <CardDescription className="text-xs text-slate-500">
+                <CardDescription className="text-muted-foreground text-xs">
                   Real-time feed of billing transactions, customer engagements, and calendar
                   bookings
                 </CardDescription>
@@ -1113,23 +1143,23 @@ export default function DashboardOverviewPage() {
               {/* Table Search & Filter Tabs */}
               <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center">
                 <div className="relative w-full sm:w-48">
-                  <Search className="pointer-events-none absolute top-2 left-2.5 h-3.5 w-3.5 text-slate-400" />
+                  <Search className="text-muted-foreground pointer-events-none absolute top-2 left-2.5 h-3.5 w-3.5" />
                   <Input
                     placeholder="Filter records..."
                     value={tableSearch}
                     onChange={(e) => setTableSearch(e.target.value)}
-                    className="h-8 pl-8 text-xs"
+                    className="border-border/80 bg-background h-8 pl-8 text-xs"
                   />
                 </div>
 
-                <div className="flex items-center gap-1 overflow-x-auto rounded-xl border border-slate-200 bg-slate-50 p-1 text-xs">
+                <div className="border-border/80 bg-muted/40 flex items-center gap-1 overflow-x-auto rounded-xl border p-1 text-xs">
                   <button
                     type="button"
                     onClick={() => setActivityFilter("all")}
                     className={`shrink-0 cursor-pointer rounded-lg px-2.5 py-1 font-semibold transition-colors ${
                       activityFilter === "all"
-                        ? "bg-white text-slate-900 shadow-xs"
-                        : "text-slate-500 hover:text-slate-900"
+                        ? "bg-background text-foreground font-bold shadow-xs"
+                        : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     All ({activities.length})
@@ -1139,8 +1169,8 @@ export default function DashboardOverviewPage() {
                     onClick={() => setActivityFilter("invoices")}
                     className={`shrink-0 cursor-pointer rounded-lg px-2.5 py-1 font-semibold transition-colors ${
                       activityFilter === "invoices"
-                        ? "bg-white text-slate-900 shadow-xs"
-                        : "text-slate-500 hover:text-slate-900"
+                        ? "bg-background text-foreground font-bold shadow-xs"
+                        : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     Invoices
@@ -1150,8 +1180,8 @@ export default function DashboardOverviewPage() {
                     onClick={() => setActivityFilter("appointments")}
                     className={`shrink-0 cursor-pointer rounded-lg px-2.5 py-1 font-semibold transition-colors ${
                       activityFilter === "appointments"
-                        ? "bg-white text-slate-900 shadow-xs"
-                        : "text-slate-500 hover:text-slate-900"
+                        ? "bg-background text-foreground font-bold shadow-xs"
+                        : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     Bookings
@@ -1161,27 +1191,27 @@ export default function DashboardOverviewPage() {
             </div>
 
             {/* Mobile Scroll Hint */}
-            <div className="flex items-center justify-between pt-3 pb-1 text-[10px] text-slate-400 sm:hidden">
+            <div className="text-muted-foreground flex items-center justify-between pt-3 pb-1 text-[10px] sm:hidden">
               <span>← Swipe table horizontally to view full data →</span>
             </div>
 
             {/* Table */}
-            <div className="mt-2 w-full max-w-full min-w-0 overflow-x-auto rounded-xl border border-slate-100">
+            <div className="border-border/60 mt-2 w-full max-w-full min-w-0 overflow-x-auto rounded-xl border">
               <table className="w-full min-w-[580px] text-left text-xs">
                 <thead>
-                  <tr className="border-b border-slate-100 text-[11px] font-bold tracking-wider text-slate-400 uppercase">
-                    <th className="pb-3 pl-1">Client / Business</th>
-                    <th className="pb-3">Service & Details</th>
-                    <th className="pb-3">Date</th>
-                    <th className="pb-3">Value</th>
-                    <th className="pb-3">Status</th>
-                    <th className="pr-2 pb-3 text-right">Actions</th>
+                  <tr className="border-border/60 bg-muted/20 text-muted-foreground border-b text-[11px] font-bold tracking-wider uppercase">
+                    <th className="py-2.5 pl-3">Client / Business</th>
+                    <th className="py-2.5">Service & Details</th>
+                    <th className="py-2.5">Date</th>
+                    <th className="py-2.5">Value</th>
+                    <th className="py-2.5">Status</th>
+                    <th className="py-2.5 pr-3 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-border/40 divide-y">
                   {filteredActivities.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className="py-8 text-center text-xs text-slate-400">
+                      <td colSpan={6} className="text-muted-foreground py-8 text-center text-xs">
                         {tableSearch
                           ? `No operations records found matching \u201C${tableSearch}\u201D`
                           : "No operations records found. Create an appointment or invoice to get started."}
@@ -1189,37 +1219,37 @@ export default function DashboardOverviewPage() {
                     </tr>
                   ) : (
                     filteredActivities.map((act) => (
-                      <tr key={act.id} className="group transition-colors hover:bg-slate-50/70">
-                        <td className="py-3.5 pl-1">
+                      <tr key={act.id} className="hover:bg-muted/30 group transition-colors">
+                        <td className="py-3.5 pl-3">
                           <div className="flex items-center gap-2.5">
                             <div
-                              className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-bold text-white ${act.avatarBg}`}
+                              className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-bold text-white shadow-2xs ${act.avatarBg}`}
                             >
                               {act.client.charAt(0)}
                             </div>
                             <div>
-                              <span className="block truncate font-bold text-slate-900">
+                              <span className="text-foreground block truncate font-bold">
                                 {act.client}
                               </span>
-                              <span className="font-mono text-[10px] text-slate-400">
+                              <span className="text-muted-foreground font-mono text-[10px]">
                                 {act.refCode}
                               </span>
                             </div>
                           </div>
                         </td>
-                        <td className="py-3.5 font-medium text-slate-600">{act.service}</td>
-                        <td className="py-3.5 text-slate-500">{act.date}</td>
-                        <td className="py-3.5 font-bold text-slate-900">{act.amount}</td>
+                        <td className="text-muted-foreground py-3.5 font-medium">{act.service}</td>
+                        <td className="text-muted-foreground py-3.5">{act.date}</td>
+                        <td className="text-foreground py-3.5 font-bold">{act.amount}</td>
                         <td className="py-3.5">
                           <span
                             className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
                               act.statusVariant === "success"
-                                ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
+                                ? "border border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
                                 : act.statusVariant === "info"
-                                  ? "border border-blue-200 bg-blue-50 text-blue-700"
+                                  ? "border border-blue-500/20 bg-blue-500/10 text-blue-600 dark:text-blue-400"
                                   : act.statusVariant === "warning"
-                                    ? "border border-amber-200 bg-amber-50 text-amber-700"
-                                    : "border border-slate-200 bg-slate-100 text-slate-700"
+                                    ? "border border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                                    : "border-border/60 bg-muted/50 text-muted-foreground border"
                             }`}
                           >
                             <span
@@ -1230,19 +1260,19 @@ export default function DashboardOverviewPage() {
                                     ? "bg-blue-500"
                                     : act.statusVariant === "warning"
                                       ? "animate-pulse bg-amber-500"
-                                      : "bg-slate-400"
+                                      : "bg-muted-foreground"
                               }`}
                             />
                             {act.status}
                           </span>
                         </td>
-                        <td className="py-3.5 pr-2 text-right">
+                        <td className="py-3.5 pr-3 text-right">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                className="h-7 w-7 cursor-pointer rounded-lg p-0 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                                className="text-muted-foreground hover:bg-muted hover:text-foreground h-7 w-7 cursor-pointer rounded-lg p-0"
                               >
                                 <span className="sr-only">Open action menu</span>
                                 <MoreHorizontal className="h-4 w-4" />
@@ -1250,9 +1280,9 @@ export default function DashboardOverviewPage() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent
                               align="end"
-                              className="w-48 rounded-xl border-slate-200 p-1 text-xs shadow-lg"
+                              className="border-border/80 bg-popover/95 text-popover-foreground w-48 rounded-xl p-1 text-xs shadow-lg backdrop-blur-md"
                             >
-                              <DropdownMenuLabel className="px-2 py-1 text-[10px] font-bold tracking-wider text-slate-400 uppercase">
+                              <DropdownMenuLabel className="text-muted-foreground px-2 py-1 text-[10px] font-bold tracking-wider uppercase">
                                 {act.type === "invoices" ? "Invoice Actions" : "Record Actions"}
                               </DropdownMenuLabel>
                               {act.type === "invoices" ? (
@@ -1265,7 +1295,7 @@ export default function DashboardOverviewPage() {
                                     }
                                     className="cursor-pointer gap-2"
                                   >
-                                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
                                     <span>Mark as Settled</span>
                                   </DropdownMenuItem>
                                   <DropdownMenuItem
@@ -1276,7 +1306,7 @@ export default function DashboardOverviewPage() {
                                     }
                                     className="cursor-pointer gap-2"
                                   >
-                                    <Mail className="h-3.5 w-3.5 text-blue-600" />
+                                    <Mail className="text-primary h-3.5 w-3.5" />
                                     <span>Send Receipt via Email</span>
                                   </DropdownMenuItem>
                                 </>
@@ -1290,19 +1320,19 @@ export default function DashboardOverviewPage() {
                                     }
                                     className="cursor-pointer gap-2"
                                   >
-                                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
                                     <span>Confirm Appointment</span>
                                   </DropdownMenuItem>
                                   <DropdownMenuItem
                                     onClick={() => openModal("appointment")}
                                     className="cursor-pointer gap-2"
                                   >
-                                    <Calendar className="h-3.5 w-3.5 text-blue-600" />
+                                    <Calendar className="text-primary h-3.5 w-3.5" />
                                     <span>Reschedule Slot</span>
                                   </DropdownMenuItem>
                                 </>
                               )}
-                              <DropdownMenuSeparator />
+                              <DropdownMenuSeparator className="bg-border/60" />
                               <DropdownMenuItem
                                 onClick={() => {
                                   navigator.clipboard?.writeText(act.refCode);
@@ -1310,7 +1340,7 @@ export default function DashboardOverviewPage() {
                                 }}
                                 className="cursor-pointer gap-2"
                               >
-                                <Copy className="h-3.5 w-3.5 text-slate-500" />
+                                <Copy className="text-muted-foreground h-3.5 w-3.5" />
                                 <span>Copy Reference ID</span>
                               </DropdownMenuItem>
                             </DropdownMenuContent>
@@ -1323,12 +1353,12 @@ export default function DashboardOverviewPage() {
               </table>
             </div>
 
-            <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 text-xs text-slate-500">
+            <div className="border-border/60 text-muted-foreground mt-4 flex items-center justify-between border-t pt-3 text-xs">
               <span>Showing {filteredActivities.length} recent operations records</span>
               <button
                 type="button"
                 onClick={handleExportTelemetryCsv}
-                className="text-primary hover:text-primary-hover inline-flex cursor-pointer items-center gap-1 font-semibold hover:underline"
+                className="text-primary hover:text-primary/80 inline-flex cursor-pointer items-center gap-1 font-semibold hover:underline"
               >
                 <span>Export Telemetry Records</span>
                 <ArrowUpRight className="h-3.5 w-3.5" />
@@ -1342,16 +1372,20 @@ export default function DashboardOverviewPage() {
           {/* Card 1: Today's Schedule Agenda */}
           <Card
             id="schedule"
-            className="w-full max-w-full min-w-0 overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-4 shadow-sm transition-all duration-300 hover:border-slate-300/80 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] sm:p-5"
+            className="border-border/80 from-card to-card/90 w-full max-w-full min-w-0 overflow-hidden rounded-2xl border bg-gradient-to-b p-4 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xs sm:p-5"
           >
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div className="border-border/60 flex items-center justify-between border-b pb-3">
               <div className="flex items-center gap-2">
                 <Calendar className="text-primary h-4 w-4" />
-                <CardTitle className="text-sm font-bold text-slate-900">
+                <CardTitle className="text-foreground text-sm font-bold">
                   Today&apos;s Schedule
                 </CardTitle>
               </div>
-              <Badge variant="outline" suppressHydrationWarning className="text-[10px] font-bold">
+              <Badge
+                variant="outline"
+                suppressHydrationWarning
+                className="border-border/60 bg-muted/40 text-[10px] font-bold"
+              >
                 {new Date().toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",
@@ -1361,39 +1395,39 @@ export default function DashboardOverviewPage() {
             </div>
 
             {/* Timeline Track Agenda */}
-            <div className="relative mt-4 space-y-3.5 pl-2 before:absolute before:top-3 before:bottom-3 before:left-[17px] before:w-0.5 before:border-l-2 before:border-dashed before:border-slate-200">
+            <div className="before:border-border/60 relative mt-4 space-y-3.5 pl-2 before:absolute before:top-3 before:bottom-3 before:left-[17px] before:w-0.5 before:border-l-2 before:border-dashed">
               {todayScheduleList.length === 0 ? (
-                <div className="py-6 text-center text-xs text-slate-400">
+                <div className="text-muted-foreground py-6 text-center text-xs">
                   No appointments scheduled for today.
                 </div>
               ) : (
                 todayScheduleList.map((item) => (
                   <div key={item.id} className="relative flex items-start gap-3">
                     <span
-                      className={`relative z-10 mt-1 flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full border-2 border-white ring-2 ring-slate-100 ${
+                      className={`border-background ring-border/60 relative z-10 mt-1 flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full border-2 ring-2 ${
                         item.statusColor === "emerald"
-                          ? "bg-emerald-500 ring-emerald-100"
+                          ? "bg-emerald-500 ring-emerald-500/20"
                           : item.statusColor === "blue"
-                            ? "bg-blue-500 ring-blue-100"
+                            ? "bg-blue-500 ring-blue-500/20"
                             : item.statusColor === "amber"
-                              ? "bg-amber-500 ring-amber-100"
-                              : "bg-slate-400 ring-slate-100"
+                              ? "bg-amber-500 ring-amber-500/20"
+                              : "bg-muted-foreground ring-border/60"
                       }`}
                     />
                     <Link
                       href="/dashboard/calendar"
-                      className="group flex-1 rounded-xl border border-slate-200/90 bg-slate-50/70 p-3 transition-all hover:border-slate-300 hover:bg-white hover:shadow-2xs"
+                      className="group border-border/80 bg-muted/30 hover:border-border hover:bg-muted/60 flex-1 rounded-xl border p-3 transition-all hover:shadow-2xs"
                     >
                       <div className="flex items-center justify-between">
                         <span
                           className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-bold ${
                             item.statusColor === "emerald"
-                              ? "bg-emerald-100/80 text-emerald-800"
+                              ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
                               : item.statusColor === "blue"
-                                ? "bg-blue-100/80 text-blue-800"
+                                ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
                                 : item.statusColor === "amber"
-                                  ? "bg-amber-100/80 text-amber-800"
-                                  : "bg-slate-100 text-slate-800"
+                                  ? "bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                                  : "bg-muted text-muted-foreground"
                           }`}
                         >
                           <Clock className="h-3 w-3" />
@@ -1402,21 +1436,21 @@ export default function DashboardOverviewPage() {
                         <span
                           className={`text-[10px] font-semibold ${
                             item.statusColor === "emerald"
-                              ? "text-emerald-600"
+                              ? "text-emerald-600 dark:text-emerald-400"
                               : item.statusColor === "blue"
-                                ? "text-blue-600"
+                                ? "text-blue-600 dark:text-blue-400"
                                 : item.statusColor === "amber"
-                                  ? "text-amber-600"
-                                  : "text-slate-600"
+                                  ? "text-amber-600 dark:text-amber-400"
+                                  : "text-muted-foreground"
                           }`}
                         >
                           {item.status}
                         </span>
                       </div>
-                      <p className="group-hover:text-primary mt-1.5 text-xs font-bold text-slate-900 transition-colors">
+                      <p className="group-hover:text-primary text-foreground mt-1.5 text-xs font-bold transition-colors">
                         {item.title}
                       </p>
-                      <p className="text-[11px] text-slate-500">
+                      <p className="text-muted-foreground text-[11px]">
                         {item.client} • {item.venue}
                       </p>
                     </Link>
@@ -1429,7 +1463,7 @@ export default function DashboardOverviewPage() {
               <Button
                 variant="outline"
                 size="sm"
-                className="flex-1 cursor-pointer rounded-xl text-xs font-semibold text-slate-700"
+                className="border-border/80 text-muted-foreground hover:text-foreground flex-1 cursor-pointer rounded-xl text-xs font-semibold"
                 onClick={() => openModal("appointment")}
               >
                 <CalendarPlus className="mr-1.5 h-3.5 w-3.5" />
@@ -1437,7 +1471,7 @@ export default function DashboardOverviewPage() {
               </Button>
               <Link
                 href="/dashboard/calendar"
-                className="hover:text-primary inline-flex h-8 items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 text-xs font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-white"
+                className="hover:text-primary border-border/80 bg-muted/40 text-muted-foreground hover:border-border hover:bg-muted/70 inline-flex h-8 items-center justify-center gap-1.5 rounded-xl border px-3 text-xs font-semibold transition-colors"
                 title="Open Interactive Calendar Hub"
               >
                 <span>Calendar</span>
@@ -1449,23 +1483,23 @@ export default function DashboardOverviewPage() {
           {/* Card 2: Staff On-Duty Today & Workload (SERV-05 & SERV-06) */}
           <Card
             id="staff"
-            className="w-full max-w-full min-w-0 overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-4 shadow-sm transition-all duration-300 hover:border-slate-300/80 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] sm:p-5"
+            className="border-border/80 from-card to-card/90 w-full max-w-full min-w-0 overflow-hidden rounded-2xl border bg-gradient-to-b p-4 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xs sm:p-5"
           >
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div className="border-border/60 flex items-center justify-between border-b pb-3">
               <div className="flex items-center gap-2">
                 <Users className="text-primary h-4 w-4" />
-                <CardTitle className="text-sm font-bold text-slate-900">
+                <CardTitle className="text-foreground text-sm font-bold">
                   Staff On Duty Today
                 </CardTitle>
               </div>
-              <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700">
+              <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
                 {staffList.length} Active Specialists
               </span>
             </div>
 
             <div className="mt-4 space-y-3">
               {staffList.length === 0 ? (
-                <div className="py-6 text-center text-xs text-slate-400">
+                <div className="text-muted-foreground py-6 text-center text-xs">
                   No active team specialists on duty today.
                 </div>
               ) : (
@@ -1477,17 +1511,17 @@ export default function DashboardOverviewPage() {
                   return (
                     <div
                       key={member.id}
-                      className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/60 p-2.5 transition-colors hover:bg-slate-100/70"
+                      className="border-border/60 bg-muted/20 hover:bg-muted/50 flex items-center justify-between rounded-xl border p-2.5 transition-colors"
                     >
                       <div className="flex items-center gap-2.5">
                         <div className="relative">
                           <div
-                            className={`flex h-8 w-8 items-center justify-center rounded-lg text-[11px] font-bold text-white ${member.color}`}
+                            className={`flex h-8 w-8 items-center justify-center rounded-lg text-[11px] font-bold text-white shadow-2xs ${member.color}`}
                           >
                             {member.initials}
                           </div>
                           <span
-                            className={`absolute -right-0.5 -bottom-0.5 h-2.5 w-2.5 rounded-full border-2 border-white ${
+                            className={`border-background absolute -right-0.5 -bottom-0.5 h-2.5 w-2.5 rounded-full border-2 ${
                               member.statusColor === "emerald"
                                 ? "bg-emerald-500"
                                 : member.statusColor === "blue"
@@ -1497,10 +1531,10 @@ export default function DashboardOverviewPage() {
                           />
                         </div>
                         <div>
-                          <p className="text-xs font-bold text-slate-900">{member.name}</p>
-                          <p className="text-[10px] text-slate-500">{member.role}</p>
+                          <p className="text-foreground text-xs font-bold">{member.name}</p>
+                          <p className="text-muted-foreground text-[10px]">{member.role}</p>
                           <div className="mt-1 flex items-center gap-1.5">
-                            <div className="h-1 w-14 overflow-hidden rounded-full bg-slate-200/80">
+                            <div className="bg-muted/70 h-1 w-14 overflow-hidden rounded-full">
                               <div
                                 className={`h-full rounded-full ${
                                   sessionsCount >= 4
@@ -1514,7 +1548,7 @@ export default function DashboardOverviewPage() {
                                 }}
                               />
                             </div>
-                            <span className="text-[9px] font-semibold text-slate-400">
+                            <span className="text-muted-foreground text-[9px] font-semibold">
                               {sessionsCount}/5 sessions
                             </span>
                           </div>
@@ -1525,21 +1559,23 @@ export default function DashboardOverviewPage() {
                           <span
                             className={`rounded-md border px-1.5 py-0.5 text-[10px] font-bold ${
                               member.statusColor === "emerald"
-                                ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+                                ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
                                 : member.statusColor === "blue"
-                                  ? "border-blue-200 bg-blue-50 text-blue-800"
-                                  : "border-amber-200 bg-amber-50 text-amber-800"
+                                  ? "border-blue-500/20 bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                                  : "border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400"
                             }`}
                           >
                             {member.status}
                           </span>
-                          <p className="mt-0.5 text-[10px] text-slate-400">{member.detail}</p>
+                          <p className="text-muted-foreground mt-0.5 text-[10px]">
+                            {member.detail}
+                          </p>
                         </div>
                         <Button
                           variant="outline"
                           size="sm"
                           onClick={() => openModal("appointment")}
-                          className="h-7 cursor-pointer rounded-lg px-2 text-[10px] font-bold text-blue-600 hover:bg-blue-50"
+                          className="border-primary/20 text-primary hover:bg-primary/10 h-7 cursor-pointer rounded-lg px-2 text-[10px] font-bold"
                         >
                           Book
                         </Button>
@@ -1553,17 +1589,17 @@ export default function DashboardOverviewPage() {
             <Button
               variant="outline"
               size="sm"
-              className="mt-4 w-full cursor-pointer rounded-xl text-xs font-semibold text-slate-700"
+              className="border-border/80 text-muted-foreground hover:text-foreground mt-4 w-full cursor-pointer rounded-xl text-xs font-semibold"
               onClick={() => openModal("appointment")}
             >
-              <UserCheck className="mr-1.5 h-3.5 w-3.5 text-slate-500" />
+              <UserCheck className="text-muted-foreground mr-1.5 h-3.5 w-3.5" />
               <span>Assign Staff to Appointment</span>
             </Button>
           </Card>
 
           {/* Card 3: Quick Operations Action Tiles */}
-          <Card className="w-full max-w-full min-w-0 overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-4 shadow-sm sm:p-5">
-            <CardTitle className="border-b border-slate-100 pb-3 text-sm font-bold text-slate-900">
+          <Card className="border-border/80 from-card to-card/90 w-full max-w-full min-w-0 overflow-hidden rounded-2xl border bg-gradient-to-b p-4 shadow-2xs sm:p-5">
+            <CardTitle className="border-border/60 text-foreground border-b pb-3 text-sm font-bold">
               Quick Operations
             </CardTitle>
 
@@ -1571,83 +1607,85 @@ export default function DashboardOverviewPage() {
               <button
                 type="button"
                 onClick={() => openModal("invoice")}
-                className="group hover:border-primary/40 hover:bg-primary/5 flex cursor-pointer flex-col items-center justify-center rounded-xl border border-slate-200/90 bg-slate-50/70 p-3 text-center shadow-2xs transition-all hover:scale-[1.02]"
+                className="group border-border/80 bg-muted/30 hover:border-primary/40 hover:bg-primary/5 flex cursor-pointer flex-col items-center justify-center rounded-xl border p-3 text-center shadow-2xs transition-all hover:scale-[1.02]"
               >
-                <div className="group-hover:bg-primary flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-blue-600 transition-colors group-hover:text-white">
+                <div className="group-hover:bg-primary bg-primary/10 text-primary flex h-8 w-8 items-center justify-center rounded-lg transition-colors group-hover:text-white">
                   <CreditCard className="h-4 w-4" />
                 </div>
-                <span className="mt-2 text-[11px] font-bold text-slate-800">New Invoice</span>
+                <span className="text-foreground mt-2 text-[11px] font-bold">New Invoice</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => openModal("customer")}
-                className="group flex cursor-pointer flex-col items-center justify-center rounded-xl border border-slate-200/90 bg-slate-50/70 p-3 text-center shadow-2xs transition-all hover:scale-[1.02] hover:border-indigo-400/40 hover:bg-indigo-50/40"
+                className="group border-border/80 bg-muted/30 flex cursor-pointer flex-col items-center justify-center rounded-xl border p-3 text-center shadow-2xs transition-all hover:scale-[1.02] hover:border-indigo-400/40 hover:bg-indigo-500/10"
               >
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-100 text-indigo-600 transition-colors group-hover:bg-indigo-600 group-hover:text-white">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-500 transition-colors group-hover:bg-indigo-600 group-hover:text-white">
                   <UserPlus className="h-4 w-4" />
                 </div>
-                <span className="mt-2 text-[11px] font-bold text-slate-800">Add Client</span>
+                <span className="text-foreground mt-2 text-[11px] font-bold">Add Client</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => openModal("appointment")}
-                className="group flex cursor-pointer flex-col items-center justify-center rounded-xl border border-slate-200/90 bg-slate-50/70 p-3 text-center shadow-2xs transition-all hover:scale-[1.02] hover:border-emerald-400/40 hover:bg-emerald-50/40"
+                className="group border-border/80 bg-muted/30 flex cursor-pointer flex-col items-center justify-center rounded-xl border p-3 text-center shadow-2xs transition-all hover:scale-[1.02] hover:border-emerald-400/40 hover:bg-emerald-500/10"
               >
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 transition-colors group-hover:bg-emerald-600 group-hover:text-white">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-500 transition-colors group-hover:bg-emerald-600 group-hover:text-white">
                   <CalendarPlus className="h-4 w-4" />
                 </div>
-                <span className="mt-2 text-[11px] font-bold text-slate-800">Book Slot</span>
+                <span className="text-foreground mt-2 text-[11px] font-bold">Book Slot</span>
               </button>
 
               <button
                 type="button"
                 onClick={handleExportTelemetryCsv}
-                className="group flex cursor-pointer flex-col items-center justify-center rounded-xl border border-slate-200/90 bg-slate-50/70 p-3 text-center shadow-2xs transition-all hover:scale-[1.02] hover:border-purple-400/40 hover:bg-purple-50/40"
+                className="group border-border/80 bg-muted/30 flex cursor-pointer flex-col items-center justify-center rounded-xl border p-3 text-center shadow-2xs transition-all hover:scale-[1.02] hover:border-purple-400/40 hover:bg-purple-500/10"
               >
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-100 text-purple-600 transition-colors group-hover:bg-purple-600 group-hover:text-white">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10 text-purple-500 transition-colors group-hover:bg-purple-600 group-hover:text-white">
                   <FileSpreadsheet className="h-4 w-4" />
                 </div>
-                <span className="mt-2 text-[11px] font-bold text-slate-800">Export CSV</span>
+                <span className="text-foreground mt-2 text-[11px] font-bold">Export CSV</span>
               </button>
             </div>
           </Card>
 
           {/* Card 4: Multi-Tenant Plan & Capacity Meter */}
-          <Card className="w-full max-w-full min-w-0 overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-4 shadow-sm sm:p-5">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <span className="flex items-center gap-1.5 text-xs font-bold text-slate-900">
+          <Card className="border-border/80 from-card to-card/90 w-full max-w-full min-w-0 overflow-hidden rounded-2xl border bg-gradient-to-b p-4 shadow-2xs sm:p-5">
+            <div className="border-border/60 flex items-center justify-between border-b pb-3">
+              <span className="text-foreground flex items-center gap-1.5 text-xs font-bold">
                 <Zap className="h-3.5 w-3.5 fill-amber-500 text-amber-500" />
                 Workspace Capacity
               </span>
-              <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700">
+              <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
                 Healthy
               </span>
             </div>
 
             <div className="mt-4 space-y-3">
               <div>
-                <div className="flex justify-between pb-1 text-[11px] font-semibold text-slate-700">
+                <div className="text-foreground flex justify-between pb-1 text-[11px] font-semibold">
                   <span>Client Records</span>
-                  <span>{clientCount} / 500</span>
+                  <span className="font-mono">{clientCount} / 500</span>
                 </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
+                <div className="bg-muted/60 h-1.5 w-full overflow-hidden rounded-full">
                   <div
-                    className="h-full rounded-full bg-blue-600 transition-all duration-500"
+                    className="bg-primary h-full rounded-full transition-all duration-500"
                     style={{ width: `${Math.min(100, Math.round((clientCount / 500) * 100))}%` }}
                   />
                 </div>
               </div>
 
               <div>
-                <div className="flex justify-between pb-1 text-[11px] font-semibold text-slate-700">
+                <div className="text-foreground flex justify-between pb-1 text-[11px] font-semibold">
                   <span>Encrypted Storage</span>
-                  <span>{(0.1 + activities.length * 0.05).toFixed(1)} GB / 10 GB</span>
+                  <span className="font-mono">
+                    {(0.1 + activities.length * 0.05).toFixed(1)} GB / 10 GB
+                  </span>
                 </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
+                <div className="bg-muted/60 h-1.5 w-full overflow-hidden rounded-full">
                   <div
-                    className="h-full rounded-full bg-indigo-600 transition-all duration-500"
+                    className="h-full rounded-full bg-indigo-500 transition-all duration-500"
                     style={{
                       width: `${Math.min(
                         100,
@@ -1659,11 +1697,11 @@ export default function DashboardOverviewPage() {
               </div>
             </div>
 
-            <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
-              <span className="text-[11px] text-slate-500">Growth Tier</span>
+            <div className="border-border/60 text-muted-foreground mt-4 flex items-center justify-between border-t pt-3">
+              <span className="text-[11px]">Growth Tier</span>
               <Link
                 href="/dashboard/settings"
-                className="text-primary hover:text-primary-hover text-xs font-bold hover:underline"
+                className="text-primary hover:text-primary/80 text-xs font-bold hover:underline"
               >
                 Manage Plan →
               </Link>

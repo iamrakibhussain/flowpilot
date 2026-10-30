@@ -315,7 +315,7 @@ export default function StaffOperationsPage() {
                   </span>
                 </div>
                 {/* Visual capacity distribution mini track */}
-                <div className="flex h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
+                <div className="bg-muted/60 flex h-1.5 w-full overflow-hidden rounded-full">
                   <div
                     style={{ width: `${(availableStaff / Math.max(1, totalStaff)) * 100}%` }}
                     className="bg-emerald-500 transition-all duration-500"
@@ -369,7 +369,7 @@ export default function StaffOperationsPage() {
                     </span>
                   )}
                 </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
+                <div className="bg-muted/60 h-1.5 w-full overflow-hidden rounded-full">
                   <div
                     style={{ width: `${(inSessionStaff / Math.max(1, totalStaff)) * 100}%` }}
                     className="h-full bg-indigo-500 transition-all duration-500"
@@ -400,7 +400,7 @@ export default function StaffOperationsPage() {
                     ${totalBilled.toLocaleString("en-US", { minimumFractionDigits: 0 })}
                   </span>
                 </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
+                <div className="bg-muted/60 h-1.5 w-full overflow-hidden rounded-full">
                   <div className="h-full w-full bg-gradient-to-r from-blue-500 to-indigo-500" />
                 </div>
                 <div className="flex items-center justify-between text-[11px]">
@@ -428,7 +428,7 @@ export default function StaffOperationsPage() {
                     {utilizationRate}%
                   </span>
                 </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
+                <div className="bg-muted/60 h-1.5 w-full overflow-hidden rounded-full">
                   <div
                     style={{ width: `${utilizationRate}%` }}
                     className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-500"

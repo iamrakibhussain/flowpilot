@@ -19,6 +19,7 @@ import {
   ArrowRight,
   X,
   Sparkles,
+  BarChart3,
 } from "lucide-react";
 
 export interface DashboardCommandPaletteProps {
@@ -94,6 +95,16 @@ const staticCommandEntries: CommandEntry[] = [
     category: "Navigation",
     href: "/dashboard/services",
     icon: Sparkles,
+    badge: "Live",
+    badgeVariant: "success",
+  },
+  {
+    id: "nav-analytics",
+    title: "Executive Business Intelligence",
+    description: "Financial curves, cashflow trajectory, and specialist productivity leaderboard.",
+    category: "Navigation",
+    href: "/dashboard/analytics",
+    icon: BarChart3,
     badge: "Live",
     badgeVariant: "success",
   },
