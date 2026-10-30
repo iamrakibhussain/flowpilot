@@ -25,3 +25,61 @@ export interface OrganizationContextState {
   role: WorkspaceRole | null;
   isLoading: boolean;
 }
+
+export interface OrganizationSettings {
+  id: string;
+  name: string;
+  slug: string;
+  status: string;
+  logoUrl: string | null;
+  tagline: string | null;
+  contactEmail: string | null;
+  contactPhone: string | null;
+  address: string | null;
+  bookingEnabled: boolean;
+  bookingTitle: string | null;
+  bookingNotice: string | null;
+  currency: string;
+  timezone: string;
+  taxId: string | null;
+  defaultTaxRate: number;
+  defaultPaymentTerms: string;
+  invoiceFooter: string | null;
+  bankName: string | null;
+  bankAccount: string | null;
+  bankRouting: string | null;
+  bankSwift: string | null;
+  minNoticeHours: number;
+  maxHorizonDays: number;
+  cancellationHours: number;
+  autoConfirmBookings: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type UpdateOrganizationSettingsPayload = Partial<{
+  name: string;
+  slug: string;
+  logoUrl: string | null;
+  tagline: string | null;
+  contactEmail: string | null;
+  contactPhone: string | null;
+  address: string | null;
+  bookingEnabled: boolean;
+  bookingTitle: string | null;
+  bookingNotice: string | null;
+  currency: string;
+  timezone: string;
+  taxId: string | null;
+  defaultTaxRate: number;
+  defaultPaymentTerms: string;
+  invoiceFooter: string | null;
+  bankName: string | null;
+  bankAccount: string | null;
+  bankRouting: string | null;
+  bankSwift: string | null;
+  minNoticeHours: number;
+  maxHorizonDays: number;
+  cancellationHours: number;
+  autoConfirmBookings: boolean;
+}>;
