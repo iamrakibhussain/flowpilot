@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { UserNav } from "@/components/layout/user-nav";
 import { DashboardNotifications } from "@/components/layout/dashboard-notifications";
 import { useWorkspaceSession } from "@/features/organizations/use-workspace-session";
+import { useOrganizationSettings } from "@/features/organizations/use-organization-settings";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,7 +27,10 @@ export interface DashboardHeaderProps {
 export function DashboardHeader({ onOpenMobile, onOpenCommand }: DashboardHeaderProps) {
   const pathname = usePathname();
   const { organizationName } = useWorkspaceSession();
+  const { data: orgSettings } = useOrganizationSettings();
   const { openModal } = useDashboardModals();
+
+  const finalOrgName = orgSettings?.name || organizationName;
 
   // Dynamic breadcrumb resolution
   const breadcrumbName = React.useMemo(() => {
@@ -85,9 +89,9 @@ export function DashboardHeader({ onOpenMobile, onOpenCommand }: DashboardHeader
           <ChevronRight className="text-muted-foreground/40 h-3.5 w-3.5" />
           <span
             className="text-foreground max-w-[180px] truncate font-semibold"
-            title={organizationName}
+            title={finalOrgName}
           >
-            {organizationName}
+            {finalOrgName}
           </span>
           <ChevronRight className="text-muted-foreground/40 h-3.5 w-3.5" />
           <span className="border-border/80 bg-muted/60 text-foreground rounded-lg border px-2.5 py-0.5 font-bold shadow-2xs">

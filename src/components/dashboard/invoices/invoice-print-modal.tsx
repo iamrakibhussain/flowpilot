@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import type { InvoiceListItem } from "@/features/invoices/types";
+import { useOrganizationSettings } from "@/features/organizations/use-organization-settings";
 
 interface InvoicePrintModalProps {
   invoice: InvoiceListItem | null;
@@ -35,7 +36,22 @@ export function InvoicePrintModal({
   onClose,
   organizationName = "FlowPilot Enterprise Operations",
 }: InvoicePrintModalProps) {
+  const { data: orgSettings } = useOrganizationSettings();
+
   if (!invoice) return null;
+
+  const effectiveOrgName = orgSettings?.name || organizationName;
+  const effectiveCurrency = orgSettings?.currency || "USD";
+  const effectiveTaxId = orgSettings?.taxId;
+  const effectiveLogoUrl = orgSettings?.logoUrl;
+  const effectiveBrandColor = orgSettings?.brandColor || "#2563eb";
+  const effectiveBankName = orgSettings?.bankName || "Treasury Account";
+  const effectiveBankAccount = orgSettings?.bankAccount || "Standard Remittance Wire";
+  const effectiveBankRouting = orgSettings?.bankRouting;
+  const effectiveBankSwift = orgSettings?.bankSwift || "FLOWUS33XXX";
+  const effectiveFooter =
+    orgSettings?.invoiceFooter ||
+    "Generated securely via FlowPilot Multi-Tenant Business OS • Page 1 of 1";
 
   const handlePrint = () => {
     window.print();
@@ -90,7 +106,10 @@ export function InvoicePrintModal({
           className="relative mx-auto my-3 w-full max-w-3xl overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 font-sans text-slate-900 shadow-xl sm:p-12 print:m-0 print:w-full print:border-none print:p-0 print:shadow-none"
         >
           {/* Subtle Top Classic Accent Bar */}
-          <div className="absolute top-0 right-0 left-0 h-2 bg-gradient-to-r from-blue-700 via-indigo-600 to-slate-900 print:h-1.5" />
+          <div
+            className="absolute top-0 right-0 left-0 h-2 transition-colors duration-300 print:h-1.5"
+            style={{ backgroundColor: effectiveBrandColor }}
+          />
 
           {/* Watermark Stamps */}
           {isPaid && (
@@ -125,16 +144,33 @@ export function InvoicePrintModal({
           <div className="flex flex-col justify-between gap-6 border-b border-slate-200 pb-8 sm:flex-row sm:items-start">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-900 text-white shadow-sm ring-1 ring-slate-800">
-                  <ShieldCheck className="h-6 w-6 text-blue-400" />
+                <div
+                  className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl text-white shadow-sm ring-1 ring-slate-800 transition-colors duration-300"
+                  style={{ backgroundColor: effectiveBrandColor }}
+                >
+                  {effectiveLogoUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={effectiveLogoUrl}
+                      alt={effectiveOrgName}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <ShieldCheck className="h-6 w-6 text-white" />
+                  )}
                 </div>
                 <div>
                   <h1 className="text-xl font-black tracking-tight text-slate-900">
-                    {organizationName}
+                    {effectiveOrgName}
                   </h1>
                   <p className="text-[11px] font-bold tracking-widest text-slate-400 uppercase">
                     Commercial Invoicing & Operations
                   </p>
+                  {effectiveTaxId && (
+                    <p className="font-mono text-[10px] text-slate-500">
+                      Tax / VAT ID: <strong className="text-slate-700">{effectiveTaxId}</strong>
+                    </p>
+                  )}
                 </div>
               </div>
               <p className="max-w-sm text-xs leading-relaxed text-slate-500">
@@ -240,24 +276,32 @@ export function InvoicePrintModal({
               <div className="rounded-xl border border-slate-200/80 bg-slate-50/70 p-4">
                 <div className="flex items-center gap-2 pb-2 text-[11px] font-bold text-slate-900">
                   <Landmark className="h-4 w-4 text-blue-600" />
-                  <span>Bank Wire & Remittance Instructions</span>
+                  <span>Bank Wire & Remittance Instructions ({effectiveBankName})</span>
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-600">
                   <div>
                     <span className="text-slate-400">Account Beneficiary:</span>
-                    <p className="font-semibold text-slate-800">{organizationName}</p>
+                    <p className="font-semibold text-slate-800">{effectiveOrgName}</p>
                   </div>
                   <div>
                     <span className="text-slate-400">Payment Reference:</span>
                     <p className="font-mono font-bold text-blue-700">INV-{invoice.invoiceNumber}</p>
                   </div>
                   <div>
+                    <span className="text-slate-400">Account / IBAN:</span>
+                    <p className="font-mono font-semibold text-slate-800">{effectiveBankAccount}</p>
+                  </div>
+                  <div>
                     <span className="text-slate-400">Routing / SWIFT:</span>
-                    <p className="font-mono font-semibold text-slate-800">FLOWUS33XXX</p>
+                    <p className="font-mono font-semibold text-slate-800">
+                      {[effectiveBankRouting, effectiveBankSwift].filter(Boolean).join(" / ")}
+                    </p>
                   </div>
                   <div>
                     <span className="text-slate-400">Settlement Currency:</span>
-                    <p className="font-semibold text-slate-800">USD ($)</p>
+                    <p className="font-semibold text-slate-800">
+                      {effectiveCurrency} ({effectiveCurrency === "USD" ? "$" : effectiveCurrency})
+                    </p>
                   </div>
                 </div>
               </div>
@@ -321,9 +365,7 @@ export function InvoicePrintModal({
               </div>
             </div>
 
-            <p className="text-[11px] text-slate-400">
-              Generated securely via FlowPilot Multi-Tenant Business OS • Page 1 of 1
-            </p>
+            <p className="text-[11px] text-slate-400">{effectiveFooter}</p>
           </div>
         </div>
 

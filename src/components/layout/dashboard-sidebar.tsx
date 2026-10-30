@@ -36,6 +36,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { UserNav } from "@/components/layout/user-nav";
 import { useWorkspaceSession } from "@/features/organizations/use-workspace-session";
+import { useOrganizationSettings } from "@/features/organizations/use-organization-settings";
 
 export interface DashboardSidebarProps {
   isCollapsed: boolean;
@@ -132,9 +133,11 @@ export function DashboardSidebar({
 }: DashboardSidebarProps) {
   const pathname = usePathname();
   const { organizationName, organizationRole, memberships } = useWorkspaceSession();
+  const { data: orgSettings } = useOrganizationSettings();
   const [selectedOrgName, setSelectedOrgName] = React.useState<string | null>(null);
 
-  const displayOrgName = selectedOrgName || organizationName;
+  const displayOrgName = selectedOrgName || orgSettings?.name || organizationName;
+  const logoUrl = orgSettings?.logoUrl;
 
   const renderSidebarContent = (collapsed: boolean, isMobile = false) => (
     <div className="flex h-full flex-col">
@@ -196,8 +199,17 @@ export function DashboardSidebar({
               title={displayOrgName}
             >
               <div className="flex items-center gap-2.5 truncate">
-                <div className="from-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-tr to-indigo-600 text-xs font-bold text-white shadow-xs">
-                  {displayOrgName.charAt(0).toUpperCase()}
+                <div className="from-primary flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-tr to-indigo-600 text-xs font-bold text-white shadow-xs">
+                  {logoUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={logoUrl}
+                      alt={displayOrgName}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    displayOrgName.charAt(0).toUpperCase()
+                  )}
                 </div>
                 {!collapsed && (
                   <div className="truncate">

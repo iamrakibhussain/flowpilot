@@ -25,6 +25,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useCustomers } from "@/features/customers/use-customers";
 import { useCreateInvoice } from "@/features/invoices/use-invoices";
 import { useServices } from "@/features/services/use-services";
+import { useOrganizationSettings } from "@/features/organizations/use-organization-settings";
 import type { CreateInvoicePayload } from "@/features/invoices/types";
 
 export interface InvoiceBuilderModalProps {
@@ -55,6 +56,7 @@ function InvoiceBuilderForm({
   const { data: customerData } = useCustomers({ limit: 100 });
   const customers = React.useMemo(() => customerData?.customers ?? [], [customerData]);
   const { data: services = [] } = useServices({ activeOnly: true }, organizationId);
+  const { data: orgSettings } = useOrganizationSettings();
   const createInvoiceMutation = useCreateInvoice();
 
   // Client Selection State
@@ -97,7 +99,10 @@ function InvoiceBuilderForm({
   });
 
   // Financial fields
-  const [taxRate, setTaxRate] = React.useState<number>(0);
+  const [userTaxRate, setUserTaxRate] = React.useState<number | null>(null);
+  const taxRate = userTaxRate !== null ? userTaxRate : (orgSettings?.defaultTaxRate ?? 0);
+  const setTaxRate = (val: number) => setUserTaxRate(val);
+
   const [issueDate, setIssueDate] = React.useState(() => new Date().toISOString().slice(0, 10));
 
   const [dueDate, setDueDate] = React.useState(() => {
@@ -106,11 +111,19 @@ function InvoiceBuilderForm({
     return d.toISOString().slice(0, 10);
   });
 
-  const [notes, setNotes] = React.useState(
-    () =>
-      initialNotes ||
-      "Payment terms: Net 14 days. Please include invoice number in wire/transfer reference."
-  );
+  const [userNotes, setUserNotes] = React.useState<string | null>(null);
+  const defaultCalculatedNotes = React.useMemo(() => {
+    if (initialNotes) return initialNotes;
+    if (orgSettings?.defaultPaymentTerms || orgSettings?.invoiceFooter) {
+      return `Payment terms: ${orgSettings.defaultPaymentTerms || "Net 14 days"}. ${
+        orgSettings.invoiceFooter || "Please include invoice number in wire/transfer reference."
+      }`;
+    }
+    return "Payment terms: Net 14 days. Please include invoice number in wire/transfer reference.";
+  }, [initialNotes, orgSettings?.defaultPaymentTerms, orgSettings?.invoiceFooter]);
+
+  const notes = userNotes !== null ? userNotes : defaultCalculatedNotes;
+  const setNotes = (val: string) => setUserNotes(val);
 
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const [createdInvoiceNumber, setCreatedInvoiceNumber] = React.useState<string | null>(null);

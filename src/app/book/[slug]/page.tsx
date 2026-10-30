@@ -341,10 +341,26 @@ export default function PublicBookingPortalPage() {
 
       {/* Top Brand Bar */}
       <header className="border-border/80 bg-background/80 sticky top-0 z-30 border-b backdrop-blur-md">
+        <div
+          className="h-1 w-full transition-colors duration-300"
+          style={{ backgroundColor: profile.brandColor || "#2563eb" }}
+        />
         <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3.5 sm:px-6">
           <div className="flex min-w-0 items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-sm font-black text-white shadow-sm">
-              {profile.name.charAt(0).toUpperCase()}
+            <div
+              className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl text-sm font-black text-white shadow-sm ring-1 ring-slate-200/50 transition-colors duration-300 dark:ring-slate-700/50"
+              style={{ backgroundColor: profile.brandColor || "#2563eb" }}
+            >
+              {profile.logoUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={profile.logoUrl}
+                  alt={profile.name}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                profile.name.charAt(0).toUpperCase()
+              )}
             </div>
             <div className="min-w-0">
               <h1 className="text-foreground truncate text-sm font-bold sm:text-base">
@@ -352,7 +368,7 @@ export default function PublicBookingPortalPage() {
               </h1>
               <span className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
-                Live Client Scheduling Portal
+                {profile.tagline || "Live Client Scheduling Portal"}
               </span>
             </div>
           </div>
@@ -965,8 +981,10 @@ export default function PublicBookingPortalPage() {
                     <Button
                       type="submit"
                       disabled={bookMutation.isPending}
-                      className="w-full cursor-pointer rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 py-3 text-sm font-bold text-white shadow-md shadow-blue-500/20 hover:from-blue-700 hover:to-indigo-700"
+                      className="w-full cursor-pointer rounded-xl py-3 text-sm font-bold text-white shadow-md transition-opacity hover:opacity-90"
+                      style={{ backgroundColor: profile.brandColor || "#2563eb" }}
                     >
+                      <CalendarPlus className="mr-2 h-4 w-4" />
                       {bookMutation.isPending
                         ? "Confirming Booking..."
                         : "Confirm & Book Appointment"}
@@ -1074,7 +1092,10 @@ export default function PublicBookingPortalPage() {
             {/* Luxury Boarding-Pass Receipt Ticket */}
             <div className="border-border/80 bg-card relative overflow-hidden rounded-3xl border text-left shadow-xl transition-all">
               {/* Ticket Top: Brand & Ref */}
-              <div className="flex items-center justify-between bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 p-5 text-white">
+              <div
+                className="flex items-center justify-between p-5 text-white transition-colors duration-300"
+                style={{ backgroundColor: profile.brandColor || "#2563eb" }}
+              >
                 <div>
                   <span className="text-[10px] font-bold tracking-wider uppercase opacity-80">
                     Booking Reference Pass
@@ -1191,8 +1212,43 @@ export default function PublicBookingPortalPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-border/80 bg-background/50 text-muted-foreground border-t py-6 text-center text-xs">
-        <p>Powered by FlowPilot • Secure Multi-Tenant Enterprise Architecture</p>
+      <footer className="border-border/80 bg-background/50 text-muted-foreground border-t py-8 text-center text-xs">
+        <div className="mx-auto max-w-4xl space-y-2 px-4">
+          <p className="text-foreground text-sm font-semibold">
+            {profile.name}
+            {profile.tagline ? ` — ${profile.tagline}` : ""}
+          </p>
+          {(profile.contactEmail || profile.contactPhone || profile.address) && (
+            <p className="text-muted-foreground flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px]">
+              {profile.contactEmail && (
+                <a
+                  href={`mailto:${profile.contactEmail}`}
+                  className="hover:text-primary underline-offset-2 transition-colors hover:underline"
+                >
+                  {profile.contactEmail}
+                </a>
+              )}
+              {profile.contactPhone && (
+                <a
+                  href={`tel:${profile.contactPhone}`}
+                  className="hover:text-primary underline-offset-2 transition-colors hover:underline"
+                >
+                  {profile.contactPhone}
+                </a>
+              )}
+              {profile.address && <span>{profile.address}</span>}
+            </p>
+          )}
+          {Boolean(profile.cancellationHours) && (
+            <p className="text-muted-foreground/80 text-[10px]">
+              Notice Policy: Cancellations accepted up to {profile.cancellationHours} hours prior to
+              scheduled appointment.
+            </p>
+          )}
+          <p className="text-muted-foreground/60 pt-1 text-[10px]">
+            Powered by FlowPilot • Secure Multi-Tenant Enterprise Architecture
+          </p>
+        </div>
       </footer>
     </div>
   );
