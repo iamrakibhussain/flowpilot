@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import {
   ShieldCheck,
@@ -13,6 +14,7 @@ import {
   Building2,
   Clock,
   ExternalLink,
+  ChevronLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -88,18 +90,38 @@ export default function ClientPortalLoginPage() {
       <div className="pointer-events-none absolute top-0 left-1/2 h-[300px] w-[600px] -translate-x-1/2 rounded-full bg-blue-500/10 blur-3xl dark:bg-blue-600/15" />
 
       <div className="relative z-10 w-full max-w-md space-y-6">
+        {/* Back Link to Booking */}
+        <div className="flex justify-between items-center px-1">
+          <Link
+            href={`/book/${slug}`}
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 transition"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            <span>Public Booking Gateway</span>
+          </Link>
+          <span className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            Live Gateway
+          </span>
+        </div>
+
         {/* Workspace Brand Header */}
-        <div className="space-y-2 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-blue-200/60 bg-blue-50 px-3 py-1 text-xs font-semibold tracking-wide text-blue-700 uppercase shadow-sm dark:border-blue-800/60 dark:bg-blue-950/60 dark:text-blue-300">
-            <ShieldCheck className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
-            Client Self-Service Portal
+        <div className="space-y-3 text-center">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-violet-600 text-xl font-black text-white shadow-lg shadow-blue-500/25 ring-4 ring-blue-500/10 dark:ring-blue-500/20">
+            {slug.charAt(0).toUpperCase()}
           </div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 capitalize sm:text-3xl dark:text-slate-100">
-            {slug.replace(/-/g, " ")}
-          </h1>
-          <p className="mx-auto max-w-xs text-sm text-slate-600 dark:text-slate-400">
-            Manage your booked appointments, review invoices, and pay online with zero passwords.
-          </p>
+          <div className="space-y-1">
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-blue-200/80 bg-blue-50/80 px-3 py-0.5 text-[11px] font-bold tracking-wider text-blue-700 uppercase shadow-2xs dark:border-blue-800/80 dark:bg-blue-950/60 dark:text-blue-300">
+              <ShieldCheck className="h-3 w-3 text-blue-600 dark:text-blue-400" />
+              Client Self-Service Portal
+            </div>
+            <h1 className="text-2xl font-black tracking-tight text-slate-900 capitalize sm:text-3xl dark:text-slate-100">
+              {slug.replace(/-/g, " ")}
+            </h1>
+            <p className="mx-auto max-w-xs text-xs text-slate-600 sm:text-sm dark:text-slate-400">
+              Manage your appointments, reschedule sessions, and download invoice receipts 24/7.
+            </p>
+          </div>
         </div>
 
         {/* Auth Capsule Card */}
@@ -242,7 +264,7 @@ export default function ClientPortalLoginPage() {
                     disabled={requestLinkMutation.isPending}
                     className="text-xs text-slate-500 hover:text-slate-800 hover:underline dark:hover:text-slate-200"
                   >
-                    Didn't receive the email? Resend code
+                    Didn&apos;t receive the email? Resend code
                   </button>
                 </div>
               </form>

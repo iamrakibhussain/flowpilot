@@ -355,40 +355,42 @@ export default function CustomersDirectoryPage() {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="flex items-center gap-1.5 rounded-xl border border-border/80 bg-background/90 px-3 py-1.5 text-xs font-mono text-muted-foreground shadow-2xs">
-              <span className="text-blue-600 dark:text-blue-400 font-bold">Portal:</span>
-              <span className="truncate max-w-[200px] sm:max-w-[280px]">{portalFullUrl}</span>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full lg:w-auto">
+            <div className="flex items-center gap-1.5 rounded-xl border border-border/80 bg-background/90 px-3 py-2 sm:py-1.5 text-xs font-mono text-muted-foreground shadow-2xs w-full sm:w-auto overflow-hidden">
+              <span className="text-blue-600 dark:text-blue-400 font-bold shrink-0">Portal:</span>
+              <span className="truncate max-w-[220px] sm:max-w-[280px]">{portalFullUrl}</span>
             </div>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={handleCopyPortalLink}
-              className="border-border/80 bg-background/80 hover:bg-muted/60 flex h-9 cursor-pointer items-center gap-1.5 rounded-xl text-xs font-semibold shadow-2xs transition"
-            >
-              {copiedPortalLink ? (
-                <>
-                  <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-                  <span className="text-emerald-600 dark:text-emerald-400">Copied!</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="h-3.5 w-3.5 text-muted-foreground" />
-                  <span>Copy Link</span>
-                </>
-              )}
-            </Button>
-            <Button
-              size="sm"
-              asChild
-              className="bg-blue-600 hover:bg-blue-700 text-white flex h-9 cursor-pointer items-center gap-1.5 rounded-xl text-xs font-bold shadow-md shadow-blue-500/20 transition"
-            >
-              <a href={portalFullUrl} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="h-3.5 w-3.5" />
-                <span>Visit Portal</span>
-              </a>
-            </Button>
+            <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full sm:w-auto">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleCopyPortalLink}
+                className="border-border/80 bg-background/80 hover:bg-muted/60 flex h-9 cursor-pointer items-center justify-center gap-1.5 rounded-xl text-xs font-semibold shadow-2xs transition"
+              >
+                {copiedPortalLink ? (
+                  <>
+                    <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                    <span className="text-emerald-600 dark:text-emerald-400 font-bold">Copied!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="h-3.5 w-3.5 text-muted-foreground" />
+                    <span>Copy Link</span>
+                  </>
+                )}
+              </Button>
+              <Button
+                size="sm"
+                asChild
+                className="bg-blue-600 hover:bg-blue-700 text-white flex h-9 cursor-pointer items-center justify-center gap-1.5 rounded-xl text-xs font-bold shadow-md shadow-blue-500/20 transition"
+              >
+                <a href={portalFullUrl} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="h-3.5 w-3.5" />
+                  <span>Visit Portal</span>
+                </a>
+              </Button>
+            </div>
           </div>
         </div>
       </div>

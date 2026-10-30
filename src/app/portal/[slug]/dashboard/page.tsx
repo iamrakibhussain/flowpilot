@@ -40,6 +40,18 @@ import {
 } from "@/features/portal/use-portal";
 import type { PortalAppointment, PortalInvoice } from "@/features/portal/types";
 
+function getRelativeCountdown(dateStr: string): string {
+  const target = new Date(dateStr).getTime();
+  const now = Date.now();
+  const diffHours = Math.round((target - now) / (1000 * 60 * 60));
+  if (diffHours >= 0 && diffHours < 24) return "Today";
+  if (diffHours >= 24 && diffHours < 48) return "Tomorrow";
+  const diffDays = Math.round((target - now) / (1000 * 60 * 60 * 24));
+  if (diffDays > 1) return `In ${diffDays} days`;
+  if (diffDays === -1) return "Yesterday";
+  return diffDays < -1 ? `${Math.abs(diffDays)}d ago` : "Today";
+}
+
 export default function ClientPortalDashboardPage() {
   const params = useParams();
   const router = useRouter();
@@ -190,21 +202,27 @@ export default function ClientPortalDashboardPage() {
   const brandColor = organization.brandColor || "#2563eb";
 
   return (
-    <div className="min-h-screen bg-slate-50/70 pb-20 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+    <div className="relative min-h-screen bg-slate-50/70 pb-20 text-slate-900 selection:bg-blue-600 selection:text-white dark:bg-slate-950 dark:text-slate-100">
+      {/* Linear Atmospheric Mesh Lighting */}
+      <div
+        className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(ellipse_80%_60%_at_50%_-15%,rgba(59,130,246,0.08),transparent_70%),radial-gradient(ellipse_60%_50%_at_100%_35%,rgba(99,102,241,0.05),transparent_60%)]"
+        aria-hidden="true"
+      />
+
       {/* Top Client Brand Header */}
-      <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/90 backdrop-blur-md transition-all dark:border-slate-800/80 dark:bg-slate-900/90">
+      <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/85 backdrop-blur-xl transition-all dark:border-slate-800/80 dark:bg-slate-900/85">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-3">
             {organization.logoUrl ? (
               <img
                 src={organization.logoUrl}
                 alt={organization.name}
-                className="h-9 w-9 rounded-xl border border-slate-200 bg-slate-100 object-contain p-1 dark:border-slate-700 dark:bg-slate-800"
+                className="h-9 w-9 rounded-xl border border-slate-200 bg-slate-100 object-contain p-1 shadow-2xs dark:border-slate-700 dark:bg-slate-800"
               />
             ) : (
               <div
                 style={{ backgroundColor: brandColor }}
-                className="flex h-9 w-9 items-center justify-center rounded-xl text-sm font-bold text-white shadow-sm"
+                className="flex h-9 w-9 items-center justify-center rounded-xl text-sm font-black text-white shadow-md shadow-blue-500/20"
               >
                 {organization.name.charAt(0).toUpperCase()}
               </div>
@@ -214,9 +232,9 @@ export default function ClientPortalDashboardPage() {
                 <span className="text-sm font-bold tracking-tight sm:text-base">
                   {organization.name}
                 </span>
-                <span className="py-0.2 inline-flex items-center gap-0.5 rounded-full border border-emerald-200/60 bg-emerald-50 px-1.5 text-[10px] font-semibold text-emerald-700 dark:border-emerald-800/60 dark:bg-emerald-950/60 dark:text-emerald-300">
-                  <ShieldCheck className="h-3 w-3" />
-                  Verified
+                <span className="inline-flex items-center gap-0.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
+                  Verified Hub
                 </span>
               </div>
               <p className="hidden text-[11px] text-slate-500 sm:block">
@@ -225,12 +243,12 @@ export default function ClientPortalDashboardPage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="hidden items-center gap-2 border-l border-slate-200 pl-3 text-xs sm:flex dark:border-slate-800">
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-200 font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-2 sm:border-l sm:border-slate-200 sm:pl-3 text-xs dark:sm:border-slate-800">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 font-bold text-white shadow-2xs">
                 {customer.name.charAt(0).toUpperCase()}
               </div>
-              <span className="font-semibold text-slate-700 dark:text-slate-200">
+              <span className="hidden font-semibold text-slate-800 sm:inline dark:text-slate-200">
                 {customer.name}
               </span>
             </div>
@@ -238,7 +256,7 @@ export default function ClientPortalDashboardPage() {
               variant="outline"
               size="sm"
               onClick={handleLogout}
-              className="h-8 gap-1.5 rounded-lg border-slate-200 text-xs text-slate-600 hover:text-rose-600 dark:border-slate-800 dark:text-slate-400"
+              className="h-8.5 gap-1.5 rounded-xl border-slate-200 text-xs font-semibold text-slate-600 hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 dark:border-slate-800 dark:text-slate-400 dark:hover:border-rose-900/60 dark:hover:bg-rose-950/40 dark:hover:text-rose-400 cursor-pointer shadow-2xs transition"
             >
               <LogOut className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">Sign Out</span>
@@ -252,13 +270,13 @@ export default function ClientPortalDashboardPage() {
         {/* Action feedback toast */}
         {actionMessage && (
           <div
-            className={`flex items-center justify-between rounded-xl p-4 text-xs font-medium shadow-sm transition-all sm:text-sm ${
+            className={`flex items-center justify-between rounded-2xl p-4 text-xs font-medium shadow-sm transition-all sm:text-sm ${
               actionMessage.type === "success"
                 ? "border border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-200"
                 : "border border-rose-200 bg-rose-50 text-rose-800 dark:border-rose-800 dark:bg-rose-950/50 dark:text-rose-200"
             }`}
           >
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2.5">
               {actionMessage.type === "success" ? (
                 <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />
               ) : (
@@ -266,70 +284,73 @@ export default function ClientPortalDashboardPage() {
               )}
               <span>{actionMessage.text}</span>
             </div>
-            <button onClick={() => setActionMessage(null)} className="p-1 hover:opacity-75">
+            <button onClick={() => setActionMessage(null)} className="p-1 hover:opacity-75 cursor-pointer">
               <X className="h-3.5 w-3.5" />
             </button>
           </div>
         )}
 
         {/* Welcome Hero Banner */}
-        <div className="flex flex-col gap-4 rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:p-7 dark:border-slate-800/80 dark:bg-slate-900">
-          <div className="space-y-1">
-            <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">
+        <div className="relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-5 shadow-sm sm:flex sm:items-center sm:justify-between sm:p-7 dark:border-slate-800/80 dark:bg-slate-900/90 backdrop-blur-xl">
+          <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-blue-500/10 blur-3xl dark:bg-blue-600/15" />
+          <div className="relative z-10 space-y-1.5">
+            <h1 className="text-xl font-black tracking-tight sm:text-2xl">
               Welcome back, {customer.name.split(" ")[0]}!
             </h1>
             <p className="text-xs text-slate-500 sm:text-sm dark:text-slate-400">
               You have{" "}
-              <strong className="text-slate-800 dark:text-slate-200">
+              <strong className="text-slate-800 font-bold dark:text-slate-200">
                 {appointments.upcoming.length} upcoming
               </strong>{" "}
               appointment{appointments.upcoming.length === 1 ? "" : "s"} and{" "}
-              <strong className="text-slate-800 dark:text-slate-200">
+              <strong className="text-slate-800 font-bold dark:text-slate-200">
                 ${invoices.metrics.totalOutstanding}
               </strong>{" "}
               in outstanding balance.
             </p>
           </div>
 
-          <Button
-            onClick={() => router.push(`/book/${slug}`)}
-            style={{ backgroundColor: brandColor }}
-            className="h-10 shrink-0 gap-2 self-start rounded-xl font-semibold text-white shadow-sm hover:opacity-90 sm:self-auto"
-          >
-            <PlusCircle className="h-4 w-4" />
-            Book New Session
-          </Button>
+          <div className="relative z-10 mt-4 sm:mt-0">
+            <Button
+              onClick={() => router.push(`/book/${slug}`)}
+              style={{ backgroundColor: brandColor }}
+              className="h-11 sm:h-10 w-full sm:w-auto shrink-0 gap-2 rounded-xl font-bold text-white shadow-md shadow-blue-500/20 hover:opacity-90 cursor-pointer transition text-xs sm:text-sm"
+            >
+              <PlusCircle className="h-4 w-4" />
+              Book New Session
+            </Button>
+          </div>
         </div>
 
-        {/* Segmented Pill Navigation */}
-        <div className="flex max-w-full scrollbar-none items-center gap-1.5 overflow-x-auto rounded-xl bg-slate-200/60 p-1 dark:bg-slate-800/60">
+        {/* Segmented Tab Navigation with Native Mobile 3-Grid Adaptation */}
+        <div className="grid grid-cols-3 gap-1 rounded-2xl bg-slate-200/60 p-1.5 backdrop-blur-md dark:bg-slate-800/60 sm:flex sm:items-center sm:gap-2">
           <button
             onClick={() => setActiveTab("appointments")}
-            className={`flex shrink-0 items-center gap-2 rounded-lg px-3.5 py-2 text-xs font-semibold transition-all sm:text-sm ${
+            className={`flex items-center justify-center gap-1.5 sm:gap-2 rounded-xl px-2 sm:px-4 py-2.5 text-xs font-bold transition-all cursor-pointer ${
               activeTab === "appointments"
                 ? "bg-white text-slate-900 shadow-sm dark:bg-slate-900 dark:text-slate-100"
                 : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
             }`}
           >
-            <Calendar className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-            <span>Appointments</span>
-            <span className="py-0.2 rounded-full bg-blue-100 px-1.5 text-[10px] font-bold text-blue-700 dark:bg-blue-900/60 dark:text-blue-300">
+            <Calendar className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0" />
+            <span className="truncate">Appointments</span>
+            <span className="rounded-full bg-blue-100 px-1.5 py-0.2 text-[10px] font-bold text-blue-700 dark:bg-blue-900/60 dark:text-blue-300">
               {appointments.upcoming.length}
             </span>
           </button>
 
           <button
             onClick={() => setActiveTab("invoices")}
-            className={`flex shrink-0 items-center gap-2 rounded-lg px-3.5 py-2 text-xs font-semibold transition-all sm:text-sm ${
+            className={`flex items-center justify-center gap-1.5 sm:gap-2 rounded-xl px-2 sm:px-4 py-2.5 text-xs font-bold transition-all cursor-pointer ${
               activeTab === "invoices"
                 ? "bg-white text-slate-900 shadow-sm dark:bg-slate-900 dark:text-slate-100"
                 : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
             }`}
           >
-            <CreditCard className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-            <span>Invoices & Billing</span>
+            <CreditCard className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span className="truncate">Invoices</span>
             {Number(invoices.metrics.totalOutstanding) > 0 && (
-              <span className="py-0.2 rounded-full bg-amber-100 px-1.5 text-[10px] font-bold text-amber-700 dark:bg-amber-900/60 dark:text-amber-300">
+              <span className="rounded-full bg-amber-100 px-1.5 py-0.2 text-[10px] font-bold text-amber-700 dark:bg-amber-900/60 dark:text-amber-300">
                 ${invoices.metrics.totalOutstanding}
               </span>
             )}
@@ -337,14 +358,14 @@ export default function ClientPortalDashboardPage() {
 
           <button
             onClick={() => setActiveTab("profile")}
-            className={`flex shrink-0 items-center gap-2 rounded-lg px-3.5 py-2 text-xs font-semibold transition-all sm:text-sm ${
+            className={`flex items-center justify-center gap-1.5 sm:gap-2 rounded-xl px-2 sm:px-4 py-2.5 text-xs font-bold transition-all cursor-pointer ${
               activeTab === "profile"
                 ? "bg-white text-slate-900 shadow-sm dark:bg-slate-900 dark:text-slate-100"
                 : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
             }`}
           >
-            <User className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
-            <span>Profile & Coordinates</span>
+            <User className="h-4 w-4 text-indigo-600 dark:text-indigo-400 shrink-0" />
+            <span className="truncate">Profile</span>
           </button>
         </div>
 
@@ -398,30 +419,36 @@ export default function ClientPortalDashboardPage() {
                   return (
                     <Card
                       key={appt.id}
-                      className="flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
+                      className="group flex flex-col justify-between overflow-hidden rounded-3xl border border-slate-200/90 bg-white p-5 sm:p-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-500/40 hover:shadow-md dark:border-slate-800/90 dark:bg-slate-900"
                     >
-                      <CardContent className="space-y-4 p-5 sm:p-6">
+                      <CardContent className="space-y-4 p-0">
                         <div className="flex items-start justify-between gap-3">
                           <div className="space-y-1">
-                            <span className="inline-flex items-center gap-1 rounded-full border border-blue-200/50 bg-blue-50 px-2 py-0.5 text-[10px] font-bold tracking-wider text-blue-700 uppercase dark:bg-blue-950/60 dark:text-blue-300">
-                              {appt.service?.name || appt.title}
-                            </span>
-                            <h3 className="text-base font-bold tracking-tight sm:text-lg">
+                            <div className="flex flex-wrap items-center gap-1.5">
+                              <span className="inline-flex items-center gap-1 rounded-full border border-blue-200/60 bg-blue-50 px-2.5 py-0.5 text-[10px] font-bold tracking-wider text-blue-700 uppercase dark:border-blue-800/60 dark:bg-blue-950/60 dark:text-blue-300">
+                                {appt.service?.name || appt.title}
+                              </span>
+                              <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                                {getRelativeCountdown(appt.scheduledAt)}
+                              </span>
+                            </div>
+                            <h3 className="text-base font-extrabold tracking-tight sm:text-lg text-slate-900 dark:text-slate-100">
                               {appt.title}
                             </h3>
                           </div>
-                          <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300">
+                          <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                             Confirmed
                           </span>
                         </div>
 
                         {/* Date & Time pill */}
-                        <div className="flex items-center justify-between rounded-xl border border-slate-200/60 bg-slate-50 p-3 text-xs sm:text-sm dark:border-slate-800/60 dark:bg-slate-950/60">
+                        <div className="flex items-center justify-between rounded-2xl border border-slate-200/60 bg-slate-50/80 p-3.5 text-xs sm:text-sm dark:border-slate-800/60 dark:bg-slate-950/60">
                           <div className="flex items-center gap-2">
-                            <Clock className="h-4 w-4 text-blue-600" />
+                            <Clock className="h-4 w-4 text-blue-600 shrink-0" />
                             <span className="font-semibold">{formattedDate}</span>
                           </div>
-                          <span className="font-bold text-slate-800 dark:text-slate-200">
+                          <span className="font-extrabold text-slate-800 dark:text-slate-200">
                             {formattedTime} ({appt.durationMinutes}m)
                           </span>
                         </div>
@@ -432,7 +459,7 @@ export default function ClientPortalDashboardPage() {
                             {appt.staffMember ? (
                               <>
                                 <div
-                                  className={`h-6 w-6 rounded-full ${appt.staffMember.avatarBg} flex items-center justify-center text-[10px] font-bold text-white`}
+                                  className={`h-6 w-6 rounded-full ${appt.staffMember.avatarBg} flex items-center justify-center text-[10px] font-bold text-white shadow-2xs`}
                                 >
                                   {appt.staffMember.initials}
                                 </div>
@@ -441,11 +468,11 @@ export default function ClientPortalDashboardPage() {
                                 </span>
                               </>
                             ) : (
-                              <span>Assigned Staff</span>
+                              <span>Assigned Specialist</span>
                             )}
                           </div>
 
-                          <div className="flex items-center gap-1 font-medium">
+                          <div className="flex items-center gap-1 font-semibold text-slate-700 dark:text-slate-300 rounded-lg bg-slate-100 px-2 py-0.5 dark:bg-slate-800">
                             {appt.type === "VIDEO" && (
                               <Video className="h-3.5 w-3.5 text-indigo-500" />
                             )}
@@ -472,7 +499,7 @@ export default function ClientPortalDashboardPage() {
                                 new Date(appt.scheduledAt).toISOString().slice(0, 16)
                               );
                             }}
-                            className="h-9 flex-1 rounded-xl border-slate-200 text-xs font-semibold hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800"
+                            className="h-10 sm:h-9 flex-1 rounded-xl border-slate-200 text-xs font-bold hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800 cursor-pointer transition shadow-2xs"
                           >
                             Reschedule
                           </Button>
@@ -483,7 +510,7 @@ export default function ClientPortalDashboardPage() {
                               setCancelAppt(appt);
                               setCancelReason("");
                             }}
-                            className="h-9 rounded-xl border-rose-200 px-3 text-xs font-semibold text-rose-600 hover:bg-rose-50 dark:border-rose-900/60 dark:hover:bg-rose-950/40"
+                            className="h-10 sm:h-9 rounded-xl border-rose-200 px-3.5 text-xs font-bold text-rose-600 hover:bg-rose-50 dark:border-rose-900/60 dark:hover:bg-rose-950/40 cursor-pointer transition shadow-2xs"
                           >
                             Cancel
                           </Button>
@@ -600,69 +627,77 @@ export default function ClientPortalDashboardPage() {
                   {invoices.list.map((inv) => (
                     <div
                       key={inv.id}
-                      className="flex flex-col justify-between gap-4 p-5 transition-all hover:bg-slate-50/50 sm:flex-row sm:items-center dark:hover:bg-slate-800/30"
+                      className="flex flex-col justify-between gap-4 p-5 transition-all hover:bg-slate-50/60 sm:flex-row sm:items-center dark:hover:bg-slate-800/40"
                     >
                       <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-bold tracking-tight text-slate-900 dark:text-slate-100">
+                        <div className="flex items-center justify-between sm:justify-start gap-2.5">
+                          <span className="text-sm font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
                             {inv.invoiceNumber}
                           </span>
                           <span
-                            className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${
+                            className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold ${
                               inv.status === "PAID"
-                                ? "border border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300"
+                                ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
                                 : inv.status === "OVERDUE"
-                                  ? "border border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-800 dark:bg-rose-950/60 dark:text-rose-300"
-                                  : "border border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/60 dark:text-amber-300"
+                                  ? "border border-rose-500/30 bg-rose-500/10 text-rose-600 dark:text-rose-400"
+                                  : "border border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-400"
                             }`}
                           >
                             {inv.status}
                           </span>
+                          {/* Visible on mobile only */}
+                          <div className="sm:hidden text-right font-black text-slate-900 text-sm dark:text-slate-100">
+                            ${Number(inv.total).toFixed(2)}
+                          </div>
                         </div>
-                        <div className="text-xs text-slate-500">
-                          Issued: {new Date(inv.issueDate).toLocaleDateString()} • Due:{" "}
-                          {new Date(inv.dueDate).toLocaleDateString()}
+                        <div className="text-xs text-slate-500 flex flex-wrap items-center gap-1.5">
+                          <span>Issued: {new Date(inv.issueDate).toLocaleDateString()}</span>
+                          <span>•</span>
+                          <span>Due: {new Date(inv.dueDate).toLocaleDateString()}</span>
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between gap-3 sm:justify-end">
-                        <div className="text-right sm:pr-2">
-                          <div className="text-base font-extrabold text-slate-900 dark:text-slate-100">
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:justify-end">
+                        {/* Visible on desktop only */}
+                        <div className="hidden sm:block text-right pr-2">
+                          <div className="text-base font-black text-slate-900 dark:text-slate-100">
                             ${Number(inv.total).toFixed(2)}
                           </div>
-                          <div className="text-[10px] text-slate-400">Total Amount</div>
+                          <div className="text-[10px] text-slate-400 font-medium">Total Amount</div>
                         </div>
 
-                        {inv.status === "PENDING" || inv.status === "OVERDUE" ? (
-                          <Button
-                            onClick={() => {
-                              if (inv.paymentToken) {
-                                router.push(`/pay/${inv.paymentToken}`);
-                              } else {
-                                setActionMessage({
-                                  type: "error",
-                                  text: "Online checkout is not enabled for this invoice. Please contact support.",
-                                });
-                              }
-                            }}
-                            style={{ backgroundColor: brandColor }}
-                            size="sm"
-                            className="h-9 gap-1.5 rounded-xl px-4 text-xs font-semibold text-white shadow-sm"
-                          >
-                            <CreditCard className="h-3.5 w-3.5" />
-                            Pay Now
-                          </Button>
-                        ) : null}
+                        <div className="grid grid-cols-2 sm:flex sm:items-center gap-2">
+                          {inv.status === "PENDING" || inv.status === "OVERDUE" ? (
+                            <Button
+                              onClick={() => {
+                                if (inv.paymentToken) {
+                                  router.push(`/pay/${inv.paymentToken}`);
+                                } else {
+                                  setActionMessage({
+                                    type: "error",
+                                    text: "Online checkout is not enabled for this invoice. Please contact support.",
+                                  });
+                                }
+                              }}
+                              style={{ backgroundColor: brandColor }}
+                              size="sm"
+                              className="h-10 sm:h-9 gap-1.5 rounded-xl px-4 text-xs font-bold text-white shadow-sm cursor-pointer hover:opacity-90 transition"
+                            >
+                              <CreditCard className="h-3.5 w-3.5" />
+                              Pay Now
+                            </Button>
+                          ) : null}
 
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setActiveReceiptInvoice(inv)}
-                          className="h-9 gap-1.5 rounded-xl border-slate-200 px-3 text-xs font-semibold dark:border-slate-700"
-                        >
-                          <Printer className="h-3.5 w-3.5 text-slate-500" />
-                          Receipt
-                        </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setActiveReceiptInvoice(inv)}
+                            className="h-10 sm:h-9 gap-1.5 rounded-xl border-slate-200 px-3 text-xs font-bold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 cursor-pointer shadow-2xs transition"
+                          >
+                            <Printer className="h-3.5 w-3.5 text-slate-500" />
+                            Receipt
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -751,27 +786,31 @@ export default function ClientPortalDashboardPage() {
 
       {/* RESCHEDULE MODAL */}
       {rescheduleAppt && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-          <div className="animate-in fade-in zoom-in-95 w-full max-w-md space-y-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl duration-200 dark:border-slate-800 dark:bg-slate-900">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="animate-in fade-in zoom-in-95 w-full max-w-md space-y-5 rounded-3xl border border-slate-200 bg-white p-6 sm:p-7 shadow-2xl duration-200 dark:border-slate-800 dark:bg-slate-900">
             <div className="flex items-center justify-between">
-              <h3 className="text-base font-bold">Reschedule Appointment</h3>
+              <h3 className="text-base font-extrabold text-slate-900 dark:text-slate-100">
+                Reschedule Appointment
+              </h3>
               <button
                 onClick={() => setRescheduleAppt(null)}
-                className="text-slate-400 hover:text-slate-600"
+                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 cursor-pointer"
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
 
-            <div className="space-y-1 rounded-xl border border-blue-200 bg-blue-50 p-3 text-xs text-blue-800 dark:border-blue-900 dark:bg-blue-950/50 dark:text-blue-200">
-              <p className="font-semibold">{rescheduleAppt.title}</p>
-              <p>Current: {new Date(rescheduleAppt.scheduledAt).toLocaleString()}</p>
+            <div className="space-y-1 rounded-2xl border border-blue-200/80 bg-blue-50/80 p-3.5 text-xs text-blue-800 dark:border-blue-900/60 dark:bg-blue-950/50 dark:text-blue-200">
+              <p className="font-bold">{rescheduleAppt.title}</p>
+              <p className="text-blue-600 dark:text-blue-300">
+                Current: {new Date(rescheduleAppt.scheduledAt).toLocaleString()}
+              </p>
             </div>
 
             <form onSubmit={handleExecuteReschedule} className="space-y-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                  Select New Date & Time
+                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider dark:text-slate-300">
+                  Select New Date &amp; Time
                 </label>
                 <Input
                   type="datetime-local"
@@ -779,19 +818,19 @@ export default function ClientPortalDashboardPage() {
                   min={new Date().toISOString().slice(0, 16)}
                   value={rescheduleDate}
                   onChange={(e) => setRescheduleDate(e.target.value)}
-                  className="h-11 rounded-xl bg-slate-50 dark:bg-slate-950"
+                  className="h-11 rounded-xl bg-slate-50 dark:bg-slate-950 font-medium"
                 />
                 <p className="text-[11px] text-slate-500">
                   Minimum notice required: {organization.minNoticeHours || 2} hours prior.
                 </p>
               </div>
 
-              <div className="flex items-center gap-2 pt-2">
+              <div className="flex items-center gap-2.5 pt-2">
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => setRescheduleAppt(null)}
-                  className="flex-1 rounded-xl"
+                  className="flex-1 h-11 sm:h-10 rounded-xl font-bold cursor-pointer"
                 >
                   Keep Existing
                 </Button>
@@ -799,7 +838,7 @@ export default function ClientPortalDashboardPage() {
                   type="submit"
                   disabled={rescheduleMutation.isPending || !rescheduleDate}
                   style={{ backgroundColor: brandColor }}
-                  className="flex-1 rounded-xl font-semibold text-white"
+                  className="flex-1 h-11 sm:h-10 rounded-xl font-bold text-white shadow-md shadow-blue-500/20 cursor-pointer"
                 >
                   {rescheduleMutation.isPending ? "Updating..." : "Confirm Time"}
                 </Button>
@@ -811,16 +850,16 @@ export default function ClientPortalDashboardPage() {
 
       {/* CANCELLATION MODAL */}
       {cancelAppt && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-          <div className="animate-in fade-in zoom-in-95 w-full max-w-md space-y-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl duration-200 dark:border-slate-800 dark:bg-slate-900">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="animate-in fade-in zoom-in-95 w-full max-w-md space-y-5 rounded-3xl border border-slate-200 bg-white p-6 sm:p-7 shadow-2xl duration-200 dark:border-slate-800 dark:bg-slate-900">
             <div className="flex items-center justify-between">
-              <h3 className="flex items-center gap-2 text-base font-bold text-rose-600 dark:text-rose-400">
+              <h3 className="flex items-center gap-2 text-base font-extrabold text-rose-600 dark:text-rose-400">
                 <AlertTriangle className="h-5 w-5" />
                 Cancel Appointment
               </h3>
               <button
                 onClick={() => setCancelAppt(null)}
-                className="text-slate-400 hover:text-slate-600"
+                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 cursor-pointer"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -828,13 +867,13 @@ export default function ClientPortalDashboardPage() {
 
             <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">
               Are you sure you want to cancel your appointment for{" "}
-              <strong>{cancelAppt.title}</strong> on{" "}
+              <strong className="text-slate-900 dark:text-slate-100">{cancelAppt.title}</strong> on{" "}
               {new Date(cancelAppt.scheduledAt).toLocaleDateString()}?
             </p>
 
             <form onSubmit={handleExecuteCancel} className="space-y-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider dark:text-slate-300">
                   Reason for Cancellation
                 </label>
                 <Input
@@ -842,23 +881,23 @@ export default function ClientPortalDashboardPage() {
                   placeholder="e.g. Schedule conflict, feeling unwell..."
                   value={cancelReason}
                   onChange={(e) => setCancelReason(e.target.value)}
-                  className="h-10 rounded-xl bg-slate-50 dark:bg-slate-950"
+                  className="h-11 rounded-xl bg-slate-50 dark:bg-slate-950"
                 />
               </div>
 
-              <div className="flex items-center gap-2 pt-2">
+              <div className="flex items-center gap-2.5 pt-2">
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => setCancelAppt(null)}
-                  className="flex-1 rounded-xl"
+                  className="flex-1 h-11 sm:h-10 rounded-xl font-bold cursor-pointer"
                 >
                   Keep Appointment
                 </Button>
                 <Button
                   type="submit"
                   disabled={cancelMutation.isPending || cancelReason.trim().length < 3}
-                  className="flex-1 rounded-xl bg-rose-600 font-semibold text-white hover:bg-rose-700"
+                  className="flex-1 h-11 sm:h-10 rounded-xl bg-rose-600 font-bold text-white hover:bg-rose-700 shadow-md shadow-rose-500/20 cursor-pointer"
                 >
                   {cancelMutation.isPending ? "Cancelling..." : "Cancel Appointment"}
                 </Button>
@@ -870,16 +909,18 @@ export default function ClientPortalDashboardPage() {
 
       {/* PRINTABLE RECEIPT MODAL */}
       {activeReceiptInvoice && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-          <div className="animate-in fade-in max-h-[90vh] w-full max-w-lg space-y-6 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl duration-200 sm:p-8 dark:border-slate-800 dark:bg-slate-900">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="animate-in fade-in max-h-[90vh] w-full max-w-lg space-y-6 overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-2xl duration-200 dark:border-slate-800 dark:bg-slate-900">
             <div className="flex items-center justify-between border-b border-slate-100 pb-4 dark:border-slate-800">
               <div className="space-y-0.5">
-                <span className="text-base font-extrabold">{organization.name}</span>
-                <p className="text-[11px] text-slate-400">Official Billing Statement & Receipt</p>
+                <span className="text-base font-extrabold text-slate-900 dark:text-slate-100">
+                  {organization.name}
+                </span>
+                <p className="text-[11px] text-slate-400">Official Billing Statement &amp; Receipt</p>
               </div>
               <button
                 onClick={() => setActiveReceiptInvoice(null)}
-                className="text-slate-400 hover:text-slate-600"
+                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 cursor-pointer"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -953,11 +994,11 @@ export default function ClientPortalDashboardPage() {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 pt-2">
+            <div className="flex items-center gap-2.5 pt-2">
               <Button
                 onClick={() => window.print()}
                 variant="outline"
-                className="flex-1 gap-2 rounded-xl text-xs font-semibold"
+                className="flex-1 gap-2 rounded-xl h-11 sm:h-10 text-xs sm:text-sm font-bold cursor-pointer shadow-2xs"
               >
                 <Printer className="h-4 w-4" />
                 Print Statement
@@ -965,7 +1006,7 @@ export default function ClientPortalDashboardPage() {
               <Button
                 onClick={() => setActiveReceiptInvoice(null)}
                 style={{ backgroundColor: brandColor }}
-                className="flex-1 rounded-xl text-xs font-semibold text-white"
+                className="flex-1 rounded-xl h-11 sm:h-10 text-xs sm:text-sm font-bold text-white shadow-md shadow-blue-500/20 cursor-pointer"
               >
                 Close
               </Button>
