@@ -14,6 +14,8 @@ export const queryKeys = {
     members: (id: string) => [...queryKeys.organizations.all, "members", id] as const,
     settings: (orgId?: string) =>
       [...queryKeys.organizations.all, "settings", orgId ?? "default"] as const,
+    auditLogs: (orgId?: string) =>
+      [...queryKeys.organizations.all, "audit-logs", orgId ?? "default"] as const,
   },
   customers: {
     all: ["customers"] as const,

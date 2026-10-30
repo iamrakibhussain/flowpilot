@@ -44,6 +44,7 @@ export function InvoicePrintModal({
   const effectiveCurrency = orgSettings?.currency || "USD";
   const effectiveTaxId = orgSettings?.taxId;
   const effectiveLogoUrl = orgSettings?.logoUrl;
+  const effectiveBrandColor = orgSettings?.brandColor || "#2563eb";
   const effectiveBankName = orgSettings?.bankName || "Treasury Account";
   const effectiveBankAccount = orgSettings?.bankAccount || "Standard Remittance Wire";
   const effectiveBankRouting = orgSettings?.bankRouting;
@@ -105,7 +106,10 @@ export function InvoicePrintModal({
           className="relative mx-auto my-3 w-full max-w-3xl overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 font-sans text-slate-900 shadow-xl sm:p-12 print:m-0 print:w-full print:border-none print:p-0 print:shadow-none"
         >
           {/* Subtle Top Classic Accent Bar */}
-          <div className="absolute top-0 right-0 left-0 h-2 bg-gradient-to-r from-blue-700 via-indigo-600 to-slate-900 print:h-1.5" />
+          <div
+            className="absolute top-0 right-0 left-0 h-2 transition-colors duration-300 print:h-1.5"
+            style={{ backgroundColor: effectiveBrandColor }}
+          />
 
           {/* Watermark Stamps */}
           {isPaid && (
@@ -140,7 +144,10 @@ export function InvoicePrintModal({
           <div className="flex flex-col justify-between gap-6 border-b border-slate-200 pb-8 sm:flex-row sm:items-start">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl bg-slate-900 text-white shadow-sm ring-1 ring-slate-800">
+                <div
+                  className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl text-white shadow-sm ring-1 ring-slate-800 transition-colors duration-300"
+                  style={{ backgroundColor: effectiveBrandColor }}
+                >
                   {effectiveLogoUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
@@ -149,7 +156,7 @@ export function InvoicePrintModal({
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <ShieldCheck className="h-6 w-6 text-blue-400" />
+                    <ShieldCheck className="h-6 w-6 text-white" />
                   )}
                 </div>
                 <div>

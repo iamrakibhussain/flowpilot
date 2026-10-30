@@ -341,9 +341,16 @@ export default function PublicBookingPortalPage() {
 
       {/* Top Brand Bar */}
       <header className="border-border/80 bg-background/80 sticky top-0 z-30 border-b backdrop-blur-md">
+        <div
+          className="h-1 w-full transition-colors duration-300"
+          style={{ backgroundColor: profile.brandColor || "#2563eb" }}
+        />
         <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3.5 sm:px-6">
           <div className="flex min-w-0 items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-sm font-black text-white shadow-sm ring-1 ring-slate-200/50 dark:ring-slate-700/50">
+            <div
+              className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl text-sm font-black text-white shadow-sm ring-1 ring-slate-200/50 transition-colors duration-300 dark:ring-slate-700/50"
+              style={{ backgroundColor: profile.brandColor || "#2563eb" }}
+            >
               {profile.logoUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -974,8 +981,10 @@ export default function PublicBookingPortalPage() {
                     <Button
                       type="submit"
                       disabled={bookMutation.isPending}
-                      className="w-full cursor-pointer rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 py-3 text-sm font-bold text-white shadow-md shadow-blue-500/20 hover:from-blue-700 hover:to-indigo-700"
+                      className="w-full cursor-pointer rounded-xl py-3 text-sm font-bold text-white shadow-md transition-opacity hover:opacity-90"
+                      style={{ backgroundColor: profile.brandColor || "#2563eb" }}
                     >
+                      <CalendarPlus className="mr-2 h-4 w-4" />
                       {bookMutation.isPending
                         ? "Confirming Booking..."
                         : "Confirm & Book Appointment"}
@@ -1083,7 +1092,10 @@ export default function PublicBookingPortalPage() {
             {/* Luxury Boarding-Pass Receipt Ticket */}
             <div className="border-border/80 bg-card relative overflow-hidden rounded-3xl border text-left shadow-xl transition-all">
               {/* Ticket Top: Brand & Ref */}
-              <div className="flex items-center justify-between bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 p-5 text-white">
+              <div
+                className="flex items-center justify-between p-5 text-white transition-colors duration-300"
+                style={{ backgroundColor: profile.brandColor || "#2563eb" }}
+              >
                 <div>
                   <span className="text-[10px] font-bold tracking-wider uppercase opacity-80">
                     Booking Reference Pass

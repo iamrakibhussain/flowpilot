@@ -28,6 +28,12 @@ import {
   CreditCard,
   KeyRound,
   ShieldAlert,
+  Upload,
+  Palette,
+  History,
+  Globe,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
@@ -57,6 +63,7 @@ import {
   useOrganizationSettings,
   useUpdateOrganizationSettings,
   useCheckSlug,
+  useWorkspaceAuditLogs,
 } from "@/features/organizations/use-organization-settings";
 import type { UpdateOrganizationSettingsPayload } from "@/features/organizations/types";
 import { ApiClientError } from "@/lib/api/errors";
@@ -123,7 +130,17 @@ const deleteAccountSchema = z.object({
 
 type DeleteAccountFormData = z.infer<typeof deleteAccountSchema>;
 
-type SettingsTab = "general" | "finance" | "booking" | "notifications" | "security";
+// Curated Luxury Enterprise Palettes
+const BRAND_PALETTES = [
+  { name: "Royal Cobalt", hex: "#2563eb", bg: "bg-blue-600" },
+  { name: "Emerald Mint", hex: "#059669", bg: "bg-emerald-600" },
+  { name: "Imperial Violet", hex: "#7c3aed", bg: "bg-purple-600" },
+  { name: "Sunset Amber", hex: "#d97706", bg: "bg-amber-600" },
+  { name: "Rose Crimson", hex: "#e11d48", bg: "bg-rose-600" },
+  { name: "Titanium Slate", hex: "#475569", bg: "bg-slate-600" },
+];
+
+type SettingsTab = "general" | "finance" | "booking" | "notifications" | "security" | "audit";
 
 export default function WorkspaceSettingsPage() {
   const router = useRouter();
@@ -135,8 +152,18 @@ export default function WorkspaceSettingsPage() {
 
   // Settings Queries & Mutations
   const { data: settings, isLoading: isSettingsLoading } = useOrganizationSettings();
+  const { data: auditLogs = [], isLoading: isAuditLoading } = useWorkspaceAuditLogs(30);
   const updateSettingsMutation = useUpdateOrganizationSettings();
   const checkSlugMutation = useCheckSlug();
+
+  // Advanced Logo & Brand Asset States
+  const [logoInputMode, setLogoInputMode] = React.useState<"upload" | "url">("upload");
+  const [logoContrastMode, setLogoContrastMode] = React.useState<"light" | "dark">("light");
+  const [isDraggingLogo, setIsDraggingLogo] = React.useState(false);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  // Financial safety confirmation for sensitive wire coordinates
+  const [bankVerificationConfirmed, setBankVerificationConfirmed] = React.useState(false);
 
   // Local Form Draft State for Dirty Checking
   const [formData, setFormData] = React.useState<UpdateOrganizationSettingsPayload>({});
@@ -159,6 +186,8 @@ export default function WorkspaceSettingsPage() {
         slug: settings.slug,
         logoUrl: settings.logoUrl,
         tagline: settings.tagline,
+        brandColor: settings.brandColor || "#2563eb",
+        customDomain: settings.customDomain || "",
         contactEmail: settings.contactEmail,
         contactPhone: settings.contactPhone,
         address: settings.address,
@@ -181,6 +210,7 @@ export default function WorkspaceSettingsPage() {
         autoConfirmBookings: settings.autoConfirmBookings ?? true,
       });
       setIsDirty(false);
+      setBankVerificationConfirmed(false);
     }
   }, [settings]);
 
@@ -192,6 +222,38 @@ export default function WorkspaceSettingsPage() {
     }));
     setIsDirty(true);
     setFeedbackMsg(null);
+  };
+
+  // Image upload processor
+  const processImageFile = (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      setFeedbackMsg({
+        type: "error",
+        text: "Please upload an image file (PNG, JPG, SVG, WebP).",
+      });
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      setFeedbackMsg({
+        type: "error",
+        text: "File size exceeds 2MB limit. Please choose a smaller asset.",
+      });
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === "string") {
+        handleFieldChange("logoUrl", reader.result);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleLogoDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDraggingLogo(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) processImageFile(file);
   };
 
   // Debounced slug check
@@ -231,6 +293,8 @@ export default function WorkspaceSettingsPage() {
         slug: settings.slug,
         logoUrl: settings.logoUrl,
         tagline: settings.tagline,
+        brandColor: settings.brandColor || "#2563eb",
+        customDomain: settings.customDomain || "",
         contactEmail: settings.contactEmail,
         contactPhone: settings.contactPhone,
         address: settings.address,
@@ -253,6 +317,7 @@ export default function WorkspaceSettingsPage() {
         autoConfirmBookings: settings.autoConfirmBookings ?? true,
       });
       setIsDirty(false);
+      setBankVerificationConfirmed(false);
       setFeedbackMsg(null);
     }
   };
@@ -262,9 +327,27 @@ export default function WorkspaceSettingsPage() {
     if (!isOwnerOrAdmin) return;
     setFeedbackMsg(null);
 
+    // Check if sensitive bank wire coordinates were modified
+    const isBankDetailsModified = Boolean(
+      (formData.bankAccount && formData.bankAccount !== settings?.bankAccount) ||
+      (formData.bankRouting && formData.bankRouting !== settings?.bankRouting) ||
+      (formData.bankSwift && formData.bankSwift !== settings?.bankSwift) ||
+      (formData.taxId && formData.taxId !== settings?.taxId)
+    );
+
+    if (isBankDetailsModified && !bankVerificationConfirmed) {
+      setFeedbackMsg({
+        type: "error",
+        text: "Security Requirement: Please review and check the banking wire verification confirmation in the Finance tab before saving.",
+      });
+      setActiveTab("finance");
+      return;
+    }
+
     try {
       await updateSettingsMutation.mutateAsync(formData);
       setIsDirty(false);
+      setBankVerificationConfirmed(false);
       setFeedbackMsg({
         type: "success",
         text: "Workspace settings updated successfully! Changes have propagated across invoices and booking portals.",
@@ -558,6 +641,7 @@ export default function WorkspaceSettingsPage() {
             { id: "booking", label: "Scheduling & Policies", icon: Calendar },
             { id: "notifications", label: "Alerts & Notifications", icon: Bell },
             { id: "security", label: "Security & Credentials", icon: Shield },
+            { id: "audit", label: "Audit & History", icon: History },
           ].map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -679,36 +763,224 @@ export default function WorkspaceSettingsPage() {
                   />
                 </div>
 
-                {/* Logo URL Input */}
-                <div className="space-y-1.5">
-                  <Label htmlFor="org-logo" className="text-foreground text-xs font-semibold">
-                    Brand Logo URL
-                  </Label>
-                  <div className="flex gap-2">
-                    <Input
-                      id="org-logo"
-                      disabled={!isOwnerOrAdmin || isSettingsLoading}
-                      value={formData.logoUrl || ""}
-                      onChange={(e) => handleFieldChange("logoUrl", e.target.value)}
-                      placeholder="https://example.com/logo.png"
-                      className="border-border/80 bg-background text-foreground text-xs"
-                    />
-                    {formData.logoUrl && (
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleFieldChange("logoUrl", null)}
-                        className="border-border/80 text-muted-foreground hover:text-foreground h-9 text-xs"
-                      >
-                        Clear
-                      </Button>
-                    )}
+                {/* Logo & Visual Asset Customizer */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="org-logo" className="text-foreground text-xs font-semibold">
+                      Brand Logo Asset
+                    </Label>
+                    <div className="flex items-center gap-2">
+                      <div className="border-border/80 bg-muted/30 flex items-center rounded-lg border p-0.5 text-[10px]">
+                        <button
+                          type="button"
+                          onClick={() => setLogoInputMode("upload")}
+                          className={`rounded-md px-2 py-0.5 font-medium transition ${
+                            logoInputMode === "upload"
+                              ? "bg-background text-foreground shadow-2xs"
+                              : "text-muted-foreground hover:text-foreground"
+                          }`}
+                        >
+                          Upload File
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setLogoInputMode("url")}
+                          className={`rounded-md px-2 py-0.5 font-medium transition ${
+                            logoInputMode === "url"
+                              ? "bg-background text-foreground shadow-2xs"
+                              : "text-muted-foreground hover:text-foreground"
+                          }`}
+                        >
+                          Asset URL
+                        </button>
+                      </div>
+
+                      {formData.logoUrl && (
+                        <button
+                          type="button"
+                          title="Toggle Contrast Preview"
+                          onClick={() =>
+                            setLogoContrastMode((prev) => (prev === "light" ? "dark" : "light"))
+                          }
+                          className="border-border/80 hover:bg-muted text-muted-foreground hover:text-foreground flex h-6 w-6 items-center justify-center rounded-md border text-[10px]"
+                        >
+                          {logoContrastMode === "light" ? (
+                            <Sun className="h-3 w-3" />
+                          ) : (
+                            <Moon className="h-3 w-3" />
+                          )}
+                        </button>
+                      )}
+                    </div>
                   </div>
-                  <p className="text-muted-foreground text-[11px]">
-                    PNG, SVG, or JPG asset URL. Automatically rendered on customer invoices, PDF
-                    print statements, and self-scheduling portal headers.
-                  </p>
+
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp,image/svg+xml"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) processImageFile(file);
+                    }}
+                    className="hidden"
+                  />
+
+                  {logoInputMode === "upload" ? (
+                    formData.logoUrl ? (
+                      <div
+                        className={`border-border/80 relative flex items-center justify-between rounded-xl border p-3 ${
+                          logoContrastMode === "dark"
+                            ? "bg-slate-950 text-white"
+                            : "bg-white text-slate-900"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={formData.logoUrl}
+                            alt="Logo preview"
+                            className="h-10 w-10 object-contain"
+                          />
+                          <div>
+                            <span className="text-[11px] font-semibold">Active Logo Asset</span>
+                            <p className="text-[10px] opacity-70">
+                              Previewing in {logoContrastMode} mode
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => fileInputRef.current?.click()}
+                            className="h-7 text-[11px]"
+                          >
+                            Replace
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleFieldChange("logoUrl", null)}
+                            className="h-7 text-[11px] text-rose-500 hover:text-rose-600"
+                          >
+                            Remove
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div
+                        onDragOver={(e) => {
+                          e.preventDefault();
+                          setIsDraggingLogo(true);
+                        }}
+                        onDragLeave={() => setIsDraggingLogo(false)}
+                        onDrop={handleLogoDrop}
+                        onClick={() => fileInputRef.current?.click()}
+                        className={`border-border/80 hover:border-primary/60 flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed p-5 text-center transition ${
+                          isDraggingLogo
+                            ? "border-primary bg-primary/5"
+                            : "bg-muted/10 hover:bg-muted/20"
+                        }`}
+                      >
+                        <div className="bg-muted flex h-10 w-10 items-center justify-center rounded-xl">
+                          <Upload className="text-muted-foreground h-5 w-5" />
+                        </div>
+                        <p className="text-foreground mt-2 text-xs font-semibold">
+                          Click to browse or drag and drop logo here
+                        </p>
+                        <p className="text-muted-foreground mt-0.5 text-[10px]">
+                          PNG, SVG, WEBP, or JPG up to 2MB (high-resolution transparent recommended)
+                        </p>
+                      </div>
+                    )
+                  ) : (
+                    <div className="flex gap-2">
+                      <Input
+                        id="org-logo"
+                        disabled={!isOwnerOrAdmin || isSettingsLoading}
+                        value={formData.logoUrl || ""}
+                        onChange={(e) => handleFieldChange("logoUrl", e.target.value)}
+                        placeholder="https://cdn.example.com/brand-logo.png"
+                        className="border-border/80 bg-background text-foreground text-xs"
+                      />
+                      {formData.logoUrl && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleFieldChange("logoUrl", null)}
+                          className="border-border/80 text-muted-foreground hover:text-foreground h-9 text-xs"
+                        >
+                          Clear
+                        </Button>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* Brand Color Theme Palette */}
+                <div className="border-border/60 space-y-3 border-t pt-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label className="text-foreground text-xs font-semibold">
+                        Brand Identity Accent Color
+                      </Label>
+                      <p className="text-muted-foreground text-[11px]">
+                        Dynamic primary color applied to client portals, self-scheduling buttons,
+                        and invoice headers.
+                      </p>
+                    </div>
+                    <Badge variant="outline" className="font-mono text-[10px]">
+                      {formData.brandColor || "#2563eb"}
+                    </Badge>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-2">
+                    {BRAND_PALETTES.map((palette) => {
+                      const isSelected =
+                        (formData.brandColor || "#2563eb").toLowerCase() ===
+                        palette.hex.toLowerCase();
+                      return (
+                        <button
+                          key={palette.hex}
+                          type="button"
+                          onClick={() => handleFieldChange("brandColor", palette.hex)}
+                          className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-medium transition ${
+                            isSelected
+                              ? "border-primary bg-primary/10 text-foreground ring-primary ring-1"
+                              : "border-border/80 bg-background text-muted-foreground hover:text-foreground"
+                          }`}
+                        >
+                          <span
+                            className="h-3.5 w-3.5 rounded-full shadow-2xs"
+                            style={{ backgroundColor: palette.hex }}
+                          />
+                          <span>{palette.name}</span>
+                          {isSelected && <Check className="text-primary h-3 w-3" />}
+                        </button>
+                      );
+                    })}
+
+                    {/* Custom Hex Picker Input */}
+                    <div className="border-border/80 bg-background flex items-center gap-1.5 rounded-lg border px-2 py-1">
+                      <input
+                        type="color"
+                        value={formData.brandColor || "#2563eb"}
+                        onChange={(e) => handleFieldChange("brandColor", e.target.value)}
+                        className="h-5 w-5 cursor-pointer rounded border-0 bg-transparent p-0"
+                      />
+                      <Input
+                        type="text"
+                        value={formData.brandColor || "#2563eb"}
+                        onChange={(e) => handleFieldChange("brandColor", e.target.value)}
+                        placeholder="#2563eb"
+                        maxLength={7}
+                        className="h-6 w-20 border-0 bg-transparent p-0 font-mono text-xs focus-visible:ring-0"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 <div className="border-border/60 grid grid-cols-1 gap-4 border-t pt-4 sm:grid-cols-2">
@@ -762,6 +1034,71 @@ export default function WorkspaceSettingsPage() {
                     className="border-border/80 bg-background text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20 w-full rounded-xl border px-3 py-2 text-xs focus:ring-2 focus:outline-none sm:text-sm"
                   />
                 </div>
+
+                {/* Custom White-Label Domain (CNAME) Configuration */}
+                <div className="border-border/60 space-y-3 border-t pt-4">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-1.5">
+                      <Globe className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                      <Label
+                        htmlFor="org-custom-domain"
+                        className="text-foreground text-xs font-semibold"
+                      >
+                        Custom White-Label Domain (CNAME)
+                      </Label>
+                    </div>
+                    <p className="text-muted-foreground text-[11px]">
+                      Serve your self-scheduling portal on your own branded subdomain (e.g.,
+                      booking.yourbrand.com).
+                    </p>
+                  </div>
+
+                  <Input
+                    id="org-custom-domain"
+                    disabled={!isOwnerOrAdmin || isSettingsLoading}
+                    value={formData.customDomain || ""}
+                    onChange={(e) => handleFieldChange("customDomain", e.target.value)}
+                    placeholder="e.g. book.yourbrand.com"
+                    className="border-border/80 bg-background font-mono text-xs"
+                  />
+
+                  {formData.customDomain && (
+                    <div className="border-border/80 bg-muted/30 space-y-2 rounded-xl border p-3 text-[11px]">
+                      <div className="flex items-center justify-between font-semibold">
+                        <span className="text-foreground">Required DNS CNAME Record</span>
+                        <span className="font-mono text-[10px] text-emerald-600 dark:text-emerald-400">
+                          SSL Auto-Provisioned
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-3 gap-2 font-mono text-[10px]">
+                        <div className="border-border/60 bg-background rounded-lg border p-2">
+                          <span className="text-muted-foreground block text-[9px] uppercase">
+                            Type
+                          </span>
+                          <span className="text-foreground font-bold">CNAME</span>
+                        </div>
+                        <div className="border-border/60 bg-background rounded-lg border p-2">
+                          <span className="text-muted-foreground block text-[9px] uppercase">
+                            Host / Name
+                          </span>
+                          <span className="text-foreground block truncate font-bold">
+                            {formData.customDomain.includes(".")
+                              ? formData.customDomain.split(".")[0]
+                              : "book"}
+                          </span>
+                        </div>
+                        <div className="border-border/60 bg-background rounded-lg border p-2">
+                          <span className="text-muted-foreground block text-[9px] uppercase">
+                            Target / Value
+                          </span>
+                          <span className="text-primary block truncate font-bold">
+                            cname.flowpilot.app
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -769,6 +1106,11 @@ export default function WorkspaceSettingsPage() {
           {/* Right Column: Live Brand & Portal Preview Card */}
           <div className="space-y-6">
             <Card className="border-border/80 from-card to-card/90 sticky top-6 overflow-hidden bg-gradient-to-b shadow-xs">
+              {/* Dynamic Brand Color Accent Strip */}
+              <div
+                className="h-1.5 w-full transition-colors duration-300"
+                style={{ backgroundColor: formData.brandColor || "#2563eb" }}
+              />
               <div className="border-border/60 bg-muted/30 border-b px-4 py-3">
                 <div className="flex items-center gap-2">
                   <Sparkles className="h-4 w-4 text-blue-600 dark:text-blue-400" />
@@ -795,7 +1137,10 @@ export default function WorkspaceSettingsPage() {
                         }}
                       />
                     ) : (
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-lg font-black text-white shadow-sm">
+                      <div
+                        className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-lg font-black text-white shadow-sm transition-colors duration-300"
+                        style={{ backgroundColor: formData.brandColor || "#2563eb" }}
+                      >
                         {(formData.name || organizationName || "F").slice(0, 2).toUpperCase()}
                       </div>
                     )}
@@ -816,6 +1161,14 @@ export default function WorkspaceSettingsPage() {
                     <span className="text-primary truncate font-mono font-semibold">
                       flowpilot.app/book/{formData.slug || settings?.slug || "my-business"}
                     </span>
+                    {formData.customDomain && (
+                      <div className="mt-1 flex items-center gap-1 text-[10px]">
+                        <span className="text-muted-foreground">White-Label:</span>
+                        <span className="truncate font-mono font-medium text-emerald-600 dark:text-emerald-400">
+                          https://{formData.customDomain}
+                        </span>
+                      </div>
+                    )}
                   </div>
 
                   <div className="border-border/60 grid grid-cols-2 gap-2 border-t pt-2.5 text-[10px]">
@@ -1048,6 +1401,36 @@ export default function WorkspaceSettingsPage() {
                   placeholder="e.g. Payment is due within 15 days of invoice date. Late payments are subject to a 1.5% monthly finance charge."
                   className="border-border/80 bg-background text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20 w-full rounded-xl border px-3 py-2 text-xs focus:ring-2 focus:outline-none sm:text-sm"
                 />
+              </div>
+
+              {/* Financial Wire Transfer Security Guard */}
+              <div className="space-y-2 rounded-xl border border-amber-500/30 bg-amber-500/10 p-3.5">
+                <div className="flex items-start gap-2.5">
+                  <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
+                  <div className="space-y-1">
+                    <p className="text-foreground text-xs font-bold">
+                      Critical Financial Coordinates Protection
+                    </p>
+                    <p className="text-muted-foreground text-[11px] leading-relaxed">
+                      Bank account, routing numbers, and tax identification are legally rendered on
+                      outbound client invoices. Modifying these details redirects client remittance
+                      funds.
+                    </p>
+                  </div>
+                </div>
+
+                <label className="flex cursor-pointer items-center gap-2 pt-1 select-none">
+                  <input
+                    type="checkbox"
+                    checked={bankVerificationConfirmed}
+                    onChange={(e) => setBankVerificationConfirmed(e.target.checked)}
+                    className="h-4 w-4 rounded border-amber-400 text-amber-600 focus:ring-amber-500/30"
+                  />
+                  <span className="text-foreground text-xs font-semibold">
+                    I verify and confirm that these banking coordinates and remittance details are
+                    accurate.
+                  </span>
+                </label>
               </div>
             </CardContent>
           </Card>
@@ -1657,6 +2040,136 @@ export default function WorkspaceSettingsPage() {
                   </form>
                 </DialogContent>
               </Dialog>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* TAB 6: AUDIT & HISTORY FEED */}
+      {activeTab === "audit" && (
+        <div className="space-y-6">
+          <Card className="border-border/80 from-card to-card/95 bg-gradient-to-b shadow-xs">
+            <CardHeader className="flex flex-row items-start justify-between pb-4">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                    <History className="h-4 w-4" />
+                  </div>
+                  <CardTitle className="text-foreground text-base font-bold">
+                    Workspace Operational Audit Trail
+                  </CardTitle>
+                </div>
+                <CardDescription className="text-muted-foreground text-xs">
+                  Immutable chronological log recording configuration adjustments, brand identity
+                  changes, and sensitive financial coordinates updates.
+                </CardDescription>
+              </div>
+              <Badge
+                variant="outline"
+                className="border-border/80 bg-background font-mono text-[11px]"
+              >
+                {auditLogs.length} events logged
+              </Badge>
+            </CardHeader>
+            <CardContent>
+              {isAuditLoading ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <Clock className="text-muted-foreground h-8 w-8 animate-spin opacity-50" />
+                  <p className="text-muted-foreground mt-3 text-xs font-medium">
+                    Loading audit trail events...
+                  </p>
+                </div>
+              ) : auditLogs.length === 0 ? (
+                <div className="border-border/60 flex flex-col items-center justify-center rounded-xl border border-dashed py-12 text-center">
+                  <div className="bg-muted flex h-12 w-12 items-center justify-center rounded-2xl">
+                    <History className="text-muted-foreground h-6 w-6" />
+                  </div>
+                  <h4 className="text-foreground mt-3 text-sm font-semibold">
+                    No Audit Events Recorded Yet
+                  </h4>
+                  <p className="text-muted-foreground mt-1 max-w-sm text-xs">
+                    Whenever you update workspace settings, branding colors, or bank coordinates, a
+                    tamper-evident record will appear here.
+                  </p>
+                </div>
+              ) : (
+                <div className="divide-border/60 divide-y">
+                  {auditLogs.map((log) => {
+                    const dateFormatted = new Date(log.createdAt).toLocaleString(undefined, {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      second: "2-digit",
+                    });
+
+                    // Dynamic category color & badge styling
+                    const getCategoryBadge = (category: string) => {
+                      switch (category.toUpperCase()) {
+                        case "FINANCE":
+                        case "BANKING":
+                          return "border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400";
+                        case "SECURITY":
+                          return "border-rose-500/30 bg-rose-500/10 text-rose-600 dark:text-rose-400";
+                        case "BRANDING":
+                        case "GENERAL":
+                          return "border-blue-500/30 bg-blue-500/10 text-blue-600 dark:text-blue-400";
+                        case "BOOKING":
+                          return "border-purple-500/30 bg-purple-500/10 text-purple-600 dark:text-purple-400";
+                        default:
+                          return "border-slate-500/30 bg-slate-500/10 text-slate-600 dark:text-slate-400";
+                      }
+                    };
+
+                    return (
+                      <div
+                        key={log.id}
+                        className="hover:bg-muted/40 flex flex-col gap-2 py-3.5 transition-colors sm:flex-row sm:items-center sm:justify-between"
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="border-border/80 bg-background mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border text-xs font-bold">
+                            <span className="text-muted-foreground font-mono text-[11px]">
+                              {log.userName.slice(0, 2).toUpperCase()}
+                            </span>
+                          </div>
+                          <div className="space-y-1">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="text-foreground text-xs font-bold">
+                                {log.userName}
+                              </span>
+                              <Badge
+                                variant="outline"
+                                className={`text-[10px] font-semibold tracking-wider uppercase ${getCategoryBadge(
+                                  log.category
+                                )}`}
+                              >
+                                {log.category}
+                              </Badge>
+                              <span className="text-muted-foreground font-mono text-[11px]">
+                                {log.action}
+                              </span>
+                            </div>
+                            <p className="text-muted-foreground text-xs">{log.details}</p>
+                          </div>
+                        </div>
+
+                        <div className="flex shrink-0 flex-row items-center gap-3 pl-11 text-[11px] sm:flex-col sm:items-end sm:gap-1 sm:pl-0">
+                          <span className="text-foreground/80 flex items-center gap-1 font-mono text-[11px]">
+                            <Clock className="text-muted-foreground h-3 w-3" />
+                            {dateFormatted}
+                          </span>
+                          {log.ipAddress && (
+                            <span className="text-muted-foreground font-mono text-[10px]">
+                              IP: {log.ipAddress}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

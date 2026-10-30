@@ -7,8 +7,13 @@ import {
   getOrganizationSettings,
   updateOrganizationSettings,
   checkSlugAvailability,
+  getWorkspaceAuditLogs,
 } from "./settings-api";
-import type { OrganizationSettings, UpdateOrganizationSettingsPayload } from "./types";
+import type {
+  OrganizationSettings,
+  UpdateOrganizationSettingsPayload,
+  WorkspaceAuditLog,
+} from "./types";
 
 /**
  * Hook to retrieve full organization configuration and branding settings
@@ -48,6 +53,9 @@ export function useUpdateOrganizationSettings() {
       queryClient.invalidateQueries({ queryKey: queryKeys.services.all });
       queryClient.invalidateQueries({ queryKey: queryKeys.analytics.all });
       queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.all });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.organizations.auditLogs(organizationId),
+      });
     },
   });
 }
@@ -60,5 +68,20 @@ export function useCheckSlug() {
 
   return useMutation<{ available: boolean; slug: string }, Error, string>({
     mutationFn: (slug) => checkSlugAvailability(slug, organizationId),
+  });
+}
+
+/**
+ * Hook for fetching recent workspace audit trail logs
+ */
+export function useWorkspaceAuditLogs(limit = 20) {
+  const { organizationId } = useWorkspaceSession();
+
+  return useQuery<WorkspaceAuditLog[]>({
+    queryKey: [...queryKeys.organizations.auditLogs(organizationId), limit],
+    queryFn: () => getWorkspaceAuditLogs(limit, organizationId),
+    enabled: Boolean(organizationId),
+    staleTime: 1000 * 30, // 30 seconds
+    refetchOnWindowFocus: false,
   });
 }

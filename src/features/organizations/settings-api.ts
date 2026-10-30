@@ -1,5 +1,9 @@
 import { apiClient } from "@/lib/api/client";
-import type { OrganizationSettings, UpdateOrganizationSettingsPayload } from "./types";
+import type {
+  OrganizationSettings,
+  UpdateOrganizationSettingsPayload,
+  WorkspaceAuditLog,
+} from "./types";
 
 /**
  * Fetch organization configuration & brand settings
@@ -38,5 +42,19 @@ export async function checkSlugAvailability(
     { slug },
     { organizationId }
   );
+  return response.data;
+}
+
+/**
+ * Fetch workspace audit logs (settings changes)
+ */
+export async function getWorkspaceAuditLogs(
+  limit = 20,
+  organizationId?: string
+): Promise<WorkspaceAuditLog[]> {
+  const response = await apiClient.get<WorkspaceAuditLog[]>("/organizations/audit-logs", {
+    organizationId,
+    params: { limit },
+  });
   return response.data;
 }

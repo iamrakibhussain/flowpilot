@@ -33,6 +33,8 @@ export interface OrganizationSettings {
   status: string;
   logoUrl: string | null;
   tagline: string | null;
+  brandColor: string | null;
+  customDomain: string | null;
   contactEmail: string | null;
   contactPhone: string | null;
   address: string | null;
@@ -62,6 +64,8 @@ export type UpdateOrganizationSettingsPayload = Partial<{
   slug: string;
   logoUrl: string | null;
   tagline: string | null;
+  brandColor: string | null;
+  customDomain: string | null;
   contactEmail: string | null;
   contactPhone: string | null;
   address: string | null;
@@ -83,3 +87,15 @@ export type UpdateOrganizationSettingsPayload = Partial<{
   cancellationHours: number;
   autoConfirmBookings: boolean;
 }>;
+
+export interface WorkspaceAuditLog {
+  id: string;
+  organizationId: string;
+  userId: string;
+  userName: string;
+  action: string;
+  category: string;
+  details: string;
+  ipAddress: string | null;
+  createdAt: string;
+}
