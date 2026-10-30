@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
-import { ShieldCheck, AlertCircle, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { AlertCircle, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useVerifyPortalToken } from "@/features/portal/use-portal";
@@ -15,15 +15,18 @@ export default function ClientPortalVerifyPage() {
   const slug = typeof params?.slug === "string" ? params.slug : "";
   const token = searchParams.get("token") || "";
 
-  const [status, setStatus] = React.useState<"verifying" | "success" | "error">("verifying");
-  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+  // Derive initial status synchronously from token presence to avoid cascading renders in useEffect
+  const [status, setStatus] = React.useState<"verifying" | "success" | "error">(() =>
+    !token ? "error" : "verifying"
+  );
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(() =>
+    !token ? "No security token provided in verification link." : null
+  );
 
   const verifyMutation = useVerifyPortalToken();
 
   React.useEffect(() => {
     if (!token) {
-      setStatus("error");
-      setErrorMessage("No security token provided in verification link.");
       return;
     }
 
@@ -42,11 +45,13 @@ export default function ClientPortalVerifyPage() {
             router.push(`/portal/${slug}/dashboard`);
           }, 800);
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         if (isMounted) {
           setStatus("error");
           setErrorMessage(
-            err?.message || "Invalid or expired sign-in link. Please request a fresh link."
+            err instanceof Error
+              ? err.message
+              : "Invalid or expired sign-in link. Please request a fresh link."
           );
         }
       }
@@ -57,7 +62,7 @@ export default function ClientPortalVerifyPage() {
     return () => {
       isMounted = false;
     };
-  }, [token, slug]);
+  }, [token, slug, router, verifyMutation]);
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-slate-50 via-slate-100/70 to-slate-200/50 px-4 py-12 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">

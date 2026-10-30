@@ -6,26 +6,17 @@ import {
   Calendar,
   Clock,
   CreditCard,
-  FileText,
   User,
-  ShieldCheck,
   LogOut,
-  Sparkles,
-  ChevronRight,
-  ExternalLink,
   Printer,
-  CalendarCheck,
   AlertTriangle,
   MapPin,
   Video,
   Phone,
-  RefreshCw,
   X,
   CheckCircle2,
-  DollarSign,
   Receipt,
   PlusCircle,
-  HelpCircle,
   AlertCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -52,6 +43,119 @@ function getRelativeCountdown(dateStr: string): string {
   return diffDays < -1 ? `${Math.abs(diffDays)}d ago` : "Today";
 }
 
+interface ProfileSectionProps {
+  customer: {
+    id: string;
+    name: string;
+    email: string;
+    phone: string | null;
+    company: string | null;
+  };
+  brandColor: string;
+  onSuccess: (text: string) => void;
+  onError: (text: string) => void;
+}
+
+function CustomerProfileSection({
+  customer,
+  brandColor,
+  onSuccess,
+  onError,
+}: ProfileSectionProps) {
+  const [name, setName] = React.useState(customer.name || "");
+  const [phone, setPhone] = React.useState(customer.phone || "");
+  const [company, setCompany] = React.useState(customer.company || "");
+  const updateProfileMutation = useUpdatePortalProfile();
+
+  const handleExecuteProfileUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await updateProfileMutation.mutateAsync({
+        name: name.trim() || undefined,
+        phone: phone.trim() || null,
+        company: company.trim() || null,
+      });
+      onSuccess("Contact coordinates updated successfully.");
+    } catch (err: unknown) {
+      onError(err instanceof Error ? err.message : "Failed to update profile.");
+    }
+  };
+
+  return (
+    <div className="max-w-2xl space-y-6">
+      <div className="space-y-1">
+        <h2 className="text-base font-bold sm:text-lg">Contact Coordinates &amp; Preferences</h2>
+        <p className="text-xs text-slate-500">
+          Update your contact details so specialists can reach you regarding scheduled sessions.
+        </p>
+      </div>
+
+      <Card className="rounded-3xl border border-slate-200/90 bg-white p-6 shadow-sm dark:border-slate-800/90 dark:bg-slate-900">
+        <form onSubmit={handleExecuteProfileUpdate} className="space-y-4">
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+              Full Name
+            </label>
+            <Input
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="h-10 rounded-xl border-slate-200 bg-slate-50 font-medium dark:border-slate-800 dark:bg-slate-950"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+              Email Address (Read-only)
+            </label>
+            <Input
+              disabled
+              value={customer.email}
+              className="h-10 cursor-not-allowed rounded-xl border-slate-200 bg-slate-100 text-slate-500 dark:border-slate-700 dark:bg-slate-800"
+            />
+            <p className="text-[11px] text-slate-400">
+              Email is linked to your verified portal account identity.
+            </p>
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+              Phone Number
+            </label>
+            <Input
+              placeholder="+1 (555) 000-0000"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="h-10 rounded-xl border-slate-200 bg-slate-50 font-medium dark:border-slate-800 dark:bg-slate-950"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+              Company / Organization
+            </label>
+            <Input
+              placeholder="Acme Inc."
+              value={company}
+              onChange={(e) => setCompany(e.target.value)}
+              className="h-10 rounded-xl border-slate-200 bg-slate-50 font-medium dark:border-slate-800 dark:bg-slate-950"
+            />
+          </div>
+
+          <Button
+            type="submit"
+            disabled={updateProfileMutation.isPending}
+            style={{ backgroundColor: brandColor }}
+            className="h-10 rounded-xl px-6 text-xs font-bold text-white shadow-md shadow-blue-500/20 cursor-pointer hover:opacity-90 transition"
+          >
+            {updateProfileMutation.isPending ? "Saving..." : "Save Changes"}
+          </Button>
+        </form>
+      </Card>
+    </div>
+  );
+}
+
 export default function ClientPortalDashboardPage() {
   const params = useParams();
   const router = useRouter();
@@ -74,28 +178,11 @@ export default function ClientPortalDashboardPage() {
     text: string;
   } | null>(null);
 
-  // Profile Form state
-  const [profileName, setProfileName] = React.useState("");
-  const [profilePhone, setProfilePhone] = React.useState("");
-  const [profileCompany, setProfileCompany] = React.useState("");
-  const [hasInitializedProfile, setHasInitializedProfile] = React.useState(false);
-
   // Queries & Mutations
-  const { data, isLoading, isError, refetch } = usePortalDashboard();
+  const { data, isLoading, isError } = usePortalDashboard();
   const rescheduleMutation = useReschedulePortalAppointment();
   const cancelMutation = useCancelPortalAppointment();
-  const updateProfileMutation = useUpdatePortalProfile();
   const logoutMutation = useLogoutPortal();
-
-  // Populate profile form once data loads
-  React.useEffect(() => {
-    if (data?.customer && !hasInitializedProfile) {
-      setProfileName(data.customer.name || "");
-      setProfilePhone(data.customer.phone || "");
-      setProfileCompany(data.customer.company || "");
-      setHasInitializedProfile(true);
-    }
-  }, [data, hasInitializedProfile]);
 
   // Handle logout
   const handleLogout = async () => {
@@ -117,10 +204,10 @@ export default function ClientPortalDashboardPage() {
       setRescheduleAppt(null);
       setRescheduleDate("");
       setActionMessage({ type: "success", text: "Appointment rescheduled successfully!" });
-    } catch (err: any) {
+    } catch (err: unknown) {
       setActionMessage({
         type: "error",
-        text: err?.message || "Failed to reschedule appointment.",
+        text: err instanceof Error ? err.message : "Failed to reschedule appointment.",
       });
     }
   };
@@ -139,24 +226,11 @@ export default function ClientPortalDashboardPage() {
       setCancelAppt(null);
       setCancelReason("");
       setActionMessage({ type: "success", text: "Appointment cancelled." });
-    } catch (err: any) {
-      setActionMessage({ type: "error", text: err?.message || "Failed to cancel appointment." });
-    }
-  };
-
-  // Handle profile submit
-  const handleExecuteProfileUpdate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setActionMessage(null);
-    try {
-      await updateProfileMutation.mutateAsync({
-        name: profileName.trim() || undefined,
-        phone: profilePhone.trim() || null,
-        company: profileCompany.trim() || null,
+    } catch (err: unknown) {
+      setActionMessage({
+        type: "error",
+        text: err instanceof Error ? err.message : "Failed to cancel appointment.",
       });
-      setActionMessage({ type: "success", text: "Contact coordinates updated successfully." });
-    } catch (err: any) {
-      setActionMessage({ type: "error", text: err?.message || "Failed to update profile." });
     }
   };
 
@@ -214,6 +288,7 @@ export default function ClientPortalDashboardPage() {
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-3">
             {organization.logoUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={organization.logoUrl}
                 alt={organization.name}
@@ -389,7 +464,7 @@ export default function ClientPortalDashboardPage() {
                     No upcoming appointments
                   </p>
                   <p className="mx-auto max-w-sm text-xs text-slate-500">
-                    You don't have any sessions booked right now. Ready to book your next session?
+                    You don&apos;t have any sessions booked right now. Ready to book your next session?
                   </p>
                   <Button
                     onClick={() => router.push(`/book/${slug}`)}
@@ -618,7 +693,7 @@ export default function ClientPortalDashboardPage() {
                       No invoices on file
                     </p>
                     <p className="text-xs text-slate-500">
-                      You don't have any billing statements yet.
+                      You don&apos;t have any billing statements yet.
                     </p>
                   </CardContent>
                 </Card>
@@ -709,78 +784,12 @@ export default function ClientPortalDashboardPage() {
 
         {/* TAB 3: PROFILE */}
         {activeTab === "profile" && (
-          <div className="max-w-2xl space-y-6">
-            <div className="space-y-1">
-              <h2 className="text-base font-bold sm:text-lg">Contact Coordinates & Preferences</h2>
-              <p className="text-xs text-slate-500">
-                Update your contact details so specialists can reach you regarding scheduled
-                sessions.
-              </p>
-            </div>
-
-            <Card className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <form onSubmit={handleExecuteProfileUpdate} className="space-y-4">
-                <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                    Full Name
-                  </label>
-                  <Input
-                    required
-                    value={profileName}
-                    onChange={(e) => setProfileName(e.target.value)}
-                    className="h-10 rounded-xl border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950"
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                    Email Address (Read-only)
-                  </label>
-                  <Input
-                    disabled
-                    value={customer.email}
-                    className="h-10 cursor-not-allowed rounded-xl border-slate-200 bg-slate-100 text-slate-500 dark:border-slate-700 dark:bg-slate-800"
-                  />
-                  <p className="text-[11px] text-slate-400">
-                    Email is linked to your verified portal account identity.
-                  </p>
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                    Phone Number
-                  </label>
-                  <Input
-                    placeholder="+1 (555) 000-0000"
-                    value={profilePhone}
-                    onChange={(e) => setProfilePhone(e.target.value)}
-                    className="h-10 rounded-xl border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950"
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                    Company / Organization
-                  </label>
-                  <Input
-                    placeholder="Acme Inc."
-                    value={profileCompany}
-                    onChange={(e) => setProfileCompany(e.target.value)}
-                    className="h-10 rounded-xl border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950"
-                  />
-                </div>
-
-                <Button
-                  type="submit"
-                  disabled={updateProfileMutation.isPending}
-                  style={{ backgroundColor: brandColor }}
-                  className="h-10 rounded-xl px-6 text-xs font-semibold text-white shadow-sm"
-                >
-                  {updateProfileMutation.isPending ? "Saving..." : "Save Changes"}
-                </Button>
-              </form>
-            </Card>
-          </div>
+          <CustomerProfileSection
+            customer={customer}
+            brandColor={brandColor}
+            onSuccess={(msg) => setActionMessage({ type: "success", text: msg })}
+            onError={(msg) => setActionMessage({ type: "error", text: msg })}
+          />
         )}
       </main>
 

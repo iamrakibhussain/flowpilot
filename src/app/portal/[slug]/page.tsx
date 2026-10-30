@@ -9,11 +9,8 @@ import {
   KeyRound,
   ArrowRight,
   CheckCircle2,
-  Sparkles,
   Lock,
-  Building2,
   Clock,
-  ExternalLink,
   ChevronLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -54,10 +51,13 @@ export default function ClientPortalLoginPage() {
           res.message ||
           "A secure sign-in link and 6-digit passcode have been dispatched to your email.",
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
       setFeedback({
         type: "error",
-        text: err?.message || "Failed to send access link. Please verify your email and try again.",
+        text:
+          err instanceof Error
+            ? err.message
+            : "Failed to send access link. Please verify your email and try again.",
       });
     }
   };
@@ -76,10 +76,13 @@ export default function ClientPortalLoginPage() {
         code: code.trim(),
       });
       router.push(`/portal/${slug}/dashboard`);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setFeedback({
         type: "error",
-        text: err?.message || "Invalid or expired passcode. Please request a new link.",
+        text:
+          err instanceof Error
+            ? err.message
+            : "Invalid or expired passcode. Please request a new link.",
       });
     }
   };
