@@ -139,6 +139,9 @@ export default function ClientPortalLoginPage() {
                       className="h-11 rounded-xl border-slate-200 bg-slate-50/50 pl-10 dark:border-slate-800 dark:bg-slate-950/50"
                     />
                   </div>
+                  <p className="text-[11px] text-slate-500">
+                    Please enter the email address used during your appointment booking or invoice receipt.
+                  </p>
                 </div>
 
                 <Button
@@ -159,7 +162,7 @@ export default function ClientPortalLoginPage() {
                   )}
                 </Button>
 
-                <div className="pt-2 text-center">
+                <div className="space-y-2 pt-2 text-center">
                   <button
                     type="button"
                     onClick={() => setStep("code")}
@@ -167,6 +170,17 @@ export default function ClientPortalLoginPage() {
                   >
                     Already have a 6-digit passcode? Enter code
                   </button>
+
+                  <p className="border-t border-slate-100 pt-3 text-[11px] text-slate-500 dark:border-slate-800">
+                    New client or haven&apos;t booked a session yet?{" "}
+                    <button
+                      type="button"
+                      onClick={() => router.push(`/book/${slug}`)}
+                      className="inline-flex items-center gap-0.5 font-semibold text-blue-600 hover:underline dark:text-blue-400"
+                    >
+                      Book an Appointment First &rarr;
+                    </button>
+                  </p>
                 </div>
               </form>
             ) : (
