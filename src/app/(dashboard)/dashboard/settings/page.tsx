@@ -345,7 +345,33 @@ export default function WorkspaceSettingsPage() {
     }
 
     try {
-      await updateSettingsMutation.mutateAsync(formData);
+      const sanitizedCustomDomain = formData.customDomain
+        ? formData.customDomain
+            .trim()
+            .replace(/^https?:\/\//i, "")
+            .replace(/\/+$/, "")
+            .toLowerCase()
+        : null;
+
+      const sanitizedPayload: UpdateOrganizationSettingsPayload = {
+        ...formData,
+        customDomain: sanitizedCustomDomain || null,
+        brandColor: formData.brandColor?.trim() ? formData.brandColor.trim() : "#2563eb",
+        tagline: formData.tagline?.trim() ? formData.tagline.trim() : null,
+        contactEmail: formData.contactEmail?.trim()
+          ? formData.contactEmail.trim().toLowerCase()
+          : null,
+        contactPhone: formData.contactPhone?.trim() ? formData.contactPhone.trim() : null,
+        address: formData.address?.trim() ? formData.address.trim() : null,
+        taxId: formData.taxId?.trim() ? formData.taxId.trim() : null,
+        invoiceFooter: formData.invoiceFooter?.trim() ? formData.invoiceFooter.trim() : null,
+        bankName: formData.bankName?.trim() ? formData.bankName.trim() : null,
+        bankAccount: formData.bankAccount?.trim() ? formData.bankAccount.trim() : null,
+        bankRouting: formData.bankRouting?.trim() ? formData.bankRouting.trim() : null,
+        bankSwift: formData.bankSwift?.trim() ? formData.bankSwift.trim() : null,
+      };
+
+      await updateSettingsMutation.mutateAsync(sanitizedPayload);
       setIsDirty(false);
       setBankVerificationConfirmed(false);
       setFeedbackMsg({
