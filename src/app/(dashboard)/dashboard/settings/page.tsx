@@ -611,7 +611,9 @@ export default function WorkspaceSettingsPage() {
           <span className="text-border hidden sm:inline">•</span>
           <div className="flex items-center gap-1.5 font-mono text-[11px]">
             <span className="text-muted-foreground">Tenant:</span>
-            <span className="text-foreground font-bold">{organizationName}</span>
+            <span className="text-foreground max-w-[140px] truncate font-bold sm:max-w-xs">
+              {organizationName}
+            </span>
           </div>
           <span className="text-border hidden md:inline">•</span>
           <div className="flex items-center gap-1.5">
@@ -847,7 +849,7 @@ export default function WorkspaceSettingsPage() {
 
                 {/* Logo & Visual Asset Customizer */}
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
                     <Label htmlFor="org-logo" className="text-foreground text-xs font-semibold">
                       Brand Logo Asset
                     </Label>
@@ -1152,7 +1154,7 @@ export default function WorkspaceSettingsPage() {
                           SSL Auto-Provisioned
                         </span>
                       </div>
-                      <div className="grid grid-cols-3 gap-2 font-mono text-[10px]">
+                      <div className="grid grid-cols-1 gap-2 font-mono text-[10px] sm:grid-cols-3">
                         <div className="border-border/60 bg-background rounded-lg border p-2">
                           <span className="text-muted-foreground block text-[9px] uppercase">
                             Type
@@ -1554,12 +1556,12 @@ export default function WorkspaceSettingsPage() {
                   </div>
                 </div>
 
-                <label className="flex cursor-pointer items-center gap-2 pt-1 select-none">
+                <label className="flex cursor-pointer items-start gap-2.5 pt-1 select-none">
                   <input
                     type="checkbox"
                     checked={bankVerificationConfirmed}
                     onChange={(e) => setBankVerificationConfirmed(e.target.checked)}
-                    className="h-4 w-4 rounded border-amber-400 text-amber-600 focus:ring-amber-500/30"
+                    className="mt-0.5 h-4 w-4 shrink-0 rounded border-amber-400 text-amber-600 focus:ring-amber-500/30"
                   />
                   <span className="text-foreground text-xs font-semibold">
                     I verify and confirm that these banking coordinates and remittance details are
@@ -2329,13 +2331,14 @@ export default function WorkspaceSettingsPage() {
       {isDirty && (
         <div className="animate-in fade-in slide-in-from-bottom-5 fixed right-0 bottom-5 left-0 z-40 flex justify-center px-4">
           <div className="border-border/80 bg-card/90 flex w-full max-w-xl items-center justify-between gap-4 rounded-full border p-2 pl-4 shadow-2xl backdrop-blur-xl sm:py-2 sm:pr-2.5 sm:pl-5">
-            <div className="flex items-center gap-2.5">
-              <span className="relative flex h-2.5 w-2.5">
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2.5 w-2.5 shrink-0">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75" />
                 <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-amber-500 shadow-xs shadow-amber-500/50" />
               </span>
               <span className="text-foreground text-xs font-bold tracking-tight">
-                Unsaved workspace changes
+                <span className="sm:hidden">Unsaved changes</span>
+                <span className="hidden sm:inline">Unsaved workspace changes</span>
               </span>
             </div>
             <div className="flex items-center gap-2">
