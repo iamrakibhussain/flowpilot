@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import {
   Bell,
   CheckCheck,
@@ -12,6 +12,7 @@ import {
   Trash2,
   CalendarX,
   Layers,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -43,7 +44,19 @@ function formatRelativeTime(dateString: string): string {
 
 export function DashboardNotifications() {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const [isOpen, setIsOpen] = React.useState(false);
   const [filter, setFilter] = React.useState<"all" | "unread" | "bookings" | "invoices">("all");
+
+  // Automatically close notification dropdown on navigation
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsOpen(false);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [pathname, searchParams]);
 
   const { data: notificationData, isLoading } = useNotifications();
   const markAsReadMutation = useMarkNotificationAsRead();
@@ -75,8 +88,8 @@ export function DashboardNotifications() {
     }
   }, [items, filter]);
 
-  const handleItemClick = (item: NotificationItem, e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleItemClick = (item: NotificationItem) => {
+    setIsOpen(false);
     if (!item.isRead) {
       markAsReadMutation.mutate(item.id);
     }
@@ -116,7 +129,7 @@ export function DashboardNotifications() {
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen} modal={false}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
@@ -137,6 +150,8 @@ export function DashboardNotifications() {
       <DropdownMenuContent
         align="end"
         sideOffset={8}
+        onInteractOutside={() => setIsOpen(false)}
+        onEscapeKeyDown={() => setIsOpen(false)}
         className="w-80 max-w-[calc(100vw-2rem)] rounded-2xl border border-slate-200/90 bg-white/95 p-0 shadow-2xl backdrop-blur-xl sm:w-96"
       >
         {/* Header */}
@@ -154,7 +169,7 @@ export function DashboardNotifications() {
               <span className="text-[11px] font-normal text-slate-400">All caught up</span>
             )}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             {unreadCount > 0 && (
               <button
                 type="button"
@@ -176,6 +191,15 @@ export function DashboardNotifications() {
                 <Trash2 className="h-3.5 w-3.5" />
               </button>
             )}
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              title="Close notifications"
+              className="rounded-md p-1 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
+              aria-label="Close notifications"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
           </div>
         </div>
 
@@ -255,7 +279,7 @@ export function DashboardNotifications() {
             filteredItems.map((item) => (
               <div
                 key={item.id}
-                onClick={(e) => handleItemClick(item, e)}
+                onClick={() => handleItemClick(item)}
                 className={`group flex cursor-pointer items-start gap-3 p-3.5 transition-colors hover:bg-slate-50/80 ${
                   !item.isRead ? "bg-blue-50/35" : ""
                 }`}
