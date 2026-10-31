@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Calendar as CalendarIcon,
@@ -31,7 +32,11 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useWorkspaceSession } from "@/features/organizations/use-workspace-session";
-import { useAppointments, useStaffMembers } from "@/features/appointments/use-appointments";
+import {
+  useAppointments,
+  useAppointment,
+  useStaffMembers,
+} from "@/features/appointments/use-appointments";
 import { AppointmentQuickPeekDrawer } from "@/components/dashboard/appointments/appointment-quick-peek-drawer";
 import { BookingWizardModal } from "@/components/dashboard/appointments/booking-wizard-modal";
 import { RescheduleModal } from "@/components/dashboard/appointments/reschedule-modal";
@@ -64,7 +69,12 @@ const VIEW_TABS: Array<{
   { id: "agenda", label: "Agenda", icon: SlidersHorizontal, shortcut: "A" },
 ];
 
-export default function CalendarPage() {
+function CalendarContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const urlApptId = searchParams.get("appointmentId") || searchParams.get("selected") || "";
+  const staffParam = searchParams.get("staffId");
+
   const { organizationId: currentOrganizationId } = useWorkspaceSession();
   const { data: staffMembers = [] } = useStaffMembers(currentOrganizationId);
 
@@ -77,6 +87,16 @@ export default function CalendarPage() {
   const [selectedStaffId, setSelectedStaffId] = React.useState<string>("ALL");
   const [selectedStatus, setSelectedStatus] = React.useState<string>("ALL");
   const [selectedType, setSelectedType] = React.useState<string>("ALL");
+
+  // React to staffParam dynamically
+  React.useEffect(() => {
+    if (staffParam) {
+      const timer = setTimeout(() => {
+        setSelectedStaffId(staffParam);
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, [staffParam]);
 
   // Modals & Drawers
   const [isBookingModalOpen, setIsBookingModalOpen] = React.useState(false);
@@ -92,20 +112,17 @@ export default function CalendarPage() {
   );
   const [isMobileRailOpen, setIsMobileRailOpen] = React.useState(false);
 
-  // Current time position for live laser indicator
-  // Auto-filter by staff member if passed in URL query parameter (?staffId=...)
-  React.useEffect(() => {
-    if (typeof window !== "undefined") {
-      const urlParams = new URLSearchParams(window.location.search);
-      const staffParam = urlParams.get("staffId");
-      if (staffParam) {
-        const timer = setTimeout(() => {
-          setSelectedStaffId(staffParam);
-        }, 0);
-        return () => clearTimeout(timer);
-      }
-    }
-  }, []);
+  const { data: targetAppointment } = useAppointment(urlApptId, currentOrganizationId);
+
+  // Safe handler to close the quick-peek drawer and clear URL params
+  const handleCloseDrawer = React.useCallback(() => {
+    setSelectedAppointment(null);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("appointmentId");
+    params.delete("selected");
+    const qs = params.toString();
+    router.replace(qs ? `/dashboard/calendar?${qs}` : "/dashboard/calendar", { scroll: false });
+  }, [router, searchParams]);
 
   const [nowDate, setNowDate] = React.useState<Date>(() => new Date());
   React.useEffect(() => {
@@ -161,6 +178,22 @@ export default function CalendarPage() {
     },
     currentOrganizationId
   );
+
+  // Auto-focus and open quick-peek drawer for targeted notification appointment directly
+  React.useEffect(() => {
+    if (!urlApptId) return;
+    const existing = appointments.find((a) => a.id === urlApptId);
+    const candidate = targetAppointment || existing;
+    if (candidate) {
+      const timer = setTimeout(() => {
+        setSelectedAppointment(candidate as unknown as AppointmentListItem);
+        if (candidate.scheduledAt) {
+          setCurrentDate(new Date(candidate.scheduledAt));
+        }
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, [urlApptId, targetAppointment, appointments]);
 
   // Navigate dates
   const handlePrev = React.useCallback(() => {
@@ -1544,13 +1577,13 @@ export default function CalendarPage() {
       <AppointmentQuickPeekDrawer
         appointment={selectedAppointment}
         isOpen={Boolean(selectedAppointment)}
-        onClose={() => setSelectedAppointment(null)}
+        onClose={handleCloseDrawer}
         onOpenReschedule={(apt) => {
-          setSelectedAppointment(null);
+          handleCloseDrawer();
           setRescheduleAppointment(apt);
         }}
         onOpenInvoiceModal={(apt) => {
-          setSelectedAppointment(null);
+          handleCloseDrawer();
           setInvoiceAppointment(apt);
         }}
         organizationId={currentOrganizationId}
@@ -1596,5 +1629,19 @@ export default function CalendarPage() {
         organizationId={currentOrganizationId}
       />
     </div>
+  );
+}
+
+export default function CalendarPage() {
+  return (
+    <React.Suspense
+      fallback={
+        <div className="flex min-h-[60vh] items-center justify-center">
+          <div className="border-primary h-8 w-8 animate-spin rounded-full border-2 border-t-transparent" />
+        </div>
+      }
+    >
+      <CalendarContent />
+    </React.Suspense>
   );
 }

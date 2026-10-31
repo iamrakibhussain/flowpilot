@@ -33,6 +33,22 @@ export async function createCheckoutSession(
 }
 
 /**
+ * Verify and reconcile a Stripe checkout session upon redirect
+ */
+export async function verifyCheckoutSession(
+  token: string,
+  sessionId?: string
+): Promise<{ success: boolean; alreadyPaid?: boolean; reconciled?: boolean; message?: string }> {
+  const response = await apiClient.post<{
+    success: boolean;
+    alreadyPaid?: boolean;
+    reconciled?: boolean;
+    message?: string;
+  }>(`/payments/public/verify-session/${token}`, { sessionId });
+  return response.data;
+}
+
+/**
  * Instant sandbox payment simulation for testing with zero credentials
  */
 export async function settleSandboxPayment(

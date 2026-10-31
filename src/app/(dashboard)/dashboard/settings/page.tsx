@@ -35,6 +35,8 @@ import {
   Copy,
   Landmark,
   Activity,
+  Mail,
+  Send,
 } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
@@ -42,6 +44,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useSendTestEmail } from "@/features/notifications/use-notifications";
 import {
   Dialog,
   DialogContent,
@@ -72,12 +75,12 @@ import { ApiClientError } from "@/lib/api/errors";
 // Supported Global Currencies
 const CURRENCIES = [
   { code: "USD", symbol: "$", name: "US Dollar ($)" },
-  { code: "EUR", symbol: "€", name: "Euro (€)" },
-  { code: "GBP", symbol: "£", name: "British Pound (£)" },
+  { code: "EUR", symbol: "â‚¬", name: "Euro (â‚¬)" },
+  { code: "GBP", symbol: "Â£", name: "British Pound (Â£)" },
   { code: "CAD", symbol: "CA$", name: "Canadian Dollar ($)" },
   { code: "AUD", symbol: "AU$", name: "Australian Dollar ($)" },
-  { code: "BDT", symbol: "৳", name: "Bangladeshi Taka (৳)" },
-  { code: "JPY", symbol: "¥", name: "Japanese Yen (¥)" },
+  { code: "BDT", symbol: "à§³", name: "Bangladeshi Taka (à§³)" },
+  { code: "JPY", symbol: "Â¥", name: "Japanese Yen (Â¥)" },
   { code: "SGD", symbol: "SG$", name: "Singapore Dollar ($)" },
   { code: "AED", symbol: "AED", name: "UAE Dirham (AED)" },
 ];
@@ -174,6 +177,37 @@ export default function WorkspaceSettingsPage() {
     type: "success" | "error";
     text: string;
   } | null>(null);
+
+  // Diagnostic test email state
+  const sendTestEmailMutation = useSendTestEmail();
+  const [testEmailRecipient, setTestEmailRecipient] = React.useState("");
+  const [testEmailStatus, setTestEmailStatus] = React.useState<{
+    success?: boolean;
+    message?: string;
+  } | null>(null);
+
+  const handleSendTestEmail = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!testEmailRecipient || !testEmailRecipient.includes("@")) {
+      setTestEmailStatus({
+        success: false,
+        message: "Please provide a valid recipient email address",
+      });
+      return;
+    }
+    try {
+      const res = await sendTestEmailMutation.mutateAsync(testEmailRecipient);
+      setTestEmailStatus({
+        success: true,
+        message: `Diagnostic test email delivered to ${res.deliveredTo}`,
+      });
+    } catch (err: unknown) {
+      setTestEmailStatus({
+        success: false,
+        message: err instanceof Error ? err.message : "Failed to deliver test email",
+      });
+    }
+  };
 
   // Slug verification state
   const [slugStatus, setSlugStatus] = React.useState<"idle" | "checking" | "available" | "taken">(
@@ -395,21 +429,14 @@ export default function WorkspaceSettingsPage() {
 
   // Public booking & Client Portal links
   const activeSlug = formData.slug || settings?.slug || "my-business";
-  const publicBookingUrl =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/book/${activeSlug}`
-      : `/book/${activeSlug}`;
-
-  const clientPortalUrl =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/portal/${activeSlug}`
-      : `/portal/${activeSlug}`;
 
   const [copiedPortalLink, setCopiedPortalLink] = React.useState(false);
 
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(publicBookingUrl);
+      const origin = typeof window !== "undefined" ? window.location.origin : "";
+      const fullUrl = `${origin}/book/${activeSlug}`;
+      await navigator.clipboard.writeText(fullUrl);
       setCopiedLink(true);
       setTimeout(() => setCopiedLink(false), 2500);
     } catch {
@@ -419,7 +446,9 @@ export default function WorkspaceSettingsPage() {
 
   const handleCopyPortalLink = async () => {
     try {
-      await navigator.clipboard.writeText(clientPortalUrl);
+      const origin = typeof window !== "undefined" ? window.location.origin : "";
+      const fullUrl = `${origin}/portal/${activeSlug}`;
+      await navigator.clipboard.writeText(fullUrl);
       setCopiedPortalLink(true);
       setTimeout(() => setCopiedPortalLink(false), 2500);
     } catch {
@@ -623,14 +652,14 @@ export default function WorkspaceSettingsPage() {
             </span>
             Configuration Engine Live
           </span>
-          <span className="text-border hidden sm:inline">•</span>
+          <span className="text-border hidden sm:inline">â€¢</span>
           <div className="flex items-center gap-1.5 font-mono text-[11px]">
             <span className="text-muted-foreground">Tenant:</span>
             <span className="text-foreground max-w-[140px] truncate font-bold sm:max-w-xs">
               {organizationName}
             </span>
           </div>
-          <span className="text-border hidden md:inline">•</span>
+          <span className="text-border hidden md:inline">â€¢</span>
           <div className="flex items-center gap-1.5">
             <span className="text-muted-foreground text-[10px]">Privilege:</span>
             <Badge
@@ -646,7 +675,7 @@ export default function WorkspaceSettingsPage() {
             <ShieldCheck className="h-3.5 w-3.5" />
             <span>RBAC Protected</span>
           </span>
-          <span className="text-border">•</span>
+          <span className="text-border">â€¢</span>
           <span className="flex items-center gap-1 text-blue-600 dark:text-blue-400">
             <Activity className="h-3.5 w-3.5" />
             <span>PostgreSQL Isolated</span>
@@ -715,7 +744,7 @@ export default function WorkspaceSettingsPage() {
               asChild
               className="flex h-8.5 cursor-pointer items-center gap-1.5 rounded-xl bg-blue-600 text-xs font-bold text-white shadow-2xs transition hover:bg-blue-700"
             >
-              <a href={clientPortalUrl} target="_blank" rel="noopener noreferrer">
+              <a href={`/portal/${activeSlug}`} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="h-3.5 w-3.5" />
                 <span>Open Portal</span>
               </a>
@@ -857,12 +886,12 @@ export default function WorkspaceSettingsPage() {
                       )}
                       {slugStatus === "available" && (
                         <span className="font-mono text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
-                          ✓ Available
+                          âœ“ Available
                         </span>
                       )}
                       {slugStatus === "taken" && (
                         <span className="font-mono text-[10px] font-bold text-rose-600 dark:text-rose-400">
-                          ✕ Already Taken
+                          âœ• Already Taken
                         </span>
                       )}
                     </div>
@@ -884,7 +913,7 @@ export default function WorkspaceSettingsPage() {
                         <span className="text-foreground font-semibold">Public Booking:</span>{" "}
                         /book/{formData.slug || "slug"}
                       </span>
-                      <span className="text-muted-foreground/40">•</span>
+                      <span className="text-muted-foreground/40">â€¢</span>
                       <span className="inline-flex items-center gap-1 font-mono">
                         <span className="font-semibold text-blue-600 dark:text-blue-400">
                           Client Portal:
@@ -1380,8 +1409,8 @@ export default function WorkspaceSettingsPage() {
                 </div>
 
                 <p className="text-muted-foreground text-center text-[10px] leading-relaxed">
-                  ✦ Dynamic brand styles propagate across client-facing booking interfaces, invoice
-                  statements, and digital receipts.
+                  âœ¦ Dynamic brand styles propagate across client-facing booking interfaces,
+                  invoice statements, and digital receipts.
                 </p>
               </CardContent>
             </Card>
@@ -1425,7 +1454,7 @@ export default function WorkspaceSettingsPage() {
                   >
                     {CURRENCIES.map((c) => (
                       <option key={c.code} value={c.code}>
-                        {c.code} — {c.name}
+                        {c.code} â€” {c.name}
                       </option>
                     ))}
                   </select>
@@ -1882,6 +1911,109 @@ export default function WorkspaceSettingsPage() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Mail Transport & Diagnostic Dispatcher */}
+          <Card className="border-border/80 from-card to-card/95 bg-gradient-to-b shadow-xs">
+            <CardHeader className="flex flex-row items-start gap-3.5 pb-4">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-500/10 text-emerald-600 shadow-2xs dark:text-emerald-400">
+                <Mail className="h-5 w-5" />
+              </div>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <CardTitle className="text-foreground text-base font-bold">
+                    Email Transport &amp; Delivery Engine
+                  </CardTitle>
+                  <Badge className="border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                    Connected
+                  </Badge>
+                </div>
+                <CardDescription className="text-muted-foreground text-xs">
+                  FlowPilot uses secure authenticated SMTP for all customer magic links, booking
+                  confirmations, and invoice deliveries.
+                </CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                <div className="border-border/80 bg-muted/30 rounded-xl border p-3">
+                  <span className="text-muted-foreground text-[10px] font-semibold uppercase">
+                    Active Transport
+                  </span>
+                  <p className="text-foreground mt-0.5 text-xs font-bold">Gmail SMTP (SSL/TLS)</p>
+                  <span className="text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
+                    smtp.gmail.com:465
+                  </span>
+                </div>
+                <div className="border-border/80 bg-muted/30 rounded-xl border p-3">
+                  <span className="text-muted-foreground text-[10px] font-semibold uppercase">
+                    Default Sender
+                  </span>
+                  <p className="text-foreground mt-0.5 truncate text-xs font-bold">
+                    alrokib44@gmail.com
+                  </p>
+                  <span className="text-muted-foreground text-[10px]">FlowPilot Security</span>
+                </div>
+                <div className="border-border/80 bg-muted/30 rounded-xl border p-3">
+                  <span className="text-muted-foreground text-[10px] font-semibold uppercase">
+                    Delivery Security
+                  </span>
+                  <p className="text-foreground mt-0.5 text-xs font-bold">OWASP Guarded</p>
+                  <span className="text-muted-foreground text-[10px]">
+                    CRLF &amp; HTML Injection Shield
+                  </span>
+                </div>
+              </div>
+
+              {/* Diagnostic Test Email Form */}
+              <div className="border-border/80 bg-muted/20 space-y-3 rounded-xl border p-4">
+                <div>
+                  <h4 className="text-foreground text-xs font-bold">Test Mail Delivery</h4>
+                  <p className="text-muted-foreground mt-0.5 text-[11px]">
+                    Send a live test message to your inbox to verify that emails arrive in your
+                    Primary inbox.
+                  </p>
+                </div>
+
+                <form onSubmit={handleSendTestEmail} className="flex flex-col gap-2.5 sm:flex-row">
+                  <Input
+                    type="email"
+                    placeholder="Enter recipient email (e.g., your-email@gmail.com)"
+                    value={testEmailRecipient}
+                    onChange={(e) => setTestEmailRecipient(e.target.value)}
+                    className="h-9 flex-1 text-xs"
+                    required
+                  />
+                  <Button
+                    type="submit"
+                    disabled={sendTestEmailMutation.isPending}
+                    className="h-9 shrink-0 cursor-pointer gap-1.5 px-4 text-xs font-semibold"
+                  >
+                    <Send className="h-3.5 w-3.5" />
+                    <span>
+                      {sendTestEmailMutation.isPending ? "Delivering..." : "Send Test Email"}
+                    </span>
+                  </Button>
+                </form>
+
+                {testEmailStatus && (
+                  <div
+                    className={`flex items-center gap-2 rounded-lg p-3 text-xs font-medium ${
+                      testEmailStatus.success
+                        ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
+                        : "border border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-400"
+                    }`}
+                  >
+                    {testEmailStatus.success ? (
+                      <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
+                    ) : (
+                      <AlertCircle className="h-4 w-4 shrink-0 text-rose-600 dark:text-rose-400" />
+                    )}
+                    <span>{testEmailStatus.message}</span>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
         </div>
       )}
 
@@ -1929,7 +2061,7 @@ export default function WorkspaceSettingsPage() {
                 <div className="border-border/60 bg-muted/20 rounded-xl border p-3">
                   <span className="text-muted-foreground block text-[11px]">Corporate Email</span>
                   <span className="text-foreground text-sm font-semibold">
-                    {session?.user?.email || "—"}
+                    {session?.user?.email || "â€”"}
                   </span>
                 </div>
               </div>
@@ -2014,7 +2146,7 @@ export default function WorkspaceSettingsPage() {
                       id="currentPassword"
                       type={showCurrentPassword ? "text" : "password"}
                       autoComplete="current-password"
-                      placeholder="••••••••••••"
+                      placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                       {...registerPassword("currentPassword")}
                       className="border-border/80 bg-background text-foreground pr-10 text-xs"
                     />
@@ -2050,7 +2182,7 @@ export default function WorkspaceSettingsPage() {
                       id="newPassword"
                       type={showNewPassword ? "text" : "password"}
                       autoComplete="new-password"
-                      placeholder="••••••••••••"
+                      placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                       {...registerPassword("newPassword")}
                       className="border-border/80 bg-background text-foreground pr-10 text-xs"
                     />
@@ -2107,7 +2239,7 @@ export default function WorkspaceSettingsPage() {
                       id="confirmPassword"
                       type={showConfirmPassword ? "text" : "password"}
                       autoComplete="new-password"
-                      placeholder="••••••••••••"
+                      placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                       {...registerPassword("confirmPassword")}
                       className="border-border/80 bg-background text-foreground pr-10 text-xs"
                     />
@@ -2200,7 +2332,7 @@ export default function WorkspaceSettingsPage() {
                       <Input
                         id="delete-password"
                         type="password"
-                        placeholder="••••••••••••"
+                        placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                         {...registerDelete("password")}
                         className="border-border/80 bg-background text-xs"
                       />

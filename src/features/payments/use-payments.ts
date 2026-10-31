@@ -5,6 +5,7 @@ import { useResolvedOrgId, invoiceKeys } from "@/features/invoices/use-invoices"
 import {
   getPublicInvoice,
   createCheckoutSession,
+  verifyCheckoutSession,
   settleSandboxPayment,
   generatePaymentToken,
   getPaymentSettings,
@@ -55,6 +56,20 @@ export function useSettleSandboxPayment(token: string) {
 export function useCreateCheckoutSession(token: string) {
   return useMutation({
     mutationFn: (data?: Record<string, unknown>) => createCheckoutSession(token, data),
+  });
+}
+
+/**
+ * Public Hook: Verify and reconcile Stripe checkout session
+ */
+export function useVerifyCheckoutSession(token: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (sessionId?: string) => verifyCheckoutSession(token, sessionId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: paymentKeys.publicInvoice(token) });
+    },
   });
 }
 
