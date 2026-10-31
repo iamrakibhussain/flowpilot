@@ -120,10 +120,12 @@ export default function CalendarPage() {
   }, []);
 
   const { data: targetAppointment } = useAppointment(urlApptId, currentOrganizationId);
+  const hasAutoOpenedRef = React.useRef<string | null>(null);
 
-  // Auto-focus and open quick-peek drawer for targeted notification appointment
+  // Auto-focus and open quick-peek drawer for targeted notification appointment (only once per ID)
   React.useEffect(() => {
-    if (targetAppointment && !selectedAppointment) {
+    if (targetAppointment && hasAutoOpenedRef.current !== targetAppointment.id) {
+      hasAutoOpenedRef.current = targetAppointment.id;
       const timer = setTimeout(() => {
         setSelectedAppointment(targetAppointment as unknown as AppointmentListItem);
         if (targetAppointment.scheduledAt) {
@@ -132,7 +134,21 @@ export default function CalendarPage() {
       }, 0);
       return () => clearTimeout(timer);
     }
-  }, [targetAppointment, selectedAppointment]);
+  }, [targetAppointment]);
+
+  // Safe handler to close the quick-peek drawer and clear URL params to prevent re-opening loops
+  const handleCloseDrawer = React.useCallback(() => {
+    setSelectedAppointment(null);
+    setUrlApptId("");
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      if (url.searchParams.has("appointmentId") || url.searchParams.has("selected")) {
+        url.searchParams.delete("appointmentId");
+        url.searchParams.delete("selected");
+        window.history.replaceState(null, "", url.pathname + (url.search ? url.search : ""));
+      }
+    }
+  }, []);
 
   const [nowDate, setNowDate] = React.useState<Date>(() => new Date());
   React.useEffect(() => {
@@ -1571,13 +1587,13 @@ export default function CalendarPage() {
       <AppointmentQuickPeekDrawer
         appointment={selectedAppointment}
         isOpen={Boolean(selectedAppointment)}
-        onClose={() => setSelectedAppointment(null)}
+        onClose={handleCloseDrawer}
         onOpenReschedule={(apt) => {
-          setSelectedAppointment(null);
+          handleCloseDrawer();
           setRescheduleAppointment(apt);
         }}
         onOpenInvoiceModal={(apt) => {
-          setSelectedAppointment(null);
+          handleCloseDrawer();
           setInvoiceAppointment(apt);
         }}
         organizationId={currentOrganizationId}
