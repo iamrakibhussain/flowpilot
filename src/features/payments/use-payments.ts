@@ -73,7 +73,6 @@ export function useVerifyCheckoutSession(token: string) {
   });
 }
 
-
 /**
  * Tenant Hook: Generate or retrieve payment URL token for an invoice
  */

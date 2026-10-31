@@ -322,9 +322,7 @@ export default function ClientPortalDashboardPage() {
                 <span className="font-bold text-slate-800 dark:text-slate-200">
                   {customer.name}
                 </span>
-                <span className="font-mono text-[10px] text-slate-500">
-                  {customer.email}
-                </span>
+                <span className="font-mono text-[10px] text-slate-500">{customer.email}</span>
               </div>
             </div>
             <Button

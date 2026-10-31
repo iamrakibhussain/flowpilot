@@ -335,9 +335,7 @@ export default function PublicInvoiceCheckoutPage({ params }: PageProps) {
           </div>
           <div className="space-y-1">
             <h2 className="text-xl font-semibold text-white">
-              {verifyingSession
-                ? "Verifying Payment with Stripe"
-                : "Loading Invoice Statement"}
+              {verifyingSession ? "Verifying Payment with Stripe" : "Loading Invoice Statement"}
             </h2>
             <p className="text-sm text-slate-400">
               {verifyingSession
@@ -973,8 +971,8 @@ export default function PublicInvoiceCheckoutPage({ params }: PageProps) {
                         {selectedMethod === "bank"
                           ? "View Bank Wire Details"
                           : invoice.paymentSettings.isTestMode
-                          ? "Pay in Test Mode "
-                          : "Proceed to Payment "}
+                            ? "Pay in Test Mode "
+                            : "Proceed to Payment "}
                         {selectedMethod !== "bank" && formatCurrency(invoice.total, currency)}
                       </span>
                       <ArrowRight className="ml-1 h-4 w-4" />

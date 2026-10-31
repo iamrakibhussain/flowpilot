@@ -965,7 +965,9 @@ export default function PublicBookingPortalPage() {
                   <div className="flex items-center gap-2.5 rounded-xl border border-blue-500/20 bg-blue-500/10 p-3 text-xs text-blue-700 dark:text-blue-300">
                     <User className="h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" />
                     <p>
-                      Signed in as <strong>{portalMe.customer.name}</strong> ({portalMe.customer.email}). This booking will automatically appear in your Client Portal.
+                      Signed in as <strong>{portalMe.customer.name}</strong> (
+                      {portalMe.customer.email}). This booking will automatically appear in your
+                      Client Portal.
                     </p>
                   </div>
                 )}
@@ -1245,7 +1247,9 @@ export default function PublicBookingPortalPage() {
                   className="cursor-pointer rounded-xl bg-blue-600 px-4 py-2 text-xs font-bold text-white shadow-md shadow-blue-500/20 hover:bg-blue-700"
                 >
                   <Link href={portalMe?.customer ? `/portal/${slug}/dashboard` : `/portal/${slug}`}>
-                    {portalMe?.customer ? "View in My Client Portal \u2192" : "Access Client Portal \u2192"}
+                    {portalMe?.customer
+                      ? "View in My Client Portal \u2192"
+                      : "Access Client Portal \u2192"}
                   </Link>
                 </Button>
               </div>
