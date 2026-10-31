@@ -429,21 +429,14 @@ export default function WorkspaceSettingsPage() {
 
   // Public booking & Client Portal links
   const activeSlug = formData.slug || settings?.slug || "my-business";
-  const publicBookingUrl =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/book/${activeSlug}`
-      : `/book/${activeSlug}`;
-
-  const clientPortalUrl =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/portal/${activeSlug}`
-      : `/portal/${activeSlug}`;
 
   const [copiedPortalLink, setCopiedPortalLink] = React.useState(false);
 
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(publicBookingUrl);
+      const origin = typeof window !== "undefined" ? window.location.origin : "";
+      const fullUrl = `${origin}/book/${activeSlug}`;
+      await navigator.clipboard.writeText(fullUrl);
       setCopiedLink(true);
       setTimeout(() => setCopiedLink(false), 2500);
     } catch {
@@ -453,7 +446,9 @@ export default function WorkspaceSettingsPage() {
 
   const handleCopyPortalLink = async () => {
     try {
-      await navigator.clipboard.writeText(clientPortalUrl);
+      const origin = typeof window !== "undefined" ? window.location.origin : "";
+      const fullUrl = `${origin}/portal/${activeSlug}`;
+      await navigator.clipboard.writeText(fullUrl);
       setCopiedPortalLink(true);
       setTimeout(() => setCopiedPortalLink(false), 2500);
     } catch {
@@ -749,7 +744,7 @@ export default function WorkspaceSettingsPage() {
               asChild
               className="flex h-8.5 cursor-pointer items-center gap-1.5 rounded-xl bg-blue-600 text-xs font-bold text-white shadow-2xs transition hover:bg-blue-700"
             >
-              <a href={clientPortalUrl} target="_blank" rel="noopener noreferrer">
+              <a href={`/portal/${activeSlug}`} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="h-3.5 w-3.5" />
                 <span>Open Portal</span>
               </a>

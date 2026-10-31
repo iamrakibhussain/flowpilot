@@ -115,17 +115,11 @@ export default function CustomersDirectoryPage() {
     );
   }, [orgSettings?.slug, organizationName]);
 
-  const browserOrigin = React.useSyncExternalStore(
-    () => () => {},
-    () => (typeof window !== "undefined" ? window.location.origin : ""),
-    () => ""
-  );
-
-  const portalFullUrl = browserOrigin ? `${browserOrigin}/portal/${orgSlug}` : `/portal/${orgSlug}`;
-
   const handleCopyPortalLink = async () => {
     try {
-      await navigator.clipboard.writeText(portalFullUrl);
+      const origin = typeof window !== "undefined" ? window.location.origin : "";
+      const fullUrl = `${origin}/portal/${orgSlug}`;
+      await navigator.clipboard.writeText(fullUrl);
       setCopiedPortalLink(true);
       setTimeout(() => setCopiedPortalLink(false), 2500);
     } catch {
@@ -362,7 +356,7 @@ export default function CustomersDirectoryPage() {
           <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center lg:w-auto">
             <div className="border-border/80 bg-background/90 text-muted-foreground flex w-full items-center gap-1.5 overflow-hidden rounded-xl border px-3 py-2 font-mono text-xs shadow-2xs sm:w-auto sm:py-1.5">
               <span className="shrink-0 font-bold text-blue-600 dark:text-blue-400">Portal:</span>
-              <span className="max-w-[220px] truncate sm:max-w-[280px]">{portalFullUrl}</span>
+              <span className="max-w-[220px] truncate sm:max-w-[280px]">/portal/{orgSlug}</span>
             </div>
             <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:items-center">
               <Button
@@ -391,7 +385,7 @@ export default function CustomersDirectoryPage() {
                 asChild
                 className="flex h-9 cursor-pointer items-center justify-center gap-1.5 rounded-xl bg-blue-600 text-xs font-bold text-white shadow-md shadow-blue-500/20 transition hover:bg-blue-700"
               >
-                <a href={portalFullUrl} target="_blank" rel="noopener noreferrer">
+                <a href={`/portal/${orgSlug}`} target="_blank" rel="noopener noreferrer">
                   <ExternalLink className="h-3.5 w-3.5" />
                   <span>Visit Portal</span>
                 </a>
