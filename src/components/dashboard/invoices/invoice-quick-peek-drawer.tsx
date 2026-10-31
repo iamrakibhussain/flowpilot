@@ -14,10 +14,12 @@ import {
   Check,
   Ban,
   Receipt,
+  Send,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useUpdateInvoiceStatus } from "@/features/invoices/use-invoices";
+import { useSendInvoiceEmail } from "@/features/notifications/use-notifications";
 import type { InvoiceListItem } from "@/features/invoices/types";
 
 interface InvoiceQuickPeekDrawerProps {
@@ -40,9 +42,23 @@ export function InvoiceQuickPeekDrawer({
   organizationId,
 }: InvoiceQuickPeekDrawerProps) {
   const updateStatusMutation = useUpdateInvoiceStatus();
+  const sendEmailMutation = useSendInvoiceEmail();
 
   const [copiedSummary, setCopiedSummary] = React.useState(false);
   const [copiedNumber, setCopiedNumber] = React.useState(false);
+  const [emailSentMsg, setEmailSentMsg] = React.useState<string | null>(null);
+
+  const handleSendEmail = async () => {
+    if (!invoice) return;
+    try {
+      const res = await sendEmailMutation.mutateAsync(invoice.id);
+      setEmailSentMsg(`Delivered to ${res.deliveredTo}`);
+      setTimeout(() => setEmailSentMsg(null), 5000);
+    } catch (err: unknown) {
+      setEmailSentMsg(err instanceof Error ? err.message : "Failed to send");
+      setTimeout(() => setEmailSentMsg(null), 5000);
+    }
+  };
   const [isConfirmingCancel, setIsConfirmingCancel] = React.useState(false);
 
   // Close on Escape key
@@ -71,7 +87,7 @@ Issue Date: ${new Date(invoice.issueDate).toLocaleDateString()}
 Due Date: ${new Date(invoice.dueDate).toLocaleDateString()}
 Total Due: $${invoice.total.toLocaleString("en-US", { minimumFractionDigits: 2 })}
 Line Items:
-${invoice.items.map((it) => `• ${it.description} — ${it.quantity}x @ $${it.unitPrice} = $${it.amount}`).join("\n")}`;
+${invoice.items.map((it) => `â€¢ ${it.description} â€” ${it.quantity}x @ $${it.unitPrice} = $${it.amount}`).join("\n")}`;
 
     await navigator.clipboard.writeText(summaryText);
     setCopiedSummary(true);
@@ -187,12 +203,12 @@ ${invoice.items.map((it) => `• ${it.description} — ${it.quantity}x @ $${it.u
               {/* Vintage Watermark Stamp */}
               {isPaid && (
                 <div className="pointer-events-none absolute top-4 right-4 z-20 rotate-[-12deg] rounded-lg border-2 border-emerald-400/80 bg-emerald-950/50 px-2.5 py-0.5 text-center font-mono text-[10px] font-black tracking-widest text-emerald-400 uppercase shadow-lg backdrop-blur-sm sm:top-6 sm:right-6 sm:rounded-xl sm:px-3.5 sm:py-1 sm:text-xs">
-                  ✓ PAID & SETTLED
+                  âœ“ PAID & SETTLED
                 </div>
               )}
               {isOverdue && (
                 <div className="pointer-events-none absolute top-4 right-4 z-20 rotate-[-12deg] rounded-lg border-2 border-rose-500/80 bg-rose-950/50 px-2.5 py-0.5 text-center font-mono text-[10px] font-black tracking-widest text-rose-400 uppercase shadow-lg backdrop-blur-sm sm:top-6 sm:right-6 sm:rounded-xl sm:px-3.5 sm:py-1 sm:text-xs">
-                  ⚠ OVERDUE RISK
+                  âš  OVERDUE RISK
                 </div>
               )}
 
@@ -287,7 +303,24 @@ ${invoice.items.map((it) => `• ${it.description} — ${it.quantity}x @ $${it.u
                 <ExternalLink className="h-3.5 w-3.5 text-blue-600" />
                 <span>Share Pay Link</span>
               </Button>
+
+              <Button
+                variant="outline"
+                onClick={handleSendEmail}
+                disabled={sendEmailMutation.isPending}
+                className="cursor-pointer gap-1.5 rounded-xl border-emerald-200 bg-emerald-50/80 text-xs font-bold text-emerald-700 shadow-2xs hover:bg-emerald-100 disabled:opacity-50"
+              >
+                <Send className="h-3.5 w-3.5 text-emerald-600" />
+                <span>{sendEmailMutation.isPending ? "Sending..." : "Send Email"}</span>
+              </Button>
             </div>
+
+            {emailSentMsg && (
+              <div className="flex items-center gap-1.5 rounded-xl border border-emerald-200/80 bg-emerald-50 px-3.5 py-2 text-xs font-semibold text-emerald-800">
+                <Check className="h-3.5 w-3.5 text-emerald-600" />
+                <span>{emailSentMsg}</span>
+              </div>
+            )}
 
             {/* Hosted Client Checkout Portal (Live Simulator Card) */}
             <div className="space-y-2">
@@ -305,7 +338,7 @@ ${invoice.items.map((it) => `• ${it.description} — ${it.quantity}x @ $${it.u
                 <div className="flex items-center justify-between gap-3">
                   <div className="min-w-0">
                     <p className="truncate font-mono text-xs font-semibold text-slate-800">
-                      /pay/[token] • Multi-Tenant Online Settlement
+                      /pay/[token] â€¢ Multi-Tenant Online Settlement
                     </p>
                     <p className="text-[10px] text-slate-400">
                       Zero-friction client checkout with WhatsApp, Email & dynamic QR code

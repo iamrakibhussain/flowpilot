@@ -11,6 +11,7 @@ import {
   Landmark,
   FileText,
   BadgeCheck,
+  Send,
 } from "lucide-react";
 import {
   Dialog,
@@ -22,6 +23,7 @@ import {
 import { Button } from "@/components/ui/button";
 import type { InvoiceListItem } from "@/features/invoices/types";
 import { useOrganizationSettings } from "@/features/organizations/use-organization-settings";
+import { useSendInvoiceEmail } from "@/features/notifications/use-notifications";
 
 interface InvoicePrintModalProps {
   invoice: InvoiceListItem | null;
@@ -37,6 +39,27 @@ export function InvoicePrintModal({
   organizationName = "FlowPilot Enterprise Operations",
 }: InvoicePrintModalProps) {
   const { data: orgSettings } = useOrganizationSettings();
+  const sendEmailMutation = useSendInvoiceEmail();
+  const [emailStatus, setEmailStatus] = React.useState<{ sent: boolean; message?: string }>({
+    sent: false,
+  });
+
+  const handleSendEmail = async () => {
+    if (!invoice) return;
+    try {
+      const res = await sendEmailMutation.mutateAsync(invoice.id);
+      setEmailStatus({
+        sent: true,
+        message: `Statement delivered to ${res.deliveredTo}`,
+      });
+      setTimeout(() => setEmailStatus({ sent: false }), 6000);
+    } catch (err: unknown) {
+      setEmailStatus({
+        sent: false,
+        message: err instanceof Error ? err.message : "Failed to send email",
+      });
+    }
+  };
 
   if (!invoice) return null;
 
@@ -80,6 +103,21 @@ export function InvoicePrintModal({
             </div>
           </div>
           <div className="flex w-full items-center justify-end gap-2 sm:w-auto">
+            {emailStatus.sent && (
+              <span className="flex items-center gap-1 rounded-lg border border-emerald-500/30 bg-emerald-950/40 px-2.5 py-1 text-xs font-medium text-emerald-400">
+                <CheckCircle2 className="h-3 w-3 text-emerald-400" />
+                {emailStatus.message}
+              </span>
+            )}
+            <Button
+              type="button"
+              onClick={handleSendEmail}
+              disabled={sendEmailMutation.isPending}
+              className="h-9 gap-1.5 rounded-xl bg-emerald-600 px-3.5 text-xs font-semibold text-white shadow-sm hover:bg-emerald-500 active:scale-98 disabled:opacity-50"
+            >
+              <Send className="h-3.5 w-3.5" />
+              <span>{sendEmailMutation.isPending ? "Sending..." : "Send via Email"}</span>
+            </Button>
             <Button
               type="button"
               onClick={handlePrint}

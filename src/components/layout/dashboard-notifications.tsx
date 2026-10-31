@@ -1,14 +1,17 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import {
   Bell,
   CheckCheck,
   CreditCard,
   Calendar,
   Users,
-  ShieldCheck,
-  ExternalLink,
+  ShieldAlert,
+  Trash2,
+  CalendarX,
+  Layers,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,65 +20,98 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
-import { useDashboardActivities } from "@/features/dashboard/use-dashboard";
+import {
+  useNotifications,
+  useMarkNotificationAsRead,
+  useMarkAllNotificationsAsRead,
+  useClearReadNotifications,
+} from "@/features/notifications/use-notifications";
+import type { NotificationItem, NotificationType } from "@/features/notifications/types";
 
-interface NotificationItem {
-  id: string;
-  title: string;
-  description: string;
-  time: string;
-  read: boolean;
-  type: "billing" | "appointment" | "crm" | "security";
+function formatRelativeTime(dateString: string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffSec = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  if (isNaN(date.getTime())) return "Recently";
+  if (diffSec < 60) return "Just now";
+  if (diffSec < 3600) return `${Math.floor(diffSec / 60)}m ago`;
+  if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}h ago`;
+  if (diffSec < 604800) return `${Math.floor(diffSec / 86400)}d ago`;
+  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
 export function DashboardNotifications() {
-  const activitiesQuery = useDashboardActivities();
-  const [readIds, setReadIds] = React.useState<Set<string>>(() => new Set());
-  const [filter, setFilter] = React.useState<"all" | "unread">("all");
+  const router = useRouter();
+  const [filter, setFilter] = React.useState<"all" | "unread" | "bookings" | "invoices">("all");
 
-  const notifications: NotificationItem[] = React.useMemo(() => {
-    if (activitiesQuery.data && activitiesQuery.data.length > 0) {
-      return activitiesQuery.data.slice(0, 6).map((act, idx) => ({
-        id: `notif-${act.id}`,
-        title: act.service,
-        description: `${act.client} • ${act.refCode} (${act.amount})`,
-        time: act.date,
-        read: readIds.has(`notif-${act.id}`) || idx > 2,
-        type: (act.type === "invoices"
-          ? "billing"
-          : act.type === "appointments"
-            ? "appointment"
-            : "crm") as NotificationItem["type"],
-      }));
+  const { data: notificationData, isLoading } = useNotifications();
+  const markAsReadMutation = useMarkNotificationAsRead();
+  const markAllAsReadMutation = useMarkAllNotificationsAsRead();
+  const clearReadMutation = useClearReadNotifications();
+
+  const items: NotificationItem[] = React.useMemo(
+    () => notificationData?.items || [],
+    [notificationData?.items]
+  );
+  const unreadCount = notificationData?.unreadCount ?? 0;
+
+  const filteredItems = React.useMemo(() => {
+    switch (filter) {
+      case "unread":
+        return items.filter((n) => !n.isRead);
+      case "bookings":
+        return items.filter(
+          (n) =>
+            n.type === "BOOKING_CREATED" ||
+            n.type === "BOOKING_RESCHEDULED" ||
+            n.type === "BOOKING_CANCELLED"
+        );
+      case "invoices":
+        return items.filter((n) => n.type === "INVOICE_ISSUED" || n.type === "PAYMENT_RECEIVED");
+      case "all":
+      default:
+        return items;
     }
-    return [];
-  }, [activitiesQuery.data, readIds]);
+  }, [items, filter]);
 
-  const unreadCount = notifications.filter((n) => !n.read).length;
-
-  const markAllAsRead = (e: React.MouseEvent) => {
+  const handleItemClick = (item: NotificationItem, e: React.MouseEvent) => {
     e.stopPropagation();
-    setReadIds(new Set(notifications.map((n) => n.id)));
+    if (!item.isRead) {
+      markAsReadMutation.mutate(item.id);
+    }
+    if (item.actionUrl) {
+      router.push(item.actionUrl);
+    }
   };
 
-  const markItemAsRead = (id: string, e: React.MouseEvent) => {
+  const handleMarkAllRead = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setReadIds((prev) => new Set([...prev, id]));
+    markAllAsReadMutation.mutate();
   };
 
-  const displayedNotifications =
-    filter === "unread" ? notifications.filter((n) => !n.read) : notifications;
+  const handleClearRead = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    clearReadMutation.mutate();
+  };
 
-  const getTypeIcon = (type: NotificationItem["type"]) => {
+  const getTypeIcon = (type: NotificationType) => {
     switch (type) {
-      case "billing":
-        return <CreditCard className="h-4 w-4 text-emerald-600" />;
-      case "appointment":
+      case "BOOKING_CREATED":
+      case "BOOKING_RESCHEDULED":
         return <Calendar className="h-4 w-4 text-blue-600" />;
-      case "crm":
+      case "BOOKING_CANCELLED":
+        return <CalendarX className="h-4 w-4 text-rose-600" />;
+      case "INVOICE_ISSUED":
+      case "PAYMENT_RECEIVED":
+        return <CreditCard className="h-4 w-4 text-emerald-600" />;
+      case "TEAM_INVITE":
         return <Users className="h-4 w-4 text-indigo-600" />;
-      case "security":
-        return <ShieldCheck className="h-4 w-4 text-amber-600" />;
+      case "SECURITY_ALERT":
+        return <ShieldAlert className="h-4 w-4 text-amber-600" />;
+      case "SYSTEM":
+      default:
+        return <Layers className="h-4 w-4 text-slate-600" />;
     }
   };
 
@@ -107,38 +143,57 @@ export function DashboardNotifications() {
         <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
           <div className="flex items-center gap-2">
             <h3 className="text-sm font-bold text-slate-900">Notifications</h3>
-            {unreadCount > 0 && (
-              <Badge variant="secondary" className="h-5 px-1.5 text-[10px] font-semibold">
+            {unreadCount > 0 ? (
+              <Badge
+                variant="secondary"
+                className="h-5 bg-blue-50 px-1.5 text-[10px] font-semibold text-blue-600"
+              >
                 {unreadCount} new
               </Badge>
+            ) : (
+              <span className="text-[11px] font-normal text-slate-400">All caught up</span>
             )}
           </div>
-          {unreadCount > 0 && (
-            <button
-              type="button"
-              onClick={markAllAsRead}
-              className="text-primary hover:text-primary-hover text-xs font-medium hover:underline"
-            >
-              Mark all read
-            </button>
-          )}
+          <div className="flex items-center gap-2">
+            {unreadCount > 0 && (
+              <button
+                type="button"
+                onClick={handleMarkAllRead}
+                disabled={markAllAsReadMutation.isPending}
+                className="text-primary hover:text-primary-hover text-xs font-medium hover:underline disabled:opacity-50"
+              >
+                Mark all read
+              </button>
+            )}
+            {items.some((i) => i.isRead) && (
+              <button
+                type="button"
+                onClick={handleClearRead}
+                disabled={clearReadMutation.isPending}
+                title="Clear read notifications"
+                className="rounded-md p-1 text-slate-400 transition-colors hover:text-rose-600"
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Filter Pills */}
-        <div className="flex items-center gap-1 border-b border-slate-100 bg-slate-50/50 px-4 py-2 text-xs">
+        <div className="flex items-center gap-1 overflow-x-auto border-b border-slate-100 bg-slate-50/50 px-3 py-1.5 text-xs">
           <button
             type="button"
             onClick={(e) => {
               e.stopPropagation();
               setFilter("all");
             }}
-            className={`rounded-lg px-2.5 py-1 font-medium transition-colors ${
+            className={`rounded-lg px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-colors ${
               filter === "all"
                 ? "bg-white text-slate-900 shadow-xs"
                 : "text-slate-500 hover:text-slate-900"
             }`}
           >
-            All ({notifications.length})
+            All ({items.length})
           </button>
           <button
             type="button"
@@ -146,7 +201,7 @@ export function DashboardNotifications() {
               e.stopPropagation();
               setFilter("unread");
             }}
-            className={`rounded-lg px-2.5 py-1 font-medium transition-colors ${
+            className={`rounded-lg px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-colors ${
               filter === "unread"
                 ? "bg-white text-slate-900 shadow-xs"
                 : "text-slate-500 hover:text-slate-900"
@@ -154,23 +209,55 @@ export function DashboardNotifications() {
           >
             Unread ({unreadCount})
           </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setFilter("bookings");
+            }}
+            className={`rounded-lg px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-colors ${
+              filter === "bookings"
+                ? "bg-white text-slate-900 shadow-xs"
+                : "text-slate-500 hover:text-slate-900"
+            }`}
+          >
+            Bookings
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setFilter("invoices");
+            }}
+            className={`rounded-lg px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-colors ${
+              filter === "invoices"
+                ? "bg-white text-slate-900 shadow-xs"
+                : "text-slate-500 hover:text-slate-900"
+            }`}
+          >
+            Invoices
+          </button>
         </div>
 
         {/* Notifications List */}
-        <div className="max-h-[360px] divide-y divide-slate-100/80 overflow-y-auto">
-          {displayedNotifications.length === 0 ? (
+        <div className="max-h-[380px] divide-y divide-slate-100/80 overflow-y-auto">
+          {isLoading ? (
+            <div className="p-8 text-center text-xs text-slate-400">Loading notifications...</div>
+          ) : filteredItems.length === 0 ? (
             <div className="p-8 text-center text-xs text-slate-500">
               <CheckCheck className="mx-auto mb-2 h-6 w-6 text-emerald-500" />
               <p className="font-semibold text-slate-700">All caught up!</p>
-              <p className="mt-0.5">No unread notifications in this workspace.</p>
+              <p className="mt-0.5 text-slate-400">
+                No {filter !== "all" ? `${filter} ` : ""}notifications to display.
+              </p>
             </div>
           ) : (
-            displayedNotifications.map((item) => (
+            filteredItems.map((item) => (
               <div
                 key={item.id}
-                onClick={(e) => markItemAsRead(item.id, e)}
+                onClick={(e) => handleItemClick(item, e)}
                 className={`group flex cursor-pointer items-start gap-3 p-3.5 transition-colors hover:bg-slate-50/80 ${
-                  !item.read ? "bg-blue-50/30" : ""
+                  !item.isRead ? "bg-blue-50/35" : ""
                 }`}
               >
                 <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-slate-200/60 bg-slate-100 shadow-xs">
@@ -180,41 +267,25 @@ export function DashboardNotifications() {
                   <div className="flex items-center justify-between gap-1">
                     <p
                       className={`truncate text-xs ${
-                        !item.read ? "font-bold text-slate-900" : "font-medium text-slate-700"
+                        !item.isRead ? "font-bold text-slate-900" : "font-medium text-slate-700"
                       }`}
                     >
                       {item.title}
                     </p>
-                    <span className="shrink-0 text-[10px] text-slate-400">{item.time}</span>
+                    <span className="shrink-0 text-[10px] text-slate-400">
+                      {formatRelativeTime(item.createdAt)}
+                    </span>
                   </div>
                   <p className="mt-0.5 line-clamp-2 text-[11px] leading-relaxed text-slate-500">
-                    {item.description}
+                    {item.message}
                   </p>
                 </div>
-                {!item.read && (
+                {!item.isRead && (
                   <span className="bg-primary mt-2 h-1.5 w-1.5 shrink-0 rounded-full" />
                 )}
               </div>
             ))
           )}
-        </div>
-
-        {/* Footer */}
-        <div className="border-t border-slate-100 bg-slate-50/50 p-2 text-center">
-          <a
-            href="#activity"
-            onClick={(e) => {
-              const el = document.getElementById("activity");
-              if (el) {
-                e.preventDefault();
-                el.scrollIntoView({ behavior: "smooth" });
-              }
-            }}
-            className="text-primary hover:text-primary-hover inline-flex items-center justify-center gap-1.5 text-[11px] font-semibold"
-          >
-            <span>View all workspace activity</span>
-            <ExternalLink className="h-3 w-3" />
-          </a>
         </div>
       </DropdownMenuContent>
     </DropdownMenu>

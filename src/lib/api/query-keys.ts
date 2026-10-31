@@ -64,4 +64,9 @@ export const queryKeys = {
     customers: (timeframe?: string, orgId?: string) =>
       [...queryKeys.analytics.all, "customers", timeframe ?? "30d", orgId ?? "default"] as const,
   },
+  notifications: {
+    all: ["notifications"] as const,
+    list: (filters?: Record<string, unknown>, orgId?: string) =>
+      [...queryKeys.notifications.all, "list", filters ?? {}, orgId ?? "default"] as const,
+  },
 };
