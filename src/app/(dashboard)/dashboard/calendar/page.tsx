@@ -31,7 +31,11 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useWorkspaceSession } from "@/features/organizations/use-workspace-session";
-import { useAppointments, useStaffMembers } from "@/features/appointments/use-appointments";
+import {
+  useAppointments,
+  useAppointment,
+  useStaffMembers,
+} from "@/features/appointments/use-appointments";
 import { AppointmentQuickPeekDrawer } from "@/components/dashboard/appointments/appointment-quick-peek-drawer";
 import { BookingWizardModal } from "@/components/dashboard/appointments/booking-wizard-modal";
 import { RescheduleModal } from "@/components/dashboard/appointments/reschedule-modal";
@@ -92,8 +96,9 @@ export default function CalendarPage() {
   );
   const [isMobileRailOpen, setIsMobileRailOpen] = React.useState(false);
 
-  // Current time position for live laser indicator
-  // Auto-filter by staff member if passed in URL query parameter (?staffId=...)
+  // Auto-filter by staff member or auto-select appointment if passed in URL query parameter (?staffId=... or ?appointmentId=...)
+  const [urlApptId, setUrlApptId] = React.useState<string>("");
+
   React.useEffect(() => {
     if (typeof window !== "undefined") {
       const urlParams = new URLSearchParams(window.location.search);
@@ -104,8 +109,30 @@ export default function CalendarPage() {
         }, 0);
         return () => clearTimeout(timer);
       }
+      const apptParam = urlParams.get("appointmentId") || urlParams.get("selected");
+      if (apptParam) {
+        const timer = setTimeout(() => {
+          setUrlApptId(apptParam);
+        }, 0);
+        return () => clearTimeout(timer);
+      }
     }
   }, []);
+
+  const { data: targetAppointment } = useAppointment(urlApptId, currentOrganizationId);
+
+  // Auto-focus and open quick-peek drawer for targeted notification appointment
+  React.useEffect(() => {
+    if (targetAppointment && !selectedAppointment) {
+      const timer = setTimeout(() => {
+        setSelectedAppointment(targetAppointment as unknown as AppointmentListItem);
+        if (targetAppointment.scheduledAt) {
+          setCurrentDate(new Date(targetAppointment.scheduledAt));
+        }
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, [targetAppointment, selectedAppointment]);
 
   const [nowDate, setNowDate] = React.useState<Date>(() => new Date());
   React.useEffect(() => {

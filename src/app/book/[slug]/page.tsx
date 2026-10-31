@@ -31,6 +31,7 @@ import {
   usePublicBookingSlots,
   useBookPublicAppointment,
 } from "@/features/services/use-services";
+import { usePortalMe } from "@/features/portal/use-portal";
 import type {
   PublicServiceItem,
   PublicStaffItem,
@@ -110,6 +111,44 @@ export default function PublicBookingPortalPage() {
   const [customerPhone, setCustomerPhone] = React.useState("");
   const [notes, setNotes] = React.useState("");
   const [formError, setFormError] = React.useState<string | null>(null);
+
+  // Optional: Automatically pre-fill customer intake coordinates if logged into Client Portal
+  const { data: portalMe } = usePortalMe();
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlEmail = urlParams.get("clientEmail");
+    const urlName = urlParams.get("clientName");
+    if (urlEmail || urlName) {
+      const timer = setTimeout(() => {
+        if (urlEmail) {
+          setCustomerEmail(urlEmail);
+        }
+        if (urlName) {
+          setCustomerName(urlName);
+        }
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (portalMe?.customer) {
+      const timer = setTimeout(() => {
+        if (portalMe.customer.name) {
+          setCustomerName((prev) => prev || portalMe.customer.name);
+        }
+        if (portalMe.customer.email) {
+          setCustomerEmail((prev) => prev || portalMe.customer.email);
+        }
+        if (portalMe.customer.phone) {
+          setCustomerPhone((prev) => prev || portalMe.customer.phone || "");
+        }
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, [portalMe]);
 
   // Completed Confirmation State
   const [bookingConfirmation, setBookingConfirmation] = React.useState<PublicBookingResult | null>(
@@ -922,6 +961,15 @@ export default function PublicBookingPortalPage() {
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
               {/* Form Input Column */}
               <div className="space-y-4 lg:col-span-2">
+                {portalMe?.customer && (
+                  <div className="flex items-center gap-2.5 rounded-xl border border-blue-500/20 bg-blue-500/10 p-3 text-xs text-blue-700 dark:text-blue-300">
+                    <User className="h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" />
+                    <p>
+                      Signed in as <strong>{portalMe.customer.name}</strong> ({portalMe.customer.email}). This booking will automatically appear in your Client Portal.
+                    </p>
+                  </div>
+                )}
+
                 {formError && (
                   <div className="flex items-center gap-2.5 rounded-xl border border-rose-200 bg-rose-50 p-3.5 text-xs text-rose-700 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-300">
                     <AlertCircle className="h-4 w-4 shrink-0 text-rose-600" />
@@ -1196,7 +1244,9 @@ export default function PublicBookingPortalPage() {
                   asChild
                   className="cursor-pointer rounded-xl bg-blue-600 px-4 py-2 text-xs font-bold text-white shadow-md shadow-blue-500/20 hover:bg-blue-700"
                 >
-                  <Link href={`/portal/${slug}`}>Access Client Portal &rarr;</Link>
+                  <Link href={portalMe?.customer ? `/portal/${slug}/dashboard` : `/portal/${slug}`}>
+                    {portalMe?.customer ? "View in My Client Portal \u2192" : "Access Client Portal \u2192"}
+                  </Link>
                 </Button>
               </div>
             </div>

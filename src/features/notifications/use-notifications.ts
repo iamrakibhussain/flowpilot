@@ -22,8 +22,9 @@ export function useNotifications(params?: ListNotificationsParams) {
     queryKey: queryKeys.notifications.list(params as Record<string, unknown>, organizationId),
     queryFn: () => getNotifications(params, organizationId),
     enabled: Boolean(organizationId),
-    staleTime: 30 * 1000,
-    refetchInterval: 45 * 1000,
+    staleTime: 5 * 1000,
+    refetchInterval: 10 * 1000,
+    refetchOnWindowFocus: true,
   });
 }
 

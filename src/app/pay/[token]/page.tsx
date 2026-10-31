@@ -20,7 +20,12 @@ import {
   Zap,
   ChevronDown,
 } from "lucide-react";
-import { usePublicInvoice, useCreateCheckoutSession } from "@/features/payments/use-payments";
+import {
+  usePublicInvoice,
+  useCreateCheckoutSession,
+  useVerifyCheckoutSession,
+  useSettleSandboxPayment,
+} from "@/features/payments/use-payments";
 
 interface PageProps {
   params: Promise<{ token: string }>;
@@ -148,7 +153,11 @@ export default function PublicInvoiceCheckoutPage({ params }: PageProps) {
 
   const { data: invoice, isLoading, error, refetch } = usePublicInvoice(token);
   const createCheckoutMutation = useCreateCheckoutSession(token);
+  const verifyCheckoutMutation = useVerifyCheckoutSession(token);
+  const settleSandboxMutation = useSettleSandboxPayment(token);
 
+  const [verifyingSession, setVerifyingSession] = useState(false);
+  const [isTestSettling, setIsTestSettling] = useState(false);
   const [selectedMethod, setSelectedMethod] = useState<"card" | "apple_pay" | "bank">("card");
   const [cardNumber, setCardNumber] = useState("4242 4242 4242 4242");
   const [cardHolder, setCardHolder] = useState("");
@@ -156,6 +165,34 @@ export default function PublicInvoiceCheckoutPage({ params }: PageProps) {
   const [cardCvc, setCardCvc] = useState("888");
   const [isProcessing, setIsProcessing] = useState(false);
   const [showMobileBreakdown, setShowMobileBreakdown] = useState(false);
+
+  // Auto-reconcile Stripe checkout redirect if ?status=success is present in URL
+  const verifiedRef = React.useRef(false);
+  React.useEffect(() => {
+    if (typeof window === "undefined" || verifiedRef.current) return;
+    const urlParams = new URLSearchParams(window.location.search);
+    const statusParam = urlParams.get("status");
+    const sessionIdParam = urlParams.get("session_id");
+
+    if (statusParam === "success" && invoice && invoice.status !== "PAID") {
+      verifiedRef.current = true;
+      const timer = setTimeout(() => {
+        setVerifyingSession(true);
+        verifyCheckoutMutation
+          .mutateAsync(sessionIdParam || undefined)
+          .then(() => {
+            refetch();
+          })
+          .catch((err) => {
+            console.error("Session verification error:", err);
+          })
+          .finally(() => {
+            setVerifyingSession(false);
+          });
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, [invoice, verifyCheckoutMutation, refetch]);
 
   // Card brand detection
   const cardBrand = React.useMemo<"visa" | "mastercard" | "amex" | "discover" | "generic">(() => {
@@ -221,7 +258,18 @@ export default function PublicInvoiceCheckoutPage({ params }: PageProps) {
 
   // Handle payment execution
   const handlePay = async () => {
-    if (!invoice || !invoice.paymentSettings.isStripeConnected) return;
+    if (!invoice) return;
+
+    if (selectedMethod === "bank") {
+      alert(
+        "Please use the bank wire transfer details displayed below. Include reference INV-" +
+          invoice.invoiceNumber +
+          " when initiating the wire from your banking portal."
+      );
+      return;
+    }
+
+    if (!invoice.paymentSettings.isStripeConnected) return;
     setIsProcessing(true);
 
     try {
@@ -244,6 +292,22 @@ export default function PublicInvoiceCheckoutPage({ params }: PageProps) {
     }
   };
 
+  // Instant sandbox test pay simulation
+  const handleInstantSandboxPay = async () => {
+    if (!invoice || isTestSettling) return;
+    setIsTestSettling(true);
+    try {
+      await settleSandboxMutation.mutateAsync("card_test_4242");
+      await refetch();
+    } catch (err: unknown) {
+      console.error("Test settlement error:", err);
+      const axiosErr = err as { response?: { data?: { message?: string } }; message?: string };
+      alert(axiosErr.response?.data?.message || "Test settlement failed. Please try again.");
+    } finally {
+      setIsTestSettling(false);
+    }
+  };
+
   // Print invoice receipt
   const handlePrint = () => {
     if (typeof window !== "undefined") {
@@ -251,19 +315,35 @@ export default function PublicInvoiceCheckoutPage({ params }: PageProps) {
     }
   };
 
-  if (isLoading) {
+  if (isLoading || verifyingSession) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-slate-950 p-4">
         <div className="flex flex-col items-center space-y-4 text-center">
           <div className="relative">
             <div className="flex h-16 w-16 animate-pulse items-center justify-center rounded-2xl border border-indigo-500/20 bg-indigo-500/10">
-              <Receipt className="h-8 w-8 text-indigo-400" />
+              {verifyingSession ? (
+                <ShieldCheck className="h-8 w-8 text-emerald-400" />
+              ) : (
+                <Receipt className="h-8 w-8 text-indigo-400" />
+              )}
             </div>
-            <RefreshCw className="absolute -top-1 -right-1 h-5 w-5 animate-spin text-indigo-400" />
+            <RefreshCw
+              className={`absolute -top-1 -right-1 h-5 w-5 animate-spin ${
+                verifyingSession ? "text-emerald-400" : "text-indigo-400"
+              }`}
+            />
           </div>
           <div className="space-y-1">
-            <h2 className="text-xl font-semibold text-white">Loading Invoice Statement</h2>
-            <p className="text-sm text-slate-400">Verifying secure payment session...</p>
+            <h2 className="text-xl font-semibold text-white">
+              {verifyingSession
+                ? "Verifying Payment with Stripe"
+                : "Loading Invoice Statement"}
+            </h2>
+            <p className="text-sm text-slate-400">
+              {verifyingSession
+                ? "Reconciling transaction ledger and confirming payment status..."
+                : "Verifying secure payment session..."}
+            </p>
           </div>
         </div>
       </div>
@@ -834,7 +914,7 @@ export default function PublicInvoiceCheckoutPage({ params }: PageProps) {
                   </div>
                 )}
 
-                {/* Stripe Test Mode Notice with 1-Click Autofill */}
+                {/* Stripe Test Mode Notice with 1-Click Autofill & 1-Click Instant Settle */}
                 {invoice.paymentSettings.isTestMode && (
                   <div className="mb-6 flex flex-col gap-3 rounded-xl border border-amber-500/25 bg-amber-500/10 p-3.5 text-xs text-amber-200 shadow-inner sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex items-start space-x-2.5">
@@ -848,14 +928,29 @@ export default function PublicInvoiceCheckoutPage({ params }: PageProps) {
                         </span>
                       </div>
                     </div>
-                    <button
-                      type="button"
-                      onClick={handleAutofillTestCard}
-                      className="flex w-full shrink-0 cursor-pointer items-center justify-center space-x-1.5 rounded-lg border border-amber-500/30 bg-amber-500/20 px-3 py-2 text-xs font-semibold text-amber-200 transition hover:bg-amber-500/30 active:scale-95 sm:w-auto sm:py-1.5"
-                    >
-                      <Zap className="h-3.5 w-3.5 text-amber-300" />
-                      <span>Auto-fill 4242 Test Card</span>
-                    </button>
+                    <div className="flex flex-wrap items-center gap-2 sm:shrink-0">
+                      <button
+                        type="button"
+                        onClick={handleAutofillTestCard}
+                        className="flex cursor-pointer items-center justify-center space-x-1.5 rounded-lg border border-amber-500/30 bg-amber-500/20 px-3 py-1.5 text-xs font-semibold text-amber-200 transition hover:bg-amber-500/30 active:scale-95"
+                      >
+                        <Zap className="h-3.5 w-3.5 text-amber-300" />
+                        <span>Auto-fill 4242</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleInstantSandboxPay}
+                        disabled={isTestSettling}
+                        className="flex cursor-pointer items-center justify-center space-x-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/20 px-3 py-1.5 text-xs font-semibold text-emerald-300 transition hover:bg-emerald-500/30 active:scale-95 disabled:opacity-60"
+                      >
+                        {isTestSettling ? (
+                          <RefreshCw className="h-3.5 w-3.5 animate-spin text-emerald-300" />
+                        ) : (
+                          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                        )}
+                        <span>1-Click Test Settle</span>
+                      </button>
+                    </div>
                   </div>
                 )}
 
@@ -863,7 +958,7 @@ export default function PublicInvoiceCheckoutPage({ params }: PageProps) {
                 <button
                   type="button"
                   onClick={handlePay}
-                  disabled={isProcessing}
+                  disabled={isProcessing || isTestSettling}
                   className="flex w-full cursor-pointer items-center justify-center space-x-2 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-700 px-4 py-4 text-sm font-semibold text-white shadow-xl shadow-indigo-600/25 transition hover:from-blue-500 hover:to-indigo-600 active:scale-[0.99] disabled:opacity-60"
                 >
                   {isProcessing ? (
@@ -875,10 +970,12 @@ export default function PublicInvoiceCheckoutPage({ params }: PageProps) {
                     <>
                       <Lock className="h-4 w-4 text-indigo-200" />
                       <span>
-                        {invoice.paymentSettings.isTestMode
+                        {selectedMethod === "bank"
+                          ? "View Bank Wire Details"
+                          : invoice.paymentSettings.isTestMode
                           ? "Pay in Test Mode "
                           : "Proceed to Payment "}
-                        {formatCurrency(invoice.total, currency)}
+                        {selectedMethod !== "bank" && formatCurrency(invoice.total, currency)}
                       </span>
                       <ArrowRight className="ml-1 h-4 w-4" />
                     </>
@@ -913,7 +1010,7 @@ export default function PublicInvoiceCheckoutPage({ params }: PageProps) {
             <button
               type="button"
               onClick={handlePay}
-              disabled={isProcessing}
+              disabled={isProcessing || isTestSettling}
               className="flex shrink-0 cursor-pointer items-center space-x-2 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-700 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-600/30 transition active:scale-95 disabled:opacity-60"
             >
               {isProcessing ? (

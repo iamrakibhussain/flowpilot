@@ -318,9 +318,14 @@ export default function ClientPortalDashboardPage() {
               <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 font-bold text-white shadow-2xs">
                 {customer.name.charAt(0).toUpperCase()}
               </div>
-              <span className="hidden font-semibold text-slate-800 sm:inline dark:text-slate-200">
-                {customer.name}
-              </span>
+              <div className="hidden flex-col text-left leading-tight sm:flex">
+                <span className="font-bold text-slate-800 dark:text-slate-200">
+                  {customer.name}
+                </span>
+                <span className="font-mono text-[10px] text-slate-500">
+                  {customer.email}
+                </span>
+              </div>
             </div>
             <Button
               variant="outline"
@@ -385,7 +390,11 @@ export default function ClientPortalDashboardPage() {
 
           <div className="relative z-10 mt-4 sm:mt-0">
             <Button
-              onClick={() => router.push(`/book/${slug}`)}
+              onClick={() =>
+                router.push(
+                  `/book/${slug}?clientEmail=${encodeURIComponent(customer.email)}&clientName=${encodeURIComponent(customer.name)}`
+                )
+              }
               style={{ backgroundColor: brandColor }}
               className="h-11 w-full shrink-0 cursor-pointer gap-2 rounded-xl text-xs font-bold text-white shadow-md shadow-blue-500/20 transition hover:opacity-90 sm:h-10 sm:w-auto sm:text-sm"
             >
@@ -466,7 +475,11 @@ export default function ClientPortalDashboardPage() {
                     session?
                   </p>
                   <Button
-                    onClick={() => router.push(`/book/${slug}`)}
+                    onClick={() =>
+                      router.push(
+                        `/book/${slug}?clientEmail=${encodeURIComponent(customer.email)}&clientName=${encodeURIComponent(customer.name)}`
+                      )
+                    }
                     style={{ backgroundColor: brandColor }}
                     className="h-9 gap-1.5 rounded-lg text-xs text-white"
                   >
