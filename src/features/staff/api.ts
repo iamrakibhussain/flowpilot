@@ -7,6 +7,10 @@ import type {
   CreateStaffPayload,
   UpdateStaffPayload,
   StaffStatus,
+  BlockedTimeItem,
+  CreateBlockedTimePayload,
+  UpdateBlockedTimePayload,
+  BlockedTimeFilterParams,
 } from "./types";
 
 /**
@@ -106,5 +110,65 @@ export async function deleteStaff(
     success: boolean;
     unassignedAppointmentsCount: number;
   }>(`/staff/${id}`, { organizationId });
+  return response.data;
+}
+
+/**
+ * Fetch blocked time intervals (breaks, holidays, leaves)
+ */
+export async function getBlockedTimes(
+  params?: BlockedTimeFilterParams,
+  organizationId?: string
+): Promise<BlockedTimeItem[]> {
+  const queryParams: Record<string, string | undefined> = {};
+  if (params?.staffMemberId) queryParams.staffMemberId = params.staffMemberId;
+  if (params?.startDate) queryParams.startDate = params.startDate;
+  if (params?.endDate) queryParams.endDate = params.endDate;
+
+  const response = await apiClient.get<BlockedTimeItem[]>("/staff/blocked-time", {
+    params: queryParams,
+    organizationId,
+  });
+  return response.data;
+}
+
+/**
+ * Create a new blocked time entry or company holiday
+ */
+export async function createBlockedTime(
+  payload: CreateBlockedTimePayload,
+  organizationId?: string
+): Promise<BlockedTimeItem> {
+  const response = await apiClient.post<BlockedTimeItem>("/staff/blocked-time", payload, {
+    organizationId,
+  });
+  return response.data;
+}
+
+/**
+ * Update an existing blocked time entry
+ */
+export async function updateBlockedTime(
+  id: string,
+  payload: UpdateBlockedTimePayload,
+  organizationId?: string
+): Promise<BlockedTimeItem> {
+  const response = await apiClient.patch<BlockedTimeItem>(`/staff/blocked-time/${id}`, payload, {
+    organizationId,
+  });
+  return response.data;
+}
+
+/**
+ * Delete a blocked time entry
+ */
+export async function deleteBlockedTime(
+  id: string,
+  organizationId?: string
+): Promise<{ success: boolean; id: string }> {
+  const response = await apiClient.delete<{ success: boolean; id: string }>(
+    `/staff/blocked-time/${id}`,
+    { organizationId }
+  );
   return response.data;
 }

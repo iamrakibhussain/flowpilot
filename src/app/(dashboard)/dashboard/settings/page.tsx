@@ -37,6 +37,8 @@ import {
   Activity,
   Mail,
   Send,
+  Plus,
+  CalendarX,
 } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
@@ -69,6 +71,9 @@ import {
   useCheckSlug,
   useWorkspaceAuditLogs,
 } from "@/features/organizations/use-organization-settings";
+import { BlockTimeModal } from "@/components/dashboard/appointments/block-time-modal";
+import { useBlockedTimes, useDeleteBlockedTime } from "@/features/staff/use-blocked-time";
+import type { BlockedTimeItem } from "@/features/staff/types";
 import type { UpdateOrganizationSettingsPayload } from "@/features/organizations/types";
 import { ApiClientError } from "@/lib/api/errors";
 
@@ -154,6 +159,14 @@ export default function WorkspaceSettingsPage() {
   const [activeTab, setActiveTab] = React.useState<SettingsTab>("general");
   const [copiedLink, setCopiedLink] = React.useState(false);
   const [copiedCname, setCopiedCname] = React.useState(false);
+
+  // Company Holidays & Closures State
+  const [isCompanyHolidayModalOpen, setIsCompanyHolidayModalOpen] = React.useState(false);
+  const deleteBlockedTimeMutation = useDeleteBlockedTime();
+  const { data: allBlockedTimes = [], isLoading: isLoadingBlockedTimes } = useBlockedTimes();
+  const companyHolidays = React.useMemo(() => {
+    return allBlockedTimes.filter((b: BlockedTimeItem) => !b.staffMemberId || b.type === "COMPANY_HOLIDAY");
+  }, [allBlockedTimes]);
 
   // Settings Queries & Mutations
   const { data: settings, isLoading: isSettingsLoading } = useOrganizationSettings();
@@ -1662,6 +1675,7 @@ export default function WorkspaceSettingsPage() {
               </div>
             </CardContent>
           </Card>
+
         </div>
       )}
 
@@ -1826,6 +1840,132 @@ export default function WorkspaceSettingsPage() {
                   </p>
                 </div>
               </div>
+            </CardContent>
+          </Card>
+
+{/* Company Holidays & Office Closures Manager Card */}
+          <Card className="border-border/80 from-card to-card/95 bg-gradient-to-b shadow-xs overflow-hidden">
+            <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3.5 p-4 sm:p-6 pb-3 sm:pb-4 border-b border-border/40">
+              <div className="flex items-start gap-3 min-w-0">
+                <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl border border-rose-500/20 bg-rose-500/10 text-rose-600 shadow-2xs dark:text-rose-400 mt-0.5 sm:mt-0">
+                  <CalendarX className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
+                </div>
+                <div className="min-w-0 flex-1 space-y-1">
+                  <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                    <CardTitle className="text-foreground text-sm sm:text-base font-bold tracking-tight">
+                      Company Holidays &amp; Office Closures
+                    </CardTitle>
+                    <Badge variant="outline" className="border-rose-500/30 bg-rose-500/10 text-rose-600 dark:text-rose-400 text-[10px] font-bold shrink-0">
+                      {companyHolidays.length} Closed Days
+                    </Badge>
+                  </div>
+                  <CardDescription className="text-muted-foreground text-[11px] sm:text-xs leading-relaxed">
+                    Workspace-wide holidays shut down public client self-scheduling and staff calendars automatically.
+                  </CardDescription>
+                </div>
+              </div>
+
+              {isOwnerOrAdmin && (
+                <Button
+                  type="button"
+                  size="sm"
+                  onClick={() => setIsCompanyHolidayModalOpen(true)}
+                  className="w-full sm:w-auto h-10 sm:h-9 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow-xs cursor-pointer gap-1.5 justify-center active:scale-[0.98] transition-all"
+                >
+                  <Plus className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
+                  <span>Add Company Holiday</span>
+                </Button>
+              )}
+            </CardHeader>
+
+            <CardContent className="p-4 sm:p-6 pt-3.5 sm:pt-4 space-y-3 sm:space-y-4">
+              {isLoadingBlockedTimes ? (
+                <div className="p-6 text-center text-xs text-muted-foreground">Loading workspace holidays...</div>
+              ) : companyHolidays.length === 0 ? (
+                <div className="border-border/60 bg-muted/20 rounded-xl sm:rounded-2xl border p-4 sm:p-6 text-center">
+                  <div className="flex h-9 w-9 sm:h-10 sm:w-10 mx-auto mb-2 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-500">
+                    <Check className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
+                  </div>
+                  <h4 className="text-foreground text-xs sm:text-sm font-bold">No Scheduled Office Closures</h4>
+                  <p className="text-muted-foreground text-[11px] sm:text-xs mt-1 max-w-md mx-auto leading-relaxed">
+                    Your business currently accepts bookings year-round during active working hours. Add official holidays (e.g., National Holidays, Eid, Christmas, or Summer Closures) to black out dates workspace-wide.
+                  </p>
+                  {isOwnerOrAdmin && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setIsCompanyHolidayModalOpen(true)}
+                      className="mt-3.5 w-full sm:w-auto h-9 sm:h-8.5 border-border text-xs font-semibold rounded-xl cursor-pointer justify-center"
+                    >
+                      <Plus className="h-3.5 w-3.5 mr-1 text-rose-500" />
+                      <span>Schedule First Holiday</span>
+                    </Button>
+                  )}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-3">
+                  {companyHolidays.map((holiday: BlockedTimeItem) => {
+                    const startDate = new Date(holiday.startTime);
+                    const endDate = new Date(holiday.endTime);
+                    const formattedDate = startDate.toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    });
+                    const isAllDay = holiday.allDay;
+                    const formattedTime = isAllDay
+                      ? "All Day Closure"
+                      : `${startDate.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })} – ${endDate.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}`;
+
+                    return (
+                      <div
+                        key={holiday.id}
+                        className="border-border/60 bg-muted/20 hover:bg-muted/30 flex items-start justify-between rounded-xl sm:rounded-2xl border p-3 sm:p-4 transition-all"
+                      >
+                        <div className="flex items-start gap-2.5 sm:gap-3 min-w-0 flex-1 pr-2">
+                          <div className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-xl border border-rose-500/20 bg-rose-500/10 text-rose-600 dark:text-rose-400 mt-0.5">
+                            <Building2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <span className="text-foreground block truncate text-xs sm:text-sm font-bold">
+                              {holiday.title}
+                            </span>
+                            <div className="text-muted-foreground flex flex-wrap items-center gap-1.5 text-[11px] sm:text-xs font-medium mt-0.5">
+                              <span className="font-semibold text-foreground/80">{formattedDate}</span>
+                              <span>•</span>
+                              <span className="inline-flex items-center gap-1 text-rose-600 dark:text-rose-400 font-bold bg-rose-500/10 border border-rose-500/20 px-1.5 py-0.5 rounded-md text-[10px]">
+                                {formattedTime}
+                              </span>
+                            </div>
+                            {holiday.notes && (
+                              <p className="text-muted-foreground/80 mt-1 line-clamp-2 text-[10px] sm:text-[11px] italic bg-background/50 border border-border/40 rounded-lg p-1.5">
+                                &quot;{holiday.notes}&quot;
+                              </p>
+                            )}
+                          </div>
+                        </div>
+
+                        {isOwnerOrAdmin && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            onClick={async () => {
+                              await deleteBlockedTimeMutation.mutateAsync(holiday.id);
+                            }}
+                            disabled={deleteBlockedTimeMutation.isPending}
+                            title="Remove holiday and reopen workspace"
+                            className="text-muted-foreground hover:text-rose-600 hover:bg-rose-500/10 h-7 w-7 sm:h-8 sm:w-8 shrink-0 rounded-lg sm:rounded-xl cursor-pointer active:scale-95"
+                          >
+                            <Trash2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                          </Button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -2561,6 +2701,12 @@ export default function WorkspaceSettingsPage() {
           </div>
         </div>
       )}
+
+      <BlockTimeModal
+        isOpen={isCompanyHolidayModalOpen}
+        onClose={() => setIsCompanyHolidayModalOpen(false)}
+        defaultType="COMPANY_HOLIDAY"
+      />
     </div>
   );
 }

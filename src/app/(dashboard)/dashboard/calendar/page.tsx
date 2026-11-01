@@ -39,6 +39,20 @@ import {
 } from "@/features/appointments/use-appointments";
 import { AppointmentQuickPeekDrawer } from "@/components/dashboard/appointments/appointment-quick-peek-drawer";
 import { BookingWizardModal } from "@/components/dashboard/appointments/booking-wizard-modal";
+import { BlockTimeModal } from "@/components/dashboard/appointments/block-time-modal";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import {
+  useBlockedTimes,
+  useDeleteBlockedTime,
+} from "@/features/staff/use-blocked-time";
+import type { BlockedTimeItem } from "@/features/staff/types";
+import { Lock } from "lucide-react";
 import { RescheduleModal } from "@/components/dashboard/appointments/reschedule-modal";
 import { InvoiceBuilderModal } from "@/components/dashboard/invoices/invoice-builder-modal";
 import type {
@@ -87,6 +101,7 @@ function CalendarContent() {
   const [selectedStaffId, setSelectedStaffId] = React.useState<string>("ALL");
   const [selectedStatus, setSelectedStatus] = React.useState<string>("ALL");
   const [selectedType, setSelectedType] = React.useState<string>("ALL");
+  const [availabilityFilter, setAvailabilityFilter] = React.useState<"ALL" | "APPOINTMENTS" | "BLOCKED">("ALL");
 
   // React to staffParam dynamically
   React.useEffect(() => {
@@ -111,6 +126,9 @@ function CalendarContent() {
     null
   );
   const [isMobileRailOpen, setIsMobileRailOpen] = React.useState(false);
+  const [isBlockTimeModalOpen, setIsBlockTimeModalOpen] = React.useState(false);
+  const [selectedBlockedTime, setSelectedBlockedTime] = React.useState<BlockedTimeItem | null>(null);
+  const deleteBlockedTimeMutation = useDeleteBlockedTime();
 
   const { data: targetAppointment } = useAppointment(urlApptId, currentOrganizationId);
 
@@ -178,6 +196,25 @@ function CalendarContent() {
     },
     currentOrganizationId
   );
+
+  const { data: blockedTimes = [] } = useBlockedTimes(
+    {
+      startDate: viewMode === "month" ? undefined : startDateStr,
+      endDate: viewMode === "month" ? undefined : endDateStr,
+      staffMemberId: selectedStaffId !== "ALL" ? selectedStaffId : undefined,
+    },
+    currentOrganizationId
+  );
+
+  const displayAppointments = React.useMemo(() => {
+    if (availabilityFilter === "BLOCKED") return [];
+    return appointments;
+  }, [appointments, availabilityFilter]);
+
+  const displayBlockedTimes = React.useMemo(() => {
+    if (availabilityFilter === "APPOINTMENTS") return [];
+    return blockedTimes;
+  }, [blockedTimes, availabilityFilter]);
 
   // Auto-focus and open quick-peek drawer for targeted notification appointment directly
   React.useEffect(() => {
@@ -258,6 +295,9 @@ function CalendarContent() {
       } else if (e.key === "a" || e.key === "A") {
         e.preventDefault();
         setViewMode("agenda");
+      } else if (e.key === "b" || e.key === "B") {
+        e.preventDefault();
+        setIsBlockTimeModalOpen(true);
       } else if (e.key === "c" || e.key === "C" || e.key === "n" || e.key === "N") {
         e.preventDefault();
         setBookingInitialDate(undefined);
@@ -358,18 +398,32 @@ function CalendarContent() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:flex-nowrap">
           <Button
             size="sm"
             variant="outline"
             onClick={() => refetch()}
             disabled={isRefetching}
-            className="border-border/80 bg-background/80 hover:bg-muted/60 text-muted-foreground hover:text-foreground cursor-pointer rounded-xl text-xs font-semibold shadow-2xs transition-all active:scale-95"
+            className="border-border/80 bg-background/80 hover:bg-muted/60 text-muted-foreground hover:text-foreground h-9 cursor-pointer rounded-xl px-3 text-xs font-semibold shadow-2xs transition-all active:scale-95"
+            title="Synchronize Calendar"
           >
             <RefreshCw
-              className={`mr-1.5 h-3.5 w-3.5 ${isRefetching ? "text-primary animate-spin" : "text-muted-foreground"}`}
+              className={`h-3.5 w-3.5 sm:mr-1.5 ${isRefetching ? "text-primary animate-spin" : "text-muted-foreground"}`}
             />
-            <span>Sync</span>
+            <span className="hidden sm:inline">Sync</span>
+          </Button>
+
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => setIsBlockTimeModalOpen(true)}
+            className="border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 h-9 flex-1 sm:flex-initial cursor-pointer rounded-xl px-3 text-xs font-bold shadow-2xs transition-all active:scale-95 justify-center"
+          >
+            <Lock className="mr-1.5 h-3.5 w-3.5 text-amber-500" />
+            <span>Block Time</span>
+            <kbd className="ml-2 hidden rounded bg-amber-500/20 px-1.5 py-0.5 font-mono text-[10px] font-bold text-amber-700 dark:text-amber-300 border border-amber-500/30 sm:inline">
+              B
+            </kbd>
           </Button>
 
           <Button
@@ -379,10 +433,10 @@ function CalendarContent() {
               setBookingInitialTime(undefined);
               setIsBookingModalOpen(true);
             }}
-            className="group cursor-pointer rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-4 text-xs font-bold text-white shadow-md shadow-blue-500/25 transition-all hover:from-blue-700 hover:to-indigo-700 hover:shadow-lg hover:shadow-blue-500/30 active:scale-95"
+            className="group h-9 flex-1 sm:flex-initial cursor-pointer rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-3.5 text-xs font-bold text-white shadow-md shadow-blue-500/25 transition-all hover:from-blue-700 hover:to-indigo-700 hover:shadow-lg hover:shadow-blue-500/30 active:scale-95 justify-center"
           >
             <Plus className="mr-1.5 h-4 w-4 transition-transform group-hover:rotate-90" />
-            <span>Book Appointment</span>
+            <span className="truncate">Book Appointment</span>
             <kbd className="ml-2 hidden rounded bg-blue-500/40 px-1 py-0.5 font-mono text-[10px] font-bold text-white/90 sm:inline">
               C
             </kbd>
@@ -841,7 +895,7 @@ function CalendarContent() {
           <Card className="border-border/80 from-card to-card/90 rounded-2xl border bg-gradient-to-b p-3.5 shadow-2xs backdrop-blur-xl">
             <div className="flex flex-col gap-3.5 lg:flex-row lg:items-center lg:justify-between">
               {/* Date Navigator */}
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center justify-between gap-2 sm:justify-start sm:gap-3">
                 <div className="border-border/80 bg-muted/40 flex items-center rounded-xl border p-0.5 shadow-2xs">
                   <button
                     type="button"
@@ -854,7 +908,7 @@ function CalendarContent() {
                   <button
                     type="button"
                     onClick={handleToday}
-                    className="text-foreground hover:text-primary cursor-pointer px-3 py-1 text-xs font-extrabold transition-colors"
+                    className="text-foreground hover:text-primary cursor-pointer px-2.5 sm:px-3 py-1 text-xs font-extrabold transition-colors"
                   >
                     Today
                   </button>
@@ -868,15 +922,15 @@ function CalendarContent() {
                   </button>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <div className="bg-primary/10 text-primary flex h-7 w-7 items-center justify-center rounded-lg">
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="bg-primary/10 text-primary flex h-7 w-7 shrink-0 items-center justify-center rounded-lg">
                     <CalendarIcon className="h-4 w-4" />
                   </div>
-                  <h2 className="text-foreground text-sm font-black tracking-tight sm:text-base">
+                  <h2 className="text-foreground truncate text-xs font-black tracking-tight sm:text-base">
                     {viewMode === "day"
                       ? currentDate.toLocaleDateString("en-US", {
-                          weekday: "long",
-                          month: "long",
+                          weekday: "short",
+                          month: "short",
                           day: "numeric",
                           year: "numeric",
                         })
@@ -897,9 +951,9 @@ function CalendarContent() {
                 </div>
               </div>
 
-              {/* Sliding Pill Segmented View Switcher (Linear / macOS Native Style) */}
-              <div className="flex items-center gap-2">
-                <div className="border-border/80 bg-muted/40 flex items-center rounded-xl border p-1 shadow-inner">
+              {/* Sliding Pill Segmented View Switcher */}
+              <div className="flex items-center w-full lg:w-auto">
+                <div className="border-border/80 bg-muted/40 flex w-full lg:w-auto items-center rounded-xl border p-1 shadow-inner">
                   {VIEW_TABS.map((tab) => {
                     const isActive = viewMode === tab.id;
                     const Icon = tab.icon;
@@ -908,7 +962,7 @@ function CalendarContent() {
                         key={tab.id}
                         type="button"
                         onClick={() => setViewMode(tab.id)}
-                        className={`relative inline-flex cursor-pointer items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-colors ${
+                        className={`relative flex-1 lg:flex-initial inline-flex justify-center cursor-pointer items-center gap-1 sm:gap-1.5 rounded-lg px-2 sm:px-3 py-1.5 text-xs font-bold transition-colors ${
                           isActive
                             ? "text-primary font-black"
                             : "text-muted-foreground hover:text-foreground"
@@ -922,7 +976,7 @@ function CalendarContent() {
                           />
                         )}
                         <Icon className="relative z-10 h-3.5 w-3.5" />
-                        <span className="relative z-10">{tab.label}</span>
+                        <span className="relative z-10 text-[11px] sm:text-xs">{tab.label}</span>
                         <kbd
                           className={`relative z-10 hidden rounded px-1 font-mono text-[9px] sm:inline ${
                             isActive
@@ -940,16 +994,16 @@ function CalendarContent() {
             </div>
 
             {/* Interactive Filters Strip */}
-            <div className="border-border/60 mt-3.5 flex flex-wrap items-center gap-2.5 border-t pt-3">
+            <div className="border-border/60 mt-3.5 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2.5 border-t pt-3">
               {/* Search Box */}
-              <div className="relative min-w-[200px] flex-1">
+              <div className="relative w-full sm:min-w-[200px] sm:flex-1">
                 <Search className="text-muted-foreground absolute top-2.5 left-3 h-3.5 w-3.5" />
                 <Input
                   type="text"
                   placeholder="Search client, title, specialist..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="border-border/80 bg-background text-foreground focus:border-primary h-9 rounded-xl pl-9 text-xs font-medium shadow-2xs transition-all"
+                  className="border-border/80 bg-background text-foreground focus:border-primary h-9 rounded-xl pl-9 text-xs font-medium shadow-2xs transition-all w-full"
                 />
                 {search && (
                   <button
@@ -962,37 +1016,55 @@ function CalendarContent() {
                 )}
               </div>
 
-              {/* Status Select */}
-              <div className="relative">
-                <select
-                  value={selectedStatus}
-                  onChange={(e) => setSelectedStatus(e.target.value)}
-                  className="border-border/80 bg-background text-foreground hover:border-border focus:border-primary h-9 cursor-pointer appearance-none rounded-xl border pr-8 pl-8 text-xs font-bold shadow-2xs transition-colors focus:outline-none"
-                >
-                  <option value="ALL">All Statuses</option>
-                  <option value="CONFIRMED">Confirmed</option>
-                  <option value="COMPLETED">Completed</option>
-                  <option value="PENDING">Pending</option>
-                  <option value="CANCELLED">Cancelled</option>
-                </select>
-                <div className="bg-primary pointer-events-none absolute top-3.5 left-3 h-2 w-2 rounded-full" />
-                <ChevronRight className="text-muted-foreground pointer-events-none absolute top-2.5 right-2.5 h-3.5 w-3.5 rotate-90" />
-              </div>
+              {/* Status, Format & Availability Selects */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full lg:w-auto">
+                {/* Status Select */}
+                <div className="relative">
+                  <select
+                    value={selectedStatus}
+                    onChange={(e) => setSelectedStatus(e.target.value)}
+                    className="border-border/80 bg-background text-foreground hover:border-border focus:border-primary h-9 w-full cursor-pointer appearance-none rounded-xl border pr-8 pl-8 text-xs font-bold shadow-2xs transition-colors focus:outline-none"
+                  >
+                    <option value="ALL">All Statuses</option>
+                    <option value="CONFIRMED">Confirmed</option>
+                    <option value="COMPLETED">Completed</option>
+                    <option value="PENDING">Pending</option>
+                    <option value="CANCELLED">Cancelled</option>
+                  </select>
+                  <div className="bg-primary pointer-events-none absolute top-3.5 left-3 h-2 w-2 rounded-full" />
+                  <ChevronRight className="text-muted-foreground pointer-events-none absolute top-2.5 right-2.5 h-3.5 w-3.5 rotate-90" />
+                </div>
 
-              {/* Meeting Format Select */}
-              <div className="relative">
-                <select
-                  value={selectedType}
-                  onChange={(e) => setSelectedType(e.target.value)}
-                  className="border-border/80 bg-background text-foreground hover:border-border focus:border-primary h-9 cursor-pointer appearance-none rounded-xl border pr-8 pl-8 text-xs font-bold shadow-2xs transition-colors focus:outline-none"
-                >
-                  <option value="ALL">All Formats</option>
-                  <option value="VIDEO">Video Call</option>
-                  <option value="IN_PERSON">In-Person</option>
-                  <option value="PHONE">Phone Call</option>
-                </select>
-                <Video className="text-muted-foreground pointer-events-none absolute top-2.5 left-2.5 h-3.5 w-3.5" />
-                <ChevronRight className="text-muted-foreground pointer-events-none absolute top-2.5 right-2.5 h-3.5 w-3.5 rotate-90" />
+                {/* Meeting Format Select */}
+                <div className="relative">
+                  <select
+                    value={selectedType}
+                    onChange={(e) => setSelectedType(e.target.value)}
+                    className="border-border/80 bg-background text-foreground hover:border-border focus:border-primary h-9 w-full cursor-pointer appearance-none rounded-xl border pr-8 pl-8 text-xs font-bold shadow-2xs transition-colors focus:outline-none"
+                  >
+                    <option value="ALL">All Formats</option>
+                    <option value="VIDEO">Video Call</option>
+                    <option value="IN_PERSON">In-Person</option>
+                    <option value="PHONE">Phone Call</option>
+                  </select>
+                  <Video className="text-muted-foreground pointer-events-none absolute top-2.5 left-2.5 h-3.5 w-3.5" />
+                  <ChevronRight className="text-muted-foreground pointer-events-none absolute top-2.5 right-2.5 h-3.5 w-3.5 rotate-90" />
+                </div>
+
+                {/* Availability Scope Filter */}
+                <div className="relative">
+                  <select
+                    value={availabilityFilter}
+                    onChange={(e) => setAvailabilityFilter(e.target.value as "ALL" | "APPOINTMENTS" | "BLOCKED")}
+                    className="border-border/80 bg-background text-foreground hover:border-border focus:border-primary h-9 w-full cursor-pointer appearance-none rounded-xl border pr-8 pl-8 text-xs font-bold shadow-2xs transition-colors focus:outline-none"
+                  >
+                    <option value="ALL">All Items (Appts &amp; Blocks)</option>
+                    <option value="APPOINTMENTS">Appointments Only</option>
+                    <option value="BLOCKED">Blocked Slots &amp; Leaves Only</option>
+                  </select>
+                  <Layers className="text-muted-foreground pointer-events-none absolute top-2.5 left-2.5 h-3.5 w-3.5" />
+                  <ChevronRight className="text-muted-foreground pointer-events-none absolute top-2.5 right-2.5 h-3.5 w-3.5 rotate-90" />
+                </div>
               </div>
 
               {isFiltersActive && (
@@ -1004,6 +1076,7 @@ function CalendarContent() {
                     setSelectedStaffId("ALL");
                     setSelectedStatus("ALL");
                     setSelectedType("ALL");
+                    setAvailabilityFilter("ALL");
                   }}
                   className="cursor-pointer text-xs font-bold text-rose-600 hover:bg-rose-50 hover:text-rose-700 dark:text-rose-400 dark:hover:bg-rose-950/40"
                 >
@@ -1024,7 +1097,14 @@ function CalendarContent() {
                 exit={{ opacity: 0, y: -8, scale: 0.995 }}
                 transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
               >
-                <Card className="border-border/80 from-card to-card/90 overflow-x-auto rounded-2xl border bg-gradient-to-b shadow-2xs backdrop-blur-xl">
+                <Card className="border-border/80 from-card to-card/90 overflow-x-auto rounded-2xl border bg-gradient-to-b shadow-2xs backdrop-blur-xl touch-pan-x scrollbar-thin">
+                  <div className="flex items-center justify-between px-3.5 py-1.5 border-b border-border/40 bg-muted/20 sm:hidden">
+                    <span className="text-[10px] text-muted-foreground font-medium flex items-center gap-1">
+                      <SlidersHorizontal className="h-3 w-3" />
+                      Swipe horizontally for 7-day view
+                    </span>
+                    <span className="text-[10px] font-bold text-primary">Week View</span>
+                  </div>
                   <div className="min-w-[850px]">
                     {/* Days Header */}
                     <div className="border-border/60 bg-muted/30 grid grid-cols-8 border-b text-center">
@@ -1034,6 +1114,15 @@ function CalendarContent() {
                       </div>
                       {weekDays.map((day, idx) => {
                         const isToday = day.toDateString() === new Date().toDateString();
+                        const dayAllDayBlocked = displayBlockedTimes.filter((b: BlockedTimeItem) => {
+                          if (!b.allDay) return false;
+                          const bStart = new Date(b.startTime);
+                          const bEnd = new Date(b.endTime);
+                          const cur = new Date(day);
+                          cur.setHours(12, 0, 0, 0);
+                          return bStart <= cur && bEnd >= cur;
+                        });
+
                         return (
                           <div
                             key={idx}
@@ -1059,6 +1148,19 @@ function CalendarContent() {
                                 {day.getDate()}
                               </span>
                             </div>
+                            {dayAllDayBlocked.map((b) => (
+                              <div
+                                key={b.id}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setSelectedBlockedTime(b);
+                                }}
+                                className="mt-1.5 cursor-pointer truncate rounded-md border border-amber-500/30 bg-amber-500/20 px-1.5 py-0.5 text-[10px] font-bold text-amber-700 hover:bg-amber-500/30 dark:text-amber-300"
+                                title={b.notes || b.title || "Holiday"}
+                              >
+                                🏖️ {b.title || "Holiday"}
+                              </div>
+                            ))}
                           </div>
                         );
                       })}
@@ -1081,6 +1183,17 @@ function CalendarContent() {
                               return (
                                 dt.toDateString() === day.toDateString() && dt.getHours() === hour
                               );
+                            });
+
+                            const slotBlockedTimes = displayBlockedTimes.filter((b: BlockedTimeItem) => {
+                              if (b.allDay) return false;
+                              const bStart = new Date(b.startTime);
+                              const bEnd = new Date(b.endTime);
+                              const slotStart = new Date(day);
+                              slotStart.setHours(hour, 0, 0, 0);
+                              const slotEnd = new Date(day);
+                              slotEnd.setHours(hour + 1, 0, 0, 0);
+                              return bStart < slotEnd && bEnd > slotStart;
                             });
 
                             const isToday = day.toDateString() === new Date().toDateString();
@@ -1117,6 +1230,48 @@ function CalendarContent() {
                                     <div className="h-0.5 flex-1 bg-gradient-to-r from-rose-500 via-rose-400 to-rose-300 shadow-sm shadow-rose-500/60" />
                                   </div>
                                 )}
+
+                                {slotBlockedTimes.map((block: BlockedTimeItem) => {
+                                  const bStart = new Date(block.startTime);
+                                  const bEnd = new Date(block.endTime);
+                                  const timeSpanStr = `${bStart.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })} – ${bEnd.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}`;
+                                  const isCompany = !block.staffMemberId;
+
+                                  return (
+                                    <div
+                                      key={block.id}
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setSelectedBlockedTime(block);
+                                      }}
+                                      className={`relative mb-1.5 cursor-pointer overflow-hidden rounded-xl border p-2 text-xs shadow-xs transition-all hover:scale-[1.01] ${
+                                        isCompany
+                                          ? "border-indigo-500/40 bg-indigo-950/40 text-indigo-200"
+                                          : block.type === "VACATION" || block.type === "SICK_LEAVE"
+                                            ? "border-amber-500/40 bg-amber-950/40 text-amber-200"
+                                            : "border-slate-700/80 bg-slate-800/80 text-slate-200"
+                                      }`}
+                                      style={{
+                                        backgroundImage:
+                                          "repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255, 255, 255, 0.04) 6px, rgba(255, 255, 255, 0.04) 12px)",
+                                      }}
+                                    >
+                                      <div className="flex items-center justify-between gap-1">
+                                        <div className="flex items-center gap-1.5 truncate font-semibold">
+                                          <Lock className="h-3 w-3 shrink-0 text-amber-400" />
+                                          <span className="truncate">{block.title}</span>
+                                        </div>
+                                        <span className="rounded bg-black/30 px-1 py-0.2 text-[9px] font-bold uppercase tracking-wider">
+                                          {block.type.replace("_", " ")}
+                                        </span>
+                                      </div>
+                                      <div className="mt-1 flex items-center justify-between text-[10px] opacity-75">
+                                        <span>{timeSpanStr}</span>
+                                        <span className="truncate">{block.staffName || "All Specialists"}</span>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
 
                                 {slotAppointments.map((apt) => {
                                   const startTime = new Date(apt.scheduledAt);
@@ -1248,19 +1403,69 @@ function CalendarContent() {
                         );
                       });
 
+                      const daySlotBlockedTimes = displayBlockedTimes.filter((b: BlockedTimeItem) => {
+                        if (b.allDay) return false;
+                        const bStart = new Date(b.startTime);
+                        const bEnd = new Date(b.endTime);
+                        const slotStart = new Date(currentDate);
+                        slotStart.setHours(hour, 0, 0, 0);
+                        const slotEnd = new Date(currentDate);
+                        slotEnd.setHours(hour + 1, 0, 0, 0);
+                        return bStart < slotEnd && bEnd > slotStart;
+                      });
+
                       return (
-                        <div key={hour} className="flex min-h-[88px] gap-5 py-4">
-                          <div className="w-24 shrink-0 text-right">
+                        <div key={hour} className="flex min-h-[80px] sm:min-h-[88px] gap-2.5 sm:gap-5 py-3 sm:py-4">
+                          <div className="w-14 sm:w-24 shrink-0 text-right">
                             <p className="text-foreground text-xs font-black">
                               {formatTimeSlot(hour)}
                             </p>
-                            <span className="text-muted-foreground text-[10px] font-medium">
+                            <span className="text-muted-foreground hidden sm:inline text-[10px] font-medium">
                               Standard Time
                             </span>
                           </div>
 
                           <div className="flex-1 space-y-2.5">
-                            {slotAppointments.length === 0 ? (
+                            {daySlotBlockedTimes.map((block: BlockedTimeItem) => {
+                              const bStart = new Date(block.startTime);
+                              const bEnd = new Date(block.endTime);
+                              const timeSpanStr = `${bStart.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })} – ${bEnd.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}`;
+                              const isCompany = !block.staffMemberId;
+
+                              return (
+                                <div
+                                  key={block.id}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setSelectedBlockedTime(block);
+                                  }}
+                                  className={`relative cursor-pointer overflow-hidden rounded-xl border p-3 text-xs shadow-xs transition-all hover:scale-[1.01] ${
+                                    isCompany
+                                      ? "border-indigo-500/40 bg-indigo-950/40 text-indigo-200"
+                                      : block.type === "VACATION" || block.type === "SICK_LEAVE"
+                                        ? "border-amber-500/40 bg-amber-950/40 text-amber-200"
+                                        : "border-slate-700/80 bg-slate-800/80 text-slate-200"
+                                  }`}
+                                >
+                                  <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                      <Lock className="h-3.5 w-3.5 text-amber-400" />
+                                      <span className="font-bold text-white">
+                                        {block.title || `${block.type.replace("_", " ")} (Blocked)`}
+                                      </span>
+                                      <Badge variant="outline" className="text-[10px] border-amber-500/40 text-amber-300">
+                                        {isCompany ? "Company Wide" : block.staffName || "Staff Blocked"}
+                                      </Badge>
+                                    </div>
+                                    <span className="font-mono text-[10px] text-muted-foreground">{timeSpanStr}</span>
+                                  </div>
+                                  {block.notes && (
+                                    <p className="mt-1 text-[11px] text-slate-300 italic">{block.notes}</p>
+                                  )}
+                                </div>
+                              );
+                            })}
+                            {slotAppointments.length === 0 && daySlotBlockedTimes.length === 0 ? (
                               <button
                                 type="button"
                                 onClick={() => handleSlotClick(currentDate, hour)}
@@ -1359,7 +1564,7 @@ function CalendarContent() {
                     <span>Sun</span>
                   </div>
 
-                  <div className="divide-border/40 border-border/40 grid min-h-[520px] grid-cols-7 divide-x divide-y border-r border-b">
+                  <div className="divide-border/40 border-border/40 grid min-h-[420px] sm:min-h-[520px] grid-cols-7 divide-x divide-y border-r border-b">
                     {Array.from({ length: 35 }).map((_, idx) => {
                       const firstDayOfMonth = new Date(
                         currentDate.getFullYear(),
@@ -1388,13 +1593,13 @@ function CalendarContent() {
                             setCurrentDate(cellDate);
                             setViewMode("day");
                           }}
-                          className={`hover:bg-muted/30 min-h-[100px] cursor-pointer p-2.5 transition-colors ${
+                          className={`hover:bg-muted/30 min-h-[64px] sm:min-h-[100px] cursor-pointer p-1 sm:p-2.5 transition-colors ${
                             isCurrentMonth ? "bg-card" : "bg-muted/10 opacity-40"
                           }`}
                         >
                           <div className="flex items-center justify-between">
                             <span
-                              className={`inline-flex h-6 w-6 items-center justify-center rounded-full text-xs font-black ${
+                              className={`inline-flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full text-[10px] sm:text-xs font-black ${
                                 isToday
                                   ? "bg-primary text-primary-foreground shadow-2xs"
                                   : "text-foreground"
@@ -1403,9 +1608,12 @@ function CalendarContent() {
                               {cellDate.getDate()}
                             </span>
                             {dayApts.length > 0 && (
-                              <span className="text-primary text-[10px] font-extrabold">
-                                {dayApts.length} booked
-                              </span>
+                              <>
+                                <span className="sm:hidden flex h-1.5 w-1.5 rounded-full bg-primary" />
+                                <span className="hidden sm:inline text-primary text-[10px] font-extrabold">
+                                  {dayApts.length} booked
+                                </span>
+                              </>
                             )}
                           </div>
 
@@ -1459,11 +1667,11 @@ function CalendarContent() {
                       variant="outline"
                       className="border-border/80 bg-muted/40 text-xs font-bold"
                     >
-                      {appointments.length} Total Sessions
+                      {displayAppointments.length} Total Sessions
                     </Badge>
                   </div>
 
-                  {appointments.length === 0 ? (
+                  {displayAppointments.length === 0 ? (
                     <div className="py-20 text-center">
                       <div className="bg-primary/10 text-primary border-primary/20 mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border shadow-inner">
                         <CalendarIcon className="h-7 w-7" />
@@ -1485,7 +1693,7 @@ function CalendarContent() {
                     </div>
                   ) : (
                     <div className="before:border-border/60 relative mt-6 space-y-4 pl-4 before:absolute before:top-3 before:bottom-3 before:left-1.5 before:w-0.5 before:border-l-2 before:border-dashed">
-                      {appointments.map((apt) => (
+                      {displayAppointments.map((apt: AppointmentListItem) => (
                         <motion.div
                           key={apt.id}
                           whileHover={{ y: -2 }}
@@ -1628,6 +1836,101 @@ function CalendarContent() {
         }
         organizationId={currentOrganizationId}
       />
+
+      <BlockTimeModal
+        isOpen={isBlockTimeModalOpen}
+        onClose={() => setIsBlockTimeModalOpen(false)}
+        defaultStaffId={selectedStaffId !== "ALL" ? selectedStaffId : undefined}
+      />
+
+      <Dialog
+        open={Boolean(selectedBlockedTime)}
+        onOpenChange={(open) => {
+          if (!open) setSelectedBlockedTime(null);
+        }}
+      >
+        <DialogContent className="w-[94vw] max-w-md max-h-[88vh] overflow-y-auto rounded-3xl border border-border/80 bg-card/95 p-5 sm:p-6 shadow-2xl backdrop-blur-xl">
+          <DialogHeader className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-500 border border-amber-500/20 shadow-xs">
+                <Lock className="h-5 w-5" />
+              </div>
+              <Badge variant="outline" className="border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold text-[10px]">
+                {selectedBlockedTime?.type}
+              </Badge>
+            </div>
+            <DialogTitle className="text-lg font-black tracking-tight text-foreground">
+              Blocked Time Details
+            </DialogTitle>
+            <DialogDescription className="text-xs text-muted-foreground">
+              Review or remove this reserved period from the schedule.
+            </DialogDescription>
+          </DialogHeader>
+
+          {selectedBlockedTime && (
+            <div className="space-y-4 pt-2">
+              <div className="rounded-2xl border border-border/60 bg-muted/20 p-3.5 space-y-2.5 text-xs">
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground font-semibold">Scope:</span>
+                  <span className="font-bold text-foreground">
+                    {selectedBlockedTime.staffName || "Company Wide (All Staff)"}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground font-semibold">From:</span>
+                  <span className="font-bold text-foreground tabular-nums">
+                    {new Date(selectedBlockedTime.startTime).toLocaleString("en-US", {
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                    })}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground font-semibold">To:</span>
+                  <span className="font-bold text-foreground tabular-nums">
+                    {new Date(selectedBlockedTime.endTime).toLocaleString("en-US", {
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                    })}
+                  </span>
+                </div>
+                {selectedBlockedTime.notes && (
+                  <div className="pt-2 border-t border-border/40">
+                    <span className="text-muted-foreground font-semibold block mb-1">Notes:</span>
+                    <p className="text-foreground italic">{selectedBlockedTime.notes}</p>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 pt-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setSelectedBlockedTime(null)}
+                  className="rounded-xl font-bold h-9"
+                >
+                  Close
+                </Button>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="sm"
+                  disabled={deleteBlockedTimeMutation.isPending}
+                  onClick={async () => {
+                    if (!selectedBlockedTime) return;
+                    await deleteBlockedTimeMutation.mutateAsync(selectedBlockedTime.id);
+                    setSelectedBlockedTime(null);
+                  }}
+                  className="rounded-xl font-bold h-9"
+                >
+                  {deleteBlockedTimeMutation.isPending ? "Removing..." : "Remove & Unblock Slot"}
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
