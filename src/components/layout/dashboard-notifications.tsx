@@ -13,6 +13,9 @@ import {
   CalendarX,
   Layers,
   X,
+  FileCheck2,
+  CheckCircle2,
+  AlertCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -48,7 +51,9 @@ export function DashboardNotifications() {
   const searchParams = useSearchParams();
 
   const [isOpen, setIsOpen] = React.useState(false);
-  const [filter, setFilter] = React.useState<"all" | "unread" | "bookings" | "invoices">("all");
+  const [filter, setFilter] = React.useState<"all" | "unread" | "bookings" | "invoices" | "quotes">(
+    "all"
+  );
 
   // Automatically close notification dropdown on navigation
   React.useEffect(() => {
@@ -82,6 +87,8 @@ export function DashboardNotifications() {
         );
       case "invoices":
         return items.filter((n) => n.type === "INVOICE_ISSUED" || n.type === "PAYMENT_RECEIVED");
+      case "quotes":
+        return items.filter((n) => n.type.startsWith("QUOTE_"));
       case "all":
       default:
         return items;
@@ -95,6 +102,26 @@ export function DashboardNotifications() {
     }
     if (item.actionUrl) {
       router.push(item.actionUrl);
+      return;
+    }
+    // Contextual destination routing when actionUrl is not directly populated
+    const meta = (item.metadata || {}) as Record<string, string>;
+    if (item.type.startsWith("QUOTE_")) {
+      router.push(meta.quoteId ? `/dashboard/quotes?quoteId=${meta.quoteId}` : "/dashboard/quotes");
+    } else if (item.type === "INVOICE_ISSUED" || item.type === "PAYMENT_RECEIVED") {
+      router.push(
+        meta.invoiceId ? `/dashboard/invoices?invoiceId=${meta.invoiceId}` : "/dashboard/invoices"
+      );
+    } else if (item.type.startsWith("BOOKING_")) {
+      router.push(
+        meta.appointmentId
+          ? `/dashboard/calendar?appointmentId=${meta.appointmentId}`
+          : "/dashboard/calendar"
+      );
+    } else if (item.type === "TEAM_INVITE") {
+      router.push("/dashboard/settings");
+    } else {
+      router.push("/dashboard");
     }
   };
 
@@ -118,6 +145,12 @@ export function DashboardNotifications() {
       case "INVOICE_ISSUED":
       case "PAYMENT_RECEIVED":
         return <CreditCard className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />;
+      case "QUOTE_SENT":
+        return <FileCheck2 className="h-4 w-4 text-blue-600 dark:text-blue-400" />;
+      case "QUOTE_ACCEPTED":
+        return <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />;
+      case "QUOTE_DECLINED":
+        return <AlertCircle className="h-4 w-4 text-rose-600 dark:text-rose-400" />;
       case "TEAM_INVITE":
         return <Users className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />;
       case "SECURITY_ALERT":
@@ -153,37 +186,42 @@ export function DashboardNotifications() {
         collisionPadding={12}
         onInteractOutside={() => setIsOpen(false)}
         onEscapeKeyDown={() => setIsOpen(false)}
-        className="border-border/80 bg-card/95 text-card-foreground w-[calc(100vw-1.5rem)] max-w-[calc(100vw-1.5rem)] rounded-2xl border p-0 shadow-2xl backdrop-blur-2xl sm:w-96 sm:max-w-md"
+        className="border-border/80 bg-card/95 text-card-foreground w-[calc(100vw-1rem)] max-w-[calc(100vw-1rem)] rounded-2xl border p-0 shadow-2xl backdrop-blur-2xl sm:w-96 sm:max-w-md"
       >
         {/* Header */}
-        <div className="border-border/60 bg-muted/20 flex items-center justify-between border-b px-3.5 py-3 sm:px-4">
-          <div className="flex items-center gap-2">
-            <div className="bg-primary/10 text-primary flex h-7 w-7 items-center justify-center rounded-lg">
+        <div className="border-border/60 bg-muted/20 flex items-center justify-between border-b px-3 py-2.5 sm:px-4 sm:py-3">
+          <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
+            <div className="bg-primary/10 text-primary flex h-7 w-7 shrink-0 items-center justify-center rounded-lg">
               <Bell className="h-3.5 w-3.5" />
             </div>
-            <div className="flex items-center gap-1.5">
-              <h3 className="text-foreground text-sm font-bold">Notifications</h3>
+            <div className="flex min-w-0 items-center gap-1.5">
+              <h3 className="text-foreground truncate text-xs font-bold sm:text-sm">
+                Notifications
+              </h3>
               {unreadCount > 0 ? (
                 <Badge
                   variant="secondary"
-                  className="bg-primary/10 text-primary border-primary/20 h-4.5 border px-1.5 text-[10px] font-bold"
+                  className="bg-primary/10 text-primary border-primary/20 h-4.5 shrink-0 border px-1.5 text-[10px] font-bold"
                 >
                   {unreadCount} new
                 </Badge>
               ) : (
-                <span className="text-muted-foreground text-[11px] font-medium">All read</span>
+                <span className="text-muted-foreground shrink-0 text-[10px] font-medium sm:text-[11px]">
+                  All read
+                </span>
               )}
             </div>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex shrink-0 items-center gap-0.5 sm:gap-1">
             {unreadCount > 0 && (
               <button
                 type="button"
                 onClick={handleMarkAllRead}
                 disabled={markAllAsReadMutation.isPending}
-                className="text-primary hover:text-primary/80 px-1.5 py-1 text-xs font-semibold hover:underline disabled:opacity-50"
+                className="text-primary hover:text-primary/80 px-1.5 py-1 text-[11px] font-semibold whitespace-nowrap hover:underline disabled:opacity-50 sm:text-xs"
               >
-                Mark all read
+                <span className="hidden sm:inline">Mark all read</span>
+                <span className="sm:hidden">Read all</span>
               </button>
             )}
             {items.some((i) => i.isRead) && (
@@ -266,6 +304,20 @@ export function DashboardNotifications() {
             }`}
           >
             Invoices
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setFilter("quotes");
+            }}
+            className={`rounded-lg px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-all ${
+              filter === "quotes"
+                ? "bg-card text-foreground border-border/80 border font-bold shadow-2xs"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+            }`}
+          >
+            Proposals
           </button>
         </div>
 

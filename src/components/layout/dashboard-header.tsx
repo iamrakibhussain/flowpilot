@@ -2,8 +2,18 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Menu, Search, Plus, Calendar, Users, FileText, ChevronRight, Layers } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import {
+  Menu,
+  Search,
+  Plus,
+  Calendar,
+  Users,
+  FileText,
+  ChevronRight,
+  Layers,
+  FileCheck2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { UserNav } from "@/components/layout/user-nav";
 import { DashboardNotifications } from "@/components/layout/dashboard-notifications";
@@ -25,6 +35,7 @@ export interface DashboardHeaderProps {
 }
 
 export function DashboardHeader({ onOpenMobile, onOpenCommand }: DashboardHeaderProps) {
+  const router = useRouter();
   const pathname = usePathname();
   const { organizationName } = useWorkspaceSession();
   const { data: orgSettings } = useOrganizationSettings();
@@ -42,6 +53,7 @@ export function DashboardHeader({ onOpenMobile, onOpenCommand }: DashboardHeader
     if (pathname.includes("/calendar") || pathname.includes("/appointments"))
       return "Appointments & Calendar";
     if (pathname.includes("/invoices")) return "Invoices & Billing";
+    if (pathname.includes("/quotes")) return "Estimates & Proposals";
     if (pathname.includes("/payments")) return "Online Payments & Gateway";
     if (pathname.includes("/staff")) return "Team & Staff";
     return "Operations";
@@ -184,6 +196,15 @@ export function DashboardHeader({ onOpenMobile, onOpenCommand }: DashboardHeader
                 <FileText className="h-3.5 w-3.5" />
               </div>
               <span>Create Invoice</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => router.push("/dashboard/quotes?new=true")}
+              className="hover:bg-muted/60 focus:bg-muted/60 text-foreground flex cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-2 text-xs font-medium"
+            >
+              <div className="flex h-6 w-6 items-center justify-center rounded-md bg-purple-500/10 text-purple-600 dark:text-purple-400">
+                <FileCheck2 className="h-3.5 w-3.5" />
+              </div>
+              <span>New Estimate / Proposal</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

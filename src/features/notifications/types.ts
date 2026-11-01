@@ -4,6 +4,9 @@ export type NotificationType =
   | "BOOKING_CANCELLED"
   | "INVOICE_ISSUED"
   | "PAYMENT_RECEIVED"
+  | "QUOTE_SENT"
+  | "QUOTE_ACCEPTED"
+  | "QUOTE_DECLINED"
   | "TEAM_INVITE"
   | "SECURITY_ALERT"
   | "SYSTEM";
