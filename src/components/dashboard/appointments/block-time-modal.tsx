@@ -51,14 +51,13 @@ const TYPE_CONFIG: Array<{
   { type: "OTHER", label: "Other", icon: Clock, color: "hover:border-slate-500" },
 ];
 
-export function BlockTimeModal({
-  isOpen,
+function BlockTimeModalContent({
   onClose,
   defaultDate,
   defaultTime,
   defaultStaffId,
   defaultType,
-}: BlockTimeModalProps) {
+}: Omit<BlockTimeModalProps, "isOpen">) {
   const { organizationRole, session } = useWorkspaceSession();
   const isLeader = organizationRole === "OWNER" || organizationRole === "ADMIN";
   const { data: staffMembers = [], isLoading: isLoadingStaff } = useStaffMembers();
@@ -73,7 +72,7 @@ export function BlockTimeModal({
   }, [staffMembers, session]);
   const createMutation = useCreateBlockedTime();
 
-  // Initial values
+  // Initial values computed directly for useState without cascading useEffect
   const todayStr = React.useMemo(() => {
     if (defaultDate) return defaultDate;
     const now = new Date();
@@ -88,45 +87,34 @@ export function BlockTimeModal({
     return `${h}:${m}`;
   }, [defaultTime]);
 
-  const [type, setType] = React.useState<BlockedTimeType>("BREAK");
-  const [title, setTitle] = React.useState("");
-  const [selectedStaffId, setSelectedStaffId] = React.useState<string>(defaultStaffId || "");
-  const [isAllDay, setIsAllDay] = React.useState(false);
+  const initialEndTime = React.useMemo(() => {
+    if (defaultTime) {
+      const [h, m] = defaultTime.split(":").map(Number);
+      const endH = String((h + 1) % 24).padStart(2, "0");
+      return `${endH}:${String(m).padStart(2, "0")}`;
+    }
+    return "13:00";
+  }, [defaultTime]);
+
+  const initialStaffId = React.useMemo(() => {
+    if (defaultType === "COMPANY_HOLIDAY") return "";
+    if (!isLeader && userStaffMember) return userStaffMember.id;
+    if (defaultStaffId) return defaultStaffId;
+    const matched = userStaffMember || staffMembers.find((s) => s.email === session?.user?.email);
+    return matched?.id || staffMembers[0]?.id || "";
+  }, [defaultType, isLeader, userStaffMember, defaultStaffId, staffMembers, session]);
+
+  const [type, setType] = React.useState<BlockedTimeType>(defaultType || "BREAK");
+  const [title, setTitle] = React.useState(defaultType === "COMPANY_HOLIDAY" ? "Office Holiday / Closed" : "");
+  const [selectedStaffId, setSelectedStaffId] = React.useState<string>(initialStaffId);
+  const [isAllDay, setIsAllDay] = React.useState(defaultType === "COMPANY_HOLIDAY");
   const [date, setDate] = React.useState(todayStr);
   const [startTime, setStartTime] = React.useState(nowTimeStr);
-  const [endTime, setEndTime] = React.useState("13:00");
+  const [endTime, setEndTime] = React.useState(initialEndTime);
   const [notes, setNotes] = React.useState("");
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
-  // Sync default values when modal opens
-  React.useEffect(() => {
-    if (isOpen) {
-      if (defaultDate) setDate(defaultDate);
-      if (defaultTime) {
-        setStartTime(defaultTime);
-        const [h, m] = defaultTime.split(":").map(Number);
-        const endH = String((h + 1) % 24).padStart(2, "0");
-        setEndTime(`${endH}:${String(m).padStart(2, "0")}`);
-      }
-      if (defaultType) {
-        setType(defaultType);
-        if (defaultType === "COMPANY_HOLIDAY") {
-          setIsAllDay(true);
-          setSelectedStaffId("");
-          setTitle((prev) => (!prev || prev === "Lunch Break" ? "Office Holiday / Closed" : prev));
-        }
-      }
-      if (!isLeader && userStaffMember) {
-        setSelectedStaffId(userStaffMember.id);
-      } else if (defaultStaffId) {
-        setSelectedStaffId(defaultStaffId);
-      } else if (staffMembers.length > 0 && !selectedStaffId && defaultType !== "COMPANY_HOLIDAY") {
-        const matched = userStaffMember || staffMembers.find((s) => s.email === session?.user?.email);
-        setSelectedStaffId(matched?.id || staffMembers[0]?.id || "");
-      }
-      setErrorMessage(null);
-    }
-  }, [isOpen, defaultDate, defaultTime, defaultStaffId, defaultType, staffMembers, session, isLeader, userStaffMember, selectedStaffId]);
+
 
   // When type is COMPANY_HOLIDAY, set default title and clear individual staff member
   const handleTypeSelect = (selected: BlockedTimeType) => {
@@ -220,8 +208,7 @@ export function BlockTimeModal({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-h-[92vh] w-[95vw] sm:max-w-xl overflow-y-auto rounded-3xl border border-border/80 bg-card/95 text-card-foreground p-4 sm:p-7 shadow-2xl backdrop-blur-2xl">
+    <DialogContent className="max-h-[92vh] w-[95vw] sm:max-w-xl overflow-y-auto rounded-3xl border border-border/80 bg-card/95 text-card-foreground p-4 sm:p-7 shadow-2xl backdrop-blur-2xl">
         <DialogHeader className="space-y-2 pr-10">
           <div className="flex flex-wrap items-center gap-2.5">
             <div className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-500 border border-amber-500/20 shadow-xs">
@@ -453,7 +440,30 @@ export function BlockTimeModal({
             </Button>
           </div>
         </form>
-      </DialogContent>
+    </DialogContent>
+  );
+}
+
+export function BlockTimeModal({
+  isOpen,
+  onClose,
+  defaultDate,
+  defaultTime,
+  defaultStaffId,
+  defaultType,
+}: BlockTimeModalProps) {
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      {isOpen && (
+        <BlockTimeModalContent
+          key={`${isOpen}-${defaultDate || ""}-${defaultTime || ""}-${defaultStaffId || ""}-${defaultType || ""}`}
+          onClose={onClose}
+          defaultDate={defaultDate}
+          defaultTime={defaultTime}
+          defaultStaffId={defaultStaffId}
+          defaultType={defaultType}
+        />
+      )}
     </Dialog>
   );
 }

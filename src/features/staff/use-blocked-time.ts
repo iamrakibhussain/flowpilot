@@ -12,7 +12,6 @@ import type {
   BlockedTimeFilterParams,
   CreateBlockedTimePayload,
   UpdateBlockedTimePayload,
-  BlockedTimeItem,
 } from "./types";
 
 export const blockedTimeKeys = {

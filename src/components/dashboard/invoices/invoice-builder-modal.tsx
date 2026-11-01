@@ -9,8 +9,6 @@ import {
   CheckCircle2,
   AlertCircle,
   Search,
-  Sparkles,
-  CalendarDays,
 } from "lucide-react";
 import {
   Dialog,
