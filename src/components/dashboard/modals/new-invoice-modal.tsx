@@ -170,8 +170,8 @@ export function NewInvoiceModal({ isOpen, onClose }: NewInvoiceModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-      <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto rounded-2xl border-slate-200/90 bg-white p-6 shadow-2xl">
-        <DialogHeader className="space-y-1">
+      <DialogContent className="max-h-[92vh] w-[95vw] overflow-y-auto rounded-3xl border border-slate-200/90 bg-white p-4 shadow-2xl sm:max-w-2xl sm:p-7">
+        <DialogHeader className="space-y-1 pr-10">
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
               <CreditCard className="h-4 w-4" />
@@ -312,62 +312,95 @@ export function NewInvoiceModal({ isOpen, onClose }: NewInvoiceModalProps) {
                 </div>
               </div>
 
-              <div className="overflow-x-auto rounded-xl border border-slate-200 bg-slate-50/50 p-2">
-                <div className="min-w-[440px] space-y-2">
-                  {lineItems.map((item) => (
+              <div className="space-y-2.5 rounded-2xl border border-slate-200/90 bg-slate-50/50 p-2.5 sm:p-3">
+                {lineItems.map((item) => {
+                  const lineTotal = (Number(item.quantity) || 0) * (Number(item.rate) || 0);
+                  return (
                     <div
                       key={item.id}
-                      className="grid grid-cols-12 items-center gap-2 rounded-lg border border-slate-200/60 bg-white p-2 shadow-2xs"
+                      className="space-y-2.5 rounded-xl border border-slate-200/80 bg-white p-3 shadow-xs transition-shadow hover:shadow-sm sm:grid sm:grid-cols-12 sm:items-center sm:gap-2.5 sm:space-y-0"
                     >
-                      <div className="col-span-6">
+                      {/* Top Row on Mobile: Description + Delete button */}
+                      <div className="flex items-center gap-2 sm:col-span-6">
                         <Input
                           value={item.description}
                           onChange={(e) => updateItem(item.id, "description", e.target.value)}
                           placeholder="Service description..."
-                          className="h-8 text-xs"
+                          className="h-9 flex-1 rounded-lg border-slate-200 text-xs"
                           required
                         />
-                      </div>
-                      <div className="col-span-2">
-                        <Input
-                          type="number"
-                          min="1"
-                          value={item.quantity}
-                          onChange={(e) => updateItem(item.id, "quantity", Number(e.target.value))}
-                          className="h-8 text-center text-xs"
-                          placeholder="Qty"
-                          required
-                        />
-                      </div>
-                      <div className="col-span-3">
-                        <div className="relative">
-                          <span className="absolute top-1.5 left-2.5 text-xs text-slate-400">
-                            $
-                          </span>
-                          <Input
-                            type="number"
-                            step="0.01"
-                            value={item.rate}
-                            onChange={(e) => updateItem(item.id, "rate", Number(e.target.value))}
-                            className="h-8 pl-6 text-right text-xs font-semibold"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="col-span-1 text-center">
+                        {/* Mobile delete button */}
                         <button
                           type="button"
                           onClick={() => removeLineItem(item.id)}
                           disabled={lineItems.length === 1}
-                          className="cursor-pointer p-1 text-slate-400 transition-colors hover:text-rose-600 disabled:opacity-30"
+                          className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-400 hover:bg-rose-50 hover:text-rose-600 disabled:opacity-30 sm:hidden"
                           title="Remove line"
                         >
-                          <Trash2 className="h-3.5 w-3.5" />
+                          <Trash2 className="h-4 w-4" />
                         </button>
                       </div>
+
+                      {/* Bottom Row on Mobile / Cols 7-12 on Desktop */}
+                      <div className="grid grid-cols-12 items-center gap-2 sm:col-span-6">
+                        <div className="col-span-4 sm:col-span-4">
+                          <Label className="text-[10px] font-semibold text-slate-500 sm:hidden">
+                            Qty
+                          </Label>
+                          <Input
+                            type="number"
+                            min="1"
+                            value={item.quantity}
+                            onChange={(e) =>
+                              updateItem(item.id, "quantity", Number(e.target.value))
+                            }
+                            className="h-9 rounded-lg border-slate-200 text-center font-mono text-xs"
+                            placeholder="Qty"
+                            required
+                          />
+                        </div>
+                        <div className="col-span-4 sm:col-span-4">
+                          <Label className="text-[10px] font-semibold text-slate-500 sm:hidden">
+                            Rate
+                          </Label>
+                          <div className="relative">
+                            <span className="pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2 text-xs font-semibold text-slate-400">
+                              $
+                            </span>
+                            <Input
+                              type="number"
+                              step="0.01"
+                              value={item.rate}
+                              onChange={(e) => updateItem(item.id, "rate", Number(e.target.value))}
+                              className="h-9 rounded-lg border-slate-200 pl-6 text-right font-mono text-xs font-semibold"
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="col-span-4 flex items-center justify-end gap-1.5 text-right sm:col-span-4">
+                          <div>
+                            <Label className="block text-[10px] font-semibold text-slate-500 sm:hidden">
+                              Total
+                            </Label>
+                            <span className="font-mono text-xs font-bold text-slate-900">
+                              ${lineTotal.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                            </span>
+                          </div>
+                          {/* Desktop delete button */}
+                          <button
+                            type="button"
+                            onClick={() => removeLineItem(item.id)}
+                            disabled={lineItems.length === 1}
+                            className="hidden cursor-pointer rounded-lg p-1 text-slate-400 transition-colors hover:bg-rose-50 hover:text-rose-600 disabled:opacity-30 sm:flex"
+                            title="Remove line"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                  ))}
-                </div>
+                  );
+                })}
               </div>
             </div>
 
@@ -398,19 +431,19 @@ export function NewInvoiceModal({ isOpen, onClose }: NewInvoiceModalProps) {
             </div>
 
             {/* Actions */}
-            <DialogFooter className="gap-2 pt-2 sm:gap-0">
+            <DialogFooter className="flex flex-col-reverse items-stretch justify-end gap-2.5 border-t border-slate-100 pt-3 sm:flex-row sm:items-center">
               <Button
                 type="button"
                 variant="outline"
                 onClick={onClose}
-                className="rounded-xl text-xs"
+                className="h-10 w-full rounded-xl text-xs font-semibold sm:h-9 sm:w-auto"
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
                 isLoading={isSubmitting}
-                className="from-primary rounded-xl bg-gradient-to-r via-blue-600 to-indigo-600 text-xs font-bold text-white shadow-md"
+                className="from-primary h-10 w-full rounded-xl bg-gradient-to-r via-blue-600 to-indigo-600 text-xs font-bold text-white shadow-md shadow-blue-500/20 hover:from-blue-700 hover:to-indigo-700 active:scale-98 sm:h-9 sm:w-auto"
               >
                 <Sparkles className="mr-1.5 h-3.5 w-3.5" />
                 <span>Issue & Send Invoice</span>

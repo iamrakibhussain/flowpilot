@@ -64,6 +64,14 @@ export const queryKeys = {
     customers: (timeframe?: string, orgId?: string) =>
       [...queryKeys.analytics.all, "customers", timeframe ?? "30d", orgId ?? "default"] as const,
   },
+  staff: {
+    all: ["staff"] as const,
+    list: (filters?: Record<string, unknown>, orgId?: string) =>
+      [...queryKeys.staff.all, "list", filters ?? {}, orgId ?? "default"] as const,
+    detail: (id: string) => [...queryKeys.staff.all, "detail", id] as const,
+    blockedTimes: (filters?: Record<string, unknown>, orgId?: string) =>
+      [...queryKeys.staff.all, "blocked-times", filters ?? {}, orgId ?? "default"] as const,
+  },
   notifications: {
     all: ["notifications"] as const,
     list: (filters?: Record<string, unknown>, orgId?: string) =>

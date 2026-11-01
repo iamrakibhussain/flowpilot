@@ -597,18 +597,18 @@ export function BookingWizardModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-h-[90vh] max-w-xl overflow-y-auto rounded-3xl border border-slate-200/80 bg-white/95 p-4 shadow-2xl backdrop-blur-xl sm:p-7">
-        <DialogHeader>
-          <div className="flex items-center justify-between">
-            <div className="via-blue-650 flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/25">
+      <DialogContent className="max-h-[92vh] w-[95vw] overflow-y-auto rounded-3xl border border-slate-200/80 bg-white/95 p-4 shadow-2xl backdrop-blur-xl sm:max-w-xl sm:p-7">
+        <DialogHeader className="pr-10">
+          <div className="flex flex-wrap items-center gap-2.5">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/25 sm:h-11 sm:w-11">
               <Calendar className="h-5 w-5" />
             </div>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-200/80 bg-blue-50 px-3 py-1 text-[10px] font-extrabold text-blue-700 shadow-2xs">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-200/80 bg-blue-50 px-2.5 py-0.5 text-[10px] font-extrabold text-blue-700 shadow-2xs">
               <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
               <span>Smart Booking Wizard</span>
             </span>
           </div>
-          <DialogTitle className="mt-3.5 text-xl font-black tracking-tight text-slate-900">
+          <DialogTitle className="mt-2 text-lg font-black tracking-tight text-slate-900 sm:text-xl">
             Book New Client Appointment
           </DialogTitle>
           <DialogDescription className="text-xs text-slate-500">

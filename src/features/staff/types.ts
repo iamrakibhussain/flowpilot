@@ -98,3 +98,47 @@ export interface UpdateStaffPayload {
   bio?: string | null;
   serviceIds?: string[];
 }
+
+export type BlockedTimeType =
+  "VACATION" | "SICK_LEAVE" | "BREAK" | "COMPANY_HOLIDAY" | "TRAINING" | "OTHER";
+
+export interface BlockedTimeItem {
+  id: string;
+  organizationId: string;
+  staffMemberId: string | null;
+  staffName?: string | null;
+  title: string;
+  type: BlockedTimeType;
+  startTime: string;
+  endTime: string;
+  allDay: boolean;
+  notes: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateBlockedTimePayload {
+  staffMemberId?: string | null;
+  title: string;
+  type: BlockedTimeType;
+  startTime: string;
+  endTime: string;
+  allDay?: boolean;
+  notes?: string | null;
+}
+
+export interface UpdateBlockedTimePayload {
+  staffMemberId?: string | null;
+  title?: string;
+  type?: BlockedTimeType;
+  startTime?: string;
+  endTime?: string;
+  allDay?: boolean;
+  notes?: string | null;
+}
+
+export interface BlockedTimeFilterParams {
+  staffMemberId?: string;
+  startDate?: string;
+  endDate?: string;
+}
