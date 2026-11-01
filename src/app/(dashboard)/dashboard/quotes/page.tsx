@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useSearchParams } from "next/navigation";
 import {
   FileCheck2,
   Plus,
@@ -44,14 +45,21 @@ const getServerSnapshot = () => false;
 
 export default function QuotesPage() {
   const isClient = React.useSyncExternalStore(subscribeNoop, getClientSnapshot, getServerSnapshot);
+  const searchParams = useSearchParams();
+  const quoteIdParam = searchParams.get("quoteId");
+  const newParam = searchParams.get("new");
+  const customerIdParam = searchParams.get("customerId");
+  const customerNameParam = searchParams.get("customerName");
+
   const [statusFilter, setStatusFilter] = React.useState<QuoteStatusType | "ALL">("ALL");
   const [searchTerm, setSearchTerm] = React.useState("");
   const [debouncedSearch, setDebouncedSearch] = React.useState("");
 
   // Modals & Drawers state
-  const [isBuilderOpen, setIsBuilderOpen] = React.useState(false);
-  const [selectedQuote, setSelectedQuote] = React.useState<QuoteListItem | null>(null);
-  const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+  const [isBuilderOpenManual, setIsBuilderOpenManual] = React.useState<boolean | null>(null);
+  const isBuilderOpen = isBuilderOpenManual ?? newParam === "true";
+  const setIsBuilderOpen = (open: boolean) => setIsBuilderOpenManual(open);
+
   const [copiedQuoteId, setCopiedQuoteId] = React.useState<string | null>(null);
 
   // Debounce search
@@ -73,11 +81,28 @@ export default function QuotesPage() {
   const convertMutation = useConvertQuoteToInvoice();
   const deleteMutation = useDeleteQuote();
 
-  const quotes = quoteData?.quotes ?? [];
+  const quotes = React.useMemo(() => quoteData?.quotes ?? [], [quoteData]);
+
+  // Handle URL deep links: ?quoteId=xxx (from Notifications or direct links)
+  const urlMatchedQuote = React.useMemo(() => {
+    if (!quoteIdParam || quotes.length === 0) return null;
+    return quotes.find((q) => q.id === quoteIdParam || q.quoteNumber === quoteIdParam) ?? null;
+  }, [quoteIdParam, quotes]);
+
+  const [selectedQuoteManual, setSelectedQuoteManual] = React.useState<QuoteListItem | null>(null);
+  const [isDrawerOpenManual, setIsDrawerOpenManual] = React.useState<boolean | null>(null);
+
+  const selectedQuote = selectedQuoteManual ?? urlMatchedQuote;
+  const isDrawerOpen = isDrawerOpenManual ?? Boolean(urlMatchedQuote);
 
   const handleOpenDrawer = (quote: QuoteListItem) => {
-    setSelectedQuote(quote);
-    setIsDrawerOpen(true);
+    setSelectedQuoteManual(quote);
+    setIsDrawerOpenManual(true);
+  };
+
+  const handleCloseDrawer = () => {
+    setIsDrawerOpenManual(false);
+    setSelectedQuoteManual(null);
   };
 
   const handleCopyLink = (quote: QuoteListItem) => {
@@ -341,119 +366,221 @@ export default function QuotesPage() {
             )}
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-muted/40 border-border text-muted-foreground border-b text-[11px] font-semibold tracking-wider uppercase">
-                <tr>
-                  <th className="px-4 py-3">Estimate #</th>
-                  <th className="px-4 py-3">Client</th>
-                  <th className="px-4 py-3">Proposal Title</th>
-                  <th className="px-4 py-3">Valid Until</th>
-                  <th className="px-4 py-3 text-right">Total</th>
-                  <th className="px-4 py-3 text-center">Status</th>
-                  <th className="px-4 py-3 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-border divide-y">
-                {quotes.map((q) => (
-                  <tr
-                    key={q.id}
-                    className="hover:bg-muted/30 cursor-pointer transition-colors"
-                    onClick={() => handleOpenDrawer(q)}
-                  >
-                    <td className="text-foreground px-4 py-3.5 font-mono font-semibold">
+          <>
+            {/* Mobile Touch Card View (Shown on < md) */}
+            <div className="divide-border/60 divide-y md:hidden">
+              {quotes.map((q) => (
+                <div
+                  key={q.id}
+                  onClick={() => handleOpenDrawer(q)}
+                  className="hover:bg-muted/30 active:bg-muted/50 cursor-pointer space-y-3 p-4 transition-colors"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-foreground bg-muted/60 border-border rounded-lg border px-2.5 py-0.5 font-mono text-xs font-bold">
                       {q.quoteNumber}
-                    </td>
-                    <td className="px-4 py-3.5">
-                      <div className="text-foreground font-medium">{q.customerName}</div>
-                      {q.customerCompany && (
-                        <div className="text-muted-foreground text-[11px]">{q.customerCompany}</div>
-                      )}
-                    </td>
-                    <td className="text-muted-foreground max-w-xs truncate px-4 py-3.5">
-                      {q.title}
-                    </td>
-                    <td className="text-muted-foreground px-4 py-3.5 whitespace-nowrap">
-                      {q.expiresAt ? new Date(q.expiresAt).toLocaleDateString() : "No expiry"}
-                    </td>
-                    <td className="text-foreground px-4 py-3.5 text-right font-mono font-semibold whitespace-nowrap">
-                      ${q.totalAmount.toFixed(2)}
-                    </td>
-                    <td className="px-4 py-3.5 text-center whitespace-nowrap">
-                      {getStatusBadge(q.status)}
-                    </td>
-                    <td
-                      className="px-4 py-3.5 text-right whitespace-nowrap"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <div className="flex items-center justify-end gap-1">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleCopyLink(q)}
-                          className="text-muted-foreground hover:text-foreground h-7 gap-1 px-2 text-xs"
-                          title="Copy Public Link"
-                        >
-                          {copiedQuoteId === q.id ? (
-                            <Check className="h-3 w-3 text-emerald-500" />
-                          ) : (
-                            <Copy className="h-3 w-3" />
-                          )}
-                        </Button>
+                    </span>
+                    <div>{getStatusBadge(q.status)}</div>
+                  </div>
 
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="sm" className="h-7 w-7 rounded-lg p-0">
-                              <MoreVertical className="text-muted-foreground h-3.5 w-3.5" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-48 rounded-xl text-xs">
-                            <DropdownMenuItem onClick={() => handleOpenDrawer(q)}>
-                              <ExternalLink className="mr-2 h-3.5 w-3.5" /> Inspect Details
+                  <div className="space-y-0.5">
+                    <h4 className="text-foreground text-sm font-semibold">{q.customerName}</h4>
+                    {q.customerCompany && (
+                      <p className="text-muted-foreground text-xs">{q.customerCompany}</p>
+                    )}
+                    <p className="text-muted-foreground/80 line-clamp-1 text-xs">{q.title}</p>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-1 text-xs">
+                    <div>
+                      <span className="text-muted-foreground block text-[10px] font-semibold uppercase">
+                        Total
+                      </span>
+                      <span className="text-foreground font-mono text-sm font-bold">
+                        ${q.totalAmount.toFixed(2)}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleCopyLink(q)}
+                        className="h-8 gap-1 rounded-xl text-xs"
+                      >
+                        {copiedQuoteId === q.id ? (
+                          <>
+                            <Check className="h-3.5 w-3.5 text-emerald-500" /> Copied
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="h-3.5 w-3.5" /> Link
+                          </>
+                        )}
+                      </Button>
+
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm" className="h-8 w-8 rounded-xl p-0">
+                            <MoreVertical className="text-muted-foreground h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-48 rounded-xl text-xs">
+                          <DropdownMenuItem onClick={() => handleOpenDrawer(q)}>
+                            <ExternalLink className="mr-2 h-3.5 w-3.5" /> Inspect Details
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleCopyLink(q)}>
+                            <Copy className="mr-2 h-3.5 w-3.5" /> Copy Client Link
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleSend(q)}>
+                            <Send className="mr-2 h-3.5 w-3.5" /> Dispatch Email
+                          </DropdownMenuItem>
+                          {q.status === "ACCEPTED" && !q.convertedInvoiceId && (
+                            <DropdownMenuItem
+                              onClick={() => handleConvert(q)}
+                              className="font-semibold text-emerald-600 dark:text-emerald-400"
+                            >
+                              <CheckCircle2 className="mr-2 h-3.5 w-3.5" /> Convert to Invoice
                             </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => handleCopyLink(q)}>
-                              <Copy className="mr-2 h-3.5 w-3.5" /> Copy Client Link
+                          )}
+                          <DropdownMenuSeparator />
+                          {q.status !== "ACCEPTED" && (
+                            <DropdownMenuItem
+                              onClick={() => handleDelete(q)}
+                              className="text-destructive focus:text-destructive"
+                            >
+                              <Trash2 className="mr-2 h-3.5 w-3.5" /> Delete Proposal
                             </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => handleSend(q)}>
-                              <Send className="mr-2 h-3.5 w-3.5" /> Dispatch Email
-                            </DropdownMenuItem>
-                            {q.status === "ACCEPTED" && !q.convertedInvoiceId && (
-                              <DropdownMenuItem
-                                onClick={() => handleConvert(q)}
-                                className="font-medium text-emerald-600"
-                              >
-                                <FileCheck2 className="mr-2 h-3.5 w-3.5" /> Convert to Invoice
-                              </DropdownMenuItem>
-                            )}
-                            <DropdownMenuSeparator />
-                            {q.status !== "ACCEPTED" && (
-                              <DropdownMenuItem
-                                onClick={() => handleDelete(q)}
-                                className="text-destructive focus:text-destructive"
-                              >
-                                <Trash2 className="mr-2 h-3.5 w-3.5" /> Delete Proposal
-                              </DropdownMenuItem>
-                            )}
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
-                    </td>
+                          )}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop Table View (Shown on >= md) */}
+            <div className="hidden overflow-x-auto md:block">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-muted/40 border-border text-muted-foreground border-b text-[11px] font-semibold tracking-wider uppercase">
+                  <tr>
+                    <th className="px-4 py-3">Estimate #</th>
+                    <th className="px-4 py-3">Client</th>
+                    <th className="px-4 py-3">Proposal Title</th>
+                    <th className="px-4 py-3">Valid Until</th>
+                    <th className="px-4 py-3 text-right">Total</th>
+                    <th className="px-4 py-3 text-center">Status</th>
+                    <th className="px-4 py-3 text-right">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-border divide-y">
+                  {quotes.map((q) => (
+                    <tr
+                      key={q.id}
+                      className="hover:bg-muted/30 cursor-pointer transition-colors"
+                      onClick={() => handleOpenDrawer(q)}
+                    >
+                      <td className="text-foreground px-4 py-3.5 font-mono font-semibold">
+                        {q.quoteNumber}
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <div className="text-foreground font-medium">{q.customerName}</div>
+                        {q.customerCompany && (
+                          <div className="text-muted-foreground text-[11px]">
+                            {q.customerCompany}
+                          </div>
+                        )}
+                      </td>
+                      <td className="text-muted-foreground max-w-xs truncate px-4 py-3.5">
+                        {q.title}
+                      </td>
+                      <td className="text-muted-foreground px-4 py-3.5 whitespace-nowrap">
+                        {q.expiresAt ? new Date(q.expiresAt).toLocaleDateString() : "No expiry"}
+                      </td>
+                      <td className="text-foreground px-4 py-3.5 text-right font-mono font-semibold whitespace-nowrap">
+                        ${q.totalAmount.toFixed(2)}
+                      </td>
+                      <td className="px-4 py-3.5 text-center whitespace-nowrap">
+                        {getStatusBadge(q.status)}
+                      </td>
+                      <td
+                        className="px-4 py-3.5 text-right whitespace-nowrap"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="flex items-center justify-end gap-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleCopyLink(q)}
+                            className="text-muted-foreground hover:text-foreground h-7 gap-1 px-2 text-xs"
+                            title="Copy Public Link"
+                          >
+                            {copiedQuoteId === q.id ? (
+                              <Check className="h-3 w-3 text-emerald-500" />
+                            ) : (
+                              <Copy className="h-3 w-3" />
+                            )}
+                          </Button>
+
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="sm" className="h-7 w-7 rounded-lg p-0">
+                                <MoreVertical className="text-muted-foreground h-3.5 w-3.5" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-48 rounded-xl text-xs">
+                              <DropdownMenuItem onClick={() => handleOpenDrawer(q)}>
+                                <ExternalLink className="mr-2 h-3.5 w-3.5" /> Inspect Details
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => handleCopyLink(q)}>
+                                <Copy className="mr-2 h-3.5 w-3.5" /> Copy Client Link
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => handleSend(q)}>
+                                <Send className="mr-2 h-3.5 w-3.5" /> Dispatch Email
+                              </DropdownMenuItem>
+                              {q.status === "ACCEPTED" && !q.convertedInvoiceId && (
+                                <DropdownMenuItem
+                                  onClick={() => handleConvert(q)}
+                                  className="font-medium text-emerald-600"
+                                >
+                                  <FileCheck2 className="mr-2 h-3.5 w-3.5" /> Convert to Invoice
+                                </DropdownMenuItem>
+                              )}
+                              <DropdownMenuSeparator />
+                              {q.status !== "ACCEPTED" && (
+                                <DropdownMenuItem
+                                  onClick={() => handleDelete(q)}
+                                  className="text-destructive focus:text-destructive"
+                                >
+                                  <Trash2 className="mr-2 h-3.5 w-3.5" /> Delete Proposal
+                                </DropdownMenuItem>
+                              )}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </div>
 
       {/* Builder Modal */}
-      <QuoteBuilderModal isOpen={isBuilderOpen} onClose={() => setIsBuilderOpen(false)} />
+      <QuoteBuilderModal
+        isOpen={isBuilderOpen}
+        onClose={() => setIsBuilderOpen(false)}
+        initialCustomerId={customerIdParam || undefined}
+        initialCustomerName={customerNameParam || undefined}
+      />
 
       {/* Quick Peek Drawer */}
       <QuoteQuickPeekDrawer
         quote={selectedQuote}
         isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
+        onClose={handleCloseDrawer}
       />
     </div>
   );

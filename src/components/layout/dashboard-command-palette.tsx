@@ -20,6 +20,7 @@ import {
   X,
   Sparkles,
   BarChart3,
+  FileCheck2,
 } from "lucide-react";
 
 export interface DashboardCommandPaletteProps {
@@ -49,6 +50,15 @@ const staticCommandEntries: CommandEntry[] = [
     category: "Quick Actions",
     icon: CreditCard,
     actionType: "new_invoice",
+    badge: "Action",
+  },
+  {
+    id: "act-quote",
+    title: "Create Estimate / Proposal",
+    description: "Build an itemized client proposal with digital signature capture.",
+    category: "Quick Actions",
+    icon: FileCheck2,
+    href: "/dashboard/quotes?new=true",
     badge: "Action",
   },
   {
@@ -131,6 +141,16 @@ const staticCommandEntries: CommandEntry[] = [
     category: "Navigation",
     href: "/dashboard/invoices",
     icon: FileText,
+    badge: "Live",
+    badgeVariant: "success",
+  },
+  {
+    id: "nav-quotes",
+    title: "Estimates & Client Proposals",
+    description: "Manage client proposals, win rates, digital signatures, and invoice conversions.",
+    category: "Navigation",
+    href: "/dashboard/quotes",
+    icon: FileCheck2,
     badge: "Live",
     badgeVariant: "success",
   },

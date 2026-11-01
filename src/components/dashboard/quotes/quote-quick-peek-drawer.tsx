@@ -147,9 +147,15 @@ export function QuoteQuickPeekDrawer({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden bg-black/40 backdrop-blur-xs transition-opacity duration-300">
-      <div className="fixed inset-y-0 right-0 flex max-w-full pl-10">
-        <div className="bg-background border-border flex h-full w-screen max-w-md flex-col border-l shadow-2xl">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 overflow-hidden bg-black/40 backdrop-blur-xs transition-opacity duration-300"
+    >
+      <div className="fixed inset-y-0 right-0 flex max-w-full pl-0 sm:pl-10">
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="bg-background border-border flex h-full w-screen max-w-md flex-col border-l shadow-2xl"
+        >
           {/* Header */}
           <div className="border-border flex items-center justify-between border-b p-5">
             <div className="flex items-center gap-2.5">

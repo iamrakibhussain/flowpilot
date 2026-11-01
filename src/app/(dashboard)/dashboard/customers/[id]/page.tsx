@@ -30,6 +30,7 @@ import {
   Activity,
   History,
   UserPlus,
+  FileCheck2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle, CardDescription } from "@/components/ui/card";
@@ -534,6 +535,22 @@ export default function CustomerProfileDetailPage() {
             >
               <CreditCard className="mr-1.5 h-3.5 w-3.5" />
               <span>Invoice</span>
+            </Button>
+
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() =>
+                router.push(
+                  `/dashboard/quotes?new=true&customerId=${customer.id}&customerName=${encodeURIComponent(
+                    customer.name
+                  )}`
+                )
+              }
+              className="cursor-pointer justify-center rounded-xl border-purple-200/90 bg-purple-50/60 px-3 text-xs font-semibold text-purple-700 shadow-2xs hover:bg-purple-100/60"
+            >
+              <FileCheck2 className="mr-1.5 h-3.5 w-3.5 text-purple-600" />
+              <span>Estimate</span>
             </Button>
 
             {customer.status !== "INACTIVE" ? (
