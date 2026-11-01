@@ -2,12 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useWorkspaceSession } from "@/features/organizations/use-workspace-session";
-import {
-  getBlockedTimes,
-  createBlockedTime,
-  updateBlockedTime,
-  deleteBlockedTime,
-} from "./api";
+import { getBlockedTimes, createBlockedTime, updateBlockedTime, deleteBlockedTime } from "./api";
 import type {
   BlockedTimeFilterParams,
   CreateBlockedTimePayload,
@@ -33,10 +28,7 @@ function useResolvedOrgId(): string {
 /**
  * Fetch blocked time intervals (breaks, leaves, company holidays)
  */
-export function useBlockedTimes(
-  params?: BlockedTimeFilterParams,
-  explicitOrgId?: string
-) {
+export function useBlockedTimes(params?: BlockedTimeFilterParams, explicitOrgId?: string) {
   const resolvedOrgId = useResolvedOrgId();
   const organizationId = explicitOrgId || resolvedOrgId;
 
@@ -56,8 +48,7 @@ export function useCreateBlockedTime() {
   const organizationId = useResolvedOrgId();
 
   return useMutation({
-    mutationFn: (payload: CreateBlockedTimePayload) =>
-      createBlockedTime(payload, organizationId),
+    mutationFn: (payload: CreateBlockedTimePayload) => createBlockedTime(payload, organizationId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: blockedTimeKeys.all });
       queryClient.invalidateQueries({ queryKey: ["appointments"] });
@@ -74,13 +65,8 @@ export function useUpdateBlockedTime() {
   const organizationId = useResolvedOrgId();
 
   return useMutation({
-    mutationFn: ({
-      id,
-      payload,
-    }: {
-      id: string;
-      payload: UpdateBlockedTimePayload;
-    }) => updateBlockedTime(id, payload, organizationId),
+    mutationFn: ({ id, payload }: { id: string; payload: UpdateBlockedTimePayload }) =>
+      updateBlockedTime(id, payload, organizationId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: blockedTimeKeys.all });
       queryClient.invalidateQueries({ queryKey: ["appointments"] });
@@ -105,4 +91,3 @@ export function useDeleteBlockedTime() {
     },
   });
 }
-

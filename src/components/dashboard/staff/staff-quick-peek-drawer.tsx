@@ -19,15 +19,7 @@ import {
 import { BookingWizardModal } from "@/components/dashboard/appointments/booking-wizard-modal";
 import { BlockTimeModal } from "@/components/dashboard/appointments/block-time-modal";
 import { useBlockedTimes, useDeleteBlockedTime } from "@/features/staff/use-blocked-time";
-import {
-  Coffee,
-  Palmtree,
-  Stethoscope,
-  GraduationCap,
-  Trash2,
-  Lock,
-  Plus,
-} from "lucide-react";
+import { Coffee, Palmtree, Stethoscope, GraduationCap, Trash2, Lock, Plus } from "lucide-react";
 import { InviteMemberModal } from "@/components/dashboard/team/invite-member-modal";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -548,7 +540,7 @@ export function StaffQuickPeekDrawer({
                     size="sm"
                     variant="outline"
                     onClick={() => setIsBlockTimeModalOpen(true)}
-                    className="border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 cursor-pointer gap-1.5 rounded-xl text-xs font-bold"
+                    className="cursor-pointer gap-1.5 rounded-xl border-amber-500/30 bg-amber-500/10 text-xs font-bold text-amber-600 hover:bg-amber-500/20 dark:text-amber-400"
                   >
                     <Plus className="h-3.5 w-3.5" />
                     <span>Add Time Off</span>
@@ -557,15 +549,18 @@ export function StaffQuickPeekDrawer({
               </div>
 
               {isLoadingBlockedTimes ? (
-                <p className="text-muted-foreground py-3 text-center text-xs">Loading leave schedule...</p>
+                <p className="text-muted-foreground py-3 text-center text-xs">
+                  Loading leave schedule...
+                </p>
               ) : personalLeaves.length === 0 ? (
                 <div className="border-border/60 bg-muted/20 rounded-xl border p-3.5 text-center">
-                  <div className="flex h-8 w-8 mx-auto mb-1.5 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-500">
+                  <div className="mx-auto mb-1.5 flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-500">
                     <Check className="h-4 w-4" />
                   </div>
                   <p className="text-foreground text-xs font-bold">Standard Availability Active</p>
                   <p className="text-muted-foreground mt-0.5 text-[11px]">
-                    No approved leaves or blocked periods scheduled. This specialist is fully open for client bookings.
+                    No approved leaves or blocked periods scheduled. This specialist is fully open
+                    for client bookings.
                   </p>
                 </div>
               ) : (
@@ -586,15 +581,30 @@ export function StaffQuickPeekDrawer({
                     const getBadgeConfig = (t: string) => {
                       switch (t) {
                         case "VACATION":
-                          return { icon: Palmtree, color: "text-amber-500 bg-amber-500/10 border-amber-500/20" };
+                          return {
+                            icon: Palmtree,
+                            color: "text-amber-500 bg-amber-500/10 border-amber-500/20",
+                          };
                         case "SICK_LEAVE":
-                          return { icon: Stethoscope, color: "text-rose-500 bg-rose-500/10 border-rose-500/20" };
+                          return {
+                            icon: Stethoscope,
+                            color: "text-rose-500 bg-rose-500/10 border-rose-500/20",
+                          };
                         case "BREAK":
-                          return { icon: Coffee, color: "text-slate-400 bg-slate-500/10 border-slate-500/20" };
+                          return {
+                            icon: Coffee,
+                            color: "text-slate-400 bg-slate-500/10 border-slate-500/20",
+                          };
                         case "TRAINING":
-                          return { icon: GraduationCap, color: "text-blue-500 bg-blue-500/10 border-blue-500/20" };
+                          return {
+                            icon: GraduationCap,
+                            color: "text-blue-500 bg-blue-500/10 border-blue-500/20",
+                          };
                         default:
-                          return { icon: Lock, color: "text-indigo-400 bg-indigo-500/10 border-indigo-500/20" };
+                          return {
+                            icon: Lock,
+                            color: "text-indigo-400 bg-indigo-500/10 border-indigo-500/20",
+                          };
                       }
                     };
 
@@ -604,10 +614,12 @@ export function StaffQuickPeekDrawer({
                     return (
                       <div
                         key={block.id}
-                        className="border-border/60 bg-muted/20 flex items-center justify-between rounded-xl border p-2.5 transition-colors hover:bg-muted/30"
+                        className="border-border/60 bg-muted/20 hover:bg-muted/30 flex items-center justify-between rounded-xl border p-2.5 transition-colors"
                       >
-                        <div className="flex items-center gap-2.5 min-w-0 pr-2">
-                          <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border ${meta.color}`}>
+                        <div className="flex min-w-0 items-center gap-2.5 pr-2">
+                          <div
+                            className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border ${meta.color}`}
+                          >
                             <IconComponent className="h-3.5 w-3.5" />
                           </div>
                           <div className="min-w-0">
@@ -635,7 +647,7 @@ export function StaffQuickPeekDrawer({
                           }}
                           disabled={deleteBlockedTimeMutation.isPending}
                           title="Remove time-off and reopen slot"
-                          className="text-muted-foreground hover:text-rose-600 hover:bg-rose-500/10 h-7 w-7 shrink-0 rounded-lg cursor-pointer"
+                          className="text-muted-foreground h-7 w-7 shrink-0 cursor-pointer rounded-lg hover:bg-rose-500/10 hover:text-rose-600"
                         >
                           <Trash2 className="h-3.5 w-3.5" />
                         </Button>

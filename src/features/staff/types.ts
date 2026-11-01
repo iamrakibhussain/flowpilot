@@ -100,12 +100,7 @@ export interface UpdateStaffPayload {
 }
 
 export type BlockedTimeType =
-  | "VACATION"
-  | "SICK_LEAVE"
-  | "BREAK"
-  | "COMPANY_HOLIDAY"
-  | "TRAINING"
-  | "OTHER";
+  "VACATION" | "SICK_LEAVE" | "BREAK" | "COMPANY_HOLIDAY" | "TRAINING" | "OTHER";
 
 export interface BlockedTimeItem {
   id: string;

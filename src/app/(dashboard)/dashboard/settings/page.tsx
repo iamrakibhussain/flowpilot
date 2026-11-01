@@ -165,7 +165,9 @@ export default function WorkspaceSettingsPage() {
   const deleteBlockedTimeMutation = useDeleteBlockedTime();
   const { data: allBlockedTimes = [], isLoading: isLoadingBlockedTimes } = useBlockedTimes();
   const companyHolidays = React.useMemo(() => {
-    return allBlockedTimes.filter((b: BlockedTimeItem) => !b.staffMemberId || b.type === "COMPANY_HOLIDAY");
+    return allBlockedTimes.filter(
+      (b: BlockedTimeItem) => !b.staffMemberId || b.type === "COMPANY_HOLIDAY"
+    );
   }, [allBlockedTimes]);
 
   // Settings Queries & Mutations
@@ -1675,7 +1677,6 @@ export default function WorkspaceSettingsPage() {
               </div>
             </CardContent>
           </Card>
-
         </div>
       )}
 
@@ -1843,24 +1844,28 @@ export default function WorkspaceSettingsPage() {
             </CardContent>
           </Card>
 
-{/* Company Holidays & Office Closures Manager Card */}
-          <Card className="border-border/80 from-card to-card/95 bg-gradient-to-b shadow-xs overflow-hidden">
-            <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3.5 p-4 sm:p-6 pb-3 sm:pb-4 border-b border-border/40">
-              <div className="flex items-start gap-3 min-w-0">
-                <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl border border-rose-500/20 bg-rose-500/10 text-rose-600 shadow-2xs dark:text-rose-400 mt-0.5 sm:mt-0">
+          {/* Company Holidays & Office Closures Manager Card */}
+          <Card className="border-border/80 from-card to-card/95 overflow-hidden bg-gradient-to-b shadow-xs">
+            <CardHeader className="border-border/40 flex flex-col gap-3.5 border-b p-4 pb-3 sm:flex-row sm:items-center sm:justify-between sm:p-6 sm:pb-4">
+              <div className="flex min-w-0 items-start gap-3">
+                <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-rose-500/20 bg-rose-500/10 text-rose-600 shadow-2xs sm:mt-0 sm:h-10 sm:w-10 dark:text-rose-400">
                   <CalendarX className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
                 </div>
                 <div className="min-w-0 flex-1 space-y-1">
                   <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                    <CardTitle className="text-foreground text-sm sm:text-base font-bold tracking-tight">
+                    <CardTitle className="text-foreground text-sm font-bold tracking-tight sm:text-base">
                       Company Holidays &amp; Office Closures
                     </CardTitle>
-                    <Badge variant="outline" className="border-rose-500/30 bg-rose-500/10 text-rose-600 dark:text-rose-400 text-[10px] font-bold shrink-0">
+                    <Badge
+                      variant="outline"
+                      className="shrink-0 border-rose-500/30 bg-rose-500/10 text-[10px] font-bold text-rose-600 dark:text-rose-400"
+                    >
                       {companyHolidays.length} Closed Days
                     </Badge>
                   </div>
-                  <CardDescription className="text-muted-foreground text-[11px] sm:text-xs leading-relaxed">
-                    Workspace-wide holidays shut down public client self-scheduling and staff calendars automatically.
+                  <CardDescription className="text-muted-foreground text-[11px] leading-relaxed sm:text-xs">
+                    Workspace-wide holidays shut down public client self-scheduling and staff
+                    calendars automatically.
                   </CardDescription>
                 </div>
               </div>
@@ -1870,7 +1875,7 @@ export default function WorkspaceSettingsPage() {
                   type="button"
                   size="sm"
                   onClick={() => setIsCompanyHolidayModalOpen(true)}
-                  className="w-full sm:w-auto h-10 sm:h-9 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow-xs cursor-pointer gap-1.5 justify-center active:scale-[0.98] transition-all"
+                  className="h-10 w-full cursor-pointer justify-center gap-1.5 rounded-xl bg-rose-600 text-xs font-bold text-white shadow-xs transition-all hover:bg-rose-700 active:scale-[0.98] sm:h-9 sm:w-auto"
                 >
                   <Plus className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
                   <span>Add Company Holiday</span>
@@ -1878,17 +1883,23 @@ export default function WorkspaceSettingsPage() {
               )}
             </CardHeader>
 
-            <CardContent className="p-4 sm:p-6 pt-3.5 sm:pt-4 space-y-3 sm:space-y-4">
+            <CardContent className="space-y-3 p-4 pt-3.5 sm:space-y-4 sm:p-6 sm:pt-4">
               {isLoadingBlockedTimes ? (
-                <div className="p-6 text-center text-xs text-muted-foreground">Loading workspace holidays...</div>
+                <div className="text-muted-foreground p-6 text-center text-xs">
+                  Loading workspace holidays...
+                </div>
               ) : companyHolidays.length === 0 ? (
-                <div className="border-border/60 bg-muted/20 rounded-xl sm:rounded-2xl border p-4 sm:p-6 text-center">
-                  <div className="flex h-9 w-9 sm:h-10 sm:w-10 mx-auto mb-2 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-500">
+                <div className="border-border/60 bg-muted/20 rounded-xl border p-4 text-center sm:rounded-2xl sm:p-6">
+                  <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-500 sm:h-10 sm:w-10">
                     <Check className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
                   </div>
-                  <h4 className="text-foreground text-xs sm:text-sm font-bold">No Scheduled Office Closures</h4>
-                  <p className="text-muted-foreground text-[11px] sm:text-xs mt-1 max-w-md mx-auto leading-relaxed">
-                    Your business currently accepts bookings year-round during active working hours. Add official holidays (e.g., National Holidays, Eid, Christmas, or Summer Closures) to black out dates workspace-wide.
+                  <h4 className="text-foreground text-xs font-bold sm:text-sm">
+                    No Scheduled Office Closures
+                  </h4>
+                  <p className="text-muted-foreground mx-auto mt-1 max-w-md text-[11px] leading-relaxed sm:text-xs">
+                    Your business currently accepts bookings year-round during active working hours.
+                    Add official holidays (e.g., National Holidays, Eid, Christmas, or Summer
+                    Closures) to black out dates workspace-wide.
                   </p>
                   {isOwnerOrAdmin && (
                     <Button
@@ -1896,15 +1907,15 @@ export default function WorkspaceSettingsPage() {
                       variant="outline"
                       size="sm"
                       onClick={() => setIsCompanyHolidayModalOpen(true)}
-                      className="mt-3.5 w-full sm:w-auto h-9 sm:h-8.5 border-border text-xs font-semibold rounded-xl cursor-pointer justify-center"
+                      className="border-border mt-3.5 h-9 w-full cursor-pointer justify-center rounded-xl text-xs font-semibold sm:h-8.5 sm:w-auto"
                     >
-                      <Plus className="h-3.5 w-3.5 mr-1 text-rose-500" />
+                      <Plus className="mr-1 h-3.5 w-3.5 text-rose-500" />
                       <span>Schedule First Holiday</span>
                     </Button>
                   )}
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-3">
+                <div className="grid grid-cols-1 gap-2.5 sm:gap-3 md:grid-cols-2">
                   {companyHolidays.map((holiday: BlockedTimeItem) => {
                     const startDate = new Date(holiday.startTime);
                     const endDate = new Date(holiday.endTime);
@@ -1921,25 +1932,27 @@ export default function WorkspaceSettingsPage() {
                     return (
                       <div
                         key={holiday.id}
-                        className="border-border/60 bg-muted/20 hover:bg-muted/30 flex items-start justify-between rounded-xl sm:rounded-2xl border p-3 sm:p-4 transition-all"
+                        className="border-border/60 bg-muted/20 hover:bg-muted/30 flex items-start justify-between rounded-xl border p-3 transition-all sm:rounded-2xl sm:p-4"
                       >
-                        <div className="flex items-start gap-2.5 sm:gap-3 min-w-0 flex-1 pr-2">
-                          <div className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-xl border border-rose-500/20 bg-rose-500/10 text-rose-600 dark:text-rose-400 mt-0.5">
+                        <div className="flex min-w-0 flex-1 items-start gap-2.5 pr-2 sm:gap-3">
+                          <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-rose-500/20 bg-rose-500/10 text-rose-600 sm:h-9 sm:w-9 dark:text-rose-400">
                             <Building2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                           </div>
                           <div className="min-w-0 flex-1">
-                            <span className="text-foreground block truncate text-xs sm:text-sm font-bold">
+                            <span className="text-foreground block truncate text-xs font-bold sm:text-sm">
                               {holiday.title}
                             </span>
-                            <div className="text-muted-foreground flex flex-wrap items-center gap-1.5 text-[11px] sm:text-xs font-medium mt-0.5">
-                              <span className="font-semibold text-foreground/80">{formattedDate}</span>
+                            <div className="text-muted-foreground mt-0.5 flex flex-wrap items-center gap-1.5 text-[11px] font-medium sm:text-xs">
+                              <span className="text-foreground/80 font-semibold">
+                                {formattedDate}
+                              </span>
                               <span>•</span>
-                              <span className="inline-flex items-center gap-1 text-rose-600 dark:text-rose-400 font-bold bg-rose-500/10 border border-rose-500/20 px-1.5 py-0.5 rounded-md text-[10px]">
+                              <span className="inline-flex items-center gap-1 rounded-md border border-rose-500/20 bg-rose-500/10 px-1.5 py-0.5 text-[10px] font-bold text-rose-600 dark:text-rose-400">
                                 {formattedTime}
                               </span>
                             </div>
                             {holiday.notes && (
-                              <p className="text-muted-foreground/80 mt-1 line-clamp-2 text-[10px] sm:text-[11px] italic bg-background/50 border border-border/40 rounded-lg p-1.5">
+                              <p className="text-muted-foreground/80 bg-background/50 border-border/40 mt-1 line-clamp-2 rounded-lg border p-1.5 text-[10px] italic sm:text-[11px]">
                                 &quot;{holiday.notes}&quot;
                               </p>
                             )}
@@ -1956,7 +1969,7 @@ export default function WorkspaceSettingsPage() {
                             }}
                             disabled={deleteBlockedTimeMutation.isPending}
                             title="Remove holiday and reopen workspace"
-                            className="text-muted-foreground hover:text-rose-600 hover:bg-rose-500/10 h-7 w-7 sm:h-8 sm:w-8 shrink-0 rounded-lg sm:rounded-xl cursor-pointer active:scale-95"
+                            className="text-muted-foreground h-7 w-7 shrink-0 cursor-pointer rounded-lg hover:bg-rose-500/10 hover:text-rose-600 active:scale-95 sm:h-8 sm:w-8 sm:rounded-xl"
                           >
                             <Trash2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                           </Button>

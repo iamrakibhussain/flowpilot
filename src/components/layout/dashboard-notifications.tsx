@@ -124,7 +124,7 @@ export function DashboardNotifications() {
         return <ShieldAlert className="h-4 w-4 text-amber-600 dark:text-amber-400" />;
       case "SYSTEM":
       default:
-        return <Layers className="h-4 w-4 text-muted-foreground" />;
+        return <Layers className="text-muted-foreground h-4 w-4" />;
     }
   };
 
@@ -153,25 +153,25 @@ export function DashboardNotifications() {
         collisionPadding={12}
         onInteractOutside={() => setIsOpen(false)}
         onEscapeKeyDown={() => setIsOpen(false)}
-        className="w-[calc(100vw-1.5rem)] sm:w-96 max-w-[calc(100vw-1.5rem)] sm:max-w-md rounded-2xl border border-border/80 bg-card/95 text-card-foreground p-0 shadow-2xl backdrop-blur-2xl"
+        className="border-border/80 bg-card/95 text-card-foreground w-[calc(100vw-1.5rem)] max-w-[calc(100vw-1.5rem)] rounded-2xl border p-0 shadow-2xl backdrop-blur-2xl sm:w-96 sm:max-w-md"
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-border/60 bg-muted/20 px-3.5 py-3 sm:px-4">
+        <div className="border-border/60 bg-muted/20 flex items-center justify-between border-b px-3.5 py-3 sm:px-4">
           <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <div className="bg-primary/10 text-primary flex h-7 w-7 items-center justify-center rounded-lg">
               <Bell className="h-3.5 w-3.5" />
             </div>
             <div className="flex items-center gap-1.5">
-              <h3 className="text-sm font-bold text-foreground">Notifications</h3>
+              <h3 className="text-foreground text-sm font-bold">Notifications</h3>
               {unreadCount > 0 ? (
                 <Badge
                   variant="secondary"
-                  className="h-4.5 bg-primary/10 text-primary border border-primary/20 px-1.5 text-[10px] font-bold"
+                  className="bg-primary/10 text-primary border-primary/20 h-4.5 border px-1.5 text-[10px] font-bold"
                 >
                   {unreadCount} new
                 </Badge>
               ) : (
-                <span className="text-[11px] font-medium text-muted-foreground">All read</span>
+                <span className="text-muted-foreground text-[11px] font-medium">All read</span>
               )}
             </div>
           </div>
@@ -192,7 +192,7 @@ export function DashboardNotifications() {
                 onClick={handleClearRead}
                 disabled={clearReadMutation.isPending}
                 title="Clear read notifications"
-                className="text-muted-foreground hover:text-rose-600 hover:bg-rose-500/10 rounded-lg p-1.5 transition-colors"
+                className="text-muted-foreground rounded-lg p-1.5 transition-colors hover:bg-rose-500/10 hover:text-rose-600"
               >
                 <Trash2 className="h-3.5 w-3.5" />
               </button>
@@ -210,7 +210,7 @@ export function DashboardNotifications() {
         </div>
 
         {/* Filter Pills */}
-        <div className="flex items-center gap-1 overflow-x-auto border-b border-border/60 bg-muted/30 px-3 py-1.5 text-xs scrollbar-none">
+        <div className="border-border/60 bg-muted/30 flex scrollbar-none items-center gap-1 overflow-x-auto border-b px-3 py-1.5 text-xs">
           <button
             type="button"
             onClick={(e) => {
@@ -219,7 +219,7 @@ export function DashboardNotifications() {
             }}
             className={`rounded-lg px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-all ${
               filter === "all"
-                ? "bg-card text-foreground shadow-2xs border border-border/80 font-bold"
+                ? "bg-card text-foreground border-border/80 border font-bold shadow-2xs"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
             }`}
           >
@@ -233,7 +233,7 @@ export function DashboardNotifications() {
             }}
             className={`rounded-lg px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-all ${
               filter === "unread"
-                ? "bg-card text-foreground shadow-2xs border border-border/80 font-bold"
+                ? "bg-card text-foreground border-border/80 border font-bold shadow-2xs"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
             }`}
           >
@@ -247,7 +247,7 @@ export function DashboardNotifications() {
             }}
             className={`rounded-lg px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-all ${
               filter === "bookings"
-                ? "bg-card text-foreground shadow-2xs border border-border/80 font-bold"
+                ? "bg-card text-foreground border-border/80 border font-bold shadow-2xs"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
             }`}
           >
@@ -261,7 +261,7 @@ export function DashboardNotifications() {
             }}
             className={`rounded-lg px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-all ${
               filter === "invoices"
-                ? "bg-card text-foreground shadow-2xs border border-border/80 font-bold"
+                ? "bg-card text-foreground border-border/80 border font-bold shadow-2xs"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
             }`}
           >
@@ -270,14 +270,14 @@ export function DashboardNotifications() {
         </div>
 
         {/* Notifications List */}
-        <div className="max-h-[min(380px,60vh)] divide-y divide-border/40 overflow-y-auto overscroll-contain">
+        <div className="divide-border/40 max-h-[min(380px,60vh)] divide-y overflow-y-auto overscroll-contain">
           {isLoading ? (
-            <div className="p-8 text-center text-xs text-muted-foreground">
+            <div className="text-muted-foreground p-8 text-center text-xs">
               <div className="border-primary mb-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-t-transparent" />
               <p>Loading real-time notifications...</p>
             </div>
           ) : filteredItems.length === 0 ? (
-            <div className="p-8 text-center text-xs text-muted-foreground">
+            <div className="text-muted-foreground p-8 text-center text-xs">
               <div className="mx-auto mb-2.5 flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
                 <CheckCheck className="h-5 w-5" />
               </div>
@@ -291,20 +291,22 @@ export function DashboardNotifications() {
               <div
                 key={item.id}
                 onClick={() => handleItemClick(item)}
-                className={`group flex cursor-pointer items-start gap-3 p-3.5 transition-all hover:bg-muted/50 active:bg-muted/70 ${
+                className={`group hover:bg-muted/50 active:bg-muted/70 flex cursor-pointer items-start gap-3 p-3.5 transition-all ${
                   !item.isRead
-                    ? "bg-primary/5 dark:bg-primary/10 border-l-2 border-primary"
+                    ? "bg-primary/5 dark:bg-primary/10 border-primary border-l-2"
                     : "border-l-2 border-transparent"
                 }`}
               >
-                <div className="border-border/60 bg-muted/60 shadow-2xs mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border">
+                <div className="border-border/60 bg-muted/60 mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border shadow-2xs">
                   {getTypeIcon(item.type)}
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between gap-1">
                     <p
                       className={`truncate text-xs ${
-                        !item.isRead ? "text-foreground font-bold" : "text-foreground/80 font-medium"
+                        !item.isRead
+                          ? "text-foreground font-bold"
+                          : "text-foreground/80 font-medium"
                       }`}
                     >
                       {item.title}
@@ -318,7 +320,7 @@ export function DashboardNotifications() {
                   </p>
                 </div>
                 {!item.isRead && (
-                  <span className="bg-primary shadow-xs mt-2 h-2 w-2 shrink-0 rounded-full" />
+                  <span className="bg-primary mt-2 h-2 w-2 shrink-0 rounded-full shadow-xs" />
                 )}
               </div>
             ))
@@ -329,7 +331,9 @@ export function DashboardNotifications() {
         <div className="border-border/60 bg-muted/20 text-muted-foreground flex items-center justify-between border-t px-3.5 py-2 text-[11px] sm:px-4">
           <div className="flex items-center gap-1.5">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
-            <span className="text-muted-foreground/80 text-[10px] font-semibold tracking-wider uppercase">Real-Time Sync</span>
+            <span className="text-muted-foreground/80 text-[10px] font-semibold tracking-wider uppercase">
+              Real-Time Sync
+            </span>
           </div>
           <span className="text-muted-foreground/80 text-[10px] font-medium">
             {items.length} {items.length === 1 ? "update" : "updates"}

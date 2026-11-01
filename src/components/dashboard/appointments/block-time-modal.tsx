@@ -46,7 +46,12 @@ const TYPE_CONFIG: Array<{
   { type: "BREAK", label: "Break / Lunch", icon: Coffee, color: "hover:border-slate-400" },
   { type: "VACATION", label: "Vacation", icon: Palmtree, color: "hover:border-amber-500" },
   { type: "SICK_LEAVE", label: "Sick Leave", icon: Stethoscope, color: "hover:border-rose-500" },
-  { type: "COMPANY_HOLIDAY", label: "Company Holiday", icon: Building2, color: "hover:border-indigo-500" },
+  {
+    type: "COMPANY_HOLIDAY",
+    label: "Company Holiday",
+    icon: Building2,
+    color: "hover:border-indigo-500",
+  },
   { type: "TRAINING", label: "Training", icon: GraduationCap, color: "hover:border-blue-500" },
   { type: "OTHER", label: "Other", icon: Clock, color: "hover:border-slate-500" },
 ];
@@ -105,7 +110,9 @@ function BlockTimeModalContent({
   }, [defaultType, isLeader, userStaffMember, defaultStaffId, staffMembers, session]);
 
   const [type, setType] = React.useState<BlockedTimeType>(defaultType || "BREAK");
-  const [title, setTitle] = React.useState(defaultType === "COMPANY_HOLIDAY" ? "Office Holiday / Closed" : "");
+  const [title, setTitle] = React.useState(
+    defaultType === "COMPANY_HOLIDAY" ? "Office Holiday / Closed" : ""
+  );
   const [selectedStaffId, setSelectedStaffId] = React.useState<string>(initialStaffId);
   const [isAllDay, setIsAllDay] = React.useState(defaultType === "COMPANY_HOLIDAY");
   const [date, setDate] = React.useState(todayStr);
@@ -113,8 +120,6 @@ function BlockTimeModalContent({
   const [endTime, setEndTime] = React.useState(initialEndTime);
   const [notes, setNotes] = React.useState("");
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
-
-
 
   // When type is COMPANY_HOLIDAY, set default title and clear individual staff member
   const handleTypeSelect = (selected: BlockedTimeType) => {
@@ -208,238 +213,243 @@ function BlockTimeModalContent({
   };
 
   return (
-    <DialogContent className="max-h-[92vh] w-[95vw] sm:max-w-xl overflow-y-auto rounded-3xl border border-border/80 bg-card/95 text-card-foreground p-4 sm:p-7 shadow-2xl backdrop-blur-2xl">
-        <DialogHeader className="space-y-2 pr-10">
-          <div className="flex flex-wrap items-center gap-2.5">
-            <div className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-500 border border-amber-500/20 shadow-xs">
-              <Lock className="h-5 w-5" />
-            </div>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/20 bg-amber-500/10 px-2.5 py-0.5 text-[10px] font-extrabold text-amber-600 dark:text-amber-400 shadow-2xs">
-              <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse" />
-              <span>Schedule Lock Engine</span>
-            </span>
+    <DialogContent className="border-border/80 bg-card/95 text-card-foreground max-h-[92vh] w-[95vw] overflow-y-auto rounded-3xl border p-4 shadow-2xl backdrop-blur-2xl sm:max-w-xl sm:p-7">
+      <DialogHeader className="space-y-2 pr-10">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-amber-500/20 bg-amber-500/10 text-amber-500 shadow-xs sm:h-11 sm:w-11">
+            <Lock className="h-5 w-5" />
           </div>
-          <DialogTitle className="text-lg sm:text-xl font-black tracking-tight text-foreground">
-            Block Time &amp; Availability
-          </DialogTitle>
-          <DialogDescription className="text-xs text-muted-foreground">
-            Reserve calendar intervals for breaks, staff leaves, or company-wide office closures.
-          </DialogDescription>
-        </DialogHeader>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/20 bg-amber-500/10 px-2.5 py-0.5 text-[10px] font-extrabold text-amber-600 shadow-2xs dark:text-amber-400">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber-500" />
+            <span>Schedule Lock Engine</span>
+          </span>
+        </div>
+        <DialogTitle className="text-foreground text-lg font-black tracking-tight sm:text-xl">
+          Block Time &amp; Availability
+        </DialogTitle>
+        <DialogDescription className="text-muted-foreground text-xs">
+          Reserve calendar intervals for breaks, staff leaves, or company-wide office closures.
+        </DialogDescription>
+      </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="mt-3 space-y-4">
-          {/* Error Banner */}
-          {errorMessage && (
-            <div className="flex items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-xs font-semibold text-rose-500">
-              <AlertCircle className="h-4 w-4 shrink-0" />
-              <span>{errorMessage}</span>
-            </div>
-          )}
-
-          {/* Type Selector */}
-          <div>
-            <Label className="text-xs font-bold text-foreground">Category</Label>
-            <div className="mt-1.5 grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {TYPE_CONFIG.map((item) => {
-                const Icon = item.icon;
-                const isSelected = type === item.type;
-                const disabled = item.type === "COMPANY_HOLIDAY" && !isLeader;
-
-                return (
-                  <button
-                    key={item.type}
-                    type="button"
-                    disabled={disabled}
-                    onClick={() => handleTypeSelect(item.type)}
-                    className={`flex items-center sm:flex-col justify-start sm:justify-center gap-2 sm:gap-1.5 rounded-xl border p-2.5 text-xs font-semibold transition-all active:scale-95 ${
-                      isSelected
-                        ? "border-amber-500/60 bg-amber-500/15 text-amber-600 dark:text-amber-300 shadow-xs ring-1 ring-amber-500/30"
-                        : "border-border/60 bg-muted/30 text-muted-foreground hover:bg-muted/60 hover:text-foreground"
-                    } ${disabled ? "cursor-not-allowed opacity-40" : "cursor-pointer"}`}
-                  >
-                    <Icon className="h-4 w-4 shrink-0 text-amber-500" />
-                    <span className="truncate">{item.label}</span>
-                  </button>
-                );
-              })}
-            </div>
+      <form onSubmit={handleSubmit} className="mt-3 space-y-4">
+        {/* Error Banner */}
+        {errorMessage && (
+          <div className="flex items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-xs font-semibold text-rose-500">
+            <AlertCircle className="h-4 w-4 shrink-0" />
+            <span>{errorMessage}</span>
           </div>
+        )}
 
-          {/* Title */}
+        {/* Type Selector */}
+        <div>
+          <Label className="text-foreground text-xs font-bold">Category</Label>
+          <div className="mt-1.5 grid grid-cols-2 gap-2 sm:grid-cols-3">
+            {TYPE_CONFIG.map((item) => {
+              const Icon = item.icon;
+              const isSelected = type === item.type;
+              const disabled = item.type === "COMPANY_HOLIDAY" && !isLeader;
+
+              return (
+                <button
+                  key={item.type}
+                  type="button"
+                  disabled={disabled}
+                  onClick={() => handleTypeSelect(item.type)}
+                  className={`flex items-center justify-start gap-2 rounded-xl border p-2.5 text-xs font-semibold transition-all active:scale-95 sm:flex-col sm:justify-center sm:gap-1.5 ${
+                    isSelected
+                      ? "border-amber-500/60 bg-amber-500/15 text-amber-600 shadow-xs ring-1 ring-amber-500/30 dark:text-amber-300"
+                      : "border-border/60 bg-muted/30 text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+                  } ${disabled ? "cursor-not-allowed opacity-40" : "cursor-pointer"}`}
+                >
+                  <Icon className="h-4 w-4 shrink-0 text-amber-500" />
+                  <span className="truncate">{item.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Title */}
+        <div>
+          <Label htmlFor="block-title" className="text-foreground text-xs font-bold">
+            Title / Reason <span className="text-rose-500">*</span>
+          </Label>
+          <Input
+            id="block-title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="e.g. Lunch Break, Annual Leave, Eid Holiday"
+            className="border-border/80 bg-background text-foreground placeholder:text-muted-foreground mt-1.5 h-10 rounded-xl text-xs font-medium shadow-2xs focus-visible:border-amber-500"
+            required
+          />
+        </div>
+
+        {/* Specialist Selection */}
+        {type !== "COMPANY_HOLIDAY" ? (
           <div>
-            <Label htmlFor="block-title" className="text-xs font-bold text-foreground">
-              Title / Reason <span className="text-rose-500">*</span>
+            <Label htmlFor="block-staff" className="text-foreground text-xs font-bold">
+              Team Member <span className="text-rose-500">*</span>
+            </Label>
+            {!isLeader ? (
+              <div className="border-border/80 bg-muted/30 text-foreground mt-1.5 flex items-center justify-between rounded-xl border px-3.5 py-2.5 text-xs font-medium">
+                <span>
+                  {userStaffMember?.name || session?.user?.name || "Your Personal Schedule"}
+                </span>
+                <span className="border-border/60 bg-background text-muted-foreground rounded-md border px-2 py-0.5 text-[10px] font-bold">
+                  My Schedule (Locked)
+                </span>
+              </div>
+            ) : (
+              <select
+                id="block-staff"
+                value={selectedStaffId}
+                onChange={(e) => setSelectedStaffId(e.target.value)}
+                disabled={isLoadingStaff}
+                className="border-border/80 bg-background text-foreground mt-1.5 h-10 w-full rounded-xl border px-3 text-xs font-medium shadow-2xs focus:border-amber-500 focus:outline-none"
+              >
+                <option value="" disabled>
+                  Select specialist
+                </option>
+                {staffMembers.map((staff) => (
+                  <option key={staff.id} value={staff.id}>
+                    {staff.name} ({staff.roleTitle || "Specialist"})
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
+        ) : (
+          <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/10 p-3 text-xs text-indigo-600 dark:text-indigo-400">
+            <span className="font-bold">Company-Wide Holiday:</span> This will automatically close
+            availability for all specialists across the workspace.
+          </div>
+        )}
+
+        {/* Date & All Day Toggle */}
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div>
+            <Label htmlFor="block-date" className="text-foreground text-xs font-bold">
+              Date
             </Label>
             <Input
-              id="block-title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="e.g. Lunch Break, Annual Leave, Eid Holiday"
-              className="mt-1.5 h-10 rounded-xl border-border/80 bg-background text-foreground text-xs font-medium placeholder:text-muted-foreground focus-visible:border-amber-500 shadow-2xs"
-              required
+              id="block-date"
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="border-border/80 bg-background text-foreground mt-1.5 h-10 rounded-xl text-xs font-medium [color-scheme:dark] shadow-2xs"
             />
           </div>
 
-          {/* Specialist Selection */}
-          {type !== "COMPANY_HOLIDAY" ? (
-            <div>
-              <Label htmlFor="block-staff" className="text-xs font-bold text-foreground">
-                Team Member <span className="text-rose-500">*</span>
-              </Label>
-              {!isLeader ? (
-                <div className="mt-1.5 flex items-center justify-between rounded-xl border border-border/80 bg-muted/30 px-3.5 py-2.5 text-xs font-medium text-foreground">
-                  <span>{userStaffMember?.name || session?.user?.name || "Your Personal Schedule"}</span>
-                  <span className="rounded-md border border-border/60 bg-background px-2 py-0.5 text-[10px] font-bold text-muted-foreground">
-                    My Schedule (Locked)
-                  </span>
-                </div>
-              ) : (
-                <select
-                  id="block-staff"
-                  value={selectedStaffId}
-                  onChange={(e) => setSelectedStaffId(e.target.value)}
-                  disabled={isLoadingStaff}
-                  className="mt-1.5 h-10 w-full rounded-xl border border-border/80 bg-background px-3 text-xs font-medium text-foreground focus:border-amber-500 focus:outline-none shadow-2xs"
-                >
-                  <option value="" disabled>
-                    Select specialist
-                  </option>
-                  {staffMembers.map((staff) => (
-                    <option key={staff.id} value={staff.id}>
-                      {staff.name} ({staff.roleTitle || "Specialist"})
-                    </option>
-                  ))}
-                </select>
-              )}
-            </div>
-          ) : (
-            <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/10 p-3 text-xs text-indigo-600 dark:text-indigo-400">
-              <span className="font-bold">Company-Wide Holiday:</span> This will automatically close availability for all specialists across the workspace.
-            </div>
-          )}
-
-          {/* Date & All Day Toggle */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <Label htmlFor="block-date" className="text-xs font-bold text-foreground">
-                Date
-              </Label>
-              <Input
-                id="block-date"
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="mt-1.5 h-10 rounded-xl border-border/80 bg-background text-foreground text-xs font-medium shadow-2xs [color-scheme:dark]"
+          <div className="flex flex-col justify-end">
+            <label className="border-border/80 bg-muted/20 text-foreground hover:bg-muted/40 flex h-10 cursor-pointer items-center gap-2.5 rounded-xl border px-3.5 text-xs font-medium transition-colors">
+              <input
+                type="checkbox"
+                checked={isAllDay}
+                onChange={(e) => setIsAllDay(e.target.checked)}
+                className="border-border h-4 w-4 cursor-pointer rounded text-amber-500 focus:ring-0"
               />
-            </div>
+              <span className="font-semibold">All Day (Full Day Off)</span>
+            </label>
+          </div>
+        </div>
 
-            <div className="flex flex-col justify-end">
-              <label className="flex h-10 cursor-pointer items-center gap-2.5 rounded-xl border border-border/80 bg-muted/20 px-3.5 text-xs font-medium text-foreground transition-colors hover:bg-muted/40">
-                <input
-                  type="checkbox"
-                  checked={isAllDay}
-                  onChange={(e) => setIsAllDay(e.target.checked)}
-                  className="h-4 w-4 rounded border-border text-amber-500 focus:ring-0 cursor-pointer"
+        {/* Time pickers (if not All Day) */}
+        {!isAllDay && (
+          <div className="space-y-2.5">
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label htmlFor="block-start-time" className="text-foreground text-xs font-bold">
+                  Start Time
+                </Label>
+                <Input
+                  id="block-start-time"
+                  type="time"
+                  value={startTime}
+                  onChange={(e) => setStartTime(e.target.value)}
+                  className="border-border/80 bg-background text-foreground mt-1.5 h-10 rounded-xl text-xs font-medium [color-scheme:dark] shadow-2xs"
                 />
-                <span className="font-semibold">All Day (Full Day Off)</span>
-              </label>
-            </div>
-          </div>
-
-          {/* Time pickers (if not All Day) */}
-          {!isAllDay && (
-            <div className="space-y-2.5">
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <Label htmlFor="block-start-time" className="text-xs font-bold text-foreground">
-                    Start Time
-                  </Label>
-                  <Input
-                    id="block-start-time"
-                    type="time"
-                    value={startTime}
-                    onChange={(e) => setStartTime(e.target.value)}
-                    className="mt-1.5 h-10 rounded-xl border-border/80 bg-background text-foreground text-xs font-medium shadow-2xs [color-scheme:dark]"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="block-end-time" className="text-xs font-bold text-foreground">
-                    End Time
-                  </Label>
-                  <Input
-                    id="block-end-time"
-                    type="time"
-                    value={endTime}
-                    onChange={(e) => setEndTime(e.target.value)}
-                    className="mt-1.5 h-10 rounded-xl border-border/80 bg-background text-foreground text-xs font-medium shadow-2xs [color-scheme:dark]"
-                  />
-                </div>
               </div>
-
-              {/* Quick Presets */}
-              <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                <span className="text-[11px] font-bold text-muted-foreground mr-1">Quick Presets:</span>
-                {[
-                  { label: "15m Break", mins: 15, name: "15 min Break" },
-                  { label: "30m Lunch", mins: 30, name: "Lunch Break" },
-                  { label: "1h Meeting", mins: 60, name: "1-Hour Team Session" },
-                  { label: "3h Half Day", mins: 180, name: "Half Day Leave" },
-                ].map((preset) => (
-                  <button
-                    key={preset.label}
-                    type="button"
-                    onClick={() => applyPreset(preset.mins, preset.name)}
-                    className="cursor-pointer rounded-lg border border-border/70 bg-muted/40 px-2.5 py-1 text-[11px] font-bold text-foreground transition-all hover:border-amber-500/50 hover:bg-amber-500/10 active:scale-95"
-                  >
-                    {preset.label}
-                  </button>
-                ))}
+              <div>
+                <Label htmlFor="block-end-time" className="text-foreground text-xs font-bold">
+                  End Time
+                </Label>
+                <Input
+                  id="block-end-time"
+                  type="time"
+                  value={endTime}
+                  onChange={(e) => setEndTime(e.target.value)}
+                  className="border-border/80 bg-background text-foreground mt-1.5 h-10 rounded-xl text-xs font-medium [color-scheme:dark] shadow-2xs"
+                />
               </div>
             </div>
-          )}
 
-          {/* Notes */}
-          <div>
-            <Label htmlFor="block-notes" className="text-xs font-bold text-foreground">
-              Internal Notes <span className="text-muted-foreground font-normal">(Optional)</span>
-            </Label>
-            <Textarea
-              id="block-notes"
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder="Add any internal context or coverage arrangements..."
-              rows={2}
-              className="mt-1.5 resize-none rounded-xl border-border/80 bg-background text-foreground text-xs font-medium placeholder:text-muted-foreground focus-visible:border-amber-500 shadow-2xs"
-            />
+            {/* Quick Presets */}
+            <div className="flex flex-wrap items-center gap-1.5 pt-1">
+              <span className="text-muted-foreground mr-1 text-[11px] font-bold">
+                Quick Presets:
+              </span>
+              {[
+                { label: "15m Break", mins: 15, name: "15 min Break" },
+                { label: "30m Lunch", mins: 30, name: "Lunch Break" },
+                { label: "1h Meeting", mins: 60, name: "1-Hour Team Session" },
+                { label: "3h Half Day", mins: 180, name: "Half Day Leave" },
+              ].map((preset) => (
+                <button
+                  key={preset.label}
+                  type="button"
+                  onClick={() => applyPreset(preset.mins, preset.name)}
+                  className="border-border/70 bg-muted/40 text-foreground cursor-pointer rounded-lg border px-2.5 py-1 text-[11px] font-bold transition-all hover:border-amber-500/50 hover:bg-amber-500/10 active:scale-95"
+                >
+                  {preset.label}
+                </button>
+              ))}
+            </div>
           </div>
+        )}
 
-          {/* Action buttons */}
-          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 pt-3 border-t border-border/40">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onClose}
-              disabled={createMutation.isPending}
-              className="h-10 sm:h-9 cursor-pointer rounded-xl border-border/80 text-muted-foreground hover:text-foreground text-xs font-bold"
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              disabled={createMutation.isPending}
-              className="h-10 sm:h-9 cursor-pointer rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 text-xs font-black shadow-md shadow-amber-500/20 hover:from-amber-400 hover:to-amber-500 active:scale-95"
-            >
-              {createMutation.isPending ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Saving Blocked Time...
-                </>
-              ) : (
-                "Confirm & Block Slot"
-              )}
-            </Button>
-          </div>
-        </form>
+        {/* Notes */}
+        <div>
+          <Label htmlFor="block-notes" className="text-foreground text-xs font-bold">
+            Internal Notes <span className="text-muted-foreground font-normal">(Optional)</span>
+          </Label>
+          <Textarea
+            id="block-notes"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            placeholder="Add any internal context or coverage arrangements..."
+            rows={2}
+            className="border-border/80 bg-background text-foreground placeholder:text-muted-foreground mt-1.5 resize-none rounded-xl text-xs font-medium shadow-2xs focus-visible:border-amber-500"
+          />
+        </div>
+
+        {/* Action buttons */}
+        <div className="border-border/40 flex flex-col-reverse items-stretch justify-end gap-2.5 border-t pt-3 sm:flex-row sm:items-center">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onClose}
+            disabled={createMutation.isPending}
+            className="border-border/80 text-muted-foreground hover:text-foreground h-10 cursor-pointer rounded-xl text-xs font-bold sm:h-9"
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            disabled={createMutation.isPending}
+            className="h-10 cursor-pointer rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-xs font-black text-slate-950 shadow-md shadow-amber-500/20 hover:from-amber-400 hover:to-amber-500 active:scale-95 sm:h-9"
+          >
+            {createMutation.isPending ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Saving Blocked Time...
+              </>
+            ) : (
+              "Confirm & Block Slot"
+            )}
+          </Button>
+        </div>
+      </form>
     </DialogContent>
   );
 }

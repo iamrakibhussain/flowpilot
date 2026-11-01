@@ -170,7 +170,7 @@ export function NewInvoiceModal({ isOpen, onClose }: NewInvoiceModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-      <DialogContent className="max-h-[92vh] w-[95vw] overflow-y-auto rounded-3xl border border-slate-200/90 bg-white p-4 sm:p-7 shadow-2xl sm:max-w-2xl">
+      <DialogContent className="max-h-[92vh] w-[95vw] overflow-y-auto rounded-3xl border border-slate-200/90 bg-white p-4 shadow-2xl sm:max-w-2xl sm:p-7">
         <DialogHeader className="space-y-1 pr-10">
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
@@ -318,7 +318,7 @@ export function NewInvoiceModal({ isOpen, onClose }: NewInvoiceModalProps) {
                   return (
                     <div
                       key={item.id}
-                      className="rounded-xl border border-slate-200/80 bg-white p-3 shadow-xs space-y-2.5 sm:space-y-0 sm:grid sm:grid-cols-12 sm:items-center sm:gap-2.5 transition-shadow hover:shadow-sm"
+                      className="space-y-2.5 rounded-xl border border-slate-200/80 bg-white p-3 shadow-xs transition-shadow hover:shadow-sm sm:grid sm:grid-cols-12 sm:items-center sm:gap-2.5 sm:space-y-0"
                     >
                       {/* Top Row on Mobile: Description + Delete button */}
                       <div className="flex items-center gap-2 sm:col-span-6">
@@ -326,7 +326,7 @@ export function NewInvoiceModal({ isOpen, onClose }: NewInvoiceModalProps) {
                           value={item.description}
                           onChange={(e) => updateItem(item.id, "description", e.target.value)}
                           placeholder="Service description..."
-                          className="h-9 rounded-lg border-slate-200 text-xs flex-1"
+                          className="h-9 flex-1 rounded-lg border-slate-200 text-xs"
                           required
                         />
                         {/* Mobile delete button */}
@@ -334,7 +334,7 @@ export function NewInvoiceModal({ isOpen, onClose }: NewInvoiceModalProps) {
                           type="button"
                           onClick={() => removeLineItem(item.id)}
                           disabled={lineItems.length === 1}
-                          className="flex sm:hidden h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-400 hover:bg-rose-50 hover:text-rose-600 disabled:opacity-30 cursor-pointer"
+                          className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-400 hover:bg-rose-50 hover:text-rose-600 disabled:opacity-30 sm:hidden"
                           title="Remove line"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -342,21 +342,27 @@ export function NewInvoiceModal({ isOpen, onClose }: NewInvoiceModalProps) {
                       </div>
 
                       {/* Bottom Row on Mobile / Cols 7-12 on Desktop */}
-                      <div className="grid grid-cols-12 gap-2 items-center sm:col-span-6">
+                      <div className="grid grid-cols-12 items-center gap-2 sm:col-span-6">
                         <div className="col-span-4 sm:col-span-4">
-                          <Label className="text-[10px] font-semibold text-slate-500 sm:hidden">Qty</Label>
+                          <Label className="text-[10px] font-semibold text-slate-500 sm:hidden">
+                            Qty
+                          </Label>
                           <Input
                             type="number"
                             min="1"
                             value={item.quantity}
-                            onChange={(e) => updateItem(item.id, "quantity", Number(e.target.value))}
+                            onChange={(e) =>
+                              updateItem(item.id, "quantity", Number(e.target.value))
+                            }
                             className="h-9 rounded-lg border-slate-200 text-center font-mono text-xs"
                             placeholder="Qty"
                             required
                           />
                         </div>
                         <div className="col-span-4 sm:col-span-4">
-                          <Label className="text-[10px] font-semibold text-slate-500 sm:hidden">Rate</Label>
+                          <Label className="text-[10px] font-semibold text-slate-500 sm:hidden">
+                            Rate
+                          </Label>
                           <div className="relative">
                             <span className="pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2 text-xs font-semibold text-slate-400">
                               $
@@ -371,9 +377,11 @@ export function NewInvoiceModal({ isOpen, onClose }: NewInvoiceModalProps) {
                             />
                           </div>
                         </div>
-                        <div className="col-span-4 sm:col-span-4 flex items-center justify-end gap-1.5 text-right">
+                        <div className="col-span-4 flex items-center justify-end gap-1.5 text-right sm:col-span-4">
                           <div>
-                            <Label className="text-[10px] font-semibold text-slate-500 sm:hidden block">Total</Label>
+                            <Label className="block text-[10px] font-semibold text-slate-500 sm:hidden">
+                              Total
+                            </Label>
                             <span className="font-mono text-xs font-bold text-slate-900">
                               ${lineTotal.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                             </span>
@@ -383,7 +391,7 @@ export function NewInvoiceModal({ isOpen, onClose }: NewInvoiceModalProps) {
                             type="button"
                             onClick={() => removeLineItem(item.id)}
                             disabled={lineItems.length === 1}
-                            className="hidden sm:flex rounded-lg p-1 text-slate-400 transition-colors hover:bg-rose-50 hover:text-rose-600 disabled:opacity-30 cursor-pointer"
+                            className="hidden cursor-pointer rounded-lg p-1 text-slate-400 transition-colors hover:bg-rose-50 hover:text-rose-600 disabled:opacity-30 sm:flex"
                             title="Remove line"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -423,19 +431,19 @@ export function NewInvoiceModal({ isOpen, onClose }: NewInvoiceModalProps) {
             </div>
 
             {/* Actions */}
-            <DialogFooter className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
+            <DialogFooter className="flex flex-col-reverse items-stretch justify-end gap-2.5 border-t border-slate-100 pt-3 sm:flex-row sm:items-center">
               <Button
                 type="button"
                 variant="outline"
                 onClick={onClose}
-                className="h-10 sm:h-9 w-full sm:w-auto rounded-xl text-xs font-semibold"
+                className="h-10 w-full rounded-xl text-xs font-semibold sm:h-9 sm:w-auto"
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
                 isLoading={isSubmitting}
-                className="h-10 sm:h-9 w-full sm:w-auto from-primary rounded-xl bg-gradient-to-r via-blue-600 to-indigo-600 text-xs font-bold text-white shadow-md shadow-blue-500/20 hover:from-blue-700 hover:to-indigo-700 active:scale-98"
+                className="from-primary h-10 w-full rounded-xl bg-gradient-to-r via-blue-600 to-indigo-600 text-xs font-bold text-white shadow-md shadow-blue-500/20 hover:from-blue-700 hover:to-indigo-700 active:scale-98 sm:h-9 sm:w-auto"
               >
                 <Sparkles className="mr-1.5 h-3.5 w-3.5" />
                 <span>Issue & Send Invoice</span>

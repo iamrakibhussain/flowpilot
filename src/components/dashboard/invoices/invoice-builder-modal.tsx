@@ -266,28 +266,28 @@ function InvoiceBuilderForm({
 
   return (
     <>
-      <DialogHeader className="space-y-2 border-b border-border/60 pb-4 pr-12 text-left">
+      <DialogHeader className="border-border/60 space-y-2 border-b pr-12 pb-4 text-left">
         <div className="flex flex-wrap items-center gap-2.5">
-          <div className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/20">
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/20 sm:h-11 sm:w-11">
             <CreditCard className="h-5 w-5" />
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/20 bg-blue-500/10 px-2.5 py-0.5 text-[10px] font-extrabold text-blue-600 dark:text-blue-400 shadow-2xs">
-              <span className="h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse" />
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/20 bg-blue-500/10 px-2.5 py-0.5 text-[10px] font-extrabold text-blue-600 shadow-2xs dark:text-blue-400">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-blue-500" />
               <span>Commercial Billing Engine</span>
             </span>
-            <span className="rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-2 py-0.5 text-[10px] font-bold">
+            <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
               Bank-Grade
             </span>
           </div>
         </div>
         <div>
-          <DialogTitle className="text-lg sm:text-xl font-black tracking-tight text-foreground">
+          <DialogTitle className="text-foreground text-lg font-black tracking-tight sm:text-xl">
             {createdInvoiceNumber
               ? `Statement #${createdInvoiceNumber} Created`
               : "Issue Commercial Invoice"}
           </DialogTitle>
-          <DialogDescription className="text-xs text-muted-foreground mt-0.5">
+          <DialogDescription className="text-muted-foreground mt-0.5 text-xs">
             Generate, record, and link an itemized billing statement to your CRM client ledger.
           </DialogDescription>
         </div>
@@ -298,10 +298,10 @@ function InvoiceBuilderForm({
           <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-600 text-white shadow-xl shadow-emerald-500/30">
             <CheckCircle2 className="h-9 w-9" />
           </div>
-          <h3 className="text-xl font-black text-foreground">
+          <h3 className="text-foreground text-xl font-black">
             Invoice #{createdInvoiceNumber} Dispatched
           </h3>
-          <p className="max-w-sm text-xs leading-relaxed text-muted-foreground">
+          <p className="text-muted-foreground max-w-sm text-xs leading-relaxed">
             The billing statement has been recorded, added to the organization cash ledger, and
             linked to the client dossier with real-time audit logs.
           </p>
@@ -316,16 +316,16 @@ function InvoiceBuilderForm({
           )}
 
           {/* 1. Client Selector Block */}
-          <div className="space-y-3 rounded-2xl border border-border/80 bg-muted/20 p-3.5 sm:p-4 shadow-2xs">
+          <div className="border-border/80 bg-muted/20 space-y-3 rounded-2xl border p-3.5 shadow-2xs sm:p-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <Label className="text-[11px] font-bold tracking-wider text-muted-foreground uppercase flex items-center gap-1.5">
-                <Building2 className="h-3.5 w-3.5 text-primary" />
+              <Label className="text-muted-foreground flex items-center gap-1.5 text-[11px] font-bold tracking-wider uppercase">
+                <Building2 className="text-primary h-3.5 w-3.5" />
                 <span>Billed Client Dossier</span>
               </Label>
               <button
                 type="button"
                 onClick={() => setIsManualClientMode(!isManualClientMode)}
-                className="text-xs font-bold text-primary hover:underline cursor-pointer"
+                className="text-primary cursor-pointer text-xs font-bold hover:underline"
               >
                 {isManualClientMode ? "← Pick from CRM Customers" : "+ Non-CRM Client"}
               </button>
@@ -334,39 +334,49 @@ function InvoiceBuilderForm({
             {isManualClientMode ? (
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="space-y-1">
-                  <Label className="text-xs text-muted-foreground font-medium">Client / Company Name</Label>
+                  <Label className="text-muted-foreground text-xs font-medium">
+                    Client / Company Name
+                  </Label>
                   <Input
                     placeholder="e.g. Acme Corporation"
                     value={customClientName}
                     onChange={(e) => setCustomClientName(e.target.value)}
                     required
-                    className="h-10 rounded-xl bg-background text-xs shadow-2xs"
+                    className="bg-background h-10 rounded-xl text-xs shadow-2xs"
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs text-muted-foreground font-medium">Client Billing Email (Optional)</Label>
+                  <Label className="text-muted-foreground text-xs font-medium">
+                    Client Billing Email (Optional)
+                  </Label>
                   <Input
                     type="email"
                     placeholder="billing@acme.com"
                     value={customClientEmail}
                     onChange={(e) => setCustomClientEmail(e.target.value)}
-                    className="h-10 rounded-xl bg-background text-xs shadow-2xs"
+                    className="bg-background h-10 rounded-xl text-xs shadow-2xs"
                   />
                 </div>
               </div>
             ) : selectedCustomer ? (
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border border-border/80 bg-background p-3.5 shadow-2xs">
-                <div className="flex items-center gap-3 min-w-0">
+              <div className="border-border/80 bg-background flex flex-col items-start justify-between gap-3 rounded-xl border p-3.5 shadow-2xs sm:flex-row sm:items-center">
+                <div className="flex min-w-0 items-center gap-3">
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-xs font-bold text-white shadow-xs">
                     {selectedCustomer.name.slice(0, 2).toUpperCase()}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-bold text-foreground truncate">{selectedCustomer.name}</p>
-                    <div className="flex flex-wrap items-center gap-x-2 text-xs text-muted-foreground">
+                    <p className="text-foreground truncate text-sm font-bold">
+                      {selectedCustomer.name}
+                    </p>
+                    <div className="text-muted-foreground flex flex-wrap items-center gap-x-2 text-xs">
                       {selectedCustomer.company && (
-                        <span className="font-semibold text-foreground">{selectedCustomer.company} •</span>
+                        <span className="text-foreground font-semibold">
+                          {selectedCustomer.company} •
+                        </span>
                       )}
-                      <span className="font-mono text-muted-foreground truncate">{selectedCustomer.email}</span>
+                      <span className="text-muted-foreground truncate font-mono">
+                        {selectedCustomer.email}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -378,7 +388,7 @@ function InvoiceBuilderForm({
                     setSelectedCustomerId("__SEARCH__");
                     setIsClientDropdownOpen(true);
                   }}
-                  className="h-8 w-full sm:w-auto rounded-xl text-xs font-bold shrink-0"
+                  className="h-8 w-full shrink-0 rounded-xl text-xs font-bold sm:w-auto"
                 >
                   Change Client
                 </Button>
@@ -387,7 +397,7 @@ function InvoiceBuilderForm({
               /* Searchable Combobox */
               <div className="relative">
                 <div className="relative">
-                  <Search className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2" />
                   <Input
                     placeholder="Search CRM customers by name, company, or email..."
                     value={clientSearchQuery}
@@ -396,14 +406,14 @@ function InvoiceBuilderForm({
                       setIsClientDropdownOpen(true);
                     }}
                     onFocus={() => setIsClientDropdownOpen(true)}
-                    className="h-11 rounded-xl bg-background pl-10 text-xs shadow-2xs"
+                    className="bg-background h-11 rounded-xl pl-10 text-xs shadow-2xs"
                   />
                 </div>
 
                 {isClientDropdownOpen && (
-                  <div className="absolute top-12 right-0 left-0 z-30 max-h-56 overflow-y-auto rounded-xl border border-border/80 bg-card p-1.5 shadow-xl">
+                  <div className="border-border/80 bg-card absolute top-12 right-0 left-0 z-30 max-h-56 overflow-y-auto rounded-xl border p-1.5 shadow-xl">
                     {filteredCustomers.length === 0 ? (
-                      <p className="p-3 text-center text-xs text-muted-foreground">
+                      <p className="text-muted-foreground p-3 text-center text-xs">
                         No matching CRM customers found.
                       </p>
                     ) : (
@@ -415,16 +425,16 @@ function InvoiceBuilderForm({
                             setSelectedCustomerId(cust.id);
                             setIsClientDropdownOpen(false);
                           }}
-                          className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs transition-colors hover:bg-muted/60"
+                          className="hover:bg-muted/60 flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs transition-colors"
                         >
                           <div>
-                            <p className="font-semibold text-foreground">{cust.name}</p>
-                            <p className="text-[11px] text-muted-foreground">
+                            <p className="text-foreground font-semibold">{cust.name}</p>
+                            <p className="text-muted-foreground text-[11px]">
                               {cust.company ? `${cust.company} • ` : ""}
                               {cust.email}
                             </p>
                           </div>
-                          <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-[10px] font-bold text-primary">
+                          <span className="bg-primary/10 text-primary rounded-full px-2.5 py-0.5 text-[10px] font-bold">
                             Select
                           </span>
                         </button>
@@ -439,19 +449,19 @@ function InvoiceBuilderForm({
           {/* 2. Dates & Payment Terms */}
           <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-foreground">Invoice Issue Date</Label>
+              <Label className="text-foreground text-xs font-bold">Invoice Issue Date</Label>
               <Input
                 type="date"
                 value={issueDate}
                 onChange={(e) => setIssueDate(e.target.value)}
                 required
-                className="h-10 rounded-xl bg-background text-xs font-medium [color-scheme:dark] shadow-2xs"
+                className="bg-background h-10 rounded-xl text-xs font-medium [color-scheme:dark] shadow-2xs"
               />
             </div>
 
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <Label className="text-xs font-bold text-foreground">Due Date</Label>
+                <Label className="text-foreground text-xs font-bold">Due Date</Label>
                 <div className="flex items-center gap-1">
                   {[
                     { label: "Receipt", days: 0 },
@@ -463,7 +473,7 @@ function InvoiceBuilderForm({
                       key={preset.label}
                       type="button"
                       onClick={() => applyDueDatePreset(preset.days)}
-                      className="cursor-pointer rounded-lg border border-border/80 bg-muted/40 px-2 py-0.5 text-[10px] font-bold text-foreground transition-all hover:border-primary hover:bg-primary/10 hover:text-primary active:scale-95"
+                      className="border-border/80 bg-muted/40 text-foreground hover:border-primary hover:bg-primary/10 hover:text-primary cursor-pointer rounded-lg border px-2 py-0.5 text-[10px] font-bold transition-all active:scale-95"
                     >
                       {preset.label}
                     </button>
@@ -475,7 +485,7 @@ function InvoiceBuilderForm({
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
                 required
-                className="h-10 rounded-xl bg-background text-xs font-medium [color-scheme:dark] shadow-2xs"
+                className="bg-background h-10 rounded-xl text-xs font-medium [color-scheme:dark] shadow-2xs"
               />
             </div>
           </div>
@@ -483,7 +493,7 @@ function InvoiceBuilderForm({
           {/* 3. Line Items Table / Cards */}
           <div className="space-y-2.5">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <Label className="text-[11px] font-bold tracking-wider text-muted-foreground uppercase">
+              <Label className="text-muted-foreground text-[11px] font-bold tracking-wider uppercase">
                 Itemized Services &amp; Deliverables
               </Label>
               <div className="flex flex-wrap items-center gap-2">
@@ -497,7 +507,7 @@ function InvoiceBuilderForm({
                         e.target.value = "";
                       }
                     }}
-                    className="h-8 max-w-[170px] sm:max-w-none truncate rounded-lg border border-border/80 bg-background px-2 text-xs font-semibold text-foreground shadow-2xs outline-none hover:bg-muted/40 focus:ring-1 focus:ring-primary"
+                    className="border-border/80 bg-background text-foreground hover:bg-muted/40 focus:ring-primary h-8 max-w-[170px] truncate rounded-lg border px-2 text-xs font-semibold shadow-2xs outline-none focus:ring-1 sm:max-w-none"
                   >
                     <option value="" disabled>
                       + Add Service Catalog...
@@ -514,7 +524,7 @@ function InvoiceBuilderForm({
                   variant="outline"
                   size="sm"
                   onClick={addLineItem}
-                  className="h-8 gap-1 rounded-lg text-xs font-bold text-primary border-border/80"
+                  className="text-primary border-border/80 h-8 gap-1 rounded-lg text-xs font-bold"
                 >
                   <Plus className="h-3.5 w-3.5" />
                   <span>Add Line Item</span>
@@ -522,22 +532,22 @@ function InvoiceBuilderForm({
               </div>
             </div>
 
-            <div className="space-y-2.5 rounded-2xl border border-border/80 bg-muted/20 p-2.5 sm:p-3 shadow-2xs">
+            <div className="border-border/80 bg-muted/20 space-y-2.5 rounded-2xl border p-2.5 shadow-2xs sm:p-3">
               {lineItems.map((item, idx) => {
                 const lineTotal = (Number(item.quantity) || 0) * (Number(item.unitPrice) || 0);
                 return (
                   <React.Fragment key={item.id}>
                     {/* MOBILE DEDICATED CARD (< sm) */}
-                    <div className="sm:hidden space-y-3 rounded-2xl border border-border/80 bg-card p-3.5 shadow-xs">
-                      <div className="flex items-center justify-between border-b border-border/40 pb-2">
-                        <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                    <div className="border-border/80 bg-card space-y-3 rounded-2xl border p-3.5 shadow-xs sm:hidden">
+                      <div className="border-border/40 flex items-center justify-between border-b pb-2">
+                        <span className="text-muted-foreground text-[11px] font-bold tracking-wider uppercase">
                           Deliverable #{idx + 1}
                         </span>
                         <button
                           type="button"
                           onClick={() => removeLineItem(item.id)}
                           disabled={lineItems.length === 1}
-                          className="flex h-7 w-7 items-center justify-center rounded-lg text-rose-500 hover:bg-rose-500/10 disabled:opacity-20 cursor-pointer"
+                          className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg text-rose-500 hover:bg-rose-500/10 disabled:opacity-20"
                           title="Remove line"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -545,32 +555,38 @@ function InvoiceBuilderForm({
                       </div>
 
                       <div>
-                        <Label className="text-[11px] font-semibold text-foreground">Item Description</Label>
+                        <Label className="text-foreground text-[11px] font-semibold">
+                          Item Description
+                        </Label>
                         <Input
                           placeholder="e.g. Design sprint or advisory retainer"
                           value={item.description}
                           onChange={(e) => updateLineItem(item.id, "description", e.target.value)}
-                          className="mt-1 h-9 rounded-xl text-xs bg-background"
+                          className="bg-background mt-1 h-9 rounded-xl text-xs"
                           required
                         />
                       </div>
 
                       <div className="grid grid-cols-3 gap-2.5 pt-1">
                         <div>
-                          <Label className="text-[10px] font-bold text-muted-foreground uppercase">Qty</Label>
+                          <Label className="text-muted-foreground text-[10px] font-bold uppercase">
+                            Qty
+                          </Label>
                           <Input
                             type="number"
                             min="1"
                             value={item.quantity}
                             onChange={(e) => updateLineItem(item.id, "quantity", e.target.value)}
-                            className="mt-1 h-9 text-center font-mono text-xs font-bold rounded-xl bg-background"
+                            className="bg-background mt-1 h-9 rounded-xl text-center font-mono text-xs font-bold"
                             required
                           />
                         </div>
                         <div>
-                          <Label className="text-[10px] font-bold text-muted-foreground uppercase">Rate ($)</Label>
+                          <Label className="text-muted-foreground text-[10px] font-bold uppercase">
+                            Rate ($)
+                          </Label>
                           <div className="relative mt-1">
-                            <span className="pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2 text-xs font-bold text-muted-foreground">
+                            <span className="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2 text-xs font-bold">
                               $
                             </span>
                             <Input
@@ -579,15 +595,17 @@ function InvoiceBuilderForm({
                               min="0"
                               value={item.unitPrice}
                               onChange={(e) => updateLineItem(item.id, "unitPrice", e.target.value)}
-                              className="h-9 pl-6 text-right font-mono text-xs font-bold rounded-xl bg-background"
+                              className="bg-background h-9 rounded-xl pl-6 text-right font-mono text-xs font-bold"
                               required
                             />
                           </div>
                         </div>
                         <div className="flex flex-col justify-end text-right">
-                          <span className="text-[10px] font-bold text-muted-foreground uppercase">Total</span>
-                          <div className="flex h-9 items-center justify-end rounded-xl bg-muted/40 px-2 mt-1">
-                            <span className="font-mono text-xs font-black text-foreground">
+                          <span className="text-muted-foreground text-[10px] font-bold uppercase">
+                            Total
+                          </span>
+                          <div className="bg-muted/40 mt-1 flex h-9 items-center justify-end rounded-xl px-2">
+                            <span className="text-foreground font-mono text-xs font-black">
                               ${lineTotal.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                             </span>
                           </div>
@@ -596,13 +614,13 @@ function InvoiceBuilderForm({
                     </div>
 
                     {/* DESKTOP TABLE ROW (sm and up) */}
-                    <div className="hidden sm:grid grid-cols-12 items-center gap-2.5 rounded-xl border border-border/80 bg-card p-3 shadow-xs transition-shadow hover:shadow-sm">
+                    <div className="border-border/80 bg-card hidden grid-cols-12 items-center gap-2.5 rounded-xl border p-3 shadow-xs transition-shadow hover:shadow-sm sm:grid">
                       <div className="col-span-6">
                         <Input
                           placeholder="Item Description (e.g. Design sprint or advisory retainer)"
                           value={item.description}
                           onChange={(e) => updateLineItem(item.id, "description", e.target.value)}
-                          className="h-9 rounded-lg border-border/80 text-xs bg-background"
+                          className="border-border/80 bg-background h-9 rounded-lg text-xs"
                           required
                         />
                       </div>
@@ -613,13 +631,13 @@ function InvoiceBuilderForm({
                           placeholder="Qty"
                           value={item.quantity}
                           onChange={(e) => updateLineItem(item.id, "quantity", e.target.value)}
-                          className="h-9 rounded-lg border-border/80 text-center font-mono text-xs bg-background"
+                          className="border-border/80 bg-background h-9 rounded-lg text-center font-mono text-xs"
                           required
                         />
                       </div>
                       <div className="col-span-2">
                         <div className="relative">
-                          <span className="pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2 text-xs font-semibold text-muted-foreground">
+                          <span className="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2 text-xs font-semibold">
                             $
                           </span>
                           <Input
@@ -629,20 +647,20 @@ function InvoiceBuilderForm({
                             placeholder="Rate"
                             value={item.unitPrice}
                             onChange={(e) => updateLineItem(item.id, "unitPrice", e.target.value)}
-                            className="h-9 rounded-lg border-border/80 pl-6 text-right font-mono text-xs bg-background"
+                            className="border-border/80 bg-background h-9 rounded-lg pl-6 text-right font-mono text-xs"
                             required
                           />
                         </div>
                       </div>
                       <div className="col-span-2 flex items-center justify-end gap-2 pr-0.5">
-                        <span className="font-mono text-xs font-bold text-foreground">
+                        <span className="text-foreground font-mono text-xs font-bold">
                           ${lineTotal.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                         </span>
                         <button
                           type="button"
                           onClick={() => removeLineItem(item.id)}
                           disabled={lineItems.length === 1}
-                          className="rounded-lg p-1 text-muted-foreground transition-colors hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/40 disabled:opacity-20 cursor-pointer"
+                          className="text-muted-foreground cursor-pointer rounded-lg p-1 transition-colors hover:bg-rose-50 hover:text-rose-600 disabled:opacity-20 dark:hover:bg-rose-950/40"
                           title="Remove line item"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -659,7 +677,7 @@ function InvoiceBuilderForm({
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-3">
               <div className="space-y-1.5">
-                <Label htmlFor="taxRate" className="text-xs font-bold text-foreground">
+                <Label htmlFor="taxRate" className="text-foreground text-xs font-bold">
                   Tax / VAT Rate (%)
                 </Label>
                 <div className="flex items-center gap-2">
@@ -671,11 +689,11 @@ function InvoiceBuilderForm({
                     max="100"
                     value={taxRate}
                     onChange={(e) => setTaxRate(Number(e.target.value) || 0)}
-                    className="h-9 w-20 rounded-xl font-mono text-xs font-bold bg-background shadow-2xs"
+                    className="bg-background h-9 w-20 rounded-xl font-mono text-xs font-bold shadow-2xs"
                   />
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-muted-foreground text-xs">
                     Calculated Tax:{" "}
-                    <strong className="font-mono text-foreground font-black">
+                    <strong className="text-foreground font-mono font-black">
                       ${taxAmount.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                     </strong>
                   </span>
@@ -684,7 +702,7 @@ function InvoiceBuilderForm({
 
               {/* Terms Preset Pills */}
               <div className="space-y-1.5">
-                <Label className="text-[11px] font-semibold text-muted-foreground">
+                <Label className="text-muted-foreground text-[11px] font-semibold">
                   Quick Terms Presets
                 </Label>
                 <div className="flex flex-wrap gap-1.5 text-[10px]">
@@ -695,7 +713,7 @@ function InvoiceBuilderForm({
                         "Payment terms: Net 14 days. Wire instructions: FLOWUS33XXX."
                       )
                     }
-                    className="cursor-pointer rounded-lg border border-border/80 bg-muted/40 px-2.5 py-1 font-bold text-foreground hover:bg-muted active:scale-95 transition-all"
+                    className="border-border/80 bg-muted/40 text-foreground hover:bg-muted cursor-pointer rounded-lg border px-2.5 py-1 font-bold transition-all active:scale-95"
                   >
                     Net 14 Wire
                   </button>
@@ -704,7 +722,7 @@ function InvoiceBuilderForm({
                     onClick={() =>
                       applyNotesPreset("Payment due immediately upon receipt of invoice.")
                     }
-                    className="cursor-pointer rounded-lg border border-border/80 bg-muted/40 px-2.5 py-1 font-bold text-foreground hover:bg-muted active:scale-95 transition-all"
+                    className="border-border/80 bg-muted/40 text-foreground hover:bg-muted cursor-pointer rounded-lg border px-2.5 py-1 font-bold transition-all active:scale-95"
                   >
                     Immediate Receipt
                   </button>
@@ -713,7 +731,7 @@ function InvoiceBuilderForm({
                     onClick={() =>
                       applyNotesPreset("Monthly operations retainer billed in advance.")
                     }
-                    className="cursor-pointer rounded-lg border border-border/80 bg-muted/40 px-2.5 py-1 font-bold text-foreground hover:bg-muted active:scale-95 transition-all"
+                    className="border-border/80 bg-muted/40 text-foreground hover:bg-muted cursor-pointer rounded-lg border px-2.5 py-1 font-bold transition-all active:scale-95"
                   >
                     Monthly Retainer
                   </button>
@@ -722,7 +740,7 @@ function InvoiceBuilderForm({
             </div>
 
             {/* Totals Summary Glass Card */}
-            <div className="space-y-2 rounded-2xl border border-indigo-500/30 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-4 sm:p-5 text-xs text-white shadow-lg">
+            <div className="space-y-2 rounded-2xl border border-indigo-500/30 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-4 text-xs text-white shadow-lg sm:p-5">
               <div className="flex justify-between text-slate-300">
                 <span>Subtotal</span>
                 <span className="font-mono font-semibold text-white">
@@ -736,7 +754,7 @@ function InvoiceBuilderForm({
                 </span>
               </div>
               <div className="flex items-center justify-between border-t border-slate-700/80 pt-3">
-                <span className="font-bold text-white text-sm">Total Statement Due</span>
+                <span className="text-sm font-bold text-white">Total Statement Due</span>
                 <span className="font-mono text-lg font-black text-emerald-400">
                   ${grandTotal.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                 </span>
@@ -746,7 +764,7 @@ function InvoiceBuilderForm({
 
           {/* 5. Terms / Notes */}
           <div className="space-y-1.5">
-            <Label htmlFor="notes" className="text-xs font-bold text-foreground">
+            <Label htmlFor="notes" className="text-foreground text-xs font-bold">
               Payment Terms &amp; Settlement Instructions
             </Label>
             <Textarea
@@ -754,25 +772,25 @@ function InvoiceBuilderForm({
               rows={2}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="resize-none rounded-xl text-xs bg-background shadow-2xs"
+              className="bg-background resize-none rounded-xl text-xs shadow-2xs"
             />
           </div>
 
           {/* 6. Footer Actions */}
-          <DialogFooter className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 pt-3 border-t border-border/40">
+          <DialogFooter className="border-border/40 flex flex-col-reverse items-stretch justify-end gap-2.5 border-t pt-3 sm:flex-row sm:items-center">
             <Button
               type="button"
               variant="outline"
               onClick={onClose}
               disabled={createInvoiceMutation.isPending}
-              className="h-11 sm:h-10 w-full sm:w-auto rounded-xl border-border/80 text-foreground hover:bg-muted font-bold text-xs"
+              className="border-border/80 text-foreground hover:bg-muted h-11 w-full rounded-xl text-xs font-bold sm:h-10 sm:w-auto"
             >
               Cancel
             </Button>
             <Button
               type="submit"
               disabled={createInvoiceMutation.isPending}
-              className="h-11 sm:h-10 w-full sm:w-auto rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 font-black text-xs text-white shadow-md shadow-blue-500/25 hover:from-blue-700 hover:to-indigo-700 active:scale-95"
+              className="h-11 w-full rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-xs font-black text-white shadow-md shadow-blue-500/25 hover:from-blue-700 hover:to-indigo-700 active:scale-95 sm:h-10 sm:w-auto"
             >
               {createInvoiceMutation.isPending ? "Generating Invoice..." : "Issue & Record Invoice"}
             </Button>
@@ -794,7 +812,7 @@ export function InvoiceBuilderModal({
 }: InvoiceBuilderModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-h-[92vh] w-[95vw] sm:max-w-3xl overflow-y-auto rounded-3xl border border-border/80 bg-card/95 text-foreground p-4 sm:p-7 shadow-2xl backdrop-blur-2xl">
+      <DialogContent className="border-border/80 bg-card/95 text-foreground max-h-[92vh] w-[95vw] overflow-y-auto rounded-3xl border p-4 shadow-2xl backdrop-blur-2xl sm:max-w-3xl sm:p-7">
         {isOpen && (
           <InvoiceBuilderForm
             onClose={onClose}
