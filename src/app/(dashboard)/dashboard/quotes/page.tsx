@@ -38,7 +38,12 @@ import { QuoteBuilderModal } from "@/components/dashboard/quotes/quote-builder-m
 import { QuoteQuickPeekDrawer } from "@/components/dashboard/quotes/quote-quick-peek-drawer";
 import type { QuoteListItem, QuoteStatusType } from "@/features/quotes/types";
 
+const subscribeNoop = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
+
 export default function QuotesPage() {
+  const isClient = React.useSyncExternalStore(subscribeNoop, getClientSnapshot, getServerSnapshot);
   const [statusFilter, setStatusFilter] = React.useState<QuoteStatusType | "ALL">("ALL");
   const [searchTerm, setSearchTerm] = React.useState("");
   const [debouncedSearch, setDebouncedSearch] = React.useState("");
@@ -192,7 +197,7 @@ export default function QuotesPage() {
             <div className="mt-3">
               <span className="text-foreground font-mono text-xl font-bold sm:text-2xl">
                 $
-                {(stats?.totalEstimatedValue || 0).toLocaleString(undefined, {
+                {(stats?.totalEstimatedValue || 0).toLocaleString("en-US", {
                   minimumFractionDigits: 2,
                 })}
               </span>
@@ -214,7 +219,7 @@ export default function QuotesPage() {
             <div className="mt-3">
               <span className="font-mono text-xl font-bold text-emerald-600 sm:text-2xl dark:text-emerald-400">
                 $
-                {(stats?.acceptedValue || 0).toLocaleString(undefined, {
+                {(stats?.acceptedValue || 0).toLocaleString("en-US", {
                   minimumFractionDigits: 2,
                 })}
               </span>
@@ -236,7 +241,7 @@ export default function QuotesPage() {
             <div className="mt-3">
               <span className="text-foreground font-mono text-xl font-bold sm:text-2xl">
                 $
-                {(stats?.pendingReviewValue || 0).toLocaleString(undefined, {
+                {(stats?.pendingReviewValue || 0).toLocaleString("en-US", {
                   minimumFractionDigits: 2,
                 })}
               </span>
@@ -308,7 +313,7 @@ export default function QuotesPage() {
 
       {/* Quotes Table */}
       <div className="border-border/80 bg-card overflow-hidden rounded-2xl border shadow-xs">
-        {isLoadingQuotes ? (
+        {!isClient || isLoadingQuotes ? (
           <div className="text-muted-foreground p-12 text-center text-xs">
             Loading proposals & estimates...
           </div>

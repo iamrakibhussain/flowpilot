@@ -68,9 +68,12 @@ function QuoteBuilderForm({
       ? selectedCustomerId || initialCustomerId || (customers[0]?.id ?? "")
       : "";
 
-  const [isNewClient, setIsNewClient] = React.useState(
-    Boolean(initialCustomerName && !initialCustomerId)
-  );
+  const [isNewClientMode, setIsNewClientMode] = React.useState<boolean | null>(null);
+  const isNewClient =
+    isNewClientMode !== null
+      ? isNewClientMode
+      : Boolean(initialCustomerName && !initialCustomerId) ||
+        (!initialCustomerId && customers.length === 0);
   const [newClientName, setNewClientName] = React.useState(initialCustomerName || "");
   const [newClientEmail, setNewClientEmail] = React.useState("");
   const [newClientCompany, setNewClientCompany] = React.useState("");
@@ -184,25 +187,29 @@ function QuoteBuilderForm({
       return;
     }
 
-    if (!isNewClient && !activeCustomerId) {
-      setErrorMessage("Please select an existing client or enter a new client.");
+    const resolvedCustomerId = !isNewClient
+      ? selectedCustomerId || activeCustomerId || (customers[0]?.id ?? "")
+      : "";
+
+    if (!isNewClient && !resolvedCustomerId) {
+      setErrorMessage("Please select an existing client or click '+ New Client'.");
       return;
     }
 
     const expiresAt = new Date(Date.now() + validityDays * 24 * 60 * 60 * 1000).toISOString();
 
     const payload: CreateQuotePayload = {
-      title,
-      introduction: introduction.trim() || null,
-      terms: terms.trim() || null,
-      notes: notes.trim() || null,
-      taxRate,
+      title: title.trim() || "Service Proposal & Estimate",
+      introduction: introduction.trim() ? introduction.trim() : null,
+      terms: terms.trim() ? terms.trim() : null,
+      notes: notes.trim() ? notes.trim() : null,
+      taxRate: Math.max(0, Math.min(100, Number(taxRate) || 0)),
       discountType,
-      discountAmount,
+      discountAmount: Math.max(0, Number(discountAmount) || 0),
       expiresAt,
       items: items.map((it, idx) => ({
-        serviceId: it.serviceId || null,
-        description: it.description.trim(),
+        serviceId: it.serviceId && it.serviceId.trim().length > 0 ? it.serviceId.trim() : null,
+        description: it.description.trim() || `Item #${idx + 1}`,
         quantity: Math.max(1, Number(it.quantity) || 1),
         unitPrice: Math.max(0, Number(it.unitPrice) || 0),
         sortOrder: idx,
@@ -210,12 +217,12 @@ function QuoteBuilderForm({
       ...(isNewClient
         ? {
             customerName: newClientName.trim(),
-            customerEmail: newClientEmail.trim() || undefined,
-            customerPhone: newClientPhone.trim() || undefined,
-            customerCompany: newClientCompany.trim() || undefined,
+            ...(newClientEmail.trim() ? { customerEmail: newClientEmail.trim() } : {}),
+            ...(newClientPhone.trim() ? { customerPhone: newClientPhone.trim() } : {}),
+            ...(newClientCompany.trim() ? { customerCompany: newClientCompany.trim() } : {}),
           }
         : {
-            customerId: activeCustomerId,
+            customerId: resolvedCustomerId,
           }),
     };
 
@@ -223,7 +230,18 @@ function QuoteBuilderForm({
       await createQuoteMutation.mutateAsync(payload);
       onClose();
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Failed to create proposal";
+      let msg = "Failed to create proposal";
+      if (err instanceof Error) {
+        msg = err.message;
+      }
+      const maybeDetails = (err as { response?: { data?: { details?: Record<string, string[]> } } })
+        ?.response?.data?.details;
+      if (maybeDetails && typeof maybeDetails === "object") {
+        const fieldErrors = Object.entries(maybeDetails)
+          .map(([f, m]) => `${f}: ${Array.isArray(m) ? m.join(", ") : m}`)
+          .join(" | ");
+        if (fieldErrors) msg = `${msg} (${fieldErrors})`;
+      }
       setErrorMessage(msg);
     }
   };
@@ -271,7 +289,7 @@ function QuoteBuilderForm({
             <Label className="text-xs font-semibold">Client / Account</Label>
             <button
               type="button"
-              onClick={() => setIsNewClient(!isNewClient)}
+              onClick={() => setIsNewClientMode(!isNewClient)}
               className="text-xs font-medium text-blue-600 hover:underline dark:text-blue-400"
             >
               {isNewClient ? "Select Existing Client" : "+ New Client"}
@@ -281,15 +299,19 @@ function QuoteBuilderForm({
           {!isNewClient ? (
             <div className="space-y-2">
               <select
-                value={selectedCustomerId}
+                value={selectedCustomerId || (customers[0]?.id ?? "")}
                 onChange={(e) => setSelectedCustomerId(e.target.value)}
                 className="border-input bg-background focus:ring-ring h-9 w-full rounded-xl border px-3 text-sm focus:ring-2 focus:outline-none"
               >
-                {customers.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name} {c.company ? `(${c.company})` : ""} - {c.email}
-                  </option>
-                ))}
+                {customers.length === 0 ? (
+                  <option value="">No clients found — switch to &apos;+ New Client&apos;</option>
+                ) : (
+                  customers.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.name} {c.company ? `(${c.company})` : ""} - {c.email}
+                    </option>
+                  ))
+                )}
               </select>
             </div>
           ) : (
