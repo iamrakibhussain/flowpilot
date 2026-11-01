@@ -593,7 +593,7 @@ export function QuoteBuilderModal({
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       {isOpen && (
-        <DialogContent className="max-h-[92vh] w-[95vw] overflow-y-auto rounded-3xl p-6 sm:max-w-3xl sm:p-8">
+        <DialogContent className="max-h-[92vh] w-[95vw] overflow-y-auto rounded-3xl p-4 sm:max-w-3xl sm:p-8">
           <QuoteBuilderForm
             key={`${isOpen}-${initialCustomerId || ""}-${initialCustomerName || ""}`}
             onClose={onClose}

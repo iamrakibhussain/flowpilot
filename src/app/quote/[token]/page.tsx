@@ -417,9 +417,18 @@ export default function PublicQuotePage({ params }: PageProps) {
                     </div>
                   )}
                 </div>
-                <div className="border-b-2 border-slate-700 px-4 py-2 font-serif text-lg italic dark:border-slate-300">
-                  {quote.signerName || signerName}
-                </div>
+                {quote.signatureData?.startsWith("data:image/") ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={quote.signatureData}
+                    alt="Digital Signature"
+                    className="max-h-14 max-w-[200px] border-b-2 border-slate-700 object-contain pb-1 dark:border-slate-300"
+                  />
+                ) : (
+                  <div className="border-b-2 border-slate-700 px-4 py-2 font-serif text-lg italic dark:border-slate-300">
+                    {quote.signerName || signerName}
+                  </div>
+                )}
               </div>
             </div>
           )}
