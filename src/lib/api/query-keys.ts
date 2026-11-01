@@ -77,4 +77,13 @@ export const queryKeys = {
     list: (filters?: Record<string, unknown>, orgId?: string) =>
       [...queryKeys.notifications.all, "list", filters ?? {}, orgId ?? "default"] as const,
   },
+  quotes: {
+    all: ["quotes"] as const,
+    list: (filters?: Record<string, unknown>, orgId?: string) =>
+      [...queryKeys.quotes.all, "list", filters ?? {}, orgId ?? "default"] as const,
+    detail: (id: string, orgId?: string) =>
+      [...queryKeys.quotes.all, "detail", id, orgId ?? "default"] as const,
+    stats: (orgId?: string) => [...queryKeys.quotes.all, "stats", orgId ?? "default"] as const,
+    public: (token: string) => [...queryKeys.quotes.all, "public", token] as const,
+  },
 };

@@ -24,6 +24,7 @@ import {
   Globe,
   ArrowUpRight,
   CreditCard,
+  FileCheck2,
 } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import {
@@ -67,6 +68,13 @@ const navSections: NavSection[] = [
         name: "Services & Catalog",
         href: "/dashboard/services",
         icon: Sparkles,
+        badge: "Live",
+        badgeVariant: "success",
+      },
+      {
+        name: "Estimates & Proposals",
+        href: "/dashboard/quotes",
+        icon: FileCheck2,
         badge: "Live",
         badgeVariant: "success",
       },
