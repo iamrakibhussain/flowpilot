@@ -117,9 +117,7 @@ export function DashboardNotifications() {
       case "quotes":
         return items.filter((n) => n.type.startsWith("QUOTE_"));
       case "projects":
-        return items.filter(
-          (n) => n.type === "PROJECT_CREATED" || n.type === "TASK_ASSIGNED"
-        );
+        return items.filter((n) => n.type === "PROJECT_CREATED" || n.type === "TASK_ASSIGNED");
       case "all":
       default:
         return items;

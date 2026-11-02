@@ -13,12 +13,7 @@ interface ServiceCardProps {
   onEdit: (service: ServiceItem) => void;
 }
 
-export function ServiceCard({
-  service,
-  publicBookingUrl,
-  onQuickPeek,
-  onEdit,
-}: ServiceCardProps) {
+export function ServiceCard({ service, publicBookingUrl, onQuickPeek, onEdit }: ServiceCardProps) {
   const [copied, setCopied] = React.useState(false);
 
   const totalMinutes =
@@ -39,19 +34,19 @@ export function ServiceCard({
   return (
     <Card
       onClick={() => onQuickPeek(service)}
-      className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border/80 bg-gradient-to-b from-card to-card/90 shadow-2xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 cursor-pointer ${
+      className={`group border-border/80 from-card to-card/90 hover:border-primary/50 hover:shadow-primary/5 relative flex cursor-pointer flex-col justify-between overflow-hidden rounded-2xl border bg-gradient-to-b shadow-2xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
         service.isActive ? "" : "opacity-65"
       }`}
     >
       {/* Luxury Gradient Accent Top Line */}
-      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-primary opacity-80 transition-opacity group-hover:opacity-100" />
+      <div className="to-primary absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 opacity-80 transition-opacity group-hover:opacity-100" />
 
       <CardContent className="flex h-full flex-col justify-between space-y-4 p-5">
         <div>
           {/* Card Top: Category, Live Beacon & Price */}
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <span className="rounded-full border border-primary/20 bg-primary/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">
+              <span className="border-primary/20 bg-primary/10 text-primary rounded-full border px-2.5 py-0.5 text-[10px] font-bold tracking-wider uppercase">
                 {service.category || "General Offering"}
               </span>
 
@@ -89,51 +84,55 @@ export function ServiceCard({
           </p>
 
           {/* Timeline Protection Capsule */}
-          <div className="border-border/60 bg-muted/30 mt-3.5 space-y-2 rounded-xl border p-2.5 backdrop-blur-2xs">
+          <div className="border-border/60 bg-muted/30 backdrop-blur-2xs mt-3.5 space-y-2 rounded-xl border p-2.5">
             <div className="text-muted-foreground flex items-center justify-between text-[10px] font-semibold">
               <span className="flex items-center gap-1">
                 <Clock className="text-primary h-3 w-3" />
                 <span>Timeline Schedule</span>
               </span>
-              <span className="text-foreground font-mono font-bold">
-                {totalMinutes} min window
-              </span>
+              <span className="text-foreground font-mono font-bold">{totalMinutes} min window</span>
             </div>
 
             {/* Visual Capsule Breakdown */}
             <div className="grid grid-cols-3 gap-1.5 text-center text-[10px] font-bold">
               {/* Prep Buffer */}
               <div
-                className={`rounded-lg py-1 px-1 border transition-colors ${
+                className={`rounded-lg border px-1 py-1 transition-colors ${
                   service.bufferBefore > 0
                     ? "border-blue-500/20 bg-blue-500/10 text-blue-700 dark:text-blue-300"
                     : "border-border/40 bg-muted/40 text-muted-foreground/50"
                 }`}
                 title={`Prep buffer: ${service.bufferBefore || 0}m`}
               >
-                <span className="block text-[9px] uppercase font-semibold text-muted-foreground">Prep</span>
+                <span className="text-muted-foreground block text-[9px] font-semibold uppercase">
+                  Prep
+                </span>
                 <span className="font-mono">{service.bufferBefore || 0}m</span>
               </div>
 
               {/* Core Session Duration */}
               <div
-                className="rounded-lg py-1 px-1 border border-primary/30 bg-primary/10 text-primary font-mono shadow-2xs"
+                className="border-primary/30 bg-primary/10 text-primary rounded-lg border px-1 py-1 font-mono shadow-2xs"
                 title={`Core session duration: ${service.durationMinutes}m`}
               >
-                <span className="block text-[9px] uppercase font-semibold text-primary/80">Session</span>
+                <span className="text-primary/80 block text-[9px] font-semibold uppercase">
+                  Session
+                </span>
                 <span>{service.durationMinutes}m</span>
               </div>
 
               {/* Cleanup / Transition Buffer */}
               <div
-                className={`rounded-lg py-1 px-1 border transition-colors ${
+                className={`rounded-lg border px-1 py-1 transition-colors ${
                   service.bufferAfter > 0
                     ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
                     : "border-border/40 bg-muted/40 text-muted-foreground/50"
                 }`}
                 title={`Cleanup buffer: ${service.bufferAfter || 0}m`}
               >
-                <span className="block text-[9px] uppercase font-semibold text-muted-foreground">Buffer</span>
+                <span className="text-muted-foreground block text-[9px] font-semibold uppercase">
+                  Buffer
+                </span>
                 <span className="font-mono">{service.bufferAfter || 0}m</span>
               </div>
             </div>
@@ -228,4 +227,3 @@ export function ServiceCard({
     </Card>
   );
 }
-

@@ -115,4 +115,3 @@ export function printElementById(elementId: string, documentTitle?: string): boo
   setTimeout(printAction, 250);
   return true;
 }
-

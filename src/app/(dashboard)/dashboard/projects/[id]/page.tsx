@@ -32,7 +32,12 @@ import { KanbanColumn } from "@/components/dashboard/projects/kanban-column";
 import { QuickTaskModal } from "@/components/dashboard/projects/quick-task-modal";
 import { TaskInspectorDrawer } from "@/components/dashboard/projects/task-inspector-drawer";
 import { ProjectListView } from "@/components/dashboard/projects/project-list-view";
-import type { ProjectTaskDto, ProjectStatus, TaskStatus, TaskPriority } from "@/features/projects/types";
+import type {
+  ProjectTaskDto,
+  ProjectStatus,
+  TaskStatus,
+  TaskPriority,
+} from "@/features/projects/types";
 
 const subscribeNoop = () => () => {};
 const getClientSnapshot = () => true;
@@ -321,8 +326,8 @@ export default function ProjectWorkspacePage() {
             <div className="flex flex-wrap items-center gap-2">
               {project.status === "ACTIVE" && (
                 <span className="relative flex h-2.5 w-2.5">
-                  <span className="bg-emerald-400 absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" />
-                  <span className="bg-emerald-500 relative inline-flex h-2.5 w-2.5 rounded-full" />
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
                 </span>
               )}
               <h1 className="text-foreground text-xl font-bold tracking-tight sm:text-2xl">
@@ -351,7 +356,9 @@ export default function ProjectWorkspacePage() {
                   title="View Customer CRM Profile"
                 >
                   <Building2 className="h-3.5 w-3.5" />
-                  <span>{project.customerCompany || project.customerName || "Customer Profile"}</span>
+                  <span>
+                    {project.customerCompany || project.customerName || "Customer Profile"}
+                  </span>
                   <span className="text-[10px] opacity-70 group-hover:opacity-100">→</span>
                 </Link>
               )}
@@ -386,7 +393,7 @@ export default function ProjectWorkspacePage() {
             {/* Unique Assignees Avatar Stack */}
             {uniqueAssignees.length > 0 && (
               <div className="flex items-center gap-2 pt-1">
-                <span className="text-[11px] font-semibold text-muted-foreground">Team:</span>
+                <span className="text-muted-foreground text-[11px] font-semibold">Team:</span>
                 <div className="flex -space-x-1.5 overflow-hidden">
                   {uniqueAssignees.slice(0, 4).map((m) => {
                     const initials = m.name
@@ -398,7 +405,7 @@ export default function ProjectWorkspacePage() {
                     return (
                       <div
                         key={m.id}
-                        className="bg-primary/90 text-primary-foreground ring-card shadow-2xs flex h-5.5 w-5.5 items-center justify-center rounded-full text-[9px] font-bold ring-2"
+                        className="bg-primary/90 text-primary-foreground ring-card flex h-5.5 w-5.5 items-center justify-center rounded-full text-[9px] font-bold shadow-2xs ring-2"
                         title={m.name}
                       >
                         {initials}
@@ -416,7 +423,7 @@ export default function ProjectWorkspacePage() {
           </div>
 
           {/* Progress summary ribbon with Circular SVG Donut */}
-          <div className="border-border/60 bg-muted/30 shadow-2xs min-w-[240px] rounded-xl border p-3.5 backdrop-blur-xs">
+          <div className="border-border/60 bg-muted/30 min-w-[240px] rounded-xl border p-3.5 shadow-2xs backdrop-blur-xs">
             <div className="flex items-center justify-between gap-3">
               <div>
                 <div className="flex items-center gap-2">
@@ -461,7 +468,7 @@ export default function ProjectWorkspacePage() {
                 className={`h-full transition-all duration-500 ${
                   project.progressPercentage === 100
                     ? "bg-gradient-to-r from-emerald-500 to-teal-400"
-                    : "bg-gradient-to-r from-amber-500 to-primary"
+                    : "to-primary bg-gradient-to-r from-amber-500"
                 }`}
                 style={{ width: `${project.progressPercentage}%` }}
               />
@@ -477,10 +484,10 @@ export default function ProjectWorkspacePage() {
       </div>
 
       {/* In-Board Live Filter & Search Toolbar */}
-      <div className="bg-card/70 border-border/70 shadow-2xs flex flex-col gap-2.5 rounded-xl border p-2.5 backdrop-blur-xs sm:flex-row sm:items-center sm:justify-between">
+      <div className="bg-card/70 border-border/70 flex flex-col gap-2.5 rounded-xl border p-2.5 shadow-2xs backdrop-blur-xs sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 flex-wrap items-center gap-2">
           {/* Search Input */}
-          <div className="relative min-w-[180px] flex-1 max-w-xs">
+          <div className="relative max-w-xs min-w-[180px] flex-1">
             <Search className="text-muted-foreground/60 absolute top-1/2 left-2.5 h-3.5 w-3.5 -translate-y-1/2" />
             <Input
               ref={searchInputRef}
@@ -588,7 +595,7 @@ export default function ProjectWorkspacePage() {
           ) : (
             <>
               {/* Mobile Segmented Column Switcher (Visible on small screens < 768px) */}
-              <div className="sticky top-0 z-20 -mx-1 flex gap-1.5 overflow-x-auto border-b border-border/60 bg-background/95 px-1 py-2 backdrop-blur-xs md:hidden">
+              <div className="border-border/60 bg-background/95 sticky top-0 z-20 -mx-1 flex gap-1.5 overflow-x-auto border-b px-1 py-2 backdrop-blur-xs md:hidden">
                 {KANBAN_COLUMNS.map((col) => {
                   const count = filteredTasksByStatus[col.status]?.length || 0;
                   const isSelected = mobileActiveColumn === col.status;

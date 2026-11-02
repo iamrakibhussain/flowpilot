@@ -118,7 +118,7 @@ function TaskInspectorContent({ task, projectId, onClose }: TaskInspectorContent
   return (
     <div
       onClick={(e) => e.stopPropagation()}
-      className="bg-background/95 backdrop-blur-md border-border flex h-full w-screen max-w-md flex-col border-l shadow-2xl sm:max-w-lg transition-transform duration-300"
+      className="bg-background/95 border-border flex h-full w-screen max-w-md flex-col border-l shadow-2xl backdrop-blur-md transition-transform duration-300 sm:max-w-lg"
     >
       {/* Header */}
       <div className="border-border/70 bg-muted/20 flex items-center justify-between border-b p-4 sm:p-5">
@@ -319,7 +319,7 @@ function TaskInspectorContent({ task, projectId, onClose }: TaskInspectorContent
           {/* Progress Bar */}
           <div className="bg-secondary/70 h-2 w-full overflow-hidden rounded-full">
             <div
-              className="bg-gradient-to-r from-indigo-500 to-emerald-500 h-full transition-all duration-300"
+              className="h-full bg-gradient-to-r from-indigo-500 to-emerald-500 transition-all duration-300"
               style={{ width: `${checklistProgress}%` }}
             />
           </div>
@@ -336,7 +336,7 @@ function TaskInspectorContent({ task, projectId, onClose }: TaskInspectorContent
                     type="checkbox"
                     checked={item.isCompleted}
                     onChange={() => handleToggleChecklist(item.id, item.isCompleted)}
-                    className="border-border text-primary focus:ring-primary h-4 w-4 cursor-pointer rounded accent-primary transition-transform active:scale-90"
+                    className="border-border text-primary focus:ring-primary accent-primary h-4 w-4 cursor-pointer rounded transition-transform active:scale-90"
                   />
                   <span
                     className={`transition-all duration-200 ${

@@ -345,7 +345,7 @@ export function QuoteQuickPeekDrawer({
                 variant="outline"
                 size="sm"
                 onClick={() => onPrint(quote)}
-                className="h-9 w-full gap-1.5 rounded-xl border-border/80 text-xs font-semibold"
+                className="border-border/80 h-9 w-full gap-1.5 rounded-xl text-xs font-semibold"
               >
                 <Printer className="h-3.5 w-3.5" />
                 Print / Export Proposal PDF

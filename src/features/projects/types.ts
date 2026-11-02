@@ -139,4 +139,3 @@ export interface UpdateChecklistPayload {
   isCompleted?: boolean;
   sortOrder?: number;
 }
-

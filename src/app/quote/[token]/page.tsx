@@ -271,380 +271,386 @@ export default function PublicQuotePage({ params }: PageProps) {
           />
 
           <div className="space-y-8 p-6 sm:p-10">
-          {/* Document Header */}
-          <div className="border-border flex flex-col items-start justify-between gap-6 border-b pb-8 sm:flex-row">
-            <div className="space-y-2">
-              <div className="flex items-center gap-3">
-                <div
-                  className="flex h-10 w-10 items-center justify-center rounded-xl text-base font-bold text-white shadow-xs"
-                  style={{ backgroundColor: quote.organization.brandColor || "#2563eb" }}
-                >
-                  {quote.organization.name.slice(0, 2).toUpperCase()}
-                </div>
-                <div>
-                  <h2 className="text-foreground text-lg font-bold tracking-tight">
-                    {quote.organization.name}
-                  </h2>
-                  <p className="text-muted-foreground text-xs">{quote.organization.contactEmail}</p>
-                </div>
-              </div>
-              {quote.organization.address && (
-                <p className="text-muted-foreground text-xs whitespace-pre-line">
-                  {quote.organization.address}
-                </p>
-              )}
-            </div>
-
-            <div className="space-y-1 sm:text-right">
-              <span className="bg-muted text-muted-foreground border-border inline-block rounded-full border px-2.5 py-0.5 font-mono text-[11px] font-semibold">
-                {quote.quoteNumber}
-              </span>
-              <div className="text-muted-foreground text-xs">
-                Issued: <strong>{new Date(quote.issuedAt).toLocaleDateString()}</strong>
-              </div>
-              {quote.expiresAt && (
-                <div className="text-muted-foreground text-xs">
-                  Valid Until: <strong>{new Date(quote.expiresAt).toLocaleDateString()}</strong>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Client & Title Header */}
-          <div className="bg-muted/30 border-border/60 grid grid-cols-1 gap-6 rounded-2xl border p-5 md:grid-cols-2">
-            <div className="space-y-1">
-              <span className="text-muted-foreground text-[10px] font-semibold tracking-wider uppercase">
-                Prepared Specifically For
-              </span>
-              <h3 className="text-foreground text-base font-bold">{quote.customerName}</h3>
-              {quote.customerCompany && (
-                <div className="text-muted-foreground flex items-center gap-1.5 text-xs font-medium">
-                  <Building2 className="h-3.5 w-3.5" />
-                  <span>{quote.customerCompany}</span>
-                </div>
-              )}
-              <p className="text-muted-foreground text-xs">{quote.customerEmail}</p>
-            </div>
-
-            <div className="space-y-1 md:text-right">
-              <span className="text-muted-foreground text-[10px] font-semibold tracking-wider uppercase">
-                Investment Proposal
-              </span>
-              <h4 className="text-foreground text-sm font-semibold">{quote.title}</h4>
-              <div className="mt-1 font-mono text-xl font-bold text-blue-600 dark:text-blue-400">
-                {quote.organization.currency} ${quote.totalAmount.toFixed(2)}
-              </div>
-            </div>
-          </div>
-
-          {/* Introduction note if provided */}
-          {quote.introduction && (
-            <div className="space-y-1.5">
-              <h4 className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
-                Executive Overview
-              </h4>
-              <p className="text-foreground/90 text-xs leading-relaxed whitespace-pre-line sm:text-sm">
-                {quote.introduction}
-              </p>
-            </div>
-          )}
-
-          {/* Deliverables Table */}
-          <div className="space-y-3">
-            <h4 className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
-              Scope of Work & Deliverables
-            </h4>
-            <div className="border-border/80 divide-border bg-background divide-y overflow-hidden rounded-2xl border">
-              <div className="bg-muted/40 text-muted-foreground grid grid-cols-12 p-3 text-[11px] font-semibold tracking-wider uppercase">
-                <div className="col-span-7 sm:col-span-8">Description</div>
-                <div className="col-span-2 text-center">Qty</div>
-                <div className="col-span-3 text-right sm:col-span-2">Amount</div>
-              </div>
-
-              {quote.items.map((it, idx) => (
-                <div
-                  key={it.id || idx}
-                  className="grid grid-cols-12 items-center gap-2 p-3.5 text-xs"
-                >
-                  <div className="text-foreground col-span-7 font-medium sm:col-span-8">
-                    {it.description}
+            {/* Document Header */}
+            <div className="border-border flex flex-col items-start justify-between gap-6 border-b pb-8 sm:flex-row">
+              <div className="space-y-2">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="flex h-10 w-10 items-center justify-center rounded-xl text-base font-bold text-white shadow-xs"
+                    style={{ backgroundColor: quote.organization.brandColor || "#2563eb" }}
+                  >
+                    {quote.organization.name.slice(0, 2).toUpperCase()}
                   </div>
-                  <div className="text-muted-foreground col-span-2 text-center">{it.quantity}</div>
-                  <div className="text-foreground col-span-3 text-right font-mono font-semibold sm:col-span-2">
-                    ${it.amount.toFixed(2)}
+                  <div>
+                    <h2 className="text-foreground text-lg font-bold tracking-tight">
+                      {quote.organization.name}
+                    </h2>
+                    <p className="text-muted-foreground text-xs">
+                      {quote.organization.contactEmail}
+                    </p>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Totals Summary */}
-          <div className="flex justify-end">
-            <div className="bg-muted/30 border-border/80 w-full space-y-2 rounded-2xl border p-4 text-xs sm:w-72">
-              <div className="text-muted-foreground flex justify-between">
-                <span>Subtotal:</span>
-                <span className="font-mono">${quote.subtotal.toFixed(2)}</span>
+                {quote.organization.address && (
+                  <p className="text-muted-foreground text-xs whitespace-pre-line">
+                    {quote.organization.address}
+                  </p>
+                )}
               </div>
-              {quote.discountAmount > 0 && (
-                <div className="flex justify-between text-emerald-600 dark:text-emerald-400">
-                  <span>Discount:</span>
-                  <span className="font-mono">-${quote.discountAmount.toFixed(2)}</span>
-                </div>
-              )}
-              {quote.taxAmount > 0 && (
-                <div className="text-muted-foreground flex justify-between">
-                  <span>Tax ({quote.taxRate}%):</span>
-                  <span className="font-mono">+${quote.taxAmount.toFixed(2)}</span>
-                </div>
-              )}
-              <div className="border-border flex items-baseline justify-between border-t pt-2 text-sm font-bold">
-                <span>Total Investment:</span>
-                <span className="font-mono text-base text-blue-600 dark:text-blue-400">
-                  {quote.organization.currency} ${quote.totalAmount.toFixed(2)}
+
+              <div className="space-y-1 sm:text-right">
+                <span className="bg-muted text-muted-foreground border-border inline-block rounded-full border px-2.5 py-0.5 font-mono text-[11px] font-semibold">
+                  {quote.quoteNumber}
                 </span>
+                <div className="text-muted-foreground text-xs">
+                  Issued: <strong>{new Date(quote.issuedAt).toLocaleDateString()}</strong>
+                </div>
+                {quote.expiresAt && (
+                  <div className="text-muted-foreground text-xs">
+                    Valid Until: <strong>{new Date(quote.expiresAt).toLocaleDateString()}</strong>
+                  </div>
+                )}
               </div>
             </div>
-          </div>
 
-          {/* Terms & Conditions */}
-          {quote.terms && (
-            <div className="border-border space-y-2 border-t pt-4">
-              <h4 className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
-                Terms & Payment Schedule
-              </h4>
-              <div className="bg-muted/20 border-border/60 text-muted-foreground rounded-2xl border p-4 text-xs leading-relaxed whitespace-pre-line">
-                {quote.terms}
+            {/* Client & Title Header */}
+            <div className="bg-muted/30 border-border/60 grid grid-cols-1 gap-6 rounded-2xl border p-5 md:grid-cols-2">
+              <div className="space-y-1">
+                <span className="text-muted-foreground text-[10px] font-semibold tracking-wider uppercase">
+                  Prepared Specifically For
+                </span>
+                <h3 className="text-foreground text-base font-bold">{quote.customerName}</h3>
+                {quote.customerCompany && (
+                  <div className="text-muted-foreground flex items-center gap-1.5 text-xs font-medium">
+                    <Building2 className="h-3.5 w-3.5" />
+                    <span>{quote.customerCompany}</span>
+                  </div>
+                )}
+                <p className="text-muted-foreground text-xs">{quote.customerEmail}</p>
+              </div>
+
+              <div className="space-y-1 md:text-right">
+                <span className="text-muted-foreground text-[10px] font-semibold tracking-wider uppercase">
+                  Investment Proposal
+                </span>
+                <h4 className="text-foreground text-sm font-semibold">{quote.title}</h4>
+                <div className="mt-1 font-mono text-xl font-bold text-blue-600 dark:text-blue-400">
+                  {quote.organization.currency} ${quote.totalAmount.toFixed(2)}
+                </div>
               </div>
             </div>
-          )}
 
-          {/* Digital Signature Audit (Visible if already accepted) */}
-          {isAlreadyAccepted && (
-            <div className="border-border space-y-3 border-t pt-6">
+            {/* Introduction note if provided */}
+            {quote.introduction && (
+              <div className="space-y-1.5">
+                <h4 className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+                  Executive Overview
+                </h4>
+                <p className="text-foreground/90 text-xs leading-relaxed whitespace-pre-line sm:text-sm">
+                  {quote.introduction}
+                </p>
+              </div>
+            )}
+
+            {/* Deliverables Table */}
+            <div className="space-y-3">
               <h4 className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
-                Executed Electronic Signature
+                Scope of Work & Deliverables
               </h4>
-              <div className="flex flex-col items-start justify-between gap-4 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-4 text-xs sm:flex-row sm:items-center">
-                <div>
-                  <div className="text-foreground text-sm font-semibold">
-                    {quote.signerName || signerName || "Authorized Signer"}
+              <div className="border-border/80 divide-border bg-background divide-y overflow-hidden rounded-2xl border">
+                <div className="bg-muted/40 text-muted-foreground grid grid-cols-12 p-3 text-[11px] font-semibold tracking-wider uppercase">
+                  <div className="col-span-7 sm:col-span-8">Description</div>
+                  <div className="col-span-2 text-center">Qty</div>
+                  <div className="col-span-3 text-right sm:col-span-2">Amount</div>
+                </div>
+
+                {quote.items.map((it, idx) => (
+                  <div
+                    key={it.id || idx}
+                    className="grid grid-cols-12 items-center gap-2 p-3.5 text-xs"
+                  >
+                    <div className="text-foreground col-span-7 font-medium sm:col-span-8">
+                      {it.description}
+                    </div>
+                    <div className="text-muted-foreground col-span-2 text-center">
+                      {it.quantity}
+                    </div>
+                    <div className="text-foreground col-span-3 text-right font-mono font-semibold sm:col-span-2">
+                      ${it.amount.toFixed(2)}
+                    </div>
                   </div>
-                  <div className="text-muted-foreground mt-0.5 text-[11px]">
-                    Accepted on{" "}
-                    {quote.acceptedAt
-                      ? new Date(quote.acceptedAt).toLocaleString()
-                      : "Recently Accepted"}
+                ))}
+              </div>
+            </div>
+
+            {/* Totals Summary */}
+            <div className="flex justify-end">
+              <div className="bg-muted/30 border-border/80 w-full space-y-2 rounded-2xl border p-4 text-xs sm:w-72">
+                <div className="text-muted-foreground flex justify-between">
+                  <span>Subtotal:</span>
+                  <span className="font-mono">${quote.subtotal.toFixed(2)}</span>
+                </div>
+                {quote.discountAmount > 0 && (
+                  <div className="flex justify-between text-emerald-600 dark:text-emerald-400">
+                    <span>Discount:</span>
+                    <span className="font-mono">-${quote.discountAmount.toFixed(2)}</span>
                   </div>
-                  {quote.signerIp && (
-                    <div className="text-muted-foreground/80 mt-0.5 font-mono text-[10px]">
-                      Audit Hash / IP: {quote.signerIp}
+                )}
+                {quote.taxAmount > 0 && (
+                  <div className="text-muted-foreground flex justify-between">
+                    <span>Tax ({quote.taxRate}%):</span>
+                    <span className="font-mono">+${quote.taxAmount.toFixed(2)}</span>
+                  </div>
+                )}
+                <div className="border-border flex items-baseline justify-between border-t pt-2 text-sm font-bold">
+                  <span>Total Investment:</span>
+                  <span className="font-mono text-base text-blue-600 dark:text-blue-400">
+                    {quote.organization.currency} ${quote.totalAmount.toFixed(2)}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Terms & Conditions */}
+            {quote.terms && (
+              <div className="border-border space-y-2 border-t pt-4">
+                <h4 className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+                  Terms & Payment Schedule
+                </h4>
+                <div className="bg-muted/20 border-border/60 text-muted-foreground rounded-2xl border p-4 text-xs leading-relaxed whitespace-pre-line">
+                  {quote.terms}
+                </div>
+              </div>
+            )}
+
+            {/* Digital Signature Audit (Visible if already accepted) */}
+            {isAlreadyAccepted && (
+              <div className="border-border space-y-3 border-t pt-6">
+                <h4 className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+                  Executed Electronic Signature
+                </h4>
+                <div className="flex flex-col items-start justify-between gap-4 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-4 text-xs sm:flex-row sm:items-center">
+                  <div>
+                    <div className="text-foreground text-sm font-semibold">
+                      {quote.signerName || signerName || "Authorized Signer"}
+                    </div>
+                    <div className="text-muted-foreground mt-0.5 text-[11px]">
+                      Accepted on{" "}
+                      {quote.acceptedAt
+                        ? new Date(quote.acceptedAt).toLocaleString()
+                        : "Recently Accepted"}
+                    </div>
+                    {quote.signerIp && (
+                      <div className="text-muted-foreground/80 mt-0.5 font-mono text-[10px]">
+                        Audit Hash / IP: {quote.signerIp}
+                      </div>
+                    )}
+                  </div>
+                  {quote.signatureData?.startsWith("data:image/") ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={quote.signatureData}
+                      alt="Digital Signature"
+                      className="max-h-14 max-w-[200px] border-b-2 border-slate-700 object-contain pb-1 dark:border-slate-300"
+                    />
+                  ) : (
+                    <div className="border-b-2 border-slate-700 px-4 py-2 font-serif text-lg italic dark:border-slate-300">
+                      {quote.signerName || signerName}
                     </div>
                   )}
                 </div>
-                {quote.signatureData?.startsWith("data:image/") ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={quote.signatureData}
-                    alt="Digital Signature"
-                    className="max-h-14 max-w-[200px] border-b-2 border-slate-700 object-contain pb-1 dark:border-slate-300"
-                  />
-                ) : (
-                  <div className="border-b-2 border-slate-700 px-4 py-2 font-serif text-lg italic dark:border-slate-300">
-                    {quote.signerName || signerName}
+              </div>
+            )}
+
+            {/* Digital Signing Form (Interactive when open) */}
+            {!isAlreadyAccepted && !isDeclined && !isExpired && (
+              <div className="border-border space-y-4 border-t pt-6 print:hidden">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-foreground flex items-center gap-2 text-sm font-bold">
+                      <PenTool className="h-4 w-4 text-blue-600" /> Electronic Signature & Formal
+                      Acceptance
+                    </h4>
+                    <p className="text-muted-foreground mt-0.5 text-xs">
+                      Please provide your legal name and signature below to execute this agreement.
+                    </p>
+                  </div>
+                  <div className="bg-muted/60 border-border flex gap-1.5 rounded-xl border p-1">
+                    <button
+                      type="button"
+                      onClick={() => setSignatureMode("draw")}
+                      className={`rounded-lg px-2.5 py-1 text-xs font-medium transition-all ${
+                        signatureMode === "draw"
+                          ? "bg-background text-foreground font-semibold shadow-xs"
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      Draw Signature
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSignatureMode("type")}
+                      className={`rounded-lg px-2.5 py-1 text-xs font-medium transition-all ${
+                        signatureMode === "type"
+                          ? "bg-background text-foreground font-semibold shadow-xs"
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      Type Name
+                    </button>
+                  </div>
+                </div>
+
+                {errorMessage && (
+                  <div className="bg-destructive/10 text-destructive border-destructive/20 flex items-center gap-2 rounded-xl border p-3 text-xs font-medium">
+                    <AlertCircle className="h-4 w-4 shrink-0" />
+                    <span>{errorMessage}</span>
                   </div>
                 )}
-              </div>
-            </div>
-          )}
 
-          {/* Digital Signing Form (Interactive when open) */}
-          {!isAlreadyAccepted && !isDeclined && !isExpired && (
-            <div className="border-border space-y-4 border-t pt-6 print:hidden">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="text-foreground flex items-center gap-2 text-sm font-bold">
-                    <PenTool className="h-4 w-4 text-blue-600" /> Electronic Signature & Formal
-                    Acceptance
-                  </h4>
-                  <p className="text-muted-foreground mt-0.5 text-xs">
-                    Please provide your legal name and signature below to execute this agreement.
-                  </p>
-                </div>
-                <div className="bg-muted/60 border-border flex gap-1.5 rounded-xl border p-1">
-                  <button
-                    type="button"
-                    onClick={() => setSignatureMode("draw")}
-                    className={`rounded-lg px-2.5 py-1 text-xs font-medium transition-all ${
-                      signatureMode === "draw"
-                        ? "bg-background text-foreground font-semibold shadow-xs"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    Draw Signature
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setSignatureMode("type")}
-                    className={`rounded-lg px-2.5 py-1 text-xs font-medium transition-all ${
-                      signatureMode === "type"
-                        ? "bg-background text-foreground font-semibold shadow-xs"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    Type Name
-                  </button>
-                </div>
-              </div>
-
-              {errorMessage && (
-                <div className="bg-destructive/10 text-destructive border-destructive/20 flex items-center gap-2 rounded-xl border p-3 text-xs font-medium">
-                  <AlertCircle className="h-4 w-4 shrink-0" />
-                  <span>{errorMessage}</span>
-                </div>
-              )}
-
-              <form onSubmit={handleAccept} className="space-y-4">
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  <div className="space-y-1">
-                    <label className="text-xs font-semibold">Authorized Signer Name *</label>
-                    <Input
-                      value={signerName}
-                      onChange={(e) => {
-                        setSignerName(e.target.value);
-                        if (signatureMode === "type") setTypedSignature(e.target.value);
-                      }}
-                      placeholder="e.g. Jane Doe"
-                      className="h-9 rounded-xl text-xs"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-xs font-semibold">Signer Email</label>
-                    <Input
-                      value={signerEmail}
-                      onChange={(e) => setSignerEmail(e.target.value)}
-                      placeholder={quote.customerEmail || "name@company.com"}
-                      type="email"
-                      className="h-9 rounded-xl text-xs"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold">
-                    Client Notes / Purchase Order # (Optional)
-                  </label>
-                  <Input
-                    value={clientNotes}
-                    onChange={(e) => setClientNotes(e.target.value)}
-                    placeholder="e.g. PO-84920 or special instructions"
-                    className="h-9 rounded-xl text-xs"
-                  />
-                </div>
-
-                {/* Signature box */}
-                {signatureMode === "draw" ? (
-                  <div className="space-y-1.5">
-                    <div className="text-muted-foreground flex items-center justify-between text-xs">
-                      <span>Sign inside the canvas below:</span>
-                      <button
-                        type="button"
-                        onClick={clearCanvas}
-                        className="text-[11px] text-blue-600 hover:underline dark:text-blue-400"
-                      >
-                        Clear Signature
-                      </button>
+                <form onSubmit={handleAccept} className="space-y-4">
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    <div className="space-y-1">
+                      <label className="text-xs font-semibold">Authorized Signer Name *</label>
+                      <Input
+                        value={signerName}
+                        onChange={(e) => {
+                          setSignerName(e.target.value);
+                          if (signatureMode === "type") setTypedSignature(e.target.value);
+                        }}
+                        placeholder="e.g. Jane Doe"
+                        className="h-9 rounded-xl text-xs"
+                        required
+                      />
                     </div>
-                    <div className="border-border touch-none rounded-2xl border-2 border-dashed bg-slate-50 p-2 dark:bg-slate-900/40">
-                      <canvas
-                        ref={canvasRef}
-                        width={600}
-                        height={120}
-                        onMouseDown={startDrawing}
-                        onMouseMove={draw}
-                        onMouseUp={stopDrawing}
-                        onMouseLeave={stopDrawing}
-                        onTouchStart={startDrawing}
-                        onTouchMove={draw}
-                        onTouchEnd={stopDrawing}
-                        className="h-28 w-full cursor-crosshair rounded-xl bg-white dark:bg-slate-950 touch-none"
+                    <div className="space-y-1">
+                      <label className="text-xs font-semibold">Signer Email</label>
+                      <Input
+                        value={signerEmail}
+                        onChange={(e) => setSignerEmail(e.target.value)}
+                        placeholder={quote.customerEmail || "name@company.com"}
+                        type="email"
+                        className="h-9 rounded-xl text-xs"
                       />
                     </div>
                   </div>
-                ) : (
-                  <div className="space-y-1.5">
-                    <label className="text-muted-foreground text-xs">Signature Preview:</label>
-                    <div className="border-border bg-muted/20 flex h-20 items-center justify-center rounded-2xl border px-4">
-                      <span className="text-foreground font-serif text-2xl italic">
-                        {typedSignature || "Your Signature Preview"}
-                      </span>
-                    </div>
+
+                  <div className="space-y-1">
+                    <label className="text-xs font-semibold">
+                      Client Notes / Purchase Order # (Optional)
+                    </label>
+                    <Input
+                      value={clientNotes}
+                      onChange={(e) => setClientNotes(e.target.value)}
+                      placeholder="e.g. PO-84920 or special instructions"
+                      className="h-9 rounded-xl text-xs"
+                    />
                   </div>
-                )}
 
-                {/* Agreement consent checkbox */}
-                <label className="flex cursor-pointer items-start gap-2.5 pt-2">
-                  <input
-                    type="checkbox"
-                    checked={agreedToTerms}
-                    onChange={(e) => setAgreedToTerms(e.target.checked)}
-                    className="border-border mt-0.5 h-4 w-4 rounded text-blue-600 focus:ring-blue-500"
-                  />
-                  <span className="text-muted-foreground text-xs leading-normal">
-                    I confirm that I am authorized to execute agreements on behalf of{" "}
-                    <strong>{quote.customerName}</strong> and agree to the deliverables, pricing,
-                    and payment terms specified in this document.
-                  </span>
-                </label>
+                  {/* Signature box */}
+                  {signatureMode === "draw" ? (
+                    <div className="space-y-1.5">
+                      <div className="text-muted-foreground flex items-center justify-between text-xs">
+                        <span>Sign inside the canvas below:</span>
+                        <button
+                          type="button"
+                          onClick={clearCanvas}
+                          className="text-[11px] text-blue-600 hover:underline dark:text-blue-400"
+                        >
+                          Clear Signature
+                        </button>
+                      </div>
+                      <div className="border-border touch-none rounded-2xl border-2 border-dashed bg-slate-50 p-2 dark:bg-slate-900/40">
+                        <canvas
+                          ref={canvasRef}
+                          width={600}
+                          height={120}
+                          onMouseDown={startDrawing}
+                          onMouseMove={draw}
+                          onMouseUp={stopDrawing}
+                          onMouseLeave={stopDrawing}
+                          onTouchStart={startDrawing}
+                          onTouchMove={draw}
+                          onTouchEnd={stopDrawing}
+                          className="h-28 w-full cursor-crosshair touch-none rounded-xl bg-white dark:bg-slate-950"
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-1.5">
+                      <label className="text-muted-foreground text-xs">Signature Preview:</label>
+                      <div className="border-border bg-muted/20 flex h-20 items-center justify-center rounded-2xl border px-4">
+                        <span className="text-foreground font-serif text-2xl italic">
+                          {typedSignature || "Your Signature Preview"}
+                        </span>
+                      </div>
+                    </div>
+                  )}
 
-                {/* Submit buttons */}
-                <div className="flex flex-col items-center justify-between gap-3 pt-3 sm:flex-row">
-                  <button
-                    type="button"
-                    onClick={() => setIsDeclineModalOpen(true)}
-                    className="text-muted-foreground hover:text-destructive text-xs transition-colors"
-                  >
-                    Request Revisions / Decline Proposal
-                  </button>
+                  {/* Agreement consent checkbox */}
+                  <label className="flex cursor-pointer items-start gap-2.5 pt-2">
+                    <input
+                      type="checkbox"
+                      checked={agreedToTerms}
+                      onChange={(e) => setAgreedToTerms(e.target.checked)}
+                      className="border-border mt-0.5 h-4 w-4 rounded text-blue-600 focus:ring-blue-500"
+                    />
+                    <span className="text-muted-foreground text-xs leading-normal">
+                      I confirm that I am authorized to execute agreements on behalf of{" "}
+                      <strong>{quote.customerName}</strong> and agree to the deliverables, pricing,
+                      and payment terms specified in this document.
+                    </span>
+                  </label>
 
-                  <Button
-                    type="submit"
-                    disabled={acceptMutation.isPending}
-                    className="h-10 w-full rounded-xl bg-emerald-600 px-6 py-2 font-medium text-white shadow-xs hover:bg-emerald-700 sm:w-auto"
-                  >
-                    {acceptMutation.isPending
-                      ? "Executing Agreement..."
-                      : "Accept & Digitally Sign Proposal"}
-                  </Button>
-                </div>
-              </form>
-            </div>
-          )}
+                  {/* Submit buttons */}
+                  <div className="flex flex-col items-center justify-between gap-3 pt-3 sm:flex-row">
+                    <button
+                      type="button"
+                      onClick={() => setIsDeclineModalOpen(true)}
+                      className="text-muted-foreground hover:text-destructive text-xs transition-colors"
+                    >
+                      Request Revisions / Decline Proposal
+                    </button>
 
-          {/* Physical Signature Block for Paper Printing (Visible ONLY during print when not digitally signed) */}
-          {!isAlreadyAccepted && (
-            <div className="hidden border-border/80 border-t pt-6 print:block">
-              <div className="grid grid-cols-2 gap-8">
-                <div>
-                  <p className="text-[10px] font-bold tracking-wider text-slate-400 uppercase">
-                    Authorized Client Sign-Off
-                  </p>
-                  <div className="mt-10 border-b border-slate-400" />
-                  <p className="mt-1 text-xs text-slate-600">Authorized Signature & Printed Name</p>
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold tracking-wider text-slate-400 uppercase">
-                    Execution Date
-                  </p>
-                  <div className="mt-10 border-b border-slate-400" />
-                  <p className="mt-1 text-xs text-slate-600">Date (DD / MM / YYYY)</p>
+                    <Button
+                      type="submit"
+                      disabled={acceptMutation.isPending}
+                      className="h-10 w-full rounded-xl bg-emerald-600 px-6 py-2 font-medium text-white shadow-xs hover:bg-emerald-700 sm:w-auto"
+                    >
+                      {acceptMutation.isPending
+                        ? "Executing Agreement..."
+                        : "Accept & Digitally Sign Proposal"}
+                    </Button>
+                  </div>
+                </form>
+              </div>
+            )}
+
+            {/* Physical Signature Block for Paper Printing (Visible ONLY during print when not digitally signed) */}
+            {!isAlreadyAccepted && (
+              <div className="border-border/80 hidden border-t pt-6 print:block">
+                <div className="grid grid-cols-2 gap-8">
+                  <div>
+                    <p className="text-[10px] font-bold tracking-wider text-slate-400 uppercase">
+                      Authorized Client Sign-Off
+                    </p>
+                    <div className="mt-10 border-b border-slate-400" />
+                    <p className="mt-1 text-xs text-slate-600">
+                      Authorized Signature & Printed Name
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold tracking-wider text-slate-400 uppercase">
+                      Execution Date
+                    </p>
+                    <div className="mt-10 border-b border-slate-400" />
+                    <p className="mt-1 text-xs text-slate-600">Date (DD / MM / YYYY)</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
-    </div>
 
       {/* Decline Feedback Modal */}
       {isDeclineModalOpen && (

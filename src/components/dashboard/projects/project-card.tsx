@@ -57,14 +57,12 @@ export function ProjectCard({ project }: ProjectCardProps) {
       })
     : null;
 
-  const clientInitial = project.customerName
-    ? project.customerName.charAt(0).toUpperCase()
-    : "C";
+  const clientInitial = project.customerName ? project.customerName.charAt(0).toUpperCase() : "C";
 
   return (
     <Card
       style={{ borderTopColor: statusInfo.color, borderTopWidth: "3px" }}
-      className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border/80 bg-card/95 p-5 shadow-2xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg"
+      className="group border-border/80 bg-card/95 hover:border-primary/50 relative flex flex-col justify-between overflow-hidden rounded-2xl border p-5 shadow-2xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
     >
       <div className="space-y-3.5">
         {/* Top Header: Customer & Status */}
@@ -78,10 +76,10 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
           {project.customerName && (
             <div className="text-muted-foreground flex max-w-[170px] items-center gap-1.5 truncate text-xs">
-              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-primary/10 text-[10px] font-extrabold text-primary">
+              <div className="bg-primary/10 text-primary flex h-5 w-5 shrink-0 items-center justify-center rounded-md text-[10px] font-extrabold">
                 {clientInitial}
               </div>
-              <span className="truncate font-semibold text-foreground/80">
+              <span className="text-foreground/80 truncate font-semibold">
                 {project.customerCompany || project.customerName}
               </span>
             </div>
@@ -118,19 +116,19 @@ export function ProjectCard({ project }: ProjectCardProps) {
         {/* Progress Metric Bar */}
         <div className="space-y-1.5 pt-1">
           <div className="flex items-center justify-between text-xs">
-            <span className="font-semibold text-foreground/90">Delivery Progress</span>
-            <span className="font-mono text-[11px] font-bold text-muted-foreground">
+            <span className="text-foreground/90 font-semibold">Delivery Progress</span>
+            <span className="text-muted-foreground font-mono text-[11px] font-bold">
               {project.completedTasks}/{project.totalTasks} ({project.progressPercentage}%)
             </span>
           </div>
-          <div className="h-2 w-full overflow-hidden rounded-full bg-muted/80">
+          <div className="bg-muted/80 h-2 w-full overflow-hidden rounded-full">
             <div
               className={`h-full rounded-full transition-all duration-500 ${
                 project.progressPercentage === 100
                   ? "bg-gradient-to-r from-emerald-500 to-teal-500"
                   : project.progressPercentage >= 50
                     ? "bg-gradient-to-r from-blue-500 to-emerald-500"
-                    : "bg-gradient-to-r from-amber-500 to-primary"
+                    : "to-primary bg-gradient-to-r from-amber-500"
               }`}
               style={{ width: `${project.progressPercentage}%` }}
             />
@@ -154,7 +152,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
           {formattedTargetDate && (
             <div
               className={`flex items-center gap-1 font-medium ${
-                isProjectOverdue ? "text-rose-600 dark:text-rose-400 font-bold" : "text-muted-foreground"
+                isProjectOverdue
+                  ? "font-bold text-rose-600 dark:text-rose-400"
+                  : "text-muted-foreground"
               }`}
               title="Target Deadline"
             >
@@ -169,7 +169,8 @@ export function ProjectCard({ project }: ProjectCardProps) {
             >
               <DollarSign className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
               <span>
-                {project.budget.toLocaleString(undefined, { minimumFractionDigits: 0 })} {project.currency}
+                {project.budget.toLocaleString(undefined, { minimumFractionDigits: 0 })}{" "}
+                {project.currency}
               </span>
             </div>
           )}

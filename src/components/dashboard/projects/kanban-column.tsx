@@ -71,11 +71,11 @@ export function KanbanColumn({
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      className={`bg-muted/30 dark:bg-muted/20 flex w-full md:max-w-[340px] md:min-w-[280px] flex-col rounded-xl border border-t-2 p-3.5 transition-all duration-200 ${
+      className={`bg-muted/30 dark:bg-muted/20 flex w-full flex-col rounded-xl border border-t-2 p-3.5 transition-all duration-200 md:max-w-[340px] md:min-w-[280px] ${
         columnAccentBorder[status] || "border-t-primary"
       } ${
         isOver
-          ? "border-primary bg-primary/5 ring-2 ring-primary/30 shadow-lg shadow-primary/5"
+          ? "border-primary bg-primary/5 ring-primary/30 shadow-primary/5 shadow-lg ring-2"
           : "border-border/60 hover:border-border/90"
       }`}
     >
@@ -88,7 +88,7 @@ export function KanbanColumn({
             {tasks.length}
           </span>
           {totalTasksCount !== undefined && totalTasksCount > 0 && (
-            <span className="text-muted-foreground/60 font-mono text-[10px] hidden sm:inline">
+            <span className="text-muted-foreground/60 hidden font-mono text-[10px] sm:inline">
               {Math.round((tasks.length / totalTasksCount) * 100)}%
             </span>
           )}
@@ -106,7 +106,7 @@ export function KanbanColumn({
       </div>
 
       {/* Task List container */}
-      <div className="max-h-[calc(100vh-320px)] min-h-[160px] flex-1 space-y-2.5 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-border/50 scrollbar-track-transparent">
+      <div className="scrollbar-thumb-border/50 max-h-[calc(100vh-320px)] min-h-[160px] flex-1 scrollbar-thin scrollbar-track-transparent space-y-2.5 overflow-y-auto pr-1">
         {tasks.map((task) => (
           <TaskCard
             key={task.id}
@@ -122,8 +122,8 @@ export function KanbanColumn({
             onClick={() => onQuickAddTask(status)}
             className="group border-border/80 hover:border-primary/50 hover:bg-background/80 text-muted-foreground/70 flex h-24 w-full cursor-pointer flex-col items-center justify-center gap-1.5 rounded-lg border border-dashed p-3 text-center transition-all"
           >
-            <Plus className="h-4 w-4 text-muted-foreground/60 transition-colors group-hover:text-primary" />
-            <span className="text-xs group-hover:text-foreground">
+            <Plus className="text-muted-foreground/60 group-hover:text-primary h-4 w-4 transition-colors" />
+            <span className="group-hover:text-foreground text-xs">
               Add task to {title.toLowerCase()}
             </span>
           </button>

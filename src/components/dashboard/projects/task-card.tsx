@@ -104,7 +104,7 @@ export function TaskCard({ task, onClick, onMoveStatus }: TaskCardProps) {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onClick={() => onClick(task)}
-      className={`group relative cursor-grab rounded-xl border border-border/80 bg-gradient-to-b from-card to-card/90 dark:from-card dark:to-card/70 p-3.5 pl-4.5 shadow-2xs backdrop-blur-md transition-all duration-200 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 active:cursor-grabbing before:absolute before:top-3 before:bottom-3 before:left-0 before:w-1.5 before:rounded-r-full ${
+      className={`group border-border/80 from-card to-card/90 dark:from-card dark:to-card/70 hover:border-primary/50 hover:shadow-primary/5 relative cursor-grab rounded-xl border bg-gradient-to-b p-3.5 pl-4.5 shadow-2xs backdrop-blur-md transition-all duration-200 before:absolute before:top-3 before:bottom-3 before:left-0 before:w-1.5 before:rounded-r-full hover:-translate-y-1 hover:shadow-lg active:cursor-grabbing ${
         priorityInfo.stripe
       } ${isDragging ? "scale-95 opacity-40" : "opacity-100"}`}
     >
@@ -112,7 +112,7 @@ export function TaskCard({ task, onClick, onMoveStatus }: TaskCardProps) {
       <div className="flex items-center justify-between gap-1.5">
         <div className="flex items-center gap-1.5">
           <GripVertical className="text-muted-foreground/30 group-hover:text-muted-foreground/70 -ml-1 h-3.5 w-3.5 transition-colors" />
-          <span className="text-[10px] font-mono font-medium text-muted-foreground/70 bg-muted/40 px-1 rounded">
+          <span className="text-muted-foreground/70 bg-muted/40 rounded px-1 font-mono text-[10px] font-medium">
             #{task.id.slice(0, 5)}
           </span>
           <Badge
@@ -154,7 +154,7 @@ export function TaskCard({ task, onClick, onMoveStatus }: TaskCardProps) {
       </div>
 
       {/* Task Title */}
-      <h4 className="text-foreground group-hover:text-primary mt-2 line-clamp-2 text-xs font-bold leading-snug tracking-tight transition-colors sm:text-sm">
+      <h4 className="text-foreground group-hover:text-primary mt-2 line-clamp-2 text-xs leading-snug font-bold tracking-tight transition-colors sm:text-sm">
         {task.title}
       </h4>
 
@@ -173,7 +173,7 @@ export function TaskCard({ task, onClick, onMoveStatus }: TaskCardProps) {
             <div
               className={`flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-bold ${
                 completedChecklists === totalChecklists
-                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
+                  ? "border border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
                   : "bg-muted text-muted-foreground"
               }`}
               title="Subtask checklists"
@@ -196,7 +196,7 @@ export function TaskCard({ task, onClick, onMoveStatus }: TaskCardProps) {
               title={isOverdue ? "Overdue deadline!" : "Target deadline"}
             >
               {isOverdue ? (
-                <AlertCircle className="h-3 w-3 text-rose-500 shrink-0" />
+                <AlertCircle className="h-3 w-3 shrink-0 text-rose-500" />
               ) : (
                 <Calendar className="h-3 w-3 shrink-0" />
               )}
@@ -208,10 +208,10 @@ export function TaskCard({ task, onClick, onMoveStatus }: TaskCardProps) {
         {/* Assignee Avatar / Indicator */}
         {task.assigneeName ? (
           <div
-            className="flex items-center gap-1.5 rounded-full border border-border/80 bg-muted/50 py-0.5 pr-2 pl-1 text-[10px] font-bold text-foreground"
+            className="border-border/80 bg-muted/50 text-foreground flex items-center gap-1.5 rounded-full border py-0.5 pr-2 pl-1 text-[10px] font-bold"
             title={`Assigned to ${task.assigneeName} (${task.assigneeEmail || ""})`}
           >
-            <div className="flex h-4.5 w-4.5 items-center justify-center rounded-full bg-primary text-[9px] font-extrabold text-white">
+            <div className="bg-primary flex h-4.5 w-4.5 items-center justify-center rounded-full text-[9px] font-extrabold text-white">
               {assigneeInitials}
             </div>
             <span className="max-w-[85px] truncate">{task.assigneeName}</span>

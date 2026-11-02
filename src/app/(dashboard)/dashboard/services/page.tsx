@@ -554,7 +554,7 @@ export default function ServicesPage() {
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <div
               key={i}
-              className="border-border/60 bg-card/60 shadow-2xs h-64 animate-pulse space-y-4 rounded-2xl border p-5"
+              className="border-border/60 bg-card/60 h-64 animate-pulse space-y-4 rounded-2xl border p-5 shadow-2xs"
             >
               <div className="flex items-center justify-between">
                 <div className="bg-muted/70 h-5 w-24 rounded-full" />

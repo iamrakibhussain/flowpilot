@@ -1609,14 +1609,14 @@ export default function DashboardOverviewPage() {
           >
             <div className="border-border/60 flex items-center justify-between border-b pb-3">
               <div className="flex items-center gap-2">
-                <FolderKanban className="text-amber-500 h-4 w-4" />
+                <FolderKanban className="h-4 w-4 text-amber-500" />
                 <CardTitle className="text-foreground text-sm font-bold">
                   Active Projects & Kanban
                 </CardTitle>
               </div>
               <Link
                 href="/dashboard/projects"
-                className="hover:text-primary text-[11px] font-semibold text-muted-foreground hover:underline inline-flex items-center gap-1"
+                className="hover:text-primary text-muted-foreground inline-flex items-center gap-1 text-[11px] font-semibold hover:underline"
               >
                 <span>All Boards</span>
                 <ArrowRight className="h-3 w-3" />
@@ -1631,7 +1631,7 @@ export default function DashboardOverviewPage() {
                     size="sm"
                     variant="outline"
                     asChild
-                    className="mt-3 cursor-pointer rounded-xl border-border/80 text-xs font-semibold"
+                    className="border-border/80 mt-3 cursor-pointer rounded-xl text-xs font-semibold"
                   >
                     <Link href="/dashboard/projects?new=true">
                       <FolderKanban className="mr-1.5 h-3.5 w-3.5 text-amber-500" />
@@ -1647,21 +1647,21 @@ export default function DashboardOverviewPage() {
                     className="group border-border/60 bg-muted/20 hover:bg-muted/50 block rounded-xl border p-3 transition-colors"
                   >
                     <div className="flex items-center justify-between">
-                      <p className="group-hover:text-primary text-foreground text-xs font-bold transition-colors truncate">
+                      <p className="group-hover:text-primary text-foreground truncate text-xs font-bold transition-colors">
                         {proj.name}
                       </p>
-                      <span className="text-[10px] font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-md">
+                      <span className="rounded-md bg-amber-500/10 px-2 py-0.5 text-[10px] font-bold text-amber-600 dark:text-amber-400">
                         {proj.progressPercentage}%
                       </span>
                     </div>
                     {proj.customerName && (
-                      <p className="text-muted-foreground text-[11px] mt-0.5 truncate">
+                      <p className="text-muted-foreground mt-0.5 truncate text-[11px]">
                         Client: {proj.customerName}
                       </p>
                     )}
-                    <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-muted">
+                    <div className="bg-muted mt-2 h-1.5 w-full overflow-hidden rounded-full">
                       <div
-                        className="h-full rounded-full bg-gradient-to-r from-amber-500 to-primary transition-all duration-300"
+                        className="to-primary h-full rounded-full bg-gradient-to-r from-amber-500 transition-all duration-300"
                         style={{ width: `${proj.progressPercentage}%` }}
                       />
                     </div>
@@ -1691,7 +1691,7 @@ export default function DashboardOverviewPage() {
 
               <Link
                 href="/dashboard/projects?new=true"
-                className="group border-border/80 bg-muted/30 hover:border-amber-400/40 hover:bg-amber-500/10 flex cursor-pointer flex-col items-center justify-center rounded-xl border p-3 text-center shadow-2xs transition-all hover:scale-[1.02]"
+                className="group border-border/80 bg-muted/30 flex cursor-pointer flex-col items-center justify-center rounded-xl border p-3 text-center shadow-2xs transition-all hover:scale-[1.02] hover:border-amber-400/40 hover:bg-amber-500/10"
               >
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 text-amber-500 transition-colors group-hover:bg-amber-600 group-hover:text-white">
                   <FolderKanban className="h-4 w-4" />
@@ -1701,7 +1701,7 @@ export default function DashboardOverviewPage() {
 
               <Link
                 href="/dashboard/quotes?new=true"
-                className="group border-border/80 bg-muted/30 hover:border-teal-400/40 hover:bg-teal-500/10 flex cursor-pointer flex-col items-center justify-center rounded-xl border p-3 text-center shadow-2xs transition-all hover:scale-[1.02]"
+                className="group border-border/80 bg-muted/30 flex cursor-pointer flex-col items-center justify-center rounded-xl border p-3 text-center shadow-2xs transition-all hover:scale-[1.02] hover:border-teal-400/40 hover:bg-teal-500/10"
               >
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-500/10 text-teal-600 transition-colors group-hover:bg-teal-600 group-hover:text-white">
                   <FileCheck2 className="h-4 w-4" />

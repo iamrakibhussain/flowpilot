@@ -165,7 +165,7 @@ export function ProjectListView({ tasks, onTaskClick, onStatusChange }: ProjectL
                     <div
                       className={`inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 text-xs ${
                         isOverdue
-                          ? "border-rose-500/20 bg-rose-500/10 font-semibold text-rose-600 dark:text-rose-400 border"
+                          ? "border border-rose-500/20 bg-rose-500/10 font-semibold text-rose-600 dark:text-rose-400"
                           : "text-muted-foreground"
                       }`}
                     >

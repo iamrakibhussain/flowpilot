@@ -77,15 +77,13 @@ export function QuotePrintModal({
 
   const isAccepted = quote.status === "ACCEPTED";
   const isExpired =
-    quote.status !== "ACCEPTED" &&
-    quote.expiresAt &&
-    new Date(quote.expiresAt) < new Date();
+    quote.status !== "ACCEPTED" && quote.expiresAt && new Date(quote.expiresAt) < new Date();
 
   const verificationHash = `FP-PROP-${quote.id.slice(0, 8).toUpperCase()}-${quote.quoteNumber}`;
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-h-[94vh] max-w-4xl overflow-y-auto rounded-3xl border-slate-200/90 bg-slate-900/40 p-4 shadow-2xl backdrop-blur-xl sm:p-7 print:static print:transform-none print:max-h-none print:max-w-none print:w-full print:overflow-visible print:border-none print:bg-white print:p-0 print:shadow-none">
+      <DialogContent className="max-h-[94vh] max-w-4xl overflow-y-auto rounded-3xl border-slate-200/90 bg-slate-900/40 p-4 shadow-2xl backdrop-blur-xl sm:p-7 print:static print:max-h-none print:w-full print:max-w-none print:transform-none print:overflow-visible print:border-none print:bg-white print:p-0 print:shadow-none">
         {/* Action Header (Hidden during printing) */}
         <DialogHeader className="flex flex-col items-start justify-between gap-3 border-b border-slate-200/20 pb-4 sm:flex-row sm:items-center print:hidden">
           <div className="flex items-center gap-3">
@@ -97,7 +95,8 @@ export function QuotePrintModal({
                 Executive Proposal Studio
               </DialogTitle>
               <DialogDescription className="text-xs text-slate-300">
-                Pixel-perfect Swiss statement formatted for client signature, archival, and print/PDF export.
+                Pixel-perfect Swiss statement formatted for client signature, archival, and
+                print/PDF export.
               </DialogDescription>
             </div>
           </div>
@@ -261,9 +260,7 @@ export function QuotePrintModal({
               </p>
               <h2 className="mt-0.5 text-base font-bold text-slate-900">{quote.title}</h2>
               {introduction && (
-                <p className="mt-2 text-xs leading-relaxed text-slate-600">
-                  {introduction}
-                </p>
+                <p className="mt-2 text-xs leading-relaxed text-slate-600">{introduction}</p>
               )}
             </div>
 
@@ -294,7 +291,8 @@ export function QuotePrintModal({
                 <p className="mt-1 text-sm font-bold text-slate-900">{effectiveOrgName}</p>
                 <p className="text-xs text-slate-500">FlowPilot Multi-Tenant Verified Workspace</p>
                 <p className="mt-1 font-mono text-[10px] text-slate-400">
-                  Status: <span className="font-semibold text-slate-700 uppercase">{quote.status}</span>
+                  Status:{" "}
+                  <span className="font-semibold text-slate-700 uppercase">{quote.status}</span>
                 </p>
               </div>
             </div>
@@ -331,7 +329,9 @@ export function QuotePrintModal({
                           </span>
                         )}
                       </td>
-                      <td className="px-4 py-3 text-center font-mono text-slate-700">{it.quantity}</td>
+                      <td className="px-4 py-3 text-center font-mono text-slate-700">
+                        {it.quantity}
+                      </td>
                       <td className="px-4 py-3 text-right font-mono text-slate-700">
                         ${Number(it.unitPrice).toFixed(2)}
                       </td>
@@ -362,9 +362,7 @@ export function QuotePrintModal({
                 <div className="flex justify-between text-xs text-emerald-600">
                   <span>
                     Discount{" "}
-                    {quote.discountType === "PERCENT"
-                      ? `(${quote.discountAmount}%)`
-                      : "Adjustment"}
+                    {quote.discountType === "PERCENT" ? `(${quote.discountAmount}%)` : "Adjustment"}
                     :
                   </span>
                   <span className="font-mono font-semibold">
@@ -386,7 +384,9 @@ export function QuotePrintModal({
                   <span className="text-sm font-black text-slate-900">Total Investment:</span>
                   <span className="font-mono text-lg font-black text-slate-900">
                     ${quote.totalAmount.toFixed(2)}{" "}
-                    <span className="text-[10px] font-normal text-slate-500">{effectiveCurrency}</span>
+                    <span className="text-[10px] font-normal text-slate-500">
+                      {effectiveCurrency}
+                    </span>
                   </span>
                 </div>
               </div>
@@ -415,10 +415,10 @@ export function QuotePrintModal({
                 </p>
                 {isAccepted ? (
                   <div className="mt-2 space-y-1">
-                    <p className="font-serif text-lg font-bold italic text-slate-800">
+                    <p className="font-serif text-lg font-bold text-slate-800 italic">
                       {quote.signerName || quote.customerName}
                     </p>
-                    <p className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1">
+                    <p className="flex items-center gap-1 text-[10px] font-semibold text-emerald-600">
                       <CheckCircle2 className="h-3 w-3" /> Digitally Signed & Approved
                     </p>
                     {quote.acceptedAt && (
@@ -443,10 +443,10 @@ export function QuotePrintModal({
                   FlowPilot Workspace Authorization
                 </p>
                 <div className="mt-2 space-y-1">
-                  <p className="font-serif text-lg font-bold italic text-slate-800">
+                  <p className="font-serif text-lg font-bold text-slate-800 italic">
                     {effectiveOrgName}
                   </p>
-                  <p className="text-[10px] text-blue-600 font-semibold flex items-center gap-1">
+                  <p className="flex items-center gap-1 text-[10px] font-semibold text-blue-600">
                     <ShieldCheck className="h-3 w-3" /> Certified Commercial Proposal
                   </p>
                   <p className="font-mono text-[10px] text-slate-500">

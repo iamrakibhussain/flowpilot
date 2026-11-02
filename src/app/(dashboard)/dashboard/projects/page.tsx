@@ -108,32 +108,34 @@ export default function ProjectsPage() {
       {/* KPI Metric Ribbon */}
       <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-4">
         {/* Total Projects */}
-        <Card className="group relative overflow-hidden rounded-2xl border border-border/80 bg-card/90 p-4.5 shadow-2xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-400/50 hover:shadow-md">
+        <Card className="group border-border/80 bg-card/90 relative overflow-hidden rounded-2xl border p-4.5 shadow-2xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-400/50 hover:shadow-md">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold tracking-wider text-muted-foreground uppercase">
+            <span className="text-muted-foreground text-[11px] font-bold tracking-wider uppercase">
               Total Workspaces
             </span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 shadow-inner transition-transform group-hover:scale-105">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 shadow-inner transition-transform group-hover:scale-105 dark:text-blue-400">
               <FolderKanban className="h-4 w-4" />
             </div>
           </div>
-          <div className="mt-2 text-2xl font-black tracking-tight text-foreground tabular-nums">
+          <div className="text-foreground mt-2 text-2xl font-black tracking-tight tabular-nums">
             {isLoadingStats ? "..." : (statsData?.totalProjects ?? 0)}
           </div>
-          <p className="mt-1 text-[11px] font-medium text-muted-foreground">Active delivery pipelines</p>
+          <p className="text-muted-foreground mt-1 text-[11px] font-medium">
+            Active delivery pipelines
+          </p>
         </Card>
 
         {/* Active Deliveries */}
-        <Card className="group relative overflow-hidden rounded-2xl border border-border/80 bg-card/90 p-4.5 shadow-2xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-400/50 hover:shadow-md">
+        <Card className="group border-border/80 bg-card/90 relative overflow-hidden rounded-2xl border p-4.5 shadow-2xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-400/50 hover:shadow-md">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold tracking-wider text-muted-foreground uppercase">
+            <span className="text-muted-foreground text-[11px] font-bold tracking-wider uppercase">
               In Delivery
             </span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shadow-inner transition-transform group-hover:scale-105">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 shadow-inner transition-transform group-hover:scale-105 dark:text-emerald-400">
               <Clock className="h-4 w-4" />
             </div>
           </div>
-          <div className="mt-2 text-2xl font-black tracking-tight text-emerald-600 dark:text-emerald-400 tabular-nums">
+          <div className="mt-2 text-2xl font-black tracking-tight text-emerald-600 tabular-nums dark:text-emerald-400">
             {isLoadingStats ? "..." : (statsData?.activeProjects ?? 0)}
           </div>
           <p className="mt-1 flex items-center gap-1.5 text-[11px] font-medium text-emerald-700 dark:text-emerald-400">
@@ -146,19 +148,19 @@ export default function ProjectsPage() {
         </Card>
 
         {/* Tasks In Flight */}
-        <Card className="group relative overflow-hidden rounded-2xl border border-border/80 bg-card/90 p-4.5 shadow-2xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-indigo-400/50 hover:shadow-md">
+        <Card className="group border-border/80 bg-card/90 relative overflow-hidden rounded-2xl border p-4.5 shadow-2xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-indigo-400/50 hover:shadow-md">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold tracking-wider text-muted-foreground uppercase">
+            <span className="text-muted-foreground text-[11px] font-bold tracking-wider uppercase">
               Tasks Managed
             </span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 shadow-inner transition-transform group-hover:scale-105">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 shadow-inner transition-transform group-hover:scale-105 dark:text-indigo-400">
               <CheckCircle2 className="h-4 w-4" />
             </div>
           </div>
-          <div className="mt-2 text-2xl font-black tracking-tight text-foreground tabular-nums">
+          <div className="text-foreground mt-2 text-2xl font-black tracking-tight tabular-nums">
             {isLoadingStats ? "..." : (statsData?.totalTasks ?? 0)}
           </div>
-          <p className="mt-1 text-[11px] font-medium text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-[11px] font-medium">
             <span className="font-bold text-indigo-600 dark:text-indigo-400">
               {statsData?.completedTasksCount ?? 0}
             </span>{" "}
@@ -167,25 +169,25 @@ export default function ProjectsPage() {
         </Card>
 
         {/* Overall Completion Velocity */}
-        <Card className="group relative overflow-hidden rounded-2xl border border-border/80 bg-card/90 p-4.5 shadow-2xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-purple-400/50 hover:shadow-md">
+        <Card className="group border-border/80 bg-card/90 relative overflow-hidden rounded-2xl border p-4.5 shadow-2xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-purple-400/50 hover:shadow-md">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold tracking-wider text-muted-foreground uppercase">
+            <span className="text-muted-foreground text-[11px] font-bold tracking-wider uppercase">
               Completion Rate
             </span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 shadow-inner transition-transform group-hover:scale-105">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-500/10 text-purple-600 shadow-inner transition-transform group-hover:scale-105 dark:text-purple-400">
               <TrendingUp className="h-4 w-4" />
             </div>
           </div>
-          <div className="mt-2 text-2xl font-black tracking-tight text-purple-600 dark:text-purple-400 tabular-nums">
+          <div className="mt-2 text-2xl font-black tracking-tight text-purple-600 tabular-nums dark:text-purple-400">
             {isLoadingStats ? "..." : `${statsData?.overallCompletionRate ?? 0}%`}
           </div>
-          <p className="mt-1 text-[11px] font-medium text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-[11px] font-medium">
             {(statsData?.overdueTasksCount ?? 0) > 0 ? (
               <span className="font-bold text-rose-600 dark:text-rose-400">
                 {statsData?.overdueTasksCount} overdue
               </span>
             ) : (
-              <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
+              <span className="font-semibold text-emerald-600 dark:text-emerald-400">
                 All deadlines on track ✓
               </span>
             )}
@@ -194,7 +196,7 @@ export default function ProjectsPage() {
       </div>
 
       {/* Filter Tabs & Search Bar */}
-      <div className="flex flex-col gap-3 border-b border-border/70 pb-3.5 sm:flex-row sm:items-center sm:justify-between">
+      <div className="border-border/70 flex flex-col gap-3 border-b pb-3.5 sm:flex-row sm:items-center sm:justify-between">
         {/* Status Tabs with Live Count Pills */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
           {(
@@ -214,17 +216,15 @@ export default function ProjectsPage() {
                 onClick={() => setStatusFilter(tab.key)}
                 className={`flex shrink-0 cursor-pointer items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold whitespace-nowrap transition-all ${
                   isTabActive
-                    ? "bg-primary text-primary-foreground shadow-xs ring-1 ring-primary/20"
+                    ? "bg-primary text-primary-foreground ring-primary/20 shadow-xs ring-1"
                     : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
                 }`}
               >
                 <span>{tab.label}</span>
                 {tab.count !== undefined && (
                   <span
-                    className={`rounded-full px-1.5 py-0.2 text-[10px] font-extrabold ${
-                      isTabActive
-                        ? "bg-white/20 text-white"
-                        : "bg-muted text-muted-foreground"
+                    className={`py-0.2 rounded-full px-1.5 text-[10px] font-extrabold ${
+                      isTabActive ? "bg-white/20 text-white" : "bg-muted text-muted-foreground"
                     }`}
                   >
                     {tab.count}
@@ -263,18 +263,18 @@ export default function ProjectsPage() {
           {[1, 2, 3, 4, 5, 6].map((idx) => (
             <div
               key={idx}
-              className="space-y-4 rounded-2xl border border-border/60 bg-card/60 p-5 shadow-2xs animate-pulse"
+              className="border-border/60 bg-card/60 animate-pulse space-y-4 rounded-2xl border p-5 shadow-2xs"
             >
               <div className="flex items-center justify-between">
-                <div className="h-5 w-20 rounded-md bg-muted" />
-                <div className="h-4 w-28 rounded-md bg-muted" />
+                <div className="bg-muted h-5 w-20 rounded-md" />
+                <div className="bg-muted h-4 w-28 rounded-md" />
               </div>
-              <div className="h-6 w-3/4 rounded-md bg-muted" />
-              <div className="h-10 w-full rounded-md bg-muted/60" />
-              <div className="h-2 w-full rounded-full bg-muted" />
+              <div className="bg-muted h-6 w-3/4 rounded-md" />
+              <div className="bg-muted/60 h-10 w-full rounded-md" />
+              <div className="bg-muted h-2 w-full rounded-full" />
               <div className="flex items-center justify-between pt-2">
-                <div className="h-4 w-24 rounded-md bg-muted" />
-                <div className="h-4 w-16 rounded-md bg-muted" />
+                <div className="bg-muted h-4 w-24 rounded-md" />
+                <div className="bg-muted h-4 w-16 rounded-md" />
               </div>
             </div>
           ))}
@@ -290,7 +290,9 @@ export default function ProjectsPage() {
           <div className="bg-primary/10 text-primary flex h-14 w-14 items-center justify-center rounded-2xl shadow-inner">
             <FolderKanban className="h-7 w-7" />
           </div>
-          <h3 className="text-foreground mt-4 text-base font-bold tracking-tight">No delivery projects found</h3>
+          <h3 className="text-foreground mt-4 text-base font-bold tracking-tight">
+            No delivery projects found
+          </h3>
           <p className="text-muted-foreground mt-1 max-w-sm text-xs leading-relaxed">
             {searchTerm || statusFilter !== "ALL"
               ? "No projects match your active search filter. Adjust or clear the filter to see more."

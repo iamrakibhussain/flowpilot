@@ -96,7 +96,9 @@ export default function InvoicesDashboardPage() {
 
   // Modals state
   const [isBuilderOpen, setIsBuilderOpen] = React.useState(false);
-  const [drawerInvoiceManual, setDrawerInvoiceManual] = React.useState<InvoiceListItem | null>(null);
+  const [drawerInvoiceManual, setDrawerInvoiceManual] = React.useState<InvoiceListItem | null>(
+    null
+  );
   const [dismissedInvoiceId, setDismissedInvoiceId] = React.useState<string | null>(null);
   const [paymentInvoice, setPaymentInvoice] = React.useState<InvoiceListItem | null>(null);
   const [printInvoice, setPrintInvoice] = React.useState<InvoiceListItem | null>(null);
@@ -124,7 +126,10 @@ export default function InvoicesDashboardPage() {
     !isClient || isSessionLoading || isLoadingInvoices || (isPendingInvoices && !invoicesResponse);
 
   const { data: stats } = useInvoiceStats(organizationId);
-  const invoices = React.useMemo(() => invoicesResponse?.invoices ?? [], [invoicesResponse?.invoices]);
+  const invoices = React.useMemo(
+    () => invoicesResponse?.invoices ?? [],
+    [invoicesResponse?.invoices]
+  );
 
   // Derived URL-matched invoice (for deep linking from notifications or direct links)
   const urlMatchedInvoice = React.useMemo(() => {
@@ -141,12 +146,15 @@ export default function InvoicesDashboardPage() {
       ? drawerInvoiceManual
       : (drawerInvoiceManual ?? urlMatchedInvoice);
 
-  const setDrawerInvoice = React.useCallback((inv: InvoiceListItem | null) => {
-    if (inv === null && invoiceIdParam) {
-      setDismissedInvoiceId(invoiceIdParam);
-    }
-    setDrawerInvoiceManual(inv);
-  }, [invoiceIdParam]);
+  const setDrawerInvoice = React.useCallback(
+    (inv: InvoiceListItem | null) => {
+      if (inv === null && invoiceIdParam) {
+        setDismissedInvoiceId(invoiceIdParam);
+      }
+      setDrawerInvoiceManual(inv);
+    },
+    [invoiceIdParam]
+  );
 
   const handleCloseDrawer = React.useCallback(() => {
     setDrawerInvoice(null);

@@ -361,7 +361,7 @@ export default function QuotesPage() {
               onClick={() => setViewMode("grid")}
               className={`cursor-pointer rounded-lg p-1.5 transition-all ${
                 viewMode === "grid"
-                  ? "bg-background text-foreground border border-border/60 shadow-xs"
+                  ? "bg-background text-foreground border-border/60 border shadow-xs"
                   : "text-muted-foreground hover:text-foreground"
               }`}
               title="Pitch deck cards view"
@@ -373,7 +373,7 @@ export default function QuotesPage() {
               onClick={() => setViewMode("table")}
               className={`cursor-pointer rounded-lg p-1.5 transition-all ${
                 viewMode === "table"
-                  ? "bg-background text-foreground border border-border/60 shadow-xs"
+                  ? "bg-background text-foreground border-border/60 border shadow-xs"
                   : "text-muted-foreground hover:text-foreground"
               }`}
               title="Table ledger view"
@@ -390,7 +390,7 @@ export default function QuotesPage() {
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <div
               key={i}
-              className="border-border/60 bg-card/60 shadow-2xs h-56 animate-pulse space-y-4 rounded-2xl border p-5"
+              className="border-border/60 bg-card/60 h-56 animate-pulse space-y-4 rounded-2xl border p-5 shadow-2xs"
             >
               <div className="flex items-center justify-between">
                 <div className="bg-muted/70 h-5 w-24 rounded-full" />
@@ -403,7 +403,7 @@ export default function QuotesPage() {
           ))}
         </div>
       ) : quotes.length === 0 ? (
-        <div className="border-border/80 bg-card space-y-3 p-12 text-center rounded-2xl border shadow-xs">
+        <div className="border-border/80 bg-card space-y-3 rounded-2xl border p-12 text-center shadow-xs">
           <div className="bg-muted text-muted-foreground mx-auto flex h-12 w-12 items-center justify-center rounded-2xl">
             <FileCheck2 className="h-6 w-6" />
           </div>

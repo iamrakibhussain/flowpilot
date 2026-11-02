@@ -761,7 +761,9 @@ export default function CustomerProfileDetailPage() {
           </div>
           <div className="mt-2 flex items-center justify-between text-[11px] text-slate-500">
             <span>Delivery workspaces</span>
-            <span className="font-semibold text-amber-600 group-hover:underline">View Kanban &rarr;</span>
+            <span className="font-semibold text-amber-600 group-hover:underline">
+              View Kanban &rarr;
+            </span>
           </div>
         </Card>
       </div>
@@ -784,7 +786,12 @@ export default function CustomerProfileDetailPage() {
                 icon: FileCheck2,
                 count: customerQuotesData?.quotes?.length ?? 0,
               },
-              { key: "invoices", label: "Invoices", icon: CreditCard, count: customer.invoices.length },
+              {
+                key: "invoices",
+                label: "Invoices",
+                icon: CreditCard,
+                count: customer.invoices.length,
+              },
               {
                 key: "appointments",
                 label: "Appointments",
@@ -797,7 +804,12 @@ export default function CustomerProfileDetailPage() {
                 icon: History,
                 count: activityEvents.length,
               },
-              { key: "notes", label: "Staff Notes", icon: FileText, count: customer.parsedNotes.length },
+              {
+                key: "notes",
+                label: "Staff Notes",
+                icon: FileText,
+                count: customer.parsedNotes.length,
+              },
             ] as const
           ).map((tab) => {
             const isActive = activeTab === tab.key;
@@ -839,250 +851,251 @@ export default function CustomerProfileDetailPage() {
       {activeTab === "overview" && (
         <div className="space-y-6">
           <div className="grid gap-6 lg:grid-cols-3">
-          {/* Client & Contact Dossier Card (2 cols on large) */}
-          <Card className="rounded-3xl border border-slate-200/80 bg-white/90 p-6 shadow-2xs backdrop-blur-xl lg:col-span-2">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-              <div className="flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                  <User className="h-4 w-4" />
+            {/* Client & Contact Dossier Card (2 cols on large) */}
+            <Card className="rounded-3xl border border-slate-200/80 bg-white/90 p-6 shadow-2xs backdrop-blur-xl lg:col-span-2">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div className="flex items-center gap-2.5">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                    <User className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-sm font-bold text-slate-900">
+                      Client & Contact Dossier
+                    </CardTitle>
+                    <CardDescription className="text-xs text-slate-500">
+                      Primary operational contacts and verified database records
+                    </CardDescription>
+                  </div>
                 </div>
-                <div>
-                  <CardTitle className="text-sm font-bold text-slate-900">
-                    Client & Contact Dossier
-                  </CardTitle>
-                  <CardDescription className="text-xs text-slate-500">
-                    Primary operational contacts and verified database records
-                  </CardDescription>
-                </div>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsEditModalOpen(true)}
-                className="h-8 cursor-pointer rounded-lg text-xs font-semibold text-blue-600 hover:bg-blue-50"
-              >
-                Edit Details
-              </Button>
-            </div>
-
-            <div className="mt-4 divide-y divide-slate-100 text-xs">
-              <div className="flex items-center justify-between py-3">
-                <span className="font-medium text-slate-500">Full Name</span>
-                <span className="font-bold text-slate-900">{customer.name}</span>
-              </div>
-
-              <div className="flex items-center justify-between py-3">
-                <span className="font-medium text-slate-500">Email Address</span>
-                <button
-                  type="button"
-                  onClick={(e) => handleCopy(customer.email, "email-row", e)}
-                  className="hover:text-primary flex cursor-pointer items-center gap-1.5 font-semibold text-slate-800 transition-colors"
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsEditModalOpen(true)}
+                  className="h-8 cursor-pointer rounded-lg text-xs font-semibold text-blue-600 hover:bg-blue-50"
                 >
-                  <span>{customer.email}</span>
-                  {copiedKey === "email-row" ? (
-                    <Check className="h-3 w-3 text-emerald-600" />
-                  ) : (
-                    <Copy className="h-3 w-3 text-slate-400" />
-                  )}
-                </button>
+                  Edit Details
+                </Button>
               </div>
 
-              <div className="flex items-center justify-between py-3">
-                <span className="font-medium text-slate-500">Phone Number</span>
-                {customer.phone ? (
+              <div className="mt-4 divide-y divide-slate-100 text-xs">
+                <div className="flex items-center justify-between py-3">
+                  <span className="font-medium text-slate-500">Full Name</span>
+                  <span className="font-bold text-slate-900">{customer.name}</span>
+                </div>
+
+                <div className="flex items-center justify-between py-3">
+                  <span className="font-medium text-slate-500">Email Address</span>
                   <button
                     type="button"
-                    onClick={(e) => handleCopy(customer.phone!, "phone-row", e)}
+                    onClick={(e) => handleCopy(customer.email, "email-row", e)}
                     className="hover:text-primary flex cursor-pointer items-center gap-1.5 font-semibold text-slate-800 transition-colors"
                   >
-                    <span>{customer.phone}</span>
-                    {copiedKey === "phone-row" ? (
+                    <span>{customer.email}</span>
+                    {copiedKey === "email-row" ? (
                       <Check className="h-3 w-3 text-emerald-600" />
                     ) : (
                       <Copy className="h-3 w-3 text-slate-400" />
                     )}
                   </button>
-                ) : (
-                  <span className="text-slate-400 italic">Not provided</span>
-                )}
-              </div>
+                </div>
 
-              <div className="flex items-center justify-between py-3">
-                <span className="font-medium text-slate-500">Company Affiliation</span>
-                <span className="font-semibold text-slate-900">
-                  {customer.company || "Individual Client Account"}
-                </span>
-              </div>
+                <div className="flex items-center justify-between py-3">
+                  <span className="font-medium text-slate-500">Phone Number</span>
+                  {customer.phone ? (
+                    <button
+                      type="button"
+                      onClick={(e) => handleCopy(customer.phone!, "phone-row", e)}
+                      className="hover:text-primary flex cursor-pointer items-center gap-1.5 font-semibold text-slate-800 transition-colors"
+                    >
+                      <span>{customer.phone}</span>
+                      {copiedKey === "phone-row" ? (
+                        <Check className="h-3 w-3 text-emerald-600" />
+                      ) : (
+                        <Copy className="h-3 w-3 text-slate-400" />
+                      )}
+                    </button>
+                  ) : (
+                    <span className="text-slate-400 italic">Not provided</span>
+                  )}
+                </div>
 
-              <div className="flex items-center justify-between py-3">
-                <span className="font-medium text-slate-500">Billing Address</span>
-                <span className="max-w-[240px] truncate text-right font-medium text-slate-800">
-                  {customer.address || "No address on file"}
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between py-3">
-                <span className="font-medium text-slate-500">Account Onboarded</span>
-                <span className="font-semibold text-slate-800">
-                  {new Date(customer.createdAt).toLocaleString(undefined, {
-                    dateStyle: "medium",
-                    timeStyle: "short",
-                  })}
-                </span>
-              </div>
-            </div>
-          </Card>
-
-          {/* Client Relationship Health Radar Gauge Card */}
-          <Card className="rounded-3xl border border-slate-200/80 bg-white/90 p-6 shadow-2xs backdrop-blur-xl">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-              <div className="flex items-center gap-2">
-                <Activity className="h-4 w-4 text-purple-600" />
-                <CardTitle className="text-sm font-bold text-slate-900">Health Radar</CardTitle>
-              </div>
-              <span
-                className={`inline-flex items-center rounded-lg border px-2 py-0.5 text-xs font-bold ${health.badgeStyle}`}
-              >
-                Grade {health.grade}
-              </span>
-            </div>
-
-            {/* Circular Gauge */}
-            <div className="mt-5 flex flex-col items-center justify-center text-center">
-              <div className="relative flex h-24 w-24 items-center justify-center">
-                <svg className="h-24 w-24 -rotate-90" viewBox="0 0 36 36">
-                  <path
-                    className="text-slate-100"
-                    strokeWidth="3.2"
-                    stroke="currentColor"
-                    fill="none"
-                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                  />
-                  <path
-                    strokeDasharray={`${health.score}, 100`}
-                    strokeWidth="3.2"
-                    strokeLinecap="round"
-                    stroke={health.ringColor}
-                    fill="none"
-                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                  />
-                </svg>
-                <div className="absolute flex flex-col items-center">
-                  <span className="text-2xl font-black text-slate-900 tabular-nums">
-                    {health.score}
+                <div className="flex items-center justify-between py-3">
+                  <span className="font-medium text-slate-500">Company Affiliation</span>
+                  <span className="font-semibold text-slate-900">
+                    {customer.company || "Individual Client Account"}
                   </span>
-                  <span className="text-[9px] font-bold tracking-wider text-slate-400 uppercase">
-                    / 100
+                </div>
+
+                <div className="flex items-center justify-between py-3">
+                  <span className="font-medium text-slate-500">Billing Address</span>
+                  <span className="max-w-[240px] truncate text-right font-medium text-slate-800">
+                    {customer.address || "No address on file"}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between py-3">
+                  <span className="font-medium text-slate-500">Account Onboarded</span>
+                  <span className="font-semibold text-slate-800">
+                    {new Date(customer.createdAt).toLocaleString(undefined, {
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                    })}
                   </span>
                 </div>
               </div>
+            </Card>
 
-              <h4 className="mt-3 text-sm font-extrabold text-slate-900">{health.tierLabel}</h4>
-              <p className="text-[11px] font-semibold text-slate-500">{health.velocityLabel}</p>
-            </div>
-
-            {/* Signals Checklist */}
-            <div className="mt-5 space-y-2 border-t border-slate-100 pt-3 text-xs">
-              <span className="text-[10px] font-bold tracking-wider text-slate-400 uppercase">
-                Velocity Factors
-              </span>
-              <div className="space-y-1.5">
-                {health.signals.map((sig, idx) => (
-                  <div key={idx} className="flex items-center gap-2">
-                    {sig.type === "positive" ? (
-                      <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-600" />
-                    ) : sig.type === "warning" ? (
-                      <Clock className="h-3.5 w-3.5 shrink-0 text-amber-600" />
-                    ) : (
-                      <Activity className="h-3.5 w-3.5 shrink-0 text-blue-600" />
-                    )}
-                    <span className="font-medium text-slate-700">{sig.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Card>
-        </div>
-
-        {/* Active Delivery Projects & Kanban Overview Card */}
-        <Card className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white/90 p-6 shadow-2xs backdrop-blur-xl">
-          <div className="flex flex-col gap-4 border-b border-slate-100 pb-5 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 text-amber-600 shadow-inner">
-                <FolderKanban className="h-5 w-5" />
-              </div>
-              <div>
-                <CardTitle className="text-sm font-bold text-slate-900">
-                  Active Delivery Projects & Workspaces
-                </CardTitle>
-                <CardDescription className="text-xs text-slate-500">
-                  Track deliverables, sprint milestones, and Kanban workflows for {customer.name}
-                </CardDescription>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => setActiveTab("projects")}
-                className="cursor-pointer rounded-xl border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50"
-              >
-                <span>View All Projects</span>
-                <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
-              </Button>
-              <Button
-                size="sm"
-                asChild
-                className="bg-primary hover:bg-primary/90 cursor-pointer rounded-xl text-xs font-semibold text-white shadow-md shadow-blue-500/20"
-              >
-                <Link
-                  href={`/dashboard/projects?new=true&customerId=${customer.id}&title=${encodeURIComponent(
-                    customer.name + " Project"
-                  )}`}
+            {/* Client Relationship Health Radar Gauge Card */}
+            <Card className="rounded-3xl border border-slate-200/80 bg-white/90 p-6 shadow-2xs backdrop-blur-xl">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div className="flex items-center gap-2">
+                  <Activity className="h-4 w-4 text-purple-600" />
+                  <CardTitle className="text-sm font-bold text-slate-900">Health Radar</CardTitle>
+                </div>
+                <span
+                  className={`inline-flex items-center rounded-lg border px-2 py-0.5 text-xs font-bold ${health.badgeStyle}`}
                 >
-                  <Plus className="mr-1.5 h-3.5 w-3.5" />
-                  <span>Launch Project</span>
-                </Link>
-              </Button>
-            </div>
+                  Grade {health.grade}
+                </span>
+              </div>
+
+              {/* Circular Gauge */}
+              <div className="mt-5 flex flex-col items-center justify-center text-center">
+                <div className="relative flex h-24 w-24 items-center justify-center">
+                  <svg className="h-24 w-24 -rotate-90" viewBox="0 0 36 36">
+                    <path
+                      className="text-slate-100"
+                      strokeWidth="3.2"
+                      stroke="currentColor"
+                      fill="none"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    />
+                    <path
+                      strokeDasharray={`${health.score}, 100`}
+                      strokeWidth="3.2"
+                      strokeLinecap="round"
+                      stroke={health.ringColor}
+                      fill="none"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    />
+                  </svg>
+                  <div className="absolute flex flex-col items-center">
+                    <span className="text-2xl font-black text-slate-900 tabular-nums">
+                      {health.score}
+                    </span>
+                    <span className="text-[9px] font-bold tracking-wider text-slate-400 uppercase">
+                      / 100
+                    </span>
+                  </div>
+                </div>
+
+                <h4 className="mt-3 text-sm font-extrabold text-slate-900">{health.tierLabel}</h4>
+                <p className="text-[11px] font-semibold text-slate-500">{health.velocityLabel}</p>
+              </div>
+
+              {/* Signals Checklist */}
+              <div className="mt-5 space-y-2 border-t border-slate-100 pt-3 text-xs">
+                <span className="text-[10px] font-bold tracking-wider text-slate-400 uppercase">
+                  Velocity Factors
+                </span>
+                <div className="space-y-1.5">
+                  {health.signals.map((sig, idx) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      {sig.type === "positive" ? (
+                        <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-600" />
+                      ) : sig.type === "warning" ? (
+                        <Clock className="h-3.5 w-3.5 shrink-0 text-amber-600" />
+                      ) : (
+                        <Activity className="h-3.5 w-3.5 shrink-0 text-blue-600" />
+                      )}
+                      <span className="font-medium text-slate-700">{sig.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Card>
           </div>
 
-          {(customerProjectsData?.projects?.length ?? 0) === 0 ? (
-            <div className="flex flex-col items-center justify-center py-10 text-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 shadow-inner">
-                <FolderKanban className="h-6 w-6" />
+          {/* Active Delivery Projects & Kanban Overview Card */}
+          <Card className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white/90 p-6 shadow-2xs backdrop-blur-xl">
+            <div className="flex flex-col gap-4 border-b border-slate-100 pb-5 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 text-amber-600 shadow-inner">
+                  <FolderKanban className="h-5 w-5" />
+                </div>
+                <div>
+                  <CardTitle className="text-sm font-bold text-slate-900">
+                    Active Delivery Projects & Workspaces
+                  </CardTitle>
+                  <CardDescription className="text-xs text-slate-500">
+                    Track deliverables, sprint milestones, and Kanban workflows for {customer.name}
+                  </CardDescription>
+                </div>
               </div>
-              <h4 className="mt-3 text-sm font-bold text-slate-900">
-                No Active Delivery Projects Yet
-              </h4>
-              <p className="mt-1 max-w-sm text-xs text-slate-500">
-                Launch a dedicated Kanban delivery workspace to organize tasks, deadlines, and deliverables for this client.
-              </p>
-              <Button
-                size="sm"
-                asChild
-                className="mt-4 cursor-pointer rounded-xl bg-slate-900 px-4 text-xs font-semibold text-white shadow-xs hover:bg-slate-800"
-              >
-                <Link
-                  href={`/dashboard/projects?new=true&customerId=${customer.id}&title=${encodeURIComponent(
-                    customer.name + " Project"
-                  )}`}
+
+              <div className="flex items-center gap-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setActiveTab("projects")}
+                  className="cursor-pointer rounded-xl border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50"
                 >
-                  <Plus className="mr-1.5 h-3.5 w-3.5" />
-                  <span>Launch First Project</span>
-                </Link>
-              </Button>
+                  <span>View All Projects</span>
+                  <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
+                </Button>
+                <Button
+                  size="sm"
+                  asChild
+                  className="bg-primary hover:bg-primary/90 cursor-pointer rounded-xl text-xs font-semibold text-white shadow-md shadow-blue-500/20"
+                >
+                  <Link
+                    href={`/dashboard/projects?new=true&customerId=${customer.id}&title=${encodeURIComponent(
+                      customer.name + " Project"
+                    )}`}
+                  >
+                    <Plus className="mr-1.5 h-3.5 w-3.5" />
+                    <span>Launch Project</span>
+                  </Link>
+                </Button>
+              </div>
             </div>
-          ) : (
-            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {customerProjectsData?.projects.slice(0, 3).map((project) => (
-                <ProjectCard key={project.id} project={project} />
-              ))}
-            </div>
-          )}
-        </Card>
-      </div>
+
+            {(customerProjectsData?.projects?.length ?? 0) === 0 ? (
+              <div className="flex flex-col items-center justify-center py-10 text-center">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 shadow-inner">
+                  <FolderKanban className="h-6 w-6" />
+                </div>
+                <h4 className="mt-3 text-sm font-bold text-slate-900">
+                  No Active Delivery Projects Yet
+                </h4>
+                <p className="mt-1 max-w-sm text-xs text-slate-500">
+                  Launch a dedicated Kanban delivery workspace to organize tasks, deadlines, and
+                  deliverables for this client.
+                </p>
+                <Button
+                  size="sm"
+                  asChild
+                  className="mt-4 cursor-pointer rounded-xl bg-slate-900 px-4 text-xs font-semibold text-white shadow-xs hover:bg-slate-800"
+                >
+                  <Link
+                    href={`/dashboard/projects?new=true&customerId=${customer.id}&title=${encodeURIComponent(
+                      customer.name + " Project"
+                    )}`}
+                  >
+                    <Plus className="mr-1.5 h-3.5 w-3.5" />
+                    <span>Launch First Project</span>
+                  </Link>
+                </Button>
+              </div>
+            ) : (
+              <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {customerProjectsData?.projects.slice(0, 3).map((project) => (
+                  <ProjectCard key={project.id} project={project} />
+                ))}
+              </div>
+            )}
+          </Card>
+        </div>
       )}
 
       {/* Tab 2: Unified 360° Chronological Activity Stream */}
@@ -1417,7 +1430,8 @@ export default function CustomerProfileDetailPage() {
                 No Proposals or Estimates Issued Yet
               </h3>
               <p className="mt-1 max-w-sm text-xs text-slate-500">
-                Draft professional branded proposals, track client views, and collect legally binding e-signatures.
+                Draft professional branded proposals, track client views, and collect legally
+                binding e-signatures.
               </p>
               <Button
                 size="sm"
@@ -1461,7 +1475,9 @@ export default function CustomerProfileDetailPage() {
                       {quote.signerName && (
                         <>
                           <span>•</span>
-                          <span className="font-medium text-emerald-700">Signed by: {quote.signerName}</span>
+                          <span className="font-medium text-emerald-700">
+                            Signed by: {quote.signerName}
+                          </span>
                         </>
                       )}
                     </div>
