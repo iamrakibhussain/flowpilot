@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   FileCheck2,
   Plus,
@@ -17,6 +17,9 @@ import {
   DollarSign,
   Percent,
   Trash2,
+  LayoutGrid,
+  List,
+  Printer,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,6 +40,8 @@ import {
 } from "@/features/quotes/use-quotes";
 import { QuoteBuilderModal } from "@/components/dashboard/quotes/quote-builder-modal";
 import { QuoteQuickPeekDrawer } from "@/components/dashboard/quotes/quote-quick-peek-drawer";
+import { QuotePrintModal } from "@/components/dashboard/quotes/quote-print-modal";
+import { QuoteCard } from "@/components/dashboard/quotes/quote-card";
 import type { QuoteListItem, QuoteStatusType } from "@/features/quotes/types";
 
 const subscribeNoop = () => () => {};
@@ -44,6 +49,7 @@ const getClientSnapshot = () => true;
 const getServerSnapshot = () => false;
 
 export default function QuotesPage() {
+  const router = useRouter();
   const isClient = React.useSyncExternalStore(subscribeNoop, getClientSnapshot, getServerSnapshot);
   const searchParams = useSearchParams();
   const quoteIdParam = searchParams.get("quoteId");
@@ -52,6 +58,7 @@ export default function QuotesPage() {
   const customerNameParam = searchParams.get("customerName");
 
   const [statusFilter, setStatusFilter] = React.useState<QuoteStatusType | "ALL">("ALL");
+  const [viewMode, setViewMode] = React.useState<"grid" | "table">("grid");
   const [searchTerm, setSearchTerm] = React.useState("");
   const [debouncedSearch, setDebouncedSearch] = React.useState("");
 
@@ -60,6 +67,7 @@ export default function QuotesPage() {
   const isBuilderOpen = isBuilderOpenManual ?? newParam === "true";
   const setIsBuilderOpen = (open: boolean) => setIsBuilderOpenManual(open);
 
+  const [printQuote, setPrintQuote] = React.useState<QuoteListItem | null>(null);
   const [copiedQuoteId, setCopiedQuoteId] = React.useState<string | null>(null);
 
   // Debounce search
@@ -103,6 +111,12 @@ export default function QuotesPage() {
   const handleCloseDrawer = () => {
     setIsDrawerOpenManual(false);
     setSelectedQuoteManual(null);
+    if (quoteIdParam) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete("quoteId");
+      const nextQuery = params.toString();
+      router.replace(nextQuery ? `/dashboard/quotes?${nextQuery}` : "/dashboard/quotes");
+    }
   };
 
   const handleCopyLink = (quote: QuoteListItem) => {
@@ -186,7 +200,12 @@ export default function QuotesPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="relative space-y-6">
+      {/* Luxury Ambient Atmospheric Glow */}
+      <div
+        className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(59,130,246,0.06),transparent)]"
+        aria-hidden="true"
+      />
       {/* Top Header */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
@@ -325,47 +344,106 @@ export default function QuotesPage() {
           ))}
         </div>
 
-        <div className="relative w-full sm:w-64">
-          <Search className="text-muted-foreground absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2" />
-          <Input
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search proposals..."
-            className="h-9 rounded-xl pl-9 text-xs"
-          />
+        <div className="flex items-center gap-2">
+          <div className="relative w-full sm:w-64">
+            <Search className="text-muted-foreground absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2" />
+            <Input
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search proposals..."
+              className="h-9 rounded-xl pl-9 text-xs"
+            />
+          </div>
+
+          <div className="border-border/80 bg-muted/40 hidden items-center rounded-xl border p-1 text-xs shadow-2xs sm:flex">
+            <button
+              type="button"
+              onClick={() => setViewMode("grid")}
+              className={`cursor-pointer rounded-lg p-1.5 transition-all ${
+                viewMode === "grid"
+                  ? "bg-background text-foreground border border-border/60 shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+              title="Pitch deck cards view"
+            >
+              <LayoutGrid className="h-3.5 w-3.5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode("table")}
+              className={`cursor-pointer rounded-lg p-1.5 transition-all ${
+                viewMode === "table"
+                  ? "bg-background text-foreground border border-border/60 shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+              title="Table ledger view"
+            >
+              <List className="h-3.5 w-3.5" />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Quotes Table */}
-      <div className="border-border/80 bg-card overflow-hidden rounded-2xl border shadow-xs">
-        {!isClient || isLoadingQuotes ? (
-          <div className="text-muted-foreground p-12 text-center text-xs">
-            Loading proposals & estimates...
-          </div>
-        ) : quotes.length === 0 ? (
-          <div className="space-y-3 p-12 text-center">
-            <div className="bg-muted text-muted-foreground mx-auto flex h-12 w-12 items-center justify-center rounded-2xl">
-              <FileCheck2 className="h-6 w-6" />
+      {/* Main Content: Skeletons vs Empty vs Grid vs Table */}
+      {!isClient || isLoadingQuotes ? (
+        <div className="grid grid-cols-1 gap-4.5 md:grid-cols-2 lg:grid-cols-3">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div
+              key={i}
+              className="border-border/60 bg-card/60 shadow-2xs h-56 animate-pulse space-y-4 rounded-2xl border p-5"
+            >
+              <div className="flex items-center justify-between">
+                <div className="bg-muted/70 h-5 w-24 rounded-full" />
+                <div className="bg-muted/70 h-6 w-16 rounded-md" />
+              </div>
+              <div className="bg-muted/80 mt-3 h-5 w-3/4 rounded-md" />
+              <div className="bg-muted/60 h-3 w-1/2 rounded" />
+              <div className="bg-muted/50 h-8 w-full rounded-xl" />
             </div>
-            <div className="space-y-1">
-              <h3 className="text-foreground text-sm font-semibold">No estimates found</h3>
-              <p className="text-muted-foreground mx-auto max-w-sm text-xs">
-                {debouncedSearch || statusFilter !== "ALL"
-                  ? "Try adjusting your search criteria or status filter."
-                  : "Create your first branded estimate and start closing client deals faster."}
-              </p>
-            </div>
-            {statusFilter === "ALL" && !debouncedSearch && (
-              <Button
-                onClick={() => setIsBuilderOpen(true)}
-                size="sm"
-                className="gap-1.5 rounded-xl bg-blue-600 text-xs text-white hover:bg-blue-700"
-              >
-                <Plus className="h-3.5 w-3.5" /> Create First Estimate
-              </Button>
-            )}
+          ))}
+        </div>
+      ) : quotes.length === 0 ? (
+        <div className="border-border/80 bg-card space-y-3 p-12 text-center rounded-2xl border shadow-xs">
+          <div className="bg-muted text-muted-foreground mx-auto flex h-12 w-12 items-center justify-center rounded-2xl">
+            <FileCheck2 className="h-6 w-6" />
           </div>
-        ) : (
+          <div className="space-y-1">
+            <h3 className="text-foreground text-sm font-semibold">No estimates found</h3>
+            <p className="text-muted-foreground mx-auto max-w-sm text-xs">
+              {debouncedSearch || statusFilter !== "ALL"
+                ? "Try adjusting your search criteria or status filter."
+                : "Create your first branded estimate and start closing client deals faster."}
+            </p>
+          </div>
+          {statusFilter === "ALL" && !debouncedSearch && (
+            <Button
+              onClick={() => setIsBuilderOpen(true)}
+              size="sm"
+              className="gap-1.5 rounded-xl bg-blue-600 text-xs text-white hover:bg-blue-700"
+            >
+              <Plus className="h-3.5 w-3.5" /> Create First Estimate
+            </Button>
+          )}
+        </div>
+      ) : viewMode === "grid" ? (
+        /* Visual Cards Pitch Deck View */
+        <div className="grid grid-cols-1 gap-4.5 md:grid-cols-2 lg:grid-cols-3">
+          {quotes.map((q) => (
+            <QuoteCard
+              key={q.id}
+              quote={q}
+              onOpenDrawer={handleOpenDrawer}
+              onCopyLink={handleCopyLink}
+              onSend={handleSend}
+              onConvert={handleConvert}
+              onPrint={(quote) => setPrintQuote(quote)}
+              isCopied={copiedQuoteId === q.id}
+            />
+          ))}
+        </div>
+      ) : (
+        /* Quotes Table View */
+        <div className="border-border/80 bg-card overflow-hidden rounded-2xl border shadow-xs">
           <>
             {/* Mobile Touch Card View (Shown on < md) */}
             <div className="divide-border/60 divide-y md:hidden">
@@ -427,6 +505,9 @@ export default function QuotesPage() {
                         <DropdownMenuContent align="end" className="w-48 rounded-xl text-xs">
                           <DropdownMenuItem onClick={() => handleOpenDrawer(q)}>
                             <ExternalLink className="mr-2 h-3.5 w-3.5" /> Inspect Details
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => setPrintQuote(q)}>
+                            <Printer className="mr-2 h-3.5 w-3.5" /> Print / Export PDF
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleCopyLink(q)}>
                             <Copy className="mr-2 h-3.5 w-3.5" /> Copy Client Link
@@ -565,8 +646,8 @@ export default function QuotesPage() {
               </table>
             </div>
           </>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Builder Modal */}
       <QuoteBuilderModal
@@ -581,6 +662,14 @@ export default function QuotesPage() {
         quote={selectedQuote}
         isOpen={isDrawerOpen}
         onClose={handleCloseDrawer}
+        onPrint={(quote) => setPrintQuote(quote)}
+      />
+
+      {/* Proposal Print & PDF Studio Modal */}
+      <QuotePrintModal
+        quote={printQuote}
+        isOpen={Boolean(printQuote)}
+        onClose={() => setPrintQuote(null)}
       />
     </div>
   );

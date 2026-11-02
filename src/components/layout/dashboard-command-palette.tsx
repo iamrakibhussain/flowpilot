@@ -21,6 +21,7 @@ import {
   Sparkles,
   BarChart3,
   FileCheck2,
+  FolderKanban,
 } from "lucide-react";
 
 export interface DashboardCommandPaletteProps {
@@ -57,8 +58,18 @@ const staticCommandEntries: CommandEntry[] = [
     title: "Create Estimate / Proposal",
     description: "Build an itemized client proposal with digital signature capture.",
     category: "Quick Actions",
+
     icon: FileCheck2,
     href: "/dashboard/quotes?new=true",
+    badge: "Action",
+  },
+  {
+    id: "act-project",
+    title: "Launch Delivery Project",
+    description: "Create a new project workspace and Kanban task delivery pipeline.",
+    category: "Quick Actions",
+    icon: FolderKanban,
+    href: "/dashboard/projects?new=true",
     badge: "Action",
   },
   {
@@ -151,6 +162,18 @@ const staticCommandEntries: CommandEntry[] = [
     category: "Navigation",
     href: "/dashboard/quotes",
     icon: FileCheck2,
+
+    badge: "Live",
+    badgeVariant: "success",
+  },
+  {
+    id: "nav-projects",
+    title: "Projects & Kanban Workspaces",
+    description: "Track project deliverables, drag-and-drop task stages, and team workloads.",
+    category: "Navigation",
+    href: "/dashboard/projects",
+    icon: FolderKanban,
+
     badge: "Live",
     badgeVariant: "success",
   },

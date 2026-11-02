@@ -13,6 +13,7 @@ import {
   ChevronRight,
   Layers,
   FileCheck2,
+  FolderKanban,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { UserNav } from "@/components/layout/user-nav";
@@ -54,6 +55,7 @@ export function DashboardHeader({ onOpenMobile, onOpenCommand }: DashboardHeader
       return "Appointments & Calendar";
     if (pathname.includes("/invoices")) return "Invoices & Billing";
     if (pathname.includes("/quotes")) return "Estimates & Proposals";
+    if (pathname.includes("/projects")) return "Projects & Kanban";
     if (pathname.includes("/payments")) return "Online Payments & Gateway";
     if (pathname.includes("/staff")) return "Team & Staff";
     return "Operations";
@@ -205,6 +207,15 @@ export function DashboardHeader({ onOpenMobile, onOpenCommand }: DashboardHeader
                 <FileCheck2 className="h-3.5 w-3.5" />
               </div>
               <span>New Estimate / Proposal</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => router.push("/dashboard/projects?new=true")}
+              className="hover:bg-muted/60 focus:bg-muted/60 text-foreground flex cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-2 text-xs font-medium"
+            >
+              <div className="flex h-6 w-6 items-center justify-center rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400">
+                <FolderKanban className="h-3.5 w-3.5" />
+              </div>
+              <span>New Delivery Project</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

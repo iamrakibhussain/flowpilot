@@ -10,6 +10,7 @@ import {
   useAcceptPublicQuote,
   useDeclinePublicQuote,
 } from "@/features/quotes/use-quotes";
+import { printElementById } from "@/lib/utils/print";
 
 interface PageProps {
   params: Promise<{ token: string }>;
@@ -101,7 +102,10 @@ export default function PublicQuotePage({ params }: PageProps) {
   };
 
   const handlePrint = () => {
-    window.print();
+    printElementById(
+      "flowpilot-public-quote-sheet",
+      `Proposal-${quote?.quoteNumber || "Statement"}`
+    );
   };
 
   const handleAccept = async (e: React.FormEvent) => {
@@ -197,19 +201,25 @@ export default function PublicQuotePage({ params }: PageProps) {
   const isExpired = quote.status === "EXPIRED" && !isAlreadyAccepted;
 
   return (
-    <div className="text-foreground min-h-screen bg-slate-50/60 px-4 py-8 sm:px-6 lg:px-8 dark:bg-slate-950/80 print:bg-white print:p-0">
+    <div className="text-foreground relative min-h-screen bg-slate-50/70 px-4 py-8 sm:px-6 lg:px-8 dark:bg-slate-950/90 print:bg-white print:p-0">
+      {/* Luxury Atmospheric Mesh Glow */}
+      <div
+        className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(59,130,246,0.07),transparent)]"
+        aria-hidden="true"
+      />
+
       <div className="mx-auto max-w-4xl space-y-6">
-        {/* Floating Print Action (Hidden during print) */}
-        <div className="flex items-center justify-between print:hidden">
-          <div className="text-muted-foreground flex items-center gap-2 text-xs font-semibold">
+        {/* Floating Security Seal & Print Action (Hidden during print) */}
+        <div className="flex flex-wrap items-center justify-between gap-3 print:hidden">
+          <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
             <ShieldCheck className="h-4 w-4 text-emerald-500" />
-            256-Bit Encrypted Client Portal
+            <span>256-Bit Encrypted • ESIGN &amp; UETA Compliant Agreement</span>
           </div>
           <Button
             variant="outline"
             size="sm"
             onClick={handlePrint}
-            className="border-border h-8 gap-1.5 rounded-xl text-xs shadow-xs"
+            className="border-border/80 bg-card/80 hover:bg-card h-8 gap-1.5 rounded-xl text-xs shadow-xs backdrop-blur-xs transition"
           >
             <Printer className="h-3.5 w-3.5" /> Print / Save as PDF
           </Button>
@@ -222,7 +232,7 @@ export default function PublicQuotePage({ params }: PageProps) {
               <Check className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold">Proposal Digitally Signed & Accepted</h3>
+              <h3 className="text-sm font-bold">Proposal Digitally Signed &amp; Accepted</h3>
               <p className="mt-0.5 text-xs text-emerald-700/90 dark:text-emerald-400">
                 Thank you! Your acceptance has been logged with audit verification. Our team has
                 been notified and kickoff milestones are underway.
@@ -246,7 +256,21 @@ export default function PublicQuotePage({ params }: PageProps) {
         )}
 
         {/* Main Document Paper */}
-        <div className="border-border/80 bg-card space-y-8 rounded-3xl border p-6 shadow-xl backdrop-blur-xs sm:p-10 print:border-none print:p-0 print:shadow-none">
+        <div
+          id="flowpilot-public-quote-sheet"
+          className="border-border/80 bg-card relative overflow-hidden rounded-3xl border shadow-xl backdrop-blur-xs print:border-none print:p-0 print:shadow-none"
+        >
+          {/* Top Brand Accent Line */}
+          <div
+            className="h-1.5 w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600"
+            style={{
+              background: quote.organization.brandColor
+                ? `linear-gradient(90deg, ${quote.organization.brandColor}, #4f46e5)`
+                : undefined,
+            }}
+          />
+
+          <div className="space-y-8 p-6 sm:p-10">
           {/* Document Header */}
           <div className="border-border flex flex-col items-start justify-between gap-6 border-b pb-8 sm:flex-row">
             <div className="space-y-2">
@@ -543,7 +567,7 @@ export default function PublicQuotePage({ params }: PageProps) {
                         onTouchStart={startDrawing}
                         onTouchMove={draw}
                         onTouchEnd={stopDrawing}
-                        className="h-28 w-full cursor-crosshair rounded-xl bg-white dark:bg-slate-950"
+                        className="h-28 w-full cursor-crosshair rounded-xl bg-white dark:bg-slate-950 touch-none"
                       />
                     </div>
                   </div>
@@ -596,8 +620,31 @@ export default function PublicQuotePage({ params }: PageProps) {
               </form>
             </div>
           )}
+
+          {/* Physical Signature Block for Paper Printing (Visible ONLY during print when not digitally signed) */}
+          {!isAlreadyAccepted && (
+            <div className="hidden border-border/80 border-t pt-6 print:block">
+              <div className="grid grid-cols-2 gap-8">
+                <div>
+                  <p className="text-[10px] font-bold tracking-wider text-slate-400 uppercase">
+                    Authorized Client Sign-Off
+                  </p>
+                  <div className="mt-10 border-b border-slate-400" />
+                  <p className="mt-1 text-xs text-slate-600">Authorized Signature & Printed Name</p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold tracking-wider text-slate-400 uppercase">
+                    Execution Date
+                  </p>
+                  <div className="mt-10 border-b border-slate-400" />
+                  <p className="mt-1 text-xs text-slate-600">Date (DD / MM / YYYY)</p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
+    </div>
 
       {/* Decline Feedback Modal */}
       {isDeclineModalOpen && (

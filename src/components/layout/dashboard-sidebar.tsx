@@ -25,6 +25,7 @@ import {
   ArrowUpRight,
   CreditCard,
   FileCheck2,
+  FolderKanban,
 } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import {
@@ -75,6 +76,13 @@ const navSections: NavSection[] = [
         name: "Estimates & Proposals",
         href: "/dashboard/quotes",
         icon: FileCheck2,
+        badge: "Live",
+        badgeVariant: "success",
+      },
+      {
+        name: "Projects & Kanban",
+        href: "/dashboard/projects",
+        icon: FolderKanban,
         badge: "Live",
         badgeVariant: "success",
       },

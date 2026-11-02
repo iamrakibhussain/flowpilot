@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import type { InvoiceListItem } from "@/features/invoices/types";
 import { useOrganizationSettings } from "@/features/organizations/use-organization-settings";
 import { useSendInvoiceEmail } from "@/features/notifications/use-notifications";
+import { printElementById } from "@/lib/utils/print";
 
 interface InvoicePrintModalProps {
   invoice: InvoiceListItem | null;
@@ -77,7 +78,7 @@ export function InvoicePrintModal({
     "Generated securely via FlowPilot Multi-Tenant Business OS • Page 1 of 1";
 
   const handlePrint = () => {
-    window.print();
+    printElementById("flowpilot-invoice-sheet", `Invoice-${invoice.invoiceNumber}`);
   };
 
   const isPaid = invoice.status === "PAID";
@@ -86,7 +87,7 @@ export function InvoicePrintModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-h-[94vh] max-w-4xl overflow-y-auto rounded-3xl border-slate-200/90 bg-slate-900/40 p-4 shadow-2xl backdrop-blur-xl sm:p-7 print:border-none print:bg-white print:p-0 print:shadow-none">
+      <DialogContent className="max-h-[94vh] max-w-4xl overflow-y-auto rounded-3xl border-slate-200/90 bg-slate-900/40 p-4 shadow-2xl backdrop-blur-xl sm:p-7 print:static print:transform-none print:max-h-none print:max-w-none print:w-full print:overflow-visible print:border-none print:bg-white print:p-0 print:shadow-none">
         <DialogHeader className="flex flex-col items-start justify-between gap-3 border-b border-slate-200/20 pb-4 sm:flex-row sm:items-center print:hidden">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/20">

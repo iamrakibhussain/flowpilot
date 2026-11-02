@@ -31,6 +31,8 @@ import {
   History,
   UserPlus,
   FileCheck2,
+  FolderKanban,
+  Plus,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle, CardDescription } from "@/components/ui/card";
@@ -42,10 +44,13 @@ import { EditCustomerModal } from "@/components/dashboard/modals/edit-customer-m
 import { ArchiveCustomerDialog } from "@/components/dashboard/modals/archive-customer-dialog";
 import { calculateCustomerHealth } from "@/features/customers/customer-health";
 import type { CustomerStatusType } from "@/features/customers/types";
+import { useProjects } from "@/features/projects/use-projects";
+import { useQuotes } from "@/features/quotes/use-quotes";
+import { ProjectCard } from "@/components/dashboard/projects/project-card";
 
 interface ActivityEvent {
   id: string;
-  type: "invoice" | "appointment" | "note" | "onboarding";
+  type: "invoice" | "appointment" | "note" | "onboarding" | "project" | "quote";
   title: string;
   description?: string;
   date: string;
@@ -83,7 +88,7 @@ export default function CustomerProfileDetailPage() {
   const { openModal } = useDashboardModals();
 
   const [activeTab, setActiveTab] = React.useState<
-    "overview" | "timeline" | "appointments" | "invoices" | "notes"
+    "overview" | "projects" | "invoices" | "proposals" | "appointments" | "timeline" | "notes"
   >("overview");
   const [noteContent, setNoteContent] = React.useState("");
   const [noteSuccess, setNoteSuccess] = React.useState(false);
@@ -114,6 +119,8 @@ export default function CustomerProfileDetailPage() {
     refetch,
   } = useCustomer(customerId);
   const addNoteMutation = useAddCustomerNote(customerId);
+  const { data: customerProjectsData } = useProjects({ customerId });
+  const { data: customerQuotesData } = useQuotes({ customerId });
 
   const handleAddNote = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -187,6 +194,41 @@ export default function CustomerProfileDetailPage() {
       });
     });
 
+    // Delivery Projects
+    customerProjectsData?.projects?.forEach((proj) => {
+      events.push({
+        id: `proj-${proj.id}`,
+        type: "project",
+        title: `Project Workspace: ${proj.name}`,
+        description: `Status: ${proj.status} • ${proj.completedTasks}/${proj.totalTasks} tasks completed (${proj.progressPercentage}%)`,
+        date: proj.updatedAt || proj.createdAt,
+        badge: proj.status,
+        badgeStyle:
+          proj.status === "COMPLETED"
+            ? "border-blue-200 bg-blue-50 text-blue-700"
+            : proj.status === "ACTIVE"
+              ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+              : "border-amber-200 bg-amber-50 text-amber-700",
+      });
+    });
+
+    // Estimates & Proposals
+    customerQuotesData?.quotes?.forEach((quote) => {
+      events.push({
+        id: `quote-${quote.id}`,
+        type: "quote",
+        title: `Proposal #${quote.quoteNumber}: ${quote.title}`,
+        description: `Status: ${quote.status} • Total Amount: $${quote.totalAmount.toLocaleString()} (${quote.itemsCount} line items)`,
+        date: quote.issuedAt,
+        badge: quote.status,
+        badgeStyle:
+          quote.status === "ACCEPTED"
+            ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+            : "border-purple-200 bg-purple-50 text-purple-700",
+        amount: `$${quote.totalAmount.toFixed(2)}`,
+      });
+    });
+
     // Account Onboarding Milestone
     events.push({
       id: `onboard-${customer.id}`,
@@ -199,7 +241,7 @@ export default function CustomerProfileDetailPage() {
     });
 
     return events.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  }, [customer, organizationName]);
+  }, [customer, organizationName, customerProjectsData, customerQuotesData]);
 
   if (isInitialLoading) {
     return (
@@ -553,6 +595,22 @@ export default function CustomerProfileDetailPage() {
               <span>Estimate</span>
             </Button>
 
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() =>
+                router.push(
+                  `/dashboard/projects?new=true&customerId=${customer.id}&title=${encodeURIComponent(
+                    customer.company ? `${customer.company} Project` : `${customer.name} Project`
+                  )}`
+                )
+              }
+              className="cursor-pointer justify-center rounded-xl border-amber-200/90 bg-amber-50/60 px-3 text-xs font-semibold text-amber-700 shadow-2xs hover:bg-amber-100/60"
+            >
+              <FolderKanban className="mr-1.5 h-3.5 w-3.5 text-amber-600" />
+              <span>Project</span>
+            </Button>
+
             {customer.status !== "INACTIVE" ? (
               <Button
                 size="sm"
@@ -586,8 +644,8 @@ export default function CustomerProfileDetailPage() {
         </div>
       </Card>
 
-      {/* 4x Executive Financial & Engagement Telemetry KPI Cards */}
-      <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
+      {/* 5x Executive Financial & Engagement Telemetry KPI Cards */}
+      <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-5">
         {/* KPI 1: Lifetime Value (Gross Invoiced) */}
         <Card className="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white/90 p-5 shadow-2xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md">
           <div className="flex items-center justify-between">
@@ -684,29 +742,66 @@ export default function CustomerProfileDetailPage() {
             <span className="font-semibold text-indigo-600">Active</span>
           </div>
         </Card>
+
+        {/* KPI 5: Active Projects & Kanban Workspaces */}
+        <Card
+          onClick={() => setActiveTab("projects")}
+          className="group relative cursor-pointer overflow-hidden rounded-2xl border border-slate-200/80 bg-white/90 p-5 shadow-2xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-amber-400 hover:shadow-md"
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+              Projects & Workspaces
+            </span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-50 text-amber-600 shadow-inner transition-transform group-hover:scale-105">
+              <FolderKanban className="h-4 w-4" />
+            </div>
+          </div>
+          <div className="mt-3 text-2xl font-black tracking-tight text-slate-900 tabular-nums">
+            {customerProjectsData?.projects?.length ?? 0}
+          </div>
+          <div className="mt-2 flex items-center justify-between text-[11px] text-slate-500">
+            <span>Delivery workspaces</span>
+            <span className="font-semibold text-amber-600 group-hover:underline">View Kanban &rarr;</span>
+          </div>
+        </Card>
       </div>
 
       {/* Floating Modern Pill Dock Navigation with Unified Timeline Tab */}
-      <div className="flex min-w-0 items-center justify-between border-b border-slate-200/80 pb-3">
-        <div className="no-scrollbar flex w-full max-w-full items-center gap-1.5 overflow-x-auto rounded-2xl border border-slate-200/80 bg-slate-100/90 p-1.5 shadow-inner backdrop-blur-md sm:w-auto">
+      <div className="flex min-w-0 flex-col gap-3 border-b border-slate-200/80 pb-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap items-center gap-1.5 rounded-2xl border border-slate-200/80 bg-slate-100/90 p-1.5 shadow-inner backdrop-blur-md">
           {(
             [
-              { key: "overview", label: "Dossier Overview", count: null },
+              { key: "overview", label: "Dossier Overview", icon: User, count: null },
               {
-                key: "timeline",
-                label: "360° Activity Stream",
-                count: activityEvents.length,
+                key: "projects",
+                label: "Projects & Kanban",
+                icon: FolderKanban,
+                count: customerProjectsData?.projects?.length ?? 0,
               },
+              {
+                key: "proposals",
+                label: "Estimates & Quotes",
+                icon: FileCheck2,
+                count: customerQuotesData?.quotes?.length ?? 0,
+              },
+              { key: "invoices", label: "Invoices", icon: CreditCard, count: customer.invoices.length },
               {
                 key: "appointments",
                 label: "Appointments",
+                icon: Calendar,
                 count: customer.appointments.length,
               },
-              { key: "invoices", label: "Invoices", count: customer.invoices.length },
-              { key: "notes", label: "Staff Notes", count: customer.parsedNotes.length },
+              {
+                key: "timeline",
+                label: "360° Activity Stream",
+                icon: History,
+                count: activityEvents.length,
+              },
+              { key: "notes", label: "Staff Notes", icon: FileText, count: customer.parsedNotes.length },
             ] as const
           ).map((tab) => {
             const isActive = activeTab === tab.key;
+            const Icon = tab.icon;
             return (
               <button
                 key={tab.key}
@@ -718,6 +813,7 @@ export default function CustomerProfileDetailPage() {
                     : "text-slate-600 hover:bg-white/50 hover:text-slate-900"
                 }`}
               >
+                <Icon className={`h-3.5 w-3.5 ${isActive ? "text-primary" : "text-slate-500"}`} />
                 <span>{tab.label}</span>
                 {tab.count !== null && (
                   <span
@@ -741,7 +837,8 @@ export default function CustomerProfileDetailPage() {
 
       {/* Tab 1: Overview & Details */}
       {activeTab === "overview" && (
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="space-y-6">
+          <div className="grid gap-6 lg:grid-cols-3">
           {/* Client & Contact Dossier Card (2 cols on large) */}
           <Card className="rounded-3xl border border-slate-200/80 bg-white/90 p-6 shadow-2xs backdrop-blur-xl lg:col-span-2">
             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
@@ -906,6 +1003,86 @@ export default function CustomerProfileDetailPage() {
             </div>
           </Card>
         </div>
+
+        {/* Active Delivery Projects & Kanban Overview Card */}
+        <Card className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white/90 p-6 shadow-2xs backdrop-blur-xl">
+          <div className="flex flex-col gap-4 border-b border-slate-100 pb-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 text-amber-600 shadow-inner">
+                <FolderKanban className="h-5 w-5" />
+              </div>
+              <div>
+                <CardTitle className="text-sm font-bold text-slate-900">
+                  Active Delivery Projects & Workspaces
+                </CardTitle>
+                <CardDescription className="text-xs text-slate-500">
+                  Track deliverables, sprint milestones, and Kanban workflows for {customer.name}
+                </CardDescription>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setActiveTab("projects")}
+                className="cursor-pointer rounded-xl border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+              >
+                <span>View All Projects</span>
+                <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
+              </Button>
+              <Button
+                size="sm"
+                asChild
+                className="bg-primary hover:bg-primary/90 cursor-pointer rounded-xl text-xs font-semibold text-white shadow-md shadow-blue-500/20"
+              >
+                <Link
+                  href={`/dashboard/projects?new=true&customerId=${customer.id}&title=${encodeURIComponent(
+                    customer.name + " Project"
+                  )}`}
+                >
+                  <Plus className="mr-1.5 h-3.5 w-3.5" />
+                  <span>Launch Project</span>
+                </Link>
+              </Button>
+            </div>
+          </div>
+
+          {(customerProjectsData?.projects?.length ?? 0) === 0 ? (
+            <div className="flex flex-col items-center justify-center py-10 text-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 shadow-inner">
+                <FolderKanban className="h-6 w-6" />
+              </div>
+              <h4 className="mt-3 text-sm font-bold text-slate-900">
+                No Active Delivery Projects Yet
+              </h4>
+              <p className="mt-1 max-w-sm text-xs text-slate-500">
+                Launch a dedicated Kanban delivery workspace to organize tasks, deadlines, and deliverables for this client.
+              </p>
+              <Button
+                size="sm"
+                asChild
+                className="mt-4 cursor-pointer rounded-xl bg-slate-900 px-4 text-xs font-semibold text-white shadow-xs hover:bg-slate-800"
+              >
+                <Link
+                  href={`/dashboard/projects?new=true&customerId=${customer.id}&title=${encodeURIComponent(
+                    customer.name + " Project"
+                  )}`}
+                >
+                  <Plus className="mr-1.5 h-3.5 w-3.5" />
+                  <span>Launch First Project</span>
+                </Link>
+              </Button>
+            </div>
+          ) : (
+            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {customerProjectsData?.projects.slice(0, 3).map((project) => (
+                <ProjectCard key={project.id} project={project} />
+              ))}
+            </div>
+          )}
+        </Card>
+      </div>
       )}
 
       {/* Tab 2: Unified 360° Chronological Activity Stream */}
@@ -943,6 +1120,10 @@ export default function CustomerProfileDetailPage() {
                       <Calendar className="h-3 w-3 text-blue-600" />
                     ) : event.type === "note" ? (
                       <FileText className="h-3 w-3 text-amber-600" />
+                    ) : event.type === "project" ? (
+                      <FolderKanban className="h-3 w-3 text-amber-600" />
+                    ) : event.type === "quote" ? (
+                      <FileCheck2 className="h-3 w-3 text-teal-600" />
                     ) : (
                       <UserPlus className="h-3 w-3 text-purple-600" />
                     )}
@@ -1199,6 +1380,130 @@ export default function CustomerProfileDetailPage() {
         </Card>
       )}
 
+      {/* Tab: Proposals & Estimates */}
+      {activeTab === "proposals" && (
+        <Card className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white/90 p-6 shadow-2xs backdrop-blur-xl">
+          <div className="flex flex-col gap-4 border-b border-slate-100 pb-5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <CardTitle className="text-base font-bold text-slate-900">
+                Proposals & Estimates Ledger
+              </CardTitle>
+              <CardDescription className="text-xs text-slate-500">
+                Client quotes, scope estimates, digital signatures, and acceptance status
+              </CardDescription>
+            </div>
+            <Button
+              size="sm"
+              asChild
+              className="bg-primary hover:bg-primary/90 cursor-pointer rounded-xl text-xs font-semibold text-white shadow-md shadow-blue-500/20"
+            >
+              <Link
+                href={`/dashboard/quotes?new=true&customerId=${customer.id}&customerName=${encodeURIComponent(
+                  customer.name
+                )}`}
+              >
+                <FileCheck2 className="mr-1.5 h-3.5 w-3.5" />
+                <span>Create New Estimate</span>
+              </Link>
+            </Button>
+          </div>
+
+          {(customerQuotesData?.quotes?.length ?? 0) === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 text-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-50 text-teal-600 shadow-inner">
+                <FileCheck2 className="h-6 w-6" />
+              </div>
+              <h3 className="mt-4 text-sm font-bold text-slate-900">
+                No Proposals or Estimates Issued Yet
+              </h3>
+              <p className="mt-1 max-w-sm text-xs text-slate-500">
+                Draft professional branded proposals, track client views, and collect legally binding e-signatures.
+              </p>
+              <Button
+                size="sm"
+                variant="outline"
+                asChild
+                className="mt-5 cursor-pointer rounded-xl border-slate-200 bg-white text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50"
+              >
+                <Link
+                  href={`/dashboard/quotes?new=true&customerId=${customer.id}&customerName=${encodeURIComponent(
+                    customer.name
+                  )}`}
+                >
+                  <FileCheck2 className="mr-1.5 h-3.5 w-3.5 text-teal-600" />
+                  <span>Create First Estimate</span>
+                </Link>
+              </Button>
+            </div>
+          ) : (
+            <div className="mt-5 divide-y divide-slate-100">
+              {customerQuotesData?.quotes.map((quote) => (
+                <div
+                  key={quote.id}
+                  className="flex flex-col gap-3 py-4 text-xs sm:flex-row sm:items-center sm:justify-between"
+                >
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <p className="font-extrabold text-slate-900">Quote #{quote.quoteNumber}</p>
+                      <span className="font-medium text-slate-700">{quote.title}</span>
+                      <span className="rounded-md border border-slate-200/80 bg-slate-50 px-2 py-0.5 text-[10px] font-semibold text-slate-600">
+                        {quote.itemsCount} {quote.itemsCount === 1 ? "item" : "items"}
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2 text-slate-500">
+                      <span>Issued: {new Date(quote.issuedAt).toLocaleDateString()}</span>
+                      {quote.expiresAt && (
+                        <>
+                          <span>•</span>
+                          <span>Expires: {new Date(quote.expiresAt).toLocaleDateString()}</span>
+                        </>
+                      )}
+                      {quote.signerName && (
+                        <>
+                          <span>•</span>
+                          <span className="font-medium text-emerald-700">Signed by: {quote.signerName}</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-black text-slate-900 tabular-nums">
+                      ${quote.totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                    </span>
+                    <Badge
+                      variant="outline"
+                      className={`text-[10px] font-bold ${
+                        quote.status === "ACCEPTED"
+                          ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                          : quote.status === "DECLINED"
+                            ? "border-rose-200 bg-rose-50 text-rose-700"
+                            : quote.status === "SENT"
+                              ? "border-blue-200 bg-blue-50 text-blue-700"
+                              : quote.status === "VIEWED"
+                                ? "border-purple-200 bg-purple-50 text-purple-700"
+                                : quote.status === "EXPIRED"
+                                  ? "border-slate-200 bg-slate-50 text-slate-600"
+                                  : "border-amber-200 bg-amber-50 text-amber-700"
+                      }`}
+                    >
+                      {quote.status}
+                    </Badge>
+                    <Link
+                      href={`/dashboard/quotes/${quote.id}`}
+                      className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-600 hover:text-blue-700 hover:underline"
+                    >
+                      <span>View</span>
+                      <ArrowRight className="h-3 w-3" />
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </Card>
+      )}
+
       {/* Tab 5: Internal Staff Notes */}
       {activeTab === "notes" && (
         <div className="space-y-6">
@@ -1291,6 +1596,70 @@ export default function CustomerProfileDetailPage() {
             )}
           </div>
         </div>
+      )}
+
+      {/* Tab 6: Projects & Delivery Workspaces */}
+      {activeTab === "projects" && (
+        <Card className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white/90 p-6 shadow-2xs backdrop-blur-xl">
+          <div className="flex flex-col gap-4 border-b border-slate-100 pb-5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <CardTitle className="text-base font-bold text-slate-900">
+                Delivery Projects & Kanban Workspaces
+              </CardTitle>
+              <CardDescription className="text-xs text-slate-500">
+                Active client projects, task progress, and delivery milestones
+              </CardDescription>
+            </div>
+            <Button
+              size="sm"
+              asChild
+              className="bg-primary hover:bg-primary/90 cursor-pointer rounded-xl text-xs font-semibold text-white shadow-md shadow-blue-500/20"
+            >
+              <Link
+                href={`/dashboard/projects?new=true&customerId=${customer.id}&title=${encodeURIComponent(
+                  customer.name + " Project"
+                )}`}
+              >
+                <FolderKanban className="mr-1.5 h-3.5 w-3.5" />
+                <span>Launch New Project</span>
+              </Link>
+            </Button>
+          </div>
+
+          {(customerProjectsData?.projects?.length ?? 0) === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 text-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 shadow-inner">
+                <FolderKanban className="h-6 w-6" />
+              </div>
+              <h3 className="mt-4 text-sm font-bold text-slate-900">No Projects Linked Yet</h3>
+              <p className="mt-1 max-w-sm text-xs text-slate-500">
+                Create a dedicated delivery workspace to track tasks, deadlines, and deliverables
+                for {customer.name}.
+              </p>
+              <Button
+                size="sm"
+                variant="outline"
+                asChild
+                className="mt-5 cursor-pointer rounded-xl border-slate-200 bg-white text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50"
+              >
+                <Link
+                  href={`/dashboard/projects?new=true&customerId=${customer.id}&title=${encodeURIComponent(
+                    customer.name + " Project"
+                  )}`}
+                >
+                  <FolderKanban className="mr-1.5 h-3.5 w-3.5 text-amber-600" />
+                  <span>Launch First Project</span>
+                </Link>
+              </Button>
+            </div>
+          ) : (
+            <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {customerProjectsData?.projects.map((project) => (
+                <ProjectCard key={project.id} project={project} />
+              ))}
+            </div>
+          )}
+        </Card>
       )}
 
       {/* Edit Customer Modal */}
