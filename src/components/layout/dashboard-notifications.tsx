@@ -16,6 +16,8 @@ import {
   FileCheck2,
   CheckCircle2,
   AlertCircle,
+  FolderKanban,
+  CheckSquare,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -51,9 +53,9 @@ export function DashboardNotifications() {
   const searchParams = useSearchParams();
 
   const [isOpen, setIsOpen] = React.useState(false);
-  const [filter, setFilter] = React.useState<"all" | "unread" | "bookings" | "invoices" | "quotes">(
-    "all"
-  );
+  const [filter, setFilter] = React.useState<
+    "all" | "unread" | "bookings" | "invoices" | "quotes" | "projects"
+  >("all");
 
   // Automatically close notification dropdown on navigation
   React.useEffect(() => {
@@ -74,6 +76,31 @@ export function DashboardNotifications() {
   );
   const unreadCount = notificationData?.unreadCount ?? 0;
 
+  const categoryCounts = React.useMemo(() => {
+    let bookings = 0;
+    let invoices = 0;
+    let quotes = 0;
+    let projects = 0;
+
+    for (const item of items) {
+      if (
+        item.type === "BOOKING_CREATED" ||
+        item.type === "BOOKING_RESCHEDULED" ||
+        item.type === "BOOKING_CANCELLED"
+      ) {
+        bookings++;
+      } else if (item.type === "INVOICE_ISSUED" || item.type === "PAYMENT_RECEIVED") {
+        invoices++;
+      } else if (item.type.startsWith("QUOTE_")) {
+        quotes++;
+      } else if (item.type === "PROJECT_CREATED" || item.type === "TASK_ASSIGNED") {
+        projects++;
+      }
+    }
+
+    return { bookings, invoices, quotes, projects };
+  }, [items]);
+
   const filteredItems = React.useMemo(() => {
     switch (filter) {
       case "unread":
@@ -89,6 +116,8 @@ export function DashboardNotifications() {
         return items.filter((n) => n.type === "INVOICE_ISSUED" || n.type === "PAYMENT_RECEIVED");
       case "quotes":
         return items.filter((n) => n.type.startsWith("QUOTE_"));
+      case "projects":
+        return items.filter((n) => n.type === "PROJECT_CREATED" || n.type === "TASK_ASSIGNED");
       case "all":
       default:
         return items;
@@ -100,29 +129,70 @@ export function DashboardNotifications() {
     if (!item.isRead) {
       markAsReadMutation.mutate(item.id);
     }
+
+    const meta = (item.metadata || {}) as Record<string, string>;
+
+    // 1. Invoices & Payments: open the specific invoice quick-peek drawer
+    if (item.type === "INVOICE_ISSUED" || item.type === "PAYMENT_RECEIVED" || meta.invoiceId) {
+      const invoiceId = meta.invoiceId;
+      if (invoiceId) {
+        router.push(`/dashboard/invoices?invoiceId=${encodeURIComponent(invoiceId)}`);
+        return;
+      }
+    }
+
+    // 2. Quotes & Proposals: open the specific quote quick-peek drawer
+    if (item.type.startsWith("QUOTE_") || meta.quoteId) {
+      const quoteId = meta.quoteId;
+      if (quoteId) {
+        router.push(`/dashboard/quotes?quoteId=${encodeURIComponent(quoteId)}`);
+        return;
+      }
+    }
+
+    // 3. Appointments & Bookings: open the specific appointment on the calendar
+    if (item.type.startsWith("BOOKING_") || meta.appointmentId) {
+      const apptId = meta.appointmentId;
+      if (apptId) {
+        router.push(`/dashboard/calendar?appointmentId=${encodeURIComponent(apptId)}`);
+        return;
+      }
+    }
+
+    // 4. Projects & Tasks: open the specific project detail & Kanban board
+    if (item.type === "PROJECT_CREATED" || item.type === "TASK_ASSIGNED" || meta.projectId) {
+      const projectId = meta.projectId;
+      if (projectId) {
+        const taskQuery = meta.taskId ? `?taskId=${encodeURIComponent(meta.taskId)}` : "";
+        router.push(`/dashboard/projects/${encodeURIComponent(projectId)}${taskQuery}`);
+        return;
+      }
+    }
+
+    // 5. Team Invites
+    if (item.type === "TEAM_INVITE") {
+      router.push("/dashboard/settings");
+      return;
+    }
+
+    // 6. Custom actionUrl if present with query or subpath
+    if (
+      item.actionUrl &&
+      item.actionUrl !== "/dashboard/invoices" &&
+      item.actionUrl !== "/dashboard/quotes" &&
+      item.actionUrl !== "/dashboard/projects"
+    ) {
+      router.push(item.actionUrl);
+      return;
+    }
+
+    // 7. General fallback
     if (item.actionUrl) {
       router.push(item.actionUrl);
       return;
     }
-    // Contextual destination routing when actionUrl is not directly populated
-    const meta = (item.metadata || {}) as Record<string, string>;
-    if (item.type.startsWith("QUOTE_")) {
-      router.push(meta.quoteId ? `/dashboard/quotes?quoteId=${meta.quoteId}` : "/dashboard/quotes");
-    } else if (item.type === "INVOICE_ISSUED" || item.type === "PAYMENT_RECEIVED") {
-      router.push(
-        meta.invoiceId ? `/dashboard/invoices?invoiceId=${meta.invoiceId}` : "/dashboard/invoices"
-      );
-    } else if (item.type.startsWith("BOOKING_")) {
-      router.push(
-        meta.appointmentId
-          ? `/dashboard/calendar?appointmentId=${meta.appointmentId}`
-          : "/dashboard/calendar"
-      );
-    } else if (item.type === "TEAM_INVITE") {
-      router.push("/dashboard/settings");
-    } else {
-      router.push("/dashboard");
-    }
+
+    router.push("/dashboard");
   };
 
   const handleMarkAllRead = (e: React.MouseEvent) => {
@@ -155,6 +225,10 @@ export function DashboardNotifications() {
         return <Users className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />;
       case "SECURITY_ALERT":
         return <ShieldAlert className="h-4 w-4 text-amber-600 dark:text-amber-400" />;
+      case "PROJECT_CREATED":
+        return <FolderKanban className="text-primary h-4 w-4" />;
+      case "TASK_ASSIGNED":
+        return <CheckSquare className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />;
       case "SYSTEM":
       default:
         return <Layers className="text-muted-foreground h-4 w-4" />;
@@ -186,7 +260,7 @@ export function DashboardNotifications() {
         collisionPadding={12}
         onInteractOutside={() => setIsOpen(false)}
         onEscapeKeyDown={() => setIsOpen(false)}
-        className="border-border/80 bg-card/95 text-card-foreground w-[calc(100vw-1rem)] max-w-[calc(100vw-1rem)] rounded-2xl border p-0 shadow-2xl backdrop-blur-2xl sm:w-96 sm:max-w-md"
+        className="border-border/80 bg-card/95 text-card-foreground w-[calc(100vw-1rem)] max-w-[calc(100vw-1rem)] rounded-2xl border p-0 shadow-2xl backdrop-blur-2xl sm:w-[480px] sm:max-w-xl"
       >
         {/* Header */}
         <div className="border-border/60 bg-muted/20 flex items-center justify-between border-b px-3 py-2.5 sm:px-4 sm:py-3">
@@ -248,7 +322,7 @@ export function DashboardNotifications() {
         </div>
 
         {/* Filter Pills */}
-        <div className="border-border/60 bg-muted/30 flex scrollbar-none items-center gap-1 overflow-x-auto border-b px-3 py-1.5 text-xs">
+        <div className="border-border/60 bg-muted/30 flex flex-wrap items-center gap-1.5 border-b px-3 py-2 text-xs">
           <button
             type="button"
             onClick={(e) => {
@@ -289,7 +363,7 @@ export function DashboardNotifications() {
                 : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
             }`}
           >
-            Bookings
+            Bookings {categoryCounts.bookings > 0 && `(${categoryCounts.bookings})`}
           </button>
           <button
             type="button"
@@ -303,7 +377,7 @@ export function DashboardNotifications() {
                 : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
             }`}
           >
-            Invoices
+            Invoices {categoryCounts.invoices > 0 && `(${categoryCounts.invoices})`}
           </button>
           <button
             type="button"
@@ -317,7 +391,21 @@ export function DashboardNotifications() {
                 : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
             }`}
           >
-            Proposals
+            Proposals {categoryCounts.quotes > 0 && `(${categoryCounts.quotes})`}
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setFilter("projects");
+            }}
+            className={`rounded-lg px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-all ${
+              filter === "projects"
+                ? "bg-card text-foreground border-border/80 border font-bold shadow-2xs"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+            }`}
+          >
+            Projects {categoryCounts.projects > 0 && `(${categoryCounts.projects})`}
           </button>
         </div>
 

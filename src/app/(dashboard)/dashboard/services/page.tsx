@@ -9,8 +9,6 @@ import {
   Layers,
   Clock,
   DollarSign,
-  Shield,
-  Users,
   Share2,
   ExternalLink,
   Check,
@@ -31,6 +29,7 @@ import { useServices } from "@/features/services/use-services";
 import { useWorkspaceSession } from "@/features/organizations/use-workspace-session";
 import { ServiceBuilderModal } from "@/components/dashboard/services/service-builder-modal";
 import { ServiceQuickPeekDrawer } from "@/components/dashboard/services/service-quick-peek-drawer";
+import { ServiceCard } from "@/components/dashboard/services/service-card";
 import type { ServiceItem } from "@/features/services/types";
 
 const emptySubscribe = () => () => {};
@@ -551,9 +550,25 @@ export default function ServicesPage() {
 
       {/* Main Content Area */}
       {isActuallyLoading ? (
-        <div className="space-y-3 py-20 text-center">
-          <div className="border-primary mx-auto h-8 w-8 animate-spin rounded-full border-2 border-t-transparent" />
-          <p className="text-muted-foreground text-xs font-semibold">Loading services catalog...</p>
+        <div className="grid grid-cols-1 gap-4.5 md:grid-cols-2 lg:grid-cols-3">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div
+              key={i}
+              className="border-border/60 bg-card/60 h-64 animate-pulse space-y-4 rounded-2xl border p-5 shadow-2xs"
+            >
+              <div className="flex items-center justify-between">
+                <div className="bg-muted/70 h-5 w-24 rounded-full" />
+                <div className="bg-muted/70 h-6 w-16 rounded-md" />
+              </div>
+              <div className="bg-muted/80 mt-3 h-6 w-3/4 rounded-md" />
+              <div className="space-y-2">
+                <div className="bg-muted/60 h-3 w-full rounded" />
+                <div className="bg-muted/60 h-3 w-4/5 rounded" />
+              </div>
+              <div className="bg-muted/50 h-14 w-full rounded-xl" />
+              <div className="bg-muted/40 h-8 w-full rounded-lg pt-2" />
+            </div>
+          ))}
         </div>
       ) : filteredServices.length === 0 ? (
         <Card className="border-border/80 bg-card/60 p-12 text-center shadow-2xs">
@@ -581,162 +596,16 @@ export default function ServicesPage() {
           </CardContent>
         </Card>
       ) : viewMode === "grid" ? (
-        /* GRID VIEW */
+        /* GRID VIEW WITH MODULAR LUXURY SERVICECARD */
         <div className="grid grid-cols-1 gap-4.5 md:grid-cols-2 lg:grid-cols-3">
           {filteredServices.map((service) => (
-            <Card
+            <ServiceCard
               key={service.id}
-              className={`group border-border/80 from-card to-card/95 relative flex flex-col justify-between overflow-hidden bg-gradient-to-b shadow-2xs transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/[0.08] ${
-                service.isActive ? "" : "opacity-60"
-              }`}
-            >
-              {/* Luxury Top Accent Line */}
-              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-blue-600 opacity-70 transition-opacity group-hover:opacity-100" />
-
-              <CardContent className="flex h-full flex-col justify-between space-y-4 p-5">
-                <div>
-                  {/* Card Top: Category, Status & Price */}
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="rounded-full border border-blue-200/60 bg-blue-50 px-2.5 py-0.5 text-[10px] font-bold text-blue-700 dark:border-blue-800/50 dark:bg-blue-950/40 dark:text-blue-300">
-                      {service.category || "General"}
-                    </span>
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`inline-block h-2 w-2 rounded-full ${
-                          service.isActive
-                            ? "bg-emerald-500 ring-2 ring-emerald-500/20"
-                            : "bg-slate-400"
-                        }`}
-                        title={service.isActive ? "Active in Catalog" : "Inactive / Archived"}
-                      />
-                      <span className="text-foreground font-mono text-xl font-black tracking-tight">
-                        ${service.price.toFixed(2)}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Service Name & Description */}
-                  <h3
-                    onClick={() => setSelectedServiceForPeek(service)}
-                    className="text-foreground group-hover:text-primary mt-2.5 cursor-pointer text-base font-bold transition-colors"
-                  >
-                    {service.name}
-                  </h3>
-                  <p className="text-muted-foreground mt-1 line-clamp-2 min-h-[34px] text-xs leading-relaxed">
-                    {service.description || "No description provided for this service offering."}
-                  </p>
-
-                  {/* Interactive Visual Timeline Allocation Bar */}
-                  <div className="border-border/60 bg-muted/30 mt-3.5 space-y-1.5 rounded-xl border p-2.5">
-                    <div className="text-muted-foreground flex items-center justify-between text-[10px] font-semibold">
-                      <span className="flex items-center gap-1">
-                        <Clock className="text-primary h-3 w-3" />
-                        Timeline Protection
-                      </span>
-                      <span className="text-foreground font-mono text-[10px] font-bold">
-                        Total{" "}
-                        {service.durationMinutes +
-                          (service.bufferBefore || 0) +
-                          (service.bufferAfter || 0)}
-                        m
-                      </span>
-                    </div>
-                    <div className="flex h-5 w-full items-center gap-1 overflow-hidden rounded-md text-center text-[9px] font-bold">
-                      {service.bufferBefore > 0 && (
-                        <div
-                          style={{ flex: service.bufferBefore }}
-                          className="flex h-full items-center justify-center rounded border border-blue-500/20 bg-blue-500/15 px-1 font-mono text-blue-700 dark:text-blue-300"
-                          title={`Setup buffer: ${service.bufferBefore}m`}
-                        >
-                          +{service.bufferBefore}m Prep
-                        </div>
-                      )}
-                      <div
-                        style={{ flex: service.durationMinutes }}
-                        className="bg-primary text-primary-foreground flex h-full items-center justify-center rounded px-1.5 font-mono font-bold shadow-2xs"
-                        title={`Session duration: ${service.durationMinutes}m`}
-                      >
-                        {service.durationMinutes}m Session
-                      </div>
-                      {service.bufferAfter > 0 && (
-                        <div
-                          style={{ flex: service.bufferAfter }}
-                          className="flex h-full items-center justify-center rounded border border-emerald-500/20 bg-emerald-500/15 px-1 font-mono text-emerald-700 dark:text-emerald-300"
-                          title={`Cleanup buffer: ${service.bufferAfter}m`}
-                        >
-                          +{service.bufferAfter}m Wrap
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Deposit Requirement Badge */}
-                  {service.requireDeposit && (
-                    <div className="mt-2 flex items-center gap-1.5 rounded-lg border border-emerald-200/80 bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700 dark:border-emerald-800/60 dark:bg-emerald-950/40 dark:text-emerald-300">
-                      <Shield className="h-3.5 w-3.5 shrink-0" />
-                      <span>
-                        Deposit Required:{" "}
-                        {service.depositType === "PERCENTAGE"
-                          ? `${service.depositAmount}% ($${((service.price * (service.depositAmount || 0)) / 100).toFixed(2)})`
-                          : `$${Number(service.depositAmount).toFixed(2)}`}
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Card Footer: Assigned Specialists & Actions */}
-                <div className="border-border/70 flex items-center justify-between border-t pt-3">
-                  <div className="flex items-center gap-2">
-                    <Users className="text-muted-foreground h-3.5 w-3.5" />
-                    {service.staffMembers && service.staffMembers.length > 0 ? (
-                      <div className="flex items-center -space-x-1.5">
-                        {service.staffMembers.slice(0, 3).map((sm) => (
-                          <div
-                            key={sm.id}
-                            title={`${sm.name} (${sm.roleTitle})`}
-                            className={`border-background flex h-6.5 w-6.5 items-center justify-center rounded-full border-2 text-[9px] font-bold text-white shadow-2xs ${
-                              sm.avatarBg || "bg-blue-600"
-                            }`}
-                          >
-                            {sm.initials}
-                          </div>
-                        ))}
-                        {service.staffMembers.length > 3 && (
-                          <span className="text-muted-foreground pl-2 text-[10px] font-semibold">
-                            +{service.staffMembers.length - 3}
-                          </span>
-                        )}
-                      </div>
-                    ) : (
-                      <span className="text-muted-foreground text-[11px] font-medium">
-                        Unassigned
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="flex items-center gap-1">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setSelectedServiceForPeek(service)}
-                      className="text-muted-foreground hover:text-foreground h-7.5 cursor-pointer px-2.5 text-xs"
-                    >
-                      Quick Peek
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleOpenEdit(service)}
-                      className="text-primary hover:text-primary/80 h-7.5 cursor-pointer px-2.5 text-xs font-bold"
-                    >
-                      Edit
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+              service={service}
+              publicBookingUrl={publicBookingUrl}
+              onQuickPeek={setSelectedServiceForPeek}
+              onEdit={handleOpenEdit}
+            />
           ))}
         </div>
       ) : (

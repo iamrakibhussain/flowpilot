@@ -30,7 +30,8 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { useInvoices, useInvoiceStats } from "@/features/invoices/use-invoices";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useInvoices, useInvoiceStats, useInvoice } from "@/features/invoices/use-invoices";
 import { useWorkspaceSession } from "@/features/organizations/use-workspace-session";
 import type { InvoiceListItem, InvoiceStatusType } from "@/features/invoices/types";
 
@@ -69,6 +70,10 @@ const getClientSnapshot = () => true;
 const getServerSnapshot = () => false;
 
 export default function InvoicesDashboardPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const invoiceIdParam = searchParams.get("invoiceId");
+
   const { organizationId, organizationName, isLoading: isSessionLoading } = useWorkspaceSession();
   const isClient = React.useSyncExternalStore(subscribeNoop, getClientSnapshot, getServerSnapshot);
 
@@ -91,10 +96,16 @@ export default function InvoicesDashboardPage() {
 
   // Modals state
   const [isBuilderOpen, setIsBuilderOpen] = React.useState(false);
-  const [drawerInvoice, setDrawerInvoice] = React.useState<InvoiceListItem | null>(null);
+  const [drawerInvoiceManual, setDrawerInvoiceManual] = React.useState<InvoiceListItem | null>(
+    null
+  );
+  const [dismissedInvoiceId, setDismissedInvoiceId] = React.useState<string | null>(null);
   const [paymentInvoice, setPaymentInvoice] = React.useState<InvoiceListItem | null>(null);
   const [printInvoice, setPrintInvoice] = React.useState<InvoiceListItem | null>(null);
   const [shareModalInvoice, setShareModalInvoice] = React.useState<InvoiceListItem | null>(null);
+
+  // Direct single invoice query (for deep-linking from notifications or external links)
+  const { data: directInvoiceData } = useInvoice(invoiceIdParam || "", organizationId);
 
   // Queries
   const {
@@ -115,7 +126,45 @@ export default function InvoicesDashboardPage() {
     !isClient || isSessionLoading || isLoadingInvoices || (isPendingInvoices && !invoicesResponse);
 
   const { data: stats } = useInvoiceStats(organizationId);
-  const invoices = invoicesResponse?.invoices ?? [];
+  const invoices = React.useMemo(
+    () => invoicesResponse?.invoices ?? [],
+    [invoicesResponse?.invoices]
+  );
+
+  // Derived URL-matched invoice (for deep linking from notifications or direct links)
+  const urlMatchedInvoice = React.useMemo(() => {
+    if (!invoiceIdParam) return null;
+    if (directInvoiceData) return directInvoiceData;
+    return (
+      invoices.find((inv) => inv.id === invoiceIdParam || inv.invoiceNumber === invoiceIdParam) ??
+      null
+    );
+  }, [invoiceIdParam, directInvoiceData, invoices]);
+
+  const drawerInvoice =
+    dismissedInvoiceId === invoiceIdParam
+      ? drawerInvoiceManual
+      : (drawerInvoiceManual ?? urlMatchedInvoice);
+
+  const setDrawerInvoice = React.useCallback(
+    (inv: InvoiceListItem | null) => {
+      if (inv === null && invoiceIdParam) {
+        setDismissedInvoiceId(invoiceIdParam);
+      }
+      setDrawerInvoiceManual(inv);
+    },
+    [invoiceIdParam]
+  );
+
+  const handleCloseDrawer = React.useCallback(() => {
+    setDrawerInvoice(null);
+    if (invoiceIdParam) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete("invoiceId");
+      const nextQuery = params.toString();
+      router.replace(nextQuery ? `/dashboard/invoices?${nextQuery}` : "/dashboard/invoices");
+    }
+  }, [invoiceIdParam, searchParams, router, setDrawerInvoice]);
 
   // Global Keyboard Power Shortcuts
   React.useEffect(() => {
@@ -137,7 +186,7 @@ export default function InvoicesDashboardPage() {
         setIsShortcutModalOpen((prev) => !prev);
       } else if (e.key === "Escape") {
         setSelectedInvoiceIds(new Set());
-        setDrawerInvoice(null);
+        setDrawerInvoiceManual(null);
         setIsShortcutModalOpen(false);
       }
     };
@@ -1326,7 +1375,7 @@ export default function InvoicesDashboardPage() {
       <InvoiceQuickPeekDrawer
         invoice={drawerInvoice}
         isOpen={Boolean(drawerInvoice)}
-        onClose={() => setDrawerInvoice(null)}
+        onClose={handleCloseDrawer}
         onOpenRecordPayment={(inv) => {
           setDrawerInvoice(null);
           setPaymentInvoice(inv);

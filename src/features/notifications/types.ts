@@ -9,6 +9,8 @@ export type NotificationType =
   | "QUOTE_DECLINED"
   | "TEAM_INVITE"
   | "SECURITY_ALERT"
+  | "PROJECT_CREATED"
+  | "TASK_ASSIGNED"
   | "SYSTEM";
 
 export interface NotificationItem {

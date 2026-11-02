@@ -27,6 +27,8 @@ import {
   Search,
   ShieldCheck,
   ArrowRight,
+  FolderKanban,
+  FileCheck2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
@@ -50,10 +52,13 @@ import {
   emptyMetrics,
 } from "@/features/dashboard/use-dashboard";
 import type { TimeframeType } from "@/features/dashboard/types";
+import { useProjects } from "@/features/projects/use-projects";
 
 export default function DashboardOverviewPage() {
   const { organizationName, userName } = useWorkspaceSession();
   const { openModal, exportCsv } = useDashboardModals();
+
+  const { data: activeProjectsData } = useProjects({ status: "ACTIVE", limit: 3 });
 
   const [timeframe, setTimeframe] = React.useState<TimeframeType>("30d");
   const [metricTab, setMetricTab] = React.useState<"revenue" | "appointments">("revenue");
@@ -1597,13 +1602,82 @@ export default function DashboardOverviewPage() {
             </Button>
           </Card>
 
+          {/* Card: Active Projects & Kanban Workspaces */}
+          <Card
+            id="projects"
+            className="border-border/80 from-card to-card/90 w-full max-w-full min-w-0 overflow-hidden rounded-2xl border bg-gradient-to-b p-4 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xs sm:p-5"
+          >
+            <div className="border-border/60 flex items-center justify-between border-b pb-3">
+              <div className="flex items-center gap-2">
+                <FolderKanban className="h-4 w-4 text-amber-500" />
+                <CardTitle className="text-foreground text-sm font-bold">
+                  Active Projects & Kanban
+                </CardTitle>
+              </div>
+              <Link
+                href="/dashboard/projects"
+                className="hover:text-primary text-muted-foreground inline-flex items-center gap-1 text-[11px] font-semibold hover:underline"
+              >
+                <span>All Boards</span>
+                <ArrowRight className="h-3 w-3" />
+              </Link>
+            </div>
+
+            <div className="mt-4 space-y-3">
+              {(activeProjectsData?.projects?.length ?? 0) === 0 ? (
+                <div className="text-muted-foreground py-6 text-center text-xs">
+                  <p>No active delivery projects.</p>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    asChild
+                    className="border-border/80 mt-3 cursor-pointer rounded-xl text-xs font-semibold"
+                  >
+                    <Link href="/dashboard/projects?new=true">
+                      <FolderKanban className="mr-1.5 h-3.5 w-3.5 text-amber-500" />
+                      <span>Launch Project</span>
+                    </Link>
+                  </Button>
+                </div>
+              ) : (
+                activeProjectsData?.projects.map((proj) => (
+                  <Link
+                    key={proj.id}
+                    href={`/dashboard/projects/${proj.id}`}
+                    className="group border-border/60 bg-muted/20 hover:bg-muted/50 block rounded-xl border p-3 transition-colors"
+                  >
+                    <div className="flex items-center justify-between">
+                      <p className="group-hover:text-primary text-foreground truncate text-xs font-bold transition-colors">
+                        {proj.name}
+                      </p>
+                      <span className="rounded-md bg-amber-500/10 px-2 py-0.5 text-[10px] font-bold text-amber-600 dark:text-amber-400">
+                        {proj.progressPercentage}%
+                      </span>
+                    </div>
+                    {proj.customerName && (
+                      <p className="text-muted-foreground mt-0.5 truncate text-[11px]">
+                        Client: {proj.customerName}
+                      </p>
+                    )}
+                    <div className="bg-muted mt-2 h-1.5 w-full overflow-hidden rounded-full">
+                      <div
+                        className="to-primary h-full rounded-full bg-gradient-to-r from-amber-500 transition-all duration-300"
+                        style={{ width: `${proj.progressPercentage}%` }}
+                      />
+                    </div>
+                  </Link>
+                ))
+              )}
+            </div>
+          </Card>
+
           {/* Card 3: Quick Operations Action Tiles */}
           <Card className="border-border/80 from-card to-card/90 w-full max-w-full min-w-0 overflow-hidden rounded-2xl border bg-gradient-to-b p-4 shadow-2xs sm:p-5">
             <CardTitle className="border-border/60 text-foreground border-b pb-3 text-sm font-bold">
               Quick Operations
             </CardTitle>
 
-            <div className="mt-4 grid grid-cols-2 gap-2.5">
+            <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-3">
               <button
                 type="button"
                 onClick={() => openModal("invoice")}
@@ -1614,6 +1688,26 @@ export default function DashboardOverviewPage() {
                 </div>
                 <span className="text-foreground mt-2 text-[11px] font-bold">New Invoice</span>
               </button>
+
+              <Link
+                href="/dashboard/projects?new=true"
+                className="group border-border/80 bg-muted/30 flex cursor-pointer flex-col items-center justify-center rounded-xl border p-3 text-center shadow-2xs transition-all hover:scale-[1.02] hover:border-amber-400/40 hover:bg-amber-500/10"
+              >
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 text-amber-500 transition-colors group-hover:bg-amber-600 group-hover:text-white">
+                  <FolderKanban className="h-4 w-4" />
+                </div>
+                <span className="text-foreground mt-2 text-[11px] font-bold">New Project</span>
+              </Link>
+
+              <Link
+                href="/dashboard/quotes?new=true"
+                className="group border-border/80 bg-muted/30 flex cursor-pointer flex-col items-center justify-center rounded-xl border p-3 text-center shadow-2xs transition-all hover:scale-[1.02] hover:border-teal-400/40 hover:bg-teal-500/10"
+              >
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-500/10 text-teal-600 transition-colors group-hover:bg-teal-600 group-hover:text-white">
+                  <FileCheck2 className="h-4 w-4" />
+                </div>
+                <span className="text-foreground mt-2 text-[11px] font-bold">New Estimate</span>
+              </Link>
 
               <button
                 type="button"

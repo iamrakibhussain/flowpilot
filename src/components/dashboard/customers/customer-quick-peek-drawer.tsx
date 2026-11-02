@@ -17,6 +17,7 @@ import {
   Edit3,
   Activity,
   ChevronRight,
+  FolderKanban,
 } from "lucide-react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
@@ -236,6 +237,18 @@ export function CustomerQuickPeekDrawer({
                 >
                   <CreditCard className="mr-1 h-3 w-3 text-emerald-600" />
                   <span>Invoice</span>
+                </Button>
+
+                <Button
+                  size="sm"
+                  variant="outline"
+                  asChild
+                  className="h-8 cursor-pointer rounded-xl border-amber-200 bg-amber-50/50 text-xs font-semibold text-amber-700 hover:bg-amber-100/50"
+                >
+                  <Link href={`/dashboard/projects?customerId=${customer.id}`}>
+                    <FolderKanban className="mr-1 h-3 w-3 text-amber-600" />
+                    <span>Projects</span>
+                  </Link>
                 </Button>
               </div>
             )}

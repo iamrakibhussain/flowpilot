@@ -15,6 +15,8 @@ import {
   ShieldCheck,
   Clock,
   Trash2,
+  FolderKanban,
+  Printer,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,6 +31,7 @@ interface QuoteQuickPeekDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   onOpenInvoice?: (invoiceId: string) => void;
+  onPrint?: (quote: QuoteListItem) => void;
 }
 
 export function QuoteQuickPeekDrawer({
@@ -36,6 +39,7 @@ export function QuoteQuickPeekDrawer({
   isOpen,
   onClose,
   onOpenInvoice,
+  onPrint,
 }: QuoteQuickPeekDrawerProps) {
   const sendQuoteMutation = useSendQuote();
   const convertMutation = useConvertQuoteToInvoice();
@@ -302,6 +306,23 @@ export function QuoteQuickPeekDrawer({
               </Button>
             )}
 
+            {quote.status === "ACCEPTED" && (
+              <Button
+                variant="outline"
+                asChild
+                className="border-primary/40 text-primary hover:bg-primary/10 w-full gap-2 rounded-xl text-xs font-medium"
+              >
+                <Link
+                  href={`/dashboard/projects?new=true&quoteId=${quote.id}&customerId=${quote.customerId}&title=${encodeURIComponent(
+                    quote.title
+                  )}&budget=${quote.totalAmount}`}
+                >
+                  <FolderKanban className="h-4 w-4" />
+                  Launch Delivery Project
+                </Link>
+              </Button>
+            )}
+
             {quote.convertedInvoiceId && (
               <div className="flex items-center justify-between rounded-xl border border-blue-500/20 bg-blue-500/10 p-3 text-xs">
                 <span className="font-medium text-blue-700 dark:text-blue-400">
@@ -319,6 +340,18 @@ export function QuoteQuickPeekDrawer({
 
           {/* Footer Actions */}
           <div className="border-border bg-muted/20 space-y-2 border-t p-4">
+            {onPrint && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onPrint(quote)}
+                className="border-border/80 h-9 w-full gap-1.5 rounded-xl text-xs font-semibold"
+              >
+                <Printer className="h-3.5 w-3.5" />
+                Print / Export Proposal PDF
+              </Button>
+            )}
+
             <div className="grid grid-cols-2 gap-2">
               <Button
                 variant="outline"
