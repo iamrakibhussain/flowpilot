@@ -18,6 +18,7 @@ import {
   AlertCircle,
   FolderKanban,
   CheckSquare,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,6 +32,7 @@ import {
   useMarkNotificationAsRead,
   useMarkAllNotificationsAsRead,
   useClearReadNotifications,
+  useTriggerSmartReminders,
 } from "@/features/notifications/use-notifications";
 import type { NotificationItem, NotificationType } from "@/features/notifications/types";
 
@@ -69,6 +71,20 @@ export function DashboardNotifications() {
   const markAsReadMutation = useMarkNotificationAsRead();
   const markAllAsReadMutation = useMarkAllNotificationsAsRead();
   const clearReadMutation = useClearReadNotifications();
+  const triggerRemindersMutation = useTriggerSmartReminders();
+  const [triggerFeedback, setTriggerFeedback] = React.useState<string | null>(null);
+
+  const handleTriggerReminders = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      await triggerRemindersMutation.mutateAsync();
+      setTriggerFeedback("Reminders & Dunning executed!");
+      setTimeout(() => setTriggerFeedback(null), 3500);
+    } catch {
+      setTriggerFeedback("Execution failed");
+      setTimeout(() => setTriggerFeedback(null), 3500);
+    }
+  };
 
   const items: NotificationItem[] = React.useMemo(
     () => notificationData?.items || [],
@@ -468,16 +484,34 @@ export function DashboardNotifications() {
         </div>
 
         {/* Executive Footer */}
-        <div className="border-border/60 bg-muted/20 text-muted-foreground flex items-center justify-between border-t px-3.5 py-2 text-[11px] sm:px-4">
+        <div className="border-border/60 bg-muted/20 text-muted-foreground flex flex-col gap-1.5 border-t px-3.5 py-2 text-[11px] sm:flex-row sm:items-center sm:justify-between sm:px-4">
           <div className="flex items-center gap-1.5">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
             <span className="text-muted-foreground/80 text-[10px] font-semibold tracking-wider uppercase">
               Real-Time Sync
             </span>
+            {triggerFeedback ? (
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                • {triggerFeedback}
+              </span>
+            ) : (
+              <span className="text-muted-foreground/80 text-[10px] font-medium">
+                ({items.length} {items.length === 1 ? "update" : "updates"})
+              </span>
+            )}
           </div>
-          <span className="text-muted-foreground/80 text-[10px] font-medium">
-            {items.length} {items.length === 1 ? "update" : "updates"}
-          </span>
+          <button
+            type="button"
+            onClick={handleTriggerReminders}
+            disabled={triggerRemindersMutation.isPending}
+            className="text-primary hover:text-primary/80 inline-flex cursor-pointer items-center gap-1 text-[10px] font-bold hover:underline disabled:opacity-50"
+            title="Execute automated dunning and 24h/2h appointment reminders"
+          >
+            <Sparkles className="h-3 w-3" />
+            <span>
+              {triggerRemindersMutation.isPending ? "Executing..." : "Trigger Dunning & Reminders"}
+            </span>
+          </button>
         </div>
       </DropdownMenuContent>
     </DropdownMenu>

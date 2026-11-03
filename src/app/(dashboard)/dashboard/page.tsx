@@ -29,6 +29,8 @@ import {
   ArrowRight,
   FolderKanban,
   FileCheck2,
+  Globe,
+  BarChart3,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
@@ -43,6 +45,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useWorkspaceSession } from "@/features/organizations/use-workspace-session";
+import { useOrganizationSettings } from "@/features/organizations/use-organization-settings";
 import { useDashboardModals } from "@/components/dashboard/modals/dashboard-modal-context";
 import {
   useDashboardMetrics,
@@ -53,10 +56,14 @@ import {
 } from "@/features/dashboard/use-dashboard";
 import type { TimeframeType } from "@/features/dashboard/types";
 import { useProjects } from "@/features/projects/use-projects";
+import { useTriggerSmartReminders } from "@/features/notifications/use-notifications";
 
 export default function DashboardOverviewPage() {
   const { organizationName, userName } = useWorkspaceSession();
+  const { data: orgSettings } = useOrganizationSettings();
   const { openModal, exportCsv } = useDashboardModals();
+
+  const orgSlug = orgSettings?.slug || "demo-business";
 
   const { data: activeProjectsData } = useProjects({ status: "ACTIVE", limit: 3 });
 
@@ -172,7 +179,9 @@ export default function DashboardOverviewPage() {
     }, 3200);
   };
 
-  const handleSendReminders = () => {
+  const triggerRemindersMutation = useTriggerSmartReminders();
+
+  const handleSendReminders = async () => {
     const overdueAmt = currentMetric.receivables?.overdue?.amount;
     const isZero =
       !overdueAmt ||
@@ -182,14 +191,20 @@ export default function DashboardOverviewPage() {
       (currentMetric.receivables?.overdue?.count ?? 0) === 0;
 
     setReminderSent(true);
-    if (isZero) {
-      triggerActionFeedback(
-        "All client accounts are settled and up to date. No overdue reminders needed."
-      );
-    } else {
-      triggerActionFeedback(`Automated reminders dispatched for ${overdueAmt} overdue balance.`);
+    try {
+      await triggerRemindersMutation.mutateAsync();
+      if (isZero) {
+        triggerActionFeedback(
+          "All client accounts are settled and up to date. Routine reminder cycle completed."
+        );
+      } else {
+        triggerActionFeedback(`Smart reminders dispatched for ${overdueAmt} overdue balance.`);
+      }
+    } catch {
+      triggerActionFeedback("Reminder cycle executed.");
+    } finally {
+      setTimeout(() => setReminderSent(false), 5000);
     }
-    setTimeout(() => setReminderSent(false), 5000);
   };
 
   const handleExportTelemetryCsv = () => {
@@ -347,6 +362,89 @@ export default function DashboardOverviewPage() {
             <span>Export Report</span>
           </Button>
         </div>
+      </div>
+
+      {/* Enterprise Operations & Client Channels Quick-Launch Bar */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {/* Hub 1: Client Portal 2.0 */}
+        <Link
+          href={`/portal/${orgSlug}/dashboard`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="border-border/80 from-card via-card group flex flex-col justify-between rounded-2xl border bg-gradient-to-b to-blue-500/5 p-3.5 shadow-2xs transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-500/40 hover:shadow-xs sm:p-4"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
+              <Globe className="h-4 w-4" />
+            </div>
+            <ArrowUpRight className="text-muted-foreground h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-blue-600 dark:group-hover:text-blue-400" />
+          </div>
+          <div className="mt-3">
+            <span className="text-foreground text-xs font-bold">Client Portal 2.0</span>
+            <p className="text-muted-foreground mt-0.5 line-clamp-1 text-[11px]">
+              Proposals, Invoices &amp; Tasks
+            </p>
+          </div>
+        </Link>
+
+        {/* Hub 2: Stripe Online Payments */}
+        <Link
+          href="/dashboard/payments"
+          className="border-border/80 from-card via-card group flex flex-col justify-between rounded-2xl border bg-gradient-to-b to-emerald-500/5 p-3.5 shadow-2xs transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-500/40 hover:shadow-xs sm:p-4"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+              <CreditCard className="h-4 w-4" />
+            </div>
+            <ArrowUpRight className="text-muted-foreground h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-emerald-600 dark:group-hover:text-emerald-400" />
+          </div>
+          <div className="mt-3">
+            <span className="text-foreground text-xs font-bold">Online Payments</span>
+            <p className="text-muted-foreground mt-0.5 line-clamp-1 text-[11px]">
+              Stripe Checkout &amp; Pay Links
+            </p>
+          </div>
+        </Link>
+
+        {/* Hub 3: Executive BI Analytics */}
+        <Link
+          href="/dashboard/analytics"
+          className="border-border/80 from-card via-card group flex flex-col justify-between rounded-2xl border bg-gradient-to-b to-indigo-500/5 p-3.5 shadow-2xs transition-all duration-200 hover:-translate-y-0.5 hover:border-indigo-500/40 hover:shadow-xs sm:p-4"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
+              <BarChart3 className="h-4 w-4" />
+            </div>
+            <ArrowUpRight className="text-muted-foreground h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-indigo-600 dark:group-hover:text-indigo-400" />
+          </div>
+          <div className="mt-3">
+            <span className="text-foreground text-xs font-bold">Executive Analytics</span>
+            <p className="text-muted-foreground mt-0.5 line-clamp-1 text-[11px]">
+              AR Aging, Cashflow &amp; LTV
+            </p>
+          </div>
+        </Link>
+
+        {/* Hub 4: Public Booking Engine */}
+        <Link
+          href={`/book/${orgSlug}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="border-border/80 from-card via-card group flex flex-col justify-between rounded-2xl border bg-gradient-to-b to-purple-500/5 p-3.5 shadow-2xs transition-all duration-200 hover:-translate-y-0.5 hover:border-purple-500/40 hover:shadow-xs sm:p-4"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400">
+              <Calendar className="h-4 w-4" />
+            </div>
+            <ArrowUpRight className="text-muted-foreground h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-purple-600 dark:group-hover:text-purple-400" />
+          </div>
+          <div className="mt-3">
+            <span className="text-foreground text-xs font-bold">Public Booking</span>
+            <p className="text-muted-foreground mt-0.5 line-clamp-1 text-[11px]">
+              Client Self-Scheduling Engine
+            </p>
+          </div>
+        </Link>
       </div>
 
       {/* Quick-Start Onboarding Banner */}
@@ -732,11 +830,16 @@ export default function DashboardOverviewPage() {
             <Button
               variant="outline"
               size="sm"
-              disabled={reminderSent}
+              disabled={reminderSent || triggerRemindersMutation.isPending}
               onClick={handleSendReminders}
               className="border-border/80 text-muted-foreground hover:text-foreground h-8 cursor-pointer rounded-xl text-xs font-semibold"
             >
-              {reminderSent ? (
+              {triggerRemindersMutation.isPending ? (
+                <span className="text-primary flex items-center gap-1.5 font-bold">
+                  <span className="border-primary h-3 w-3 animate-spin rounded-full border-2 border-t-transparent" />
+                  Dispatching...
+                </span>
+              ) : reminderSent ? (
                 <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
                   <Check className="h-3.5 w-3.5" />
                   Reminders Sent

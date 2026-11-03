@@ -26,6 +26,7 @@ import {
   useVerifyCheckoutSession,
   useSettleSandboxPayment,
 } from "@/features/payments/use-payments";
+import { printElementById } from "@/lib/utils/print";
 
 interface PageProps {
   params: Promise<{ token: string }>;
@@ -308,11 +309,12 @@ export default function PublicInvoiceCheckoutPage({ params }: PageProps) {
     }
   };
 
-  // Print invoice receipt
+  // Print invoice receipt using isolated DOM engine
   const handlePrint = () => {
-    if (typeof window !== "undefined") {
-      window.print();
-    }
+    printElementById(
+      "public-invoice-printable",
+      invoice ? `Invoice-${invoice.invoiceNumber}` : "Invoice-Statement"
+    );
   };
 
   if (isLoading || verifyingSession) {
@@ -463,7 +465,10 @@ export default function PublicInvoiceCheckoutPage({ params }: PageProps) {
           {/* Left Column: Invoice Statement Breakdown (7 Cols) */}
           <section className="order-2 space-y-6 lg:order-1 lg:col-span-7">
             {/* Header Card */}
-            <div className="relative overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-900/90 p-6 shadow-xl backdrop-blur sm:p-8">
+            <div
+              id="public-invoice-printable"
+              className="relative overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-900/90 p-6 shadow-xl backdrop-blur sm:p-8"
+            >
               <div className="absolute top-0 right-0 -z-10 h-64 w-64 rounded-full bg-indigo-500/5 blur-3xl" />
 
               <div className="flex flex-col gap-4 border-b border-slate-800 pb-6 sm:flex-row sm:items-center sm:justify-between">

@@ -73,6 +73,11 @@ export default function InvoicesDashboardPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const invoiceIdParam = searchParams.get("invoiceId");
+  const statusParam = searchParams.get("status")?.toUpperCase();
+  const validStatus =
+    statusParam && ["PAID", "PENDING", "OVERDUE", "CANCELLED"].includes(statusParam)
+      ? (statusParam as InvoiceStatusType)
+      : null;
 
   const { organizationId, organizationName, isLoading: isSessionLoading } = useWorkspaceSession();
   const isClient = React.useSyncExternalStore(subscribeNoop, getClientSnapshot, getServerSnapshot);
@@ -80,10 +85,19 @@ export default function InvoicesDashboardPage() {
   // View Mode: cards (ideal for mobile / visual grid) vs table (high-density spreadsheet)
   const [viewMode, setViewMode] = React.useState<"cards" | "table">("cards");
 
-  // Filters & Search state
-  const [selectedStatusTab, setSelectedStatusTab] = React.useState<"ALL" | InvoiceStatusType>(
-    "ALL"
-  );
+  // Filters & Search state - derived directly from URL searchParams
+  const selectedStatusTab: "ALL" | InvoiceStatusType = validStatus || "ALL";
+
+  const handleSelectStatusTab = (tabId: "ALL" | InvoiceStatusType) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (tabId === "ALL") {
+      params.delete("status");
+    } else {
+      params.set("status", tabId);
+    }
+    const qs = params.toString();
+    router.replace(`/dashboard/invoices${qs ? `?${qs}` : ""}`, { scroll: false });
+  };
   const [searchQuery, setSearchQuery] = React.useState("");
   const [copiedInvoiceId, setCopiedInvoiceId] = React.useState<string | null>(null);
 
@@ -543,7 +557,7 @@ export default function InvoicesDashboardPage() {
               <div
                 role="button"
                 tabIndex={0}
-                onClick={() => setSelectedStatusTab("PENDING")}
+                onClick={() => handleSelectStatusTab("PENDING")}
                 className="group border-border/80 bg-muted/30 hover:bg-muted/60 cursor-pointer rounded-xl border p-3 transition-all hover:border-blue-500/40 sm:p-3.5"
               >
                 <div className="flex items-center justify-between">
@@ -563,7 +577,7 @@ export default function InvoicesDashboardPage() {
               <div
                 role="button"
                 tabIndex={0}
-                onClick={() => setSelectedStatusTab("OVERDUE")}
+                onClick={() => handleSelectStatusTab("OVERDUE")}
                 className="group cursor-pointer rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 transition-all hover:border-amber-500/50 hover:bg-amber-500/15 sm:p-3.5"
               >
                 <div className="flex items-center justify-between">
@@ -583,7 +597,7 @@ export default function InvoicesDashboardPage() {
               <div
                 role="button"
                 tabIndex={0}
-                onClick={() => setSelectedStatusTab("OVERDUE")}
+                onClick={() => handleSelectStatusTab("OVERDUE")}
                 className="group cursor-pointer rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 transition-all hover:border-rose-500/50 hover:bg-rose-500/15 sm:p-3.5"
               >
                 <div className="flex items-center justify-between">
@@ -603,7 +617,7 @@ export default function InvoicesDashboardPage() {
               <div
                 role="button"
                 tabIndex={0}
-                onClick={() => setSelectedStatusTab("OVERDUE")}
+                onClick={() => handleSelectStatusTab("OVERDUE")}
                 className="group cursor-pointer rounded-xl border border-rose-500/40 bg-rose-500/15 p-3 transition-all hover:border-rose-500/60 hover:bg-rose-500/25 sm:p-3.5"
               >
                 <div className="flex items-center justify-between">
@@ -644,7 +658,7 @@ export default function InvoicesDashboardPage() {
                 <button
                   key={tab.id}
                   type="button"
-                  onClick={() => setSelectedStatusTab(tab.id)}
+                  onClick={() => handleSelectStatusTab(tab.id)}
                   className={`relative flex shrink-0 cursor-pointer items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold transition-colors ${
                     isSelected ? "text-foreground" : "text-muted-foreground hover:text-foreground"
                   }`}
@@ -752,7 +766,7 @@ export default function InvoicesDashboardPage() {
                   size="sm"
                   onClick={() => {
                     setSearchQuery("");
-                    setSelectedStatusTab("ALL");
+                    handleSelectStatusTab("ALL");
                   }}
                   className="border-border/80 text-muted-foreground hover:text-foreground cursor-pointer rounded-xl text-xs font-semibold"
                 >

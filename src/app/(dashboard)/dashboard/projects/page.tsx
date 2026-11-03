@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   FolderKanban,
   Plus,
@@ -26,6 +26,7 @@ const getClientSnapshot = () => true;
 const getServerSnapshot = () => false;
 
 export default function ProjectsPage() {
+  const router = useRouter();
   const isClient = React.useSyncExternalStore(subscribeNoop, getClientSnapshot, getServerSnapshot);
 
   const searchParams = useSearchParams();
@@ -35,8 +36,25 @@ export default function ProjectsPage() {
   const titleParam = searchParams.get("title");
   const budgetParam = searchParams.get("budget");
   const currencyParam = searchParams.get("currency");
+  const statusParam = searchParams.get("status")?.toUpperCase();
+  const validStatus =
+    statusParam && ["PLANNING", "ACTIVE", "ON_HOLD", "COMPLETED", "CANCELLED"].includes(statusParam)
+      ? (statusParam as ProjectStatus)
+      : null;
 
-  const [statusFilter, setStatusFilter] = React.useState<ProjectStatus | "ALL">("ALL");
+  // Status filter derived directly from URL searchParams
+  const statusFilter: ProjectStatus | "ALL" = validStatus || "ALL";
+
+  const handleSelectStatus = (key: ProjectStatus | "ALL") => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (key === "ALL") {
+      params.delete("status");
+    } else {
+      params.set("status", key);
+    }
+    const qs = params.toString();
+    router.replace(`/dashboard/projects${qs ? `?${qs}` : ""}`, { scroll: false });
+  };
   const [searchTerm, setSearchTerm] = React.useState("");
   const [debouncedSearch, setDebouncedSearch] = React.useState("");
   const [isCreateModalOpenManual, setIsCreateModalOpenManual] = React.useState<boolean | null>(
@@ -213,7 +231,7 @@ export default function ProjectsPage() {
               <button
                 key={tab.key}
                 type="button"
-                onClick={() => setStatusFilter(tab.key)}
+                onClick={() => handleSelectStatus(tab.key)}
                 className={`flex shrink-0 cursor-pointer items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold whitespace-nowrap transition-all ${
                   isTabActive
                     ? "bg-primary text-primary-foreground ring-primary/20 shadow-xs ring-1"

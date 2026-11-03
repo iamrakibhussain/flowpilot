@@ -8,6 +8,7 @@ import {
   clearReadNotifications,
   sendTestDiagnosticEmail,
   sendInvoiceEmail,
+  triggerSmartReminders,
 } from "./api";
 import type { ListNotificationsParams } from "./types";
 
@@ -95,6 +96,21 @@ export function useSendInvoiceEmail() {
     mutationFn: (invoiceId: string) => sendInvoiceEmail(invoiceId, organizationId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.invoices.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.notifications.all });
+    },
+  });
+}
+
+/**
+ * Mutation to manually trigger smart reminders & dunning
+ */
+export function useTriggerSmartReminders() {
+  const queryClient = useQueryClient();
+  const { organizationId } = useWorkspaceSession();
+
+  return useMutation({
+    mutationFn: () => triggerSmartReminders(organizationId),
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.notifications.all });
     },
   });

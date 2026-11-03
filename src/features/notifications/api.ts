@@ -91,3 +91,17 @@ export async function sendInvoiceEmail(
   );
   return response.data;
 }
+
+/**
+ * Manually trigger smart reminder and dunning cron execution
+ */
+export async function triggerSmartReminders(
+  organizationId?: string
+): Promise<{ success: boolean; triggeredAt: string }> {
+  const response = await apiClient.post<{ success: boolean; triggeredAt: string }>(
+    "/notifications/trigger-reminders",
+    {},
+    { organizationId }
+  );
+  return response.data;
+}

@@ -10,6 +10,7 @@ import {
   cancelPortalAppointment,
   updatePortalProfile,
   logoutPortal,
+  getPortalQuoteToken,
 } from "./api";
 import type {
   RequestPortalLinkInput,
@@ -90,6 +91,12 @@ export function useUpdatePortalProfile() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: portalKeys.dashboard() });
     },
+  });
+}
+
+export function usePortalQuoteToken() {
+  return useMutation({
+    mutationFn: (quoteId: string) => getPortalQuoteToken(quoteId),
   });
 }
 

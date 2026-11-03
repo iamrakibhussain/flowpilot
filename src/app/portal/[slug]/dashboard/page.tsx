@@ -18,6 +18,10 @@ import {
   Receipt,
   PlusCircle,
   AlertCircle,
+  FileText,
+  FolderKanban,
+  Sparkles,
+  ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,8 +32,10 @@ import {
   useCancelPortalAppointment,
   useUpdatePortalProfile,
   useLogoutPortal,
+  usePortalQuoteToken,
 } from "@/features/portal/use-portal";
 import type { PortalAppointment, PortalInvoice } from "@/features/portal/types";
+import { printElementById } from "@/lib/utils/print";
 
 function getRelativeCountdown(dateStr: string): string {
   const target = new Date(dateStr).getTime();
@@ -157,7 +163,7 @@ export default function ClientPortalDashboardPage() {
   const slug = typeof params?.slug === "string" ? params.slug : "";
 
   const [activeTab, setActiveTab] = React.useState<
-    "appointments" | "invoices" | "book" | "profile"
+    "appointments" | "quotes" | "projects" | "invoices" | "profile"
   >("appointments");
 
   // Modal states
@@ -168,6 +174,7 @@ export default function ClientPortalDashboardPage() {
   const [activeReceiptInvoice, setActiveReceiptInvoice] = React.useState<PortalInvoice | null>(
     null
   );
+  const [openingQuoteId, setOpeningQuoteId] = React.useState<string | null>(null);
   const [actionMessage, setActionMessage] = React.useState<{
     type: "success" | "error";
     text: string;
@@ -178,6 +185,25 @@ export default function ClientPortalDashboardPage() {
   const rescheduleMutation = useReschedulePortalAppointment();
   const cancelMutation = useCancelPortalAppointment();
   const logoutMutation = useLogoutPortal();
+  const quoteTokenMutation = usePortalQuoteToken();
+
+  // Handle opening quote in review portal
+  const handleOpenQuote = async (quoteId: string) => {
+    try {
+      setOpeningQuoteId(quoteId);
+      const res = await quoteTokenMutation.mutateAsync(quoteId);
+      if (res?.url) {
+        router.push(res.url);
+      }
+    } catch (err: unknown) {
+      setActionMessage({
+        type: "error",
+        text: err instanceof Error ? err.message : "Failed to generate proposal access link.",
+      });
+    } finally {
+      setOpeningQuoteId(null);
+    }
+  };
 
   // Handle logout
   const handleLogout = async () => {
@@ -267,8 +293,16 @@ export default function ClientPortalDashboardPage() {
     );
   }
 
-  const { organization, customer, appointments, invoices } = data;
+  const { organization, customer, appointments, invoices, quotes, projects } = data;
   const brandColor = organization.brandColor || "#2563eb";
+
+  const pendingQuotes =
+    quotes?.list?.filter((q) => q.status === "SENT" || q.status === "DRAFT") || [];
+  const activeQuotesList = quotes?.list || [];
+  const activeProjectsList = projects?.list || [];
+  const pendingInvoices = invoices.list.filter(
+    (i) => i.status === "PENDING" || i.status === "OVERDUE"
+  );
 
   return (
     <div className="relative min-h-screen bg-slate-50/70 pb-20 text-slate-900 selection:bg-blue-600 selection:text-white dark:bg-slate-950 dark:text-slate-100">
@@ -366,6 +400,91 @@ export default function ClientPortalDashboardPage() {
           </div>
         )}
 
+        {/* Priority Action Required Ambient Banner */}
+        {(pendingQuotes.length > 0 || pendingInvoices.length > 0) && (
+          <div className="relative overflow-hidden rounded-3xl border border-amber-300/80 bg-gradient-to-r from-amber-500/10 via-amber-400/5 to-orange-500/10 p-5 shadow-sm backdrop-blur-xl sm:p-6 dark:border-amber-500/30 dark:from-amber-950/40 dark:via-amber-900/20 dark:to-orange-950/30">
+            <div className="pointer-events-none absolute -top-12 -right-12 h-36 w-36 rounded-full bg-amber-400/20 blur-2xl" />
+            <div className="relative z-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-start gap-3.5">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-amber-500 text-white shadow-md shadow-amber-500/30">
+                  <Sparkles className="h-5 w-5" />
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-black tracking-wider text-amber-800 uppercase dark:text-amber-300">
+                      Action Required
+                    </span>
+                    <span className="rounded-full bg-amber-200/80 px-2 py-0.5 text-[10px] font-bold text-amber-900 dark:bg-amber-800/60 dark:text-amber-200">
+                      {pendingQuotes.length + pendingInvoices.length} Item
+                      {pendingQuotes.length + pendingInvoices.length === 1 ? "" : "s"}
+                    </span>
+                  </div>
+                  <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">
+                    {pendingQuotes.length > 0 && pendingInvoices.length > 0 ? (
+                      <>
+                        You have{" "}
+                        <strong className="text-amber-700 dark:text-amber-400">
+                          {pendingQuotes.length} pending proposal
+                        </strong>{" "}
+                        awaiting signature and{" "}
+                        <strong className="text-amber-700 dark:text-amber-400">
+                          {pendingInvoices.length} unpaid invoice
+                        </strong>
+                        .
+                      </>
+                    ) : pendingQuotes.length > 0 ? (
+                      <>
+                        Formal proposal awaiting your review &amp; signature:{" "}
+                        <strong className="text-amber-700 dark:text-amber-400">
+                          &quot;{pendingQuotes[0].title}&quot; ($
+                          {pendingQuotes[0].totalAmount.toFixed(2)})
+                        </strong>
+                      </>
+                    ) : (
+                      <>
+                        You have an outstanding balance of{" "}
+                        <strong className="text-amber-700 dark:text-amber-400">
+                          ${invoices.metrics.totalOutstanding}
+                        </strong>{" "}
+                        requiring settlement.
+                      </>
+                    )}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex w-full flex-col gap-2.5 sm:w-auto sm:flex-row sm:items-center">
+                {pendingQuotes.length > 0 && (
+                  <Button
+                    onClick={() => handleOpenQuote(pendingQuotes[0].id)}
+                    disabled={openingQuoteId === pendingQuotes[0].id}
+                    size="sm"
+                    className="h-10 w-full cursor-pointer gap-2 rounded-xl bg-amber-600 px-4 text-xs font-bold text-white shadow-sm transition hover:bg-amber-700 sm:w-auto"
+                  >
+                    {openingQuoteId === pendingQuotes[0].id ? (
+                      <span className="animate-spin text-xs">⟳</span>
+                    ) : (
+                      <FileText className="h-4 w-4" />
+                    )}
+                    Review &amp; Sign Proposal
+                  </Button>
+                )}
+                {pendingInvoices.length > 0 && (
+                  <Button
+                    onClick={() => setActiveTab("invoices")}
+                    variant="outline"
+                    size="sm"
+                    className="h-10 w-full cursor-pointer gap-2 rounded-xl border-amber-300 bg-white/80 px-4 text-xs font-bold text-amber-900 shadow-2xs hover:bg-amber-100/60 sm:w-auto dark:border-amber-700/60 dark:bg-slate-900 dark:text-amber-300"
+                  >
+                    <CreditCard className="h-4 w-4" />
+                    View Invoices
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Welcome Hero Banner */}
         <div className="relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-5 shadow-sm backdrop-blur-xl sm:flex sm:items-center sm:justify-between sm:p-7 dark:border-slate-800/80 dark:bg-slate-900/90">
           <div className="pointer-events-none absolute -top-16 -right-16 h-48 w-48 rounded-full bg-blue-500/10 blur-3xl dark:bg-blue-600/15" />
@@ -378,7 +497,11 @@ export default function ClientPortalDashboardPage() {
               <strong className="font-bold text-slate-800 dark:text-slate-200">
                 {appointments.upcoming.length} upcoming
               </strong>{" "}
-              appointment{appointments.upcoming.length === 1 ? "" : "s"} and{" "}
+              appointment{appointments.upcoming.length === 1 ? "" : "s"},{" "}
+              <strong className="font-bold text-slate-800 dark:text-slate-200">
+                {activeQuotesList.length} proposal{activeQuotesList.length === 1 ? "" : "s"}
+              </strong>
+              , and{" "}
               <strong className="font-bold text-slate-800 dark:text-slate-200">
                 ${invoices.metrics.totalOutstanding}
               </strong>{" "}
@@ -402,11 +525,11 @@ export default function ClientPortalDashboardPage() {
           </div>
         </div>
 
-        {/* Segmented Tab Navigation with Native Mobile 3-Grid Adaptation */}
-        <div className="grid grid-cols-3 gap-1 rounded-2xl bg-slate-200/60 p-1.5 backdrop-blur-md sm:flex sm:items-center sm:gap-2 dark:bg-slate-800/60">
+        {/* Segmented Tab Navigation with Native Mobile Scroll & Wrap Adaptation */}
+        <div className="flex [scrollbar-width:none] items-center gap-1.5 overflow-x-auto rounded-2xl bg-slate-200/60 p-1.5 backdrop-blur-md [-ms-overflow-style:none] sm:flex-wrap dark:bg-slate-800/60 [&::-webkit-scrollbar]:hidden">
           <button
             onClick={() => setActiveTab("appointments")}
-            className={`flex cursor-pointer items-center justify-center gap-1.5 rounded-xl px-2 py-2.5 text-xs font-bold transition-all sm:gap-2 sm:px-4 ${
+            className={`flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition-all sm:px-4 ${
               activeTab === "appointments"
                 ? "bg-white text-slate-900 shadow-sm dark:bg-slate-900 dark:text-slate-100"
                 : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
@@ -420,8 +543,42 @@ export default function ClientPortalDashboardPage() {
           </button>
 
           <button
+            onClick={() => setActiveTab("quotes")}
+            className={`flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition-all sm:px-4 ${
+              activeTab === "quotes"
+                ? "bg-white text-slate-900 shadow-sm dark:bg-slate-900 dark:text-slate-100"
+                : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
+            }`}
+          >
+            <FileText className="h-4 w-4 shrink-0 text-indigo-600 dark:text-indigo-400" />
+            <span className="truncate">Proposals</span>
+            {pendingQuotes.length > 0 && (
+              <span className="py-0.2 rounded-full bg-amber-100 px-1.5 text-[10px] font-bold text-amber-700 dark:bg-amber-900/60 dark:text-amber-300">
+                {pendingQuotes.length}
+              </span>
+            )}
+          </button>
+
+          <button
+            onClick={() => setActiveTab("projects")}
+            className={`flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition-all sm:px-4 ${
+              activeTab === "projects"
+                ? "bg-white text-slate-900 shadow-sm dark:bg-slate-900 dark:text-slate-100"
+                : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
+            }`}
+          >
+            <FolderKanban className="h-4 w-4 shrink-0 text-purple-600 dark:text-purple-400" />
+            <span className="truncate">Projects</span>
+            {activeProjectsList.length > 0 && (
+              <span className="py-0.2 rounded-full bg-purple-100 px-1.5 text-[10px] font-bold text-purple-700 dark:bg-purple-900/60 dark:text-purple-300">
+                {activeProjectsList.length}
+              </span>
+            )}
+          </button>
+
+          <button
             onClick={() => setActiveTab("invoices")}
-            className={`flex cursor-pointer items-center justify-center gap-1.5 rounded-xl px-2 py-2.5 text-xs font-bold transition-all sm:gap-2 sm:px-4 ${
+            className={`flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition-all sm:px-4 ${
               activeTab === "invoices"
                 ? "bg-white text-slate-900 shadow-sm dark:bg-slate-900 dark:text-slate-100"
                 : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
@@ -438,13 +595,13 @@ export default function ClientPortalDashboardPage() {
 
           <button
             onClick={() => setActiveTab("profile")}
-            className={`flex cursor-pointer items-center justify-center gap-1.5 rounded-xl px-2 py-2.5 text-xs font-bold transition-all sm:gap-2 sm:px-4 ${
+            className={`flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition-all sm:px-4 ${
               activeTab === "profile"
                 ? "bg-white text-slate-900 shadow-sm dark:bg-slate-900 dark:text-slate-100"
                 : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
             }`}
           >
-            <User className="h-4 w-4 shrink-0 text-indigo-600 dark:text-indigo-400" />
+            <User className="h-4 w-4 shrink-0 text-slate-600 dark:text-slate-400" />
             <span className="truncate">Profile</span>
           </button>
         </div>
@@ -645,17 +802,337 @@ export default function ClientPortalDashboardPage() {
           </div>
         )}
 
-        {/* TAB 2: INVOICES & BILLING */}
+        {/* TAB 2: PROPOSALS & ESTIMATES */}
+        {activeTab === "quotes" && (
+          <div className="space-y-6">
+            {/* Financial Telemetry Cards */}
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+              <Card className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm sm:p-5 dark:border-slate-800/90 dark:bg-slate-900">
+                <CardContent className="space-y-1 p-0">
+                  <span className="text-[10px] font-bold tracking-wider text-slate-500 uppercase sm:text-xs">
+                    Total Proposals
+                  </span>
+                  <div className="text-xl font-extrabold text-slate-900 sm:text-2xl dark:text-slate-100">
+                    {quotes?.metrics?.totalProposals || 0}
+                  </div>
+                  <p className="hidden text-[11px] text-slate-400 sm:block">
+                    Service quotes on record
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm sm:p-5 dark:border-slate-800/90 dark:bg-slate-900">
+                <CardContent className="space-y-1 p-0">
+                  <span className="text-[10px] font-bold tracking-wider text-slate-500 uppercase sm:text-xs">
+                    Awaiting Signature
+                  </span>
+                  <div className="text-xl font-extrabold text-amber-600 sm:text-2xl dark:text-amber-400">
+                    {quotes?.metrics?.pendingCount || 0}
+                  </div>
+                  <p className="hidden text-[11px] text-slate-400 sm:block">Ready for acceptance</p>
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm sm:p-5 dark:border-slate-800/90 dark:bg-slate-900">
+                <CardContent className="space-y-1 p-0">
+                  <span className="text-[10px] font-bold tracking-wider text-slate-500 uppercase sm:text-xs">
+                    Accepted &amp; Signed
+                  </span>
+                  <div className="text-xl font-extrabold text-emerald-600 sm:text-2xl dark:text-emerald-400">
+                    {quotes?.metrics?.acceptedCount || 0}
+                  </div>
+                  <p className="hidden text-[11px] text-slate-400 sm:block">Confirmed proposals</p>
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm sm:p-5 dark:border-slate-800/90 dark:bg-slate-900">
+                <CardContent className="space-y-1 p-0">
+                  <span className="text-[10px] font-bold tracking-wider text-slate-500 uppercase sm:text-xs">
+                    Total Value
+                  </span>
+                  <div className="text-xl font-extrabold text-slate-900 sm:text-2xl dark:text-slate-100">
+                    ${quotes?.metrics?.totalValue || "0.00"}
+                  </div>
+                  <p className="hidden text-[11px] text-slate-400 sm:block">Cumulative estimated</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Proposals List */}
+            <div className="space-y-3">
+              <h2 className="text-base font-bold sm:text-lg">Service Proposals &amp; Estimates</h2>
+
+              {activeQuotesList.length === 0 ? (
+                <Card className="rounded-2xl border border-dashed border-slate-300 bg-white/50 p-8 text-center dark:border-slate-800 dark:bg-slate-900/50">
+                  <CardContent className="space-y-2 p-0">
+                    <FileText className="mx-auto h-10 w-10 text-slate-400" />
+                    <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                      No proposals on file
+                    </p>
+                    <p className="text-xs text-slate-500">
+                      You don&apos;t have any service proposals or estimates right now.
+                    </p>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:divide-slate-800 dark:border-slate-800 dark:bg-slate-900">
+                  {activeQuotesList.map((quote) => {
+                    const isPending = quote.status === "SENT" || quote.status === "DRAFT";
+                    const isAccepted = quote.status === "ACCEPTED";
+                    const isDeclined = quote.status === "DECLINED";
+
+                    return (
+                      <div
+                        key={quote.id}
+                        className="flex flex-col justify-between gap-4 p-5 transition-all hover:bg-slate-50/60 sm:flex-row sm:items-center dark:hover:bg-slate-800/40"
+                      >
+                        <div className="space-y-1">
+                          <div className="flex items-center justify-between gap-2.5 sm:justify-start">
+                            <span className="text-sm font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
+                              {quote.quoteNumber}
+                            </span>
+                            <span
+                              className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold ${
+                                isAccepted
+                                  ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                                  : isDeclined
+                                    ? "border border-rose-500/30 bg-rose-500/10 text-rose-600 dark:text-rose-400"
+                                    : "border border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                              }`}
+                            >
+                              {isPending
+                                ? "Pending Signature"
+                                : isAccepted
+                                  ? "Accepted & Signed"
+                                  : quote.status}
+                            </span>
+                            {/* Visible on mobile only */}
+                            <div className="text-right text-sm font-black text-slate-900 sm:hidden dark:text-slate-100">
+                              ${quote.totalAmount.toFixed(2)}
+                            </div>
+                          </div>
+                          <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">
+                            {quote.title}
+                          </h4>
+                          <div className="flex flex-wrap items-center gap-1.5 text-xs text-slate-500">
+                            <span>Issued: {new Date(quote.issuedAt).toLocaleDateString()}</span>
+                            {quote.expiresAt && (
+                              <>
+                                <span>•</span>
+                                <span>
+                                  Expires: {new Date(quote.expiresAt).toLocaleDateString()}
+                                </span>
+                              </>
+                            )}
+                            {quote.itemsCount > 0 && (
+                              <>
+                                <span>•</span>
+                                <span>
+                                  {quote.itemsCount} line item{quote.itemsCount === 1 ? "" : "s"}
+                                </span>
+                              </>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col items-stretch gap-2.5 sm:flex-row sm:items-center sm:justify-end">
+                          {/* Desktop Price */}
+                          <div className="hidden pr-2 text-right sm:block">
+                            <div className="text-base font-black text-slate-900 dark:text-slate-100">
+                              ${quote.totalAmount.toFixed(2)}
+                            </div>
+                            <div className="text-[10px] font-medium text-slate-400">
+                              Total Estimate
+                            </div>
+                          </div>
+
+                          <Button
+                            onClick={() => handleOpenQuote(quote.id)}
+                            disabled={openingQuoteId === quote.id}
+                            style={{ backgroundColor: isPending ? brandColor : undefined }}
+                            variant={isPending ? "default" : "outline"}
+                            size="sm"
+                            className={`h-10 cursor-pointer gap-1.5 rounded-xl px-4 text-xs font-bold transition hover:opacity-90 sm:h-9 ${
+                              isPending
+                                ? "text-white shadow-sm"
+                                : "border-slate-200 text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                            }`}
+                          >
+                            {openingQuoteId === quote.id ? (
+                              <span className="animate-spin text-xs">⟳</span>
+                            ) : (
+                              <ExternalLink className="h-3.5 w-3.5" />
+                            )}
+                            {isPending ? "Review & Sign Online" : "View Proposal"}
+                          </Button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* TAB 3: PROJECTS & MILESTONES */}
+        {activeTab === "projects" && (
+          <div className="space-y-6">
+            {/* Project Metrics */}
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
+              <Card className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm sm:p-5 dark:border-slate-800/90 dark:bg-slate-900">
+                <CardContent className="space-y-1 p-0">
+                  <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">
+                    Total Engagements
+                  </span>
+                  <div className="text-xl font-extrabold text-slate-900 sm:text-2xl dark:text-slate-100">
+                    {projects?.metrics?.totalProjects || 0}
+                  </div>
+                  <p className="text-[11px] text-slate-400">Projects linked to your account</p>
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm sm:p-5 dark:border-slate-800/90 dark:bg-slate-900">
+                <CardContent className="space-y-1 p-0">
+                  <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">
+                    Active &amp; In Progress
+                  </span>
+                  <div className="text-xl font-extrabold text-blue-600 sm:text-2xl dark:text-blue-400">
+                    {projects?.metrics?.activeCount || 0}
+                  </div>
+                  <p className="text-[11px] text-slate-400">Currently executing work</p>
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm sm:p-5 dark:border-slate-800/90 dark:bg-slate-900">
+                <CardContent className="space-y-1 p-0">
+                  <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">
+                    Completed Deliverables
+                  </span>
+                  <div className="text-xl font-extrabold text-emerald-600 sm:text-2xl dark:text-emerald-400">
+                    {projects?.metrics?.completedCount || 0}
+                  </div>
+                  <p className="text-[11px] text-slate-400">Successfully finalized</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Projects List */}
+            <div className="space-y-3">
+              <h2 className="text-base font-bold sm:text-lg">
+                Deliverable Milestones &amp; Project Status
+              </h2>
+
+              {activeProjectsList.length === 0 ? (
+                <Card className="rounded-2xl border border-dashed border-slate-300 bg-white/50 p-8 text-center dark:border-slate-800 dark:bg-slate-900/50">
+                  <CardContent className="space-y-2 p-0">
+                    <FolderKanban className="mx-auto h-10 w-10 text-slate-400" />
+                    <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                      No active projects
+                    </p>
+                    <p className="text-xs text-slate-500">
+                      Projects and deliverables managed by your provider will appear here.
+                    </p>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  {activeProjectsList.map((project) => {
+                    const isCompleted = project.status === "COMPLETED";
+
+                    return (
+                      <Card
+                        key={project.id}
+                        className="group flex flex-col justify-between overflow-hidden rounded-3xl border border-slate-200/90 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-500/40 hover:shadow-md sm:p-6 dark:border-slate-800/90 dark:bg-slate-900"
+                      >
+                        <CardContent className="space-y-4 p-0">
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-2">
+                                <span
+                                  className="h-2.5 w-2.5 rounded-full"
+                                  style={{ backgroundColor: project.color || "#3b82f6" }}
+                                />
+                                <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+                                  {project.status}
+                                </span>
+                              </div>
+                              <h3 className="text-base font-extrabold tracking-tight text-slate-900 sm:text-lg dark:text-slate-100">
+                                {project.name}
+                              </h3>
+                            </div>
+                            <span
+                              className={`rounded-full px-2.5 py-1 text-xs font-bold ${
+                                isCompleted
+                                  ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                                  : "border border-blue-500/30 bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                              }`}
+                            >
+                              {project.progressPercentage}%
+                            </span>
+                          </div>
+
+                          {project.description && (
+                            <p className="line-clamp-2 text-xs text-slate-500 dark:text-slate-400">
+                              {project.description}
+                            </p>
+                          )}
+
+                          {/* Progress Meter Bar */}
+                          <div className="space-y-1.5 rounded-2xl border border-slate-200/60 bg-slate-50/80 p-3.5 dark:border-slate-800/60 dark:bg-slate-950/60">
+                            <div className="flex items-center justify-between text-xs font-semibold">
+                              <span className="text-slate-600 dark:text-slate-400">
+                                Milestone Progress
+                              </span>
+                              <span className="font-extrabold text-slate-900 dark:text-slate-100">
+                                {project.completedTasksCount} / {project.tasksCount} tasks
+                              </span>
+                            </div>
+                            <div className="h-2 w-full overflow-hidden rounded-full bg-slate-200/80 dark:bg-slate-800">
+                              <div
+                                className="h-full rounded-full transition-all duration-500"
+                                style={{
+                                  width: `${project.progressPercentage}%`,
+                                  backgroundColor: project.color || brandColor,
+                                }}
+                              />
+                            </div>
+                          </div>
+
+                          {/* Target Delivery Date */}
+                          <div className="flex items-center justify-between pt-1 text-xs text-slate-500">
+                            <span>
+                              {project.startDate
+                                ? `Started: ${new Date(project.startDate).toLocaleDateString()}`
+                                : "In Planning"}
+                            </span>
+                            {project.targetDate && (
+                              <span className="font-semibold text-slate-700 dark:text-slate-300">
+                                Target: {new Date(project.targetDate).toLocaleDateString()}
+                              </span>
+                            )}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* TAB 4: INVOICES & BILLING */}
         {activeTab === "invoices" && (
           <div className="space-y-6">
             {/* Financial Telemetry Cards */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <Card className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
+              <Card className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm sm:p-5 dark:border-slate-800/90 dark:bg-slate-900">
                 <CardContent className="space-y-1 p-0">
                   <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">
                     Total Invoiced
                   </span>
-                  <div className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">
+                  <div className="text-xl font-extrabold text-slate-900 sm:text-2xl dark:text-slate-100">
                     ${invoices.metrics.totalBilled}
                   </div>
                   <p className="text-[11px] text-slate-400">
@@ -664,25 +1141,25 @@ export default function ClientPortalDashboardPage() {
                 </CardContent>
               </Card>
 
-              <Card className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <Card className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm sm:p-5 dark:border-slate-800/90 dark:bg-slate-900">
                 <CardContent className="space-y-1 p-0">
                   <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">
                     Total Paid
                   </span>
-                  <div className="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400">
+                  <div className="text-xl font-extrabold text-emerald-600 sm:text-2xl dark:text-emerald-400">
                     ${invoices.metrics.totalPaid}
                   </div>
                   <p className="text-[11px] text-slate-400">Settled and confirmed</p>
                 </CardContent>
               </Card>
 
-              <Card className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <Card className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm sm:p-5 dark:border-slate-800/90 dark:bg-slate-900">
                 <CardContent className="space-y-1 p-0">
                   <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">
                     Balance Outstanding
                   </span>
                   <div
-                    className={`text-2xl font-extrabold ${Number(invoices.metrics.totalOutstanding) > 0 ? "text-amber-600 dark:text-amber-400" : "text-slate-900 dark:text-slate-100"}`}
+                    className={`text-xl font-extrabold sm:text-2xl ${Number(invoices.metrics.totalOutstanding) > 0 ? "text-amber-600 dark:text-amber-400" : "text-slate-900 dark:text-slate-100"}`}
                   >
                     ${invoices.metrics.totalOutstanding}
                   </div>
@@ -929,7 +1406,10 @@ export default function ClientPortalDashboardPage() {
       {/* PRINTABLE RECEIPT MODAL */}
       {activeReceiptInvoice && (
         <div className="animate-in fade-in fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-md duration-200">
-          <div className="animate-in fade-in max-h-[90vh] w-full max-w-lg space-y-6 overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl duration-200 sm:p-8 dark:border-slate-800 dark:bg-slate-900">
+          <div
+            id="portal-receipt-content"
+            className="animate-in fade-in max-h-[90vh] w-full max-w-lg space-y-6 overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl duration-200 sm:p-8 dark:border-slate-800 dark:bg-slate-900"
+          >
             <div className="flex items-center justify-between border-b border-slate-100 pb-4 dark:border-slate-800">
               <div className="space-y-0.5">
                 <span className="text-base font-extrabold text-slate-900 dark:text-slate-100">
@@ -1017,7 +1497,12 @@ export default function ClientPortalDashboardPage() {
 
             <div className="flex items-center gap-2.5 pt-2">
               <Button
-                onClick={() => window.print()}
+                onClick={() =>
+                  printElementById(
+                    "portal-receipt-content",
+                    `Receipt-${activeReceiptInvoice.invoiceNumber}`
+                  )
+                }
                 variant="outline"
                 className="h-11 flex-1 cursor-pointer gap-2 rounded-xl text-xs font-bold shadow-2xs sm:h-10 sm:text-sm"
               >
