@@ -53,93 +53,13 @@ interface NavItem {
   icon: React.ElementType;
   badge?: string;
   badgeVariant?: "default" | "success" | "warning";
+  external?: boolean;
 }
 
 interface NavSection {
   title: string;
   items: NavItem[];
 }
-
-const navSections: NavSection[] = [
-  {
-    title: "Core Operations",
-    items: [
-      { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
-      {
-        name: "Services & Catalog",
-        href: "/dashboard/services",
-        icon: Sparkles,
-        badge: "Live",
-        badgeVariant: "success",
-      },
-      {
-        name: "Estimates & Proposals",
-        href: "/dashboard/quotes",
-        icon: FileCheck2,
-        badge: "Live",
-        badgeVariant: "success",
-      },
-      {
-        name: "Projects & Kanban",
-        href: "/dashboard/projects",
-        icon: FolderKanban,
-        badge: "Live",
-        badgeVariant: "success",
-      },
-      {
-        name: "Invoices & Billing",
-        href: "/dashboard/invoices",
-        icon: FileText,
-        badge: "Live",
-        badgeVariant: "success",
-      },
-      {
-        name: "Online Payments",
-        href: "/dashboard/payments",
-        icon: CreditCard,
-        badge: "Live",
-        badgeVariant: "success",
-      },
-      {
-        name: "Appointments & Calendar",
-        href: "/dashboard/calendar",
-        icon: Calendar,
-        badge: "Live",
-        badgeVariant: "success",
-      },
-      {
-        name: "Customers (CRM)",
-        href: "/dashboard/customers",
-        icon: Users,
-        badge: "Live",
-        badgeVariant: "success",
-      },
-    ],
-  },
-  {
-    title: "Management & Growth",
-    items: [
-      {
-        name: "Team & Staff",
-        href: "/dashboard/staff",
-        icon: ShieldCheck,
-        badge: "Live",
-        badgeVariant: "success",
-      },
-      {
-        name: "Analytics & Reports",
-        href: "/dashboard/analytics",
-        icon: BarChart3,
-        badge: "Live",
-        badgeVariant: "success",
-      },
-    ],
-  },
-  {
-    title: "Configuration",
-    items: [{ name: "Organization Settings", href: "/dashboard/settings", icon: Settings }],
-  },
-];
 
 export function DashboardSidebar({
   isCollapsed,
@@ -154,6 +74,112 @@ export function DashboardSidebar({
 
   const displayOrgName = selectedOrgName || orgSettings?.name || organizationName;
   const logoUrl = orgSettings?.logoUrl;
+  const orgSlug = orgSettings?.slug || "demo-business";
+
+  const dynamicNavSections: NavSection[] = React.useMemo(
+    () => [
+      {
+        title: "Core Operations",
+        items: [
+          { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
+          {
+            name: "Services & Catalog",
+            href: "/dashboard/services",
+            icon: Sparkles,
+            badge: "Live",
+            badgeVariant: "success",
+          },
+          {
+            name: "Estimates & Proposals",
+            href: "/dashboard/quotes",
+            icon: FileCheck2,
+            badge: "Live",
+            badgeVariant: "success",
+          },
+          {
+            name: "Projects & Kanban",
+            href: "/dashboard/projects",
+            icon: FolderKanban,
+            badge: "Live",
+            badgeVariant: "success",
+          },
+          {
+            name: "Invoices & Billing",
+            href: "/dashboard/invoices",
+            icon: FileText,
+            badge: "Live",
+            badgeVariant: "success",
+          },
+          {
+            name: "Online Payments",
+            href: "/dashboard/payments",
+            icon: CreditCard,
+            badge: "Live",
+            badgeVariant: "success",
+          },
+          {
+            name: "Appointments & Calendar",
+            href: "/dashboard/calendar",
+            icon: Calendar,
+            badge: "Live",
+            badgeVariant: "success",
+          },
+          {
+            name: "Customers (CRM)",
+            href: "/dashboard/customers",
+            icon: Users,
+            badge: "Live",
+            badgeVariant: "success",
+          },
+        ],
+      },
+      {
+        title: "Client Channels & Portals",
+        items: [
+          {
+            name: "Client Portal 2.0",
+            href: `/portal/${orgSlug}/dashboard`,
+            icon: Globe,
+            badge: "Client Hub",
+            badgeVariant: "success",
+            external: true,
+          },
+          {
+            name: "Public Booking Engine",
+            href: `/book/${orgSlug}`,
+            icon: ArrowUpRight,
+            badge: "Public",
+            badgeVariant: "success",
+            external: true,
+          },
+        ],
+      },
+      {
+        title: "Management & Growth",
+        items: [
+          {
+            name: "Team & Staff",
+            href: "/dashboard/staff",
+            icon: ShieldCheck,
+            badge: "Live",
+            badgeVariant: "success",
+          },
+          {
+            name: "Analytics & Reports",
+            href: "/dashboard/analytics",
+            icon: BarChart3,
+            badge: "Live",
+            badgeVariant: "success",
+          },
+        ],
+      },
+      {
+        title: "Configuration",
+        items: [{ name: "Organization Settings", href: "/dashboard/settings", icon: Settings }],
+      },
+    ],
+    [orgSlug]
+  );
 
   const renderSidebarContent = (collapsed: boolean, isMobile = false) => (
     <div className="flex h-full flex-col">
@@ -313,7 +339,7 @@ export function DashboardSidebar({
 
       {/* Navigation Sections (Scrolls internally if long) */}
       <div className="flex-1 space-y-5 overflow-y-auto px-3 py-3">
-        {navSections.map((section, idx) => (
+        {dynamicNavSections.map((section, idx) => (
           <div key={idx} className="space-y-1">
             {!collapsed && (
               <p className="text-muted-foreground/70 px-2 pb-1 text-[10px] font-bold tracking-wider uppercase">
@@ -334,6 +360,8 @@ export function DashboardSidebar({
                   <Link
                     key={item.name}
                     href={item.href}
+                    target={item.external ? "_blank" : undefined}
+                    rel={item.external ? "noopener noreferrer" : undefined}
                     onClick={() => isMobile && onCloseMobile()}
                     title={collapsed ? item.name : undefined}
                     className={cn(

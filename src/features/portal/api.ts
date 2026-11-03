@@ -66,6 +66,13 @@ export async function updatePortalProfile(input: UpdatePortalProfileInput) {
   return response.data;
 }
 
+export async function getPortalQuoteToken(quoteId: string) {
+  const response = await apiClient.post<{ token: string; url: string }>(
+    `/portal/quotes/${quoteId}/token`
+  );
+  return response.data;
+}
+
 export async function logoutPortal() {
   const response = await apiClient.post<null>("/portal/auth/logout");
   return response.data;

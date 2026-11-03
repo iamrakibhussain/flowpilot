@@ -79,6 +79,39 @@ export interface PortalInvoice {
   }>;
 }
 
+export interface PortalQuoteSummary {
+  id: string;
+  quoteNumber: string;
+  title: string;
+  status: "DRAFT" | "SENT" | "VIEWED" | "ACCEPTED" | "DECLINED" | "EXPIRED";
+  subtotal: number;
+  taxAmount: number;
+  discountAmount: number;
+  totalAmount: number;
+  issuedAt: string;
+  expiresAt: string | null;
+  acceptedAt: string | null;
+  declinedAt: string | null;
+  notes: string | null;
+  itemsCount: number;
+}
+
+export interface PortalProjectSummary {
+  id: string;
+  name: string;
+  description: string | null;
+  status: "PLANNING" | "ACTIVE" | "ON_HOLD" | "COMPLETED" | "CANCELLED";
+  color: string;
+  startDate: string | null;
+  targetDate: string | null;
+  completedAt: string | null;
+  budget: number | null;
+  currency: string;
+  tasksCount: number;
+  completedTasksCount: number;
+  progressPercentage: number;
+}
+
 export interface PortalDashboardData {
   organization: PortalOrganization;
   customer: PortalCustomer;
@@ -94,6 +127,23 @@ export interface PortalDashboardData {
       totalPaid: string;
       totalOutstanding: string;
       count: number;
+    };
+  };
+  quotes?: {
+    list: PortalQuoteSummary[];
+    metrics: {
+      totalProposals: number;
+      pendingCount: number;
+      acceptedCount: number;
+      totalValue: string;
+    };
+  };
+  projects?: {
+    list: PortalProjectSummary[];
+    metrics: {
+      totalProjects: number;
+      activeCount: number;
+      completedCount: number;
     };
   };
 }

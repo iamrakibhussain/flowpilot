@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import {
   TrendingUp,
   TrendingDown,
@@ -22,6 +23,7 @@ import {
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { printElementById } from "@/lib/utils/print";
 import { useWorkspaceSession } from "@/features/organizations/use-workspace-session";
 import {
   useAnalyticsOverview,
@@ -91,6 +93,24 @@ export default function AnalyticsDashboardPage() {
     if (!cashflow.length) return 100;
     const maxVal = Math.max(...cashflow.map((p) => Math.max(p.billed, p.collected)));
     return maxVal > 0 ? maxVal : 100;
+  }, [cashflow]);
+
+  const cashflowSummary = React.useMemo(() => {
+    const totalBilled = cashflow.reduce((acc, p) => acc + p.billed, 0);
+    const totalCollected = cashflow.reduce((acc, p) => acc + p.collected, 0);
+    const collectionEfficiency =
+      totalBilled > 0
+        ? Math.min(100, Math.round((totalCollected / totalBilled) * 100))
+        : totalCollected > 0
+          ? 100
+          : 0;
+    const netVariance = totalBilled - totalCollected;
+    return {
+      totalBilled: Math.round(totalBilled * 100) / 100,
+      totalCollected: Math.round(totalCollected * 100) / 100,
+      collectionEfficiency,
+      netVariance: Math.round(netVariance * 100) / 100,
+    };
   }, [cashflow]);
 
   return (
@@ -433,6 +453,140 @@ export default function AnalyticsDashboardPage() {
       ) : activeTab === "overview" ? (
         /* TAB 1: EXECUTIVE OVERVIEW */
         <div className="space-y-6">
+          {/* Accounts Receivable (AR) Aging Analysis & Health Card */}
+          {overview && overview.arAging && (
+            <Card className="border-border/80 from-card via-card to-muted/20 bg-gradient-to-b shadow-xs">
+              <CardContent className="space-y-4 p-5 sm:p-6">
+                <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-foreground text-sm font-bold sm:text-base">
+                        Accounts Receivable Aging &amp; Cashflow Velocity
+                      </h3>
+                      <span className="rounded-full bg-blue-500/10 px-2.5 py-0.5 text-[10px] font-bold text-blue-600 dark:text-blue-400">
+                        Live Invoiced Ledger
+                      </span>
+                    </div>
+                    <p className="text-muted-foreground mt-0.5 text-xs">
+                      Distribution of pending receivables across payment terms and collection stages
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href="/dashboard/invoices?status=PENDING"
+                      className="text-primary hover:text-primary/80 inline-flex items-center gap-1 text-xs font-bold transition"
+                    >
+                      <span>Inspect Pending Invoices</span>
+                      <ArrowUpRight className="h-3.5 w-3.5" />
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Visual Segmented Progress Bar */}
+                <div className="space-y-2">
+                  <div className="bg-muted/60 flex h-3.5 w-full overflow-hidden rounded-full p-0.5 shadow-inner">
+                    {overview.arAging.total > 0 ? (
+                      <>
+                        {overview.arAging.current.percentage > 0 && (
+                          <div
+                            style={{ width: `${overview.arAging.current.percentage}%` }}
+                            className="rounded-l-full bg-emerald-500 transition-all duration-300"
+                            title={`Current: $${overview.arAging.current.amount.toFixed(2)} (${overview.arAging.current.percentage}%)`}
+                          />
+                        )}
+                        {overview.arAging.overdue1to30.percentage > 0 && (
+                          <div
+                            style={{ width: `${overview.arAging.overdue1to30.percentage}%` }}
+                            className="bg-amber-500 transition-all duration-300"
+                            title={`1-30 Days Overdue: $${overview.arAging.overdue1to30.amount.toFixed(2)} (${overview.arAging.overdue1to30.percentage}%)`}
+                          />
+                        )}
+                        {overview.arAging.overdue31Plus.percentage > 0 && (
+                          <div
+                            style={{ width: `${overview.arAging.overdue31Plus.percentage}%` }}
+                            className="rounded-r-full bg-rose-500 transition-all duration-300"
+                            title={`31+ Days Overdue: $${overview.arAging.overdue31Plus.amount.toFixed(2)} (${overview.arAging.overdue31Plus.percentage}%)`}
+                          />
+                        )}
+                      </>
+                    ) : (
+                      <div className="w-full rounded-full bg-emerald-500/20" />
+                    )}
+                  </div>
+
+                  {/* 3-Bucket Grid Cards */}
+                  <div className="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-3">
+                    {/* Bucket 1: Current / Not Due */}
+                    <div className="border-border/70 bg-muted/20 hover:bg-muted/40 flex items-start justify-between rounded-xl border p-3.5 transition">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-1.5">
+                          <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                          <span className="text-foreground text-xs font-bold">
+                            Current (Not Due)
+                          </span>
+                        </div>
+                        <p className="text-foreground font-mono text-lg font-black sm:text-xl">
+                          ${overview.arAging.current.amount.toFixed(2)}
+                        </p>
+                        <span className="text-muted-foreground text-[10px]">
+                          {overview.arAging.current.count} invoice
+                          {overview.arAging.current.count === 1 ? "" : "s"} within terms
+                        </span>
+                      </div>
+                      <span className="rounded bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                        {overview.arAging.current.percentage}%
+                      </span>
+                    </div>
+
+                    {/* Bucket 2: 1-30 Days Overdue */}
+                    <div className="border-border/70 bg-muted/20 hover:bg-muted/40 flex items-start justify-between rounded-xl border p-3.5 transition">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-1.5">
+                          <span className="h-2 w-2 rounded-full bg-amber-500" />
+                          <span className="text-foreground text-xs font-bold">
+                            1–30 Days Overdue
+                          </span>
+                        </div>
+                        <p className="text-foreground font-mono text-lg font-black text-amber-600 sm:text-xl dark:text-amber-400">
+                          ${overview.arAging.overdue1to30.amount.toFixed(2)}
+                        </p>
+                        <span className="text-muted-foreground text-[10px]">
+                          {overview.arAging.overdue1to30.count} invoice
+                          {overview.arAging.overdue1to30.count === 1 ? "" : "s"} in gentle dunning
+                        </span>
+                      </div>
+                      <span className="rounded bg-amber-500/10 px-2 py-0.5 font-mono text-[10px] font-bold text-amber-600 dark:text-amber-400">
+                        {overview.arAging.overdue1to30.percentage}%
+                      </span>
+                    </div>
+
+                    {/* Bucket 3: 31+ Days Overdue */}
+                    <div className="border-border/70 bg-muted/20 hover:bg-muted/40 flex items-start justify-between rounded-xl border p-3.5 transition">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-1.5">
+                          <span className="h-2 w-2 rounded-full bg-rose-500" />
+                          <span className="text-foreground text-xs font-bold">
+                            31+ Days Overdue
+                          </span>
+                        </div>
+                        <p className="text-foreground font-mono text-lg font-black text-rose-600 sm:text-xl dark:text-rose-400">
+                          ${overview.arAging.overdue31Plus.amount.toFixed(2)}
+                        </p>
+                        <span className="text-muted-foreground text-[10px]">
+                          {overview.arAging.overdue31Plus.count} invoice
+                          {overview.arAging.overdue31Plus.count === 1 ? "" : "s"} critical aging
+                        </span>
+                      </div>
+                      <span className="rounded bg-rose-500/10 px-2 py-0.5 font-mono text-[10px] font-bold text-rose-600 dark:text-rose-400">
+                        {overview.arAging.overdue31Plus.percentage}%
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {/* Trajectory Bar Summary */}
             <Card className="border-border/80 from-card to-card/95 bg-gradient-to-b shadow-xs">
@@ -715,6 +869,57 @@ export default function AnalyticsDashboardPage() {
                 <span className="flex items-center gap-1.5 font-semibold text-emerald-600 dark:text-emerald-400">
                   <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
                   Collected
+                </span>
+              </div>
+            </div>
+
+            {/* Cashflow Velocity Scorecards */}
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <div className="border-border/70 bg-muted/20 rounded-xl border p-3.5">
+                <span className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
+                  Period Invoiced Billed
+                </span>
+                <p className="text-foreground mt-1 font-mono text-lg font-black text-blue-600 sm:text-xl dark:text-blue-400">
+                  ${cashflowSummary.totalBilled.toFixed(2)}
+                </p>
+                <span className="text-muted-foreground text-[10px]">Gross Invoices Issued</span>
+              </div>
+
+              <div className="border-border/70 bg-muted/20 rounded-xl border p-3.5">
+                <span className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
+                  Period Cash Settled
+                </span>
+                <p className="text-foreground mt-1 font-mono text-lg font-black text-emerald-600 sm:text-xl dark:text-emerald-400">
+                  ${cashflowSummary.totalCollected.toFixed(2)}
+                </p>
+                <span className="text-muted-foreground text-[10px]">Direct Cash Intake</span>
+              </div>
+
+              <div className="border-border/70 bg-muted/20 rounded-xl border p-3.5">
+                <span className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
+                  Collection Velocity
+                </span>
+                <p className="text-foreground mt-1 font-mono text-lg font-black sm:text-xl">
+                  {cashflowSummary.collectionEfficiency}%
+                </p>
+                <span className="text-muted-foreground text-[10px]">Settlement Efficiency</span>
+              </div>
+
+              <div className="border-border/70 bg-muted/20 rounded-xl border p-3.5">
+                <span className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
+                  Net Receivable Variance
+                </span>
+                <p
+                  className={`mt-1 font-mono text-lg font-black sm:text-xl ${
+                    cashflowSummary.netVariance > 0
+                      ? "text-amber-600 dark:text-amber-400"
+                      : "text-emerald-600 dark:text-emerald-400"
+                  }`}
+                >
+                  ${Math.abs(cashflowSummary.netVariance).toFixed(2)}
+                </p>
+                <span className="text-muted-foreground text-[10px]">
+                  {cashflowSummary.netVariance > 0 ? "Awaiting Collection" : "Fully Reconciled"}
                 </span>
               </div>
             </div>
@@ -1018,86 +1223,151 @@ export default function AnalyticsDashboardPage() {
               <X className="h-5 w-5" />
             </button>
 
-            {/* Statement Header */}
-            <div className="border-border/80 flex flex-col gap-3 border-b pb-5 sm:flex-row sm:items-start sm:justify-between sm:pb-6">
-              <div>
-                <div className="flex items-center gap-2">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white shadow-xs">
-                    <BarChart3 className="h-5 w-5" />
+            {/* Statement Content Wrapper for Isolated DOM Printing */}
+            <div id="analytics-statement-printable" className="space-y-6">
+              {/* Statement Header */}
+              <div className="border-border/80 flex flex-col gap-3 border-b pb-5 sm:flex-row sm:items-start sm:justify-between sm:pb-6">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white shadow-xs">
+                      <BarChart3 className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h2 className="text-foreground text-lg font-black">{organizationName}</h2>
+                      <p className="text-muted-foreground text-xs">
+                        Official Operations &amp; Financial Statement
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h2 className="text-foreground text-lg font-black">{organizationName}</h2>
-                    <p className="text-muted-foreground text-xs">
-                      Official Operations &amp; Financial Statement
+                </div>
+                <div className="text-left text-xs sm:text-right">
+                  <span className="rounded bg-blue-500/10 px-2 py-0.5 font-mono font-bold text-blue-600 dark:text-blue-400">
+                    {overview.timeframe.toUpperCase()}
+                  </span>
+                  <p className="text-muted-foreground mt-1 text-[11px]">
+                    Generated: {new Date().toLocaleDateString("en-US", { dateStyle: "medium" })}
+                  </p>
+                </div>
+              </div>
+
+              {/* Key Figures Table */}
+              <div className="space-y-3">
+                <h3 className="text-foreground text-xs font-bold tracking-wider uppercase">
+                  Audited Financial Figures
+                </h3>
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                  <div className="border-border/70 bg-muted/20 rounded-xl border p-3">
+                    <span className="text-muted-foreground text-[10px]">Gross Invoiced</span>
+                    <p className="text-foreground font-mono text-base font-black">
+                      ${overview.grossRevenue.toFixed(2)}
+                    </p>
+                  </div>
+                  <div className="border-border/70 bg-muted/20 rounded-xl border p-3">
+                    <span className="text-muted-foreground text-[10px]">Net Cash Inflow</span>
+                    <p className="text-foreground font-mono text-base font-black text-emerald-600 dark:text-emerald-400">
+                      ${overview.netCashInflow.toFixed(2)}
+                    </p>
+                  </div>
+                  <div className="border-border/70 bg-muted/20 rounded-xl border p-3">
+                    <span className="text-muted-foreground text-[10px]">Average Ticket (ATV)</span>
+                    <p className="text-foreground font-mono text-base font-black">
+                      ${overview.atv.toFixed(2)}
+                    </p>
+                  </div>
+                  <div className="border-border/70 bg-muted/20 rounded-xl border p-3">
+                    <span className="text-muted-foreground text-[10px]">Outstanding AR</span>
+                    <p className="text-foreground font-mono text-base font-black text-amber-600 dark:text-amber-400">
+                      ${overview.outstandingAr.toFixed(2)}
                     </p>
                   </div>
                 </div>
               </div>
-              <div className="text-left text-xs sm:text-right">
-                <span className="rounded bg-blue-500/10 px-2 py-0.5 font-mono font-bold text-blue-600 dark:text-blue-400">
-                  {overview.timeframe.toUpperCase()}
-                </span>
-                <p className="text-muted-foreground mt-1 text-[11px]">
-                  Generated: {new Date().toLocaleDateString("en-US", { dateStyle: "medium" })}
-                </p>
-              </div>
-            </div>
 
-            {/* Key Figures Table */}
-            <div className="my-6 space-y-3">
-              <h3 className="text-foreground text-xs font-bold tracking-wider uppercase">
-                Audited Financial Figures
-              </h3>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                <div className="border-border/70 bg-muted/20 rounded-xl border p-3">
-                  <span className="text-muted-foreground text-[10px]">Gross Invoiced</span>
-                  <p className="text-foreground font-mono text-base font-black">
-                    ${overview.grossRevenue.toFixed(2)}
-                  </p>
-                </div>
-                <div className="border-border/70 bg-muted/20 rounded-xl border p-3">
-                  <span className="text-muted-foreground text-[10px]">Net Cash Inflow</span>
-                  <p className="text-foreground font-mono text-base font-black text-emerald-600 dark:text-emerald-400">
-                    ${overview.netCashInflow.toFixed(2)}
-                  </p>
-                </div>
-                <div className="border-border/70 bg-muted/20 rounded-xl border p-3">
-                  <span className="text-muted-foreground text-[10px]">Average Ticket (ATV)</span>
-                  <p className="text-foreground font-mono text-base font-black">
-                    ${overview.atv.toFixed(2)}
-                  </p>
-                </div>
-                <div className="border-border/70 bg-muted/20 rounded-xl border p-3">
-                  <span className="text-muted-foreground text-[10px]">Outstanding AR</span>
-                  <p className="text-foreground font-mono text-base font-black text-amber-600 dark:text-amber-400">
-                    ${overview.outstandingAr.toFixed(2)}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Top Services Roster */}
-            <div className="my-6 space-y-2">
-              <h3 className="text-foreground text-xs font-bold tracking-wider uppercase">
-                Top Revenue Offerings
-              </h3>
-              <div className="divide-border/60 border-border/70 divide-y rounded-xl border text-xs">
-                {services.slice(0, 3).map((s) => (
-                  <div key={s.id} className="flex items-center justify-between p-3">
-                    <div>
-                      <p className="font-bold">{s.name}</p>
-                      <span className="text-muted-foreground text-[10px]">{s.category}</span>
+              {/* Accounts Receivable (AR) Aging Breakdown */}
+              {overview.arAging && (
+                <div className="space-y-2">
+                  <h3 className="text-foreground text-xs font-bold tracking-wider uppercase">
+                    Accounts Receivable (AR) Aging Breakdown
+                  </h3>
+                  <div className="divide-border/60 border-border/70 divide-y rounded-xl border text-xs">
+                    <div className="flex items-center justify-between p-3">
+                      <div className="flex items-center gap-2">
+                        <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                        <span className="font-semibold">Current (Within Due Date)</span>
+                      </div>
+                      <div className="text-right">
+                        <span className="font-mono font-bold">
+                          ${overview.arAging.current.amount.toFixed(2)}
+                        </span>
+                        <span className="text-muted-foreground ml-2 text-[10px]">
+                          ({overview.arAging.current.count} inv •{" "}
+                          {overview.arAging.current.percentage}%)
+                        </span>
+                      </div>
                     </div>
-                    <div className="text-right font-mono font-bold">
-                      ${s.revenueGenerated.toFixed(2)} ({s.sharePercentage}%)
+
+                    <div className="flex items-center justify-between p-3">
+                      <div className="flex items-center gap-2">
+                        <span className="h-2 w-2 rounded-full bg-amber-500" />
+                        <span className="font-semibold text-amber-600 dark:text-amber-400">
+                          1–30 Days Overdue (Soft Dunning)
+                        </span>
+                      </div>
+                      <div className="text-right">
+                        <span className="font-mono font-bold text-amber-600 dark:text-amber-400">
+                          ${overview.arAging.overdue1to30.amount.toFixed(2)}
+                        </span>
+                        <span className="text-muted-foreground ml-2 text-[10px]">
+                          ({overview.arAging.overdue1to30.count} inv •{" "}
+                          {overview.arAging.overdue1to30.percentage}%)
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between p-3">
+                      <div className="flex items-center gap-2">
+                        <span className="h-2 w-2 rounded-full bg-rose-500" />
+                        <span className="font-semibold text-rose-600 dark:text-rose-400">
+                          31+ Days Overdue (Critical Aging)
+                        </span>
+                      </div>
+                      <div className="text-right">
+                        <span className="font-mono font-bold text-rose-600 dark:text-rose-400">
+                          ${overview.arAging.overdue31Plus.amount.toFixed(2)}
+                        </span>
+                        <span className="text-muted-foreground ml-2 text-[10px]">
+                          ({overview.arAging.overdue31Plus.count} inv •{" "}
+                          {overview.arAging.overdue31Plus.percentage}%)
+                        </span>
+                      </div>
                     </div>
                   </div>
-                ))}
+                </div>
+              )}
+
+              {/* Top Services Roster */}
+              <div className="space-y-2">
+                <h3 className="text-foreground text-xs font-bold tracking-wider uppercase">
+                  Top Revenue Offerings
+                </h3>
+                <div className="divide-border/60 border-border/70 divide-y rounded-xl border text-xs">
+                  {services.slice(0, 3).map((s) => (
+                    <div key={s.id} className="flex items-center justify-between p-3">
+                      <div>
+                        <p className="font-bold">{s.name}</p>
+                        <span className="text-muted-foreground text-[10px]">{s.category}</span>
+                      </div>
+                      <div className="text-right font-mono font-bold">
+                        ${s.revenueGenerated.toFixed(2)} ({s.sharePercentage}%)
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
             {/* Modal Actions */}
-            <div className="border-border/80 mt-6 flex flex-col-reverse items-center justify-end gap-2 border-t pt-4 sm:flex-row">
+            <div className="border-border/80 mt-6 flex flex-col-reverse items-center justify-end gap-2 border-t pt-4 sm:flex-row print:hidden">
               <Button
                 type="button"
                 variant="outline"
@@ -1110,7 +1380,12 @@ export default function AnalyticsDashboardPage() {
               <Button
                 type="button"
                 size="sm"
-                onClick={() => window.print()}
+                onClick={() =>
+                  printElementById(
+                    "analytics-statement-printable",
+                    `${organizationName} - Financial Statement`
+                  )
+                }
                 className="bg-primary text-primary-foreground w-full cursor-pointer text-xs font-bold shadow-xs sm:w-auto"
               >
                 <Printer className="mr-1.5 h-3.5 w-3.5" />

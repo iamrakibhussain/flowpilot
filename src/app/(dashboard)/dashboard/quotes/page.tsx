@@ -56,8 +56,26 @@ export default function QuotesPage() {
   const newParam = searchParams.get("new");
   const customerIdParam = searchParams.get("customerId");
   const customerNameParam = searchParams.get("customerName");
+  const statusParam = searchParams.get("status")?.toUpperCase();
+  const validStatus =
+    statusParam &&
+    ["DRAFT", "SENT", "VIEWED", "ACCEPTED", "DECLINED", "EXPIRED"].includes(statusParam)
+      ? (statusParam as QuoteStatusType)
+      : null;
 
-  const [statusFilter, setStatusFilter] = React.useState<QuoteStatusType | "ALL">("ALL");
+  // Status filter derived directly from URL searchParams
+  const statusFilter: QuoteStatusType | "ALL" = validStatus || "ALL";
+
+  const handleSelectStatus = (val: QuoteStatusType | "ALL") => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (val === "ALL") {
+      params.delete("status");
+    } else {
+      params.set("status", val);
+    }
+    const qs = params.toString();
+    router.replace(`/dashboard/quotes${qs ? `?${qs}` : ""}`, { scroll: false });
+  };
   const [viewMode, setViewMode] = React.useState<"grid" | "table">("grid");
   const [searchTerm, setSearchTerm] = React.useState("");
   const [debouncedSearch, setDebouncedSearch] = React.useState("");
@@ -332,7 +350,7 @@ export default function QuotesPage() {
           ).map((tab) => (
             <button
               key={tab.value}
-              onClick={() => setStatusFilter(tab.value)}
+              onClick={() => handleSelectStatus(tab.value)}
               className={`rounded-lg px-3 py-1 text-xs font-medium transition-all ${
                 statusFilter === tab.value
                   ? "bg-background text-foreground font-semibold shadow-xs"
