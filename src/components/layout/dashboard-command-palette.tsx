@@ -22,6 +22,7 @@ import {
   BarChart3,
   FileCheck2,
   FolderKanban,
+  FileSignature,
 } from "lucide-react";
 
 export interface DashboardCommandPaletteProps {
@@ -153,6 +154,17 @@ const staticCommandEntries: CommandEntry[] = [
     href: "/dashboard/invoices",
     icon: FileText,
     badge: "Live",
+    badgeVariant: "success",
+  },
+  {
+    id: "nav-contracts",
+    title: "Contracts & E-Signatures",
+    description:
+      "Manage legal agreements, cryptographic signing ceremonies, and audit certificates.",
+    category: "Navigation",
+    href: "/dashboard/contracts",
+    icon: FileSignature,
+    badge: "New",
     badgeVariant: "success",
   },
   {

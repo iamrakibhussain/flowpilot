@@ -185,24 +185,39 @@ export function DashboardNotifications() {
       }
     }
 
-    // 5. Team Invites
+    // 5. Contracts & E-Signatures: open the specific contract inspector drawer
+    if (
+      item.type === "CONTRACT_SENT" ||
+      item.type === "CONTRACT_SIGNED" ||
+      item.type.startsWith("CONTRACT_") ||
+      meta.contractId
+    ) {
+      const contractId = meta.contractId;
+      if (contractId) {
+        router.push(`/dashboard/contracts?contractId=${encodeURIComponent(contractId)}`);
+        return;
+      }
+    }
+
+    // 6. Team Invites
     if (item.type === "TEAM_INVITE") {
       router.push("/dashboard/settings");
       return;
     }
 
-    // 6. Custom actionUrl if present with query or subpath
+    // 7. Custom actionUrl if present with query or subpath
     if (
       item.actionUrl &&
       item.actionUrl !== "/dashboard/invoices" &&
       item.actionUrl !== "/dashboard/quotes" &&
-      item.actionUrl !== "/dashboard/projects"
+      item.actionUrl !== "/dashboard/projects" &&
+      item.actionUrl !== "/dashboard/contracts"
     ) {
       router.push(item.actionUrl);
       return;
     }
 
-    // 7. General fallback
+    // 8. General fallback
     if (item.actionUrl) {
       router.push(item.actionUrl);
       return;
@@ -237,6 +252,10 @@ export function DashboardNotifications() {
         return <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />;
       case "QUOTE_DECLINED":
         return <AlertCircle className="h-4 w-4 text-rose-600 dark:text-rose-400" />;
+      case "CONTRACT_SENT":
+        return <FileCheck2 className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />;
+      case "CONTRACT_SIGNED":
+        return <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />;
       case "TEAM_INVITE":
         return <Users className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />;
       case "SECURITY_ALERT":
@@ -338,7 +357,7 @@ export function DashboardNotifications() {
         </div>
 
         {/* Filter Pills */}
-        <div className="border-border/60 bg-muted/30 flex flex-wrap items-center gap-1.5 border-b px-3 py-2 text-xs">
+        <div className="border-border/60 bg-muted/30 flex [scrollbar-width:none] items-center gap-1.5 overflow-x-auto border-b px-3 py-2 text-xs [&::-webkit-scrollbar]:hidden">
           <button
             type="button"
             onClick={(e) => {

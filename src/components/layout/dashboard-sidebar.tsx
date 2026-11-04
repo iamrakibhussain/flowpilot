@@ -26,6 +26,7 @@ import {
   CreditCard,
   FileCheck2,
   FolderKanban,
+  FileSignature,
 } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import {
@@ -87,6 +88,13 @@ export function DashboardSidebar({
             href: "/dashboard/services",
             icon: Sparkles,
             badge: "Live",
+            badgeVariant: "success",
+          },
+          {
+            name: "Contracts & Signatures",
+            href: "/dashboard/contracts",
+            icon: FileSignature,
+            badge: "New",
             badgeVariant: "success",
           },
           {
