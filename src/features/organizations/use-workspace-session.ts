@@ -15,24 +15,37 @@ export interface WorkspaceSessionState {
   organizationRole: string;
   memberships: OrganizationMembershipSummary[];
   isLoading: boolean;
+  isAuthenticated: boolean;
 }
 
 export function useWorkspaceSession(): WorkspaceSessionState {
   // Use TanStack Query to deduplicate requests across all header/sidebar/dashboard components.
   // The user remains logged in until they explicitly click the logout button.
-  const { data: session, isLoading } = useQuery<AuthSession>({
+  const { data: session, isLoading, isError } = useQuery<AuthSession | null>({
     queryKey: queryKeys.auth.session(),
     queryFn: async () => {
-      const data = await getCurrentUser();
-      if (data?.activeOrganizationId && typeof window !== "undefined") {
-        localStorage.setItem("flowpilot_active_org", data.activeOrganizationId);
+      try {
+        const data = await getCurrentUser();
+        if (data?.activeOrganizationId && typeof window !== "undefined") {
+          localStorage.setItem("flowpilot_active_org", data.activeOrganizationId);
+        }
+        return data;
+      } catch (err: unknown) {
+        const status = (err as { status?: number })?.status;
+        if (status === 401) {
+          return null;
+        }
+        throw err;
       }
-      return data;
     },
     staleTime: 1000 * 60 * 30, // 30 minutes cache time before refreshing in background
     gcTime: 1000 * 60 * 60 * 24, // Retain session in client memory
     refetchOnWindowFocus: false,
-    retry: 1,
+    retry: (failureCount, error: unknown) => {
+      const status = (error as { status?: number })?.status;
+      if (status === 401 || status === 403) return false;
+      return failureCount < 1;
+    },
   });
 
   const activeMembership = React.useMemo(() => {
@@ -49,6 +62,7 @@ export function useWorkspaceSession(): WorkspaceSessionState {
   const userName = session?.user?.name || "User";
   const userEmail = session?.user?.email || "";
   const memberships = session?.memberships || [];
+  const isAuthenticated = Boolean(session?.user?.id && !isError);
 
   return {
     session: session ?? null,
@@ -59,5 +73,6 @@ export function useWorkspaceSession(): WorkspaceSessionState {
     organizationRole,
     memberships,
     isLoading,
+    isAuthenticated,
   };
 }

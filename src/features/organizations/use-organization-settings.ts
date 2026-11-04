@@ -19,14 +19,19 @@ import type {
  * Hook to retrieve full organization configuration and branding settings
  */
 export function useOrganizationSettings() {
-  const { organizationId } = useWorkspaceSession();
+  const { organizationId, isAuthenticated, isLoading } = useWorkspaceSession();
 
   return useQuery<OrganizationSettings>({
     queryKey: queryKeys.organizations.settings(organizationId),
     queryFn: () => getOrganizationSettings(organizationId),
-    enabled: Boolean(organizationId),
+    enabled: Boolean(organizationId && isAuthenticated && !isLoading),
     staleTime: 1000 * 60 * 5, // 5 minutes cache
     refetchOnWindowFocus: false,
+    retry: (failureCount, error: unknown) => {
+      const status = (error as { status?: number })?.status;
+      if (status === 401 || status === 403) return false;
+      return failureCount < 2;
+    },
   });
 }
 
@@ -75,13 +80,18 @@ export function useCheckSlug() {
  * Hook for fetching recent workspace audit trail logs
  */
 export function useWorkspaceAuditLogs(limit = 20) {
-  const { organizationId } = useWorkspaceSession();
+  const { organizationId, isAuthenticated, isLoading } = useWorkspaceSession();
 
   return useQuery<WorkspaceAuditLog[]>({
     queryKey: [...queryKeys.organizations.auditLogs(organizationId), limit],
     queryFn: () => getWorkspaceAuditLogs(limit, organizationId),
-    enabled: Boolean(organizationId),
+    enabled: Boolean(organizationId && isAuthenticated && !isLoading),
     staleTime: 1000 * 30, // 30 seconds
     refetchOnWindowFocus: false,
+    retry: (failureCount, error: unknown) => {
+      const status = (error as { status?: number })?.status;
+      if (status === 401 || status === 403) return false;
+      return failureCount < 2;
+    },
   });
 }

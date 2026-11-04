@@ -29,6 +29,7 @@ import {
   ArrowRight,
   FolderKanban,
   FileCheck2,
+  FileSignature,
   Globe,
   BarChart3,
 } from "lucide-react";
@@ -365,7 +366,7 @@ export default function DashboardOverviewPage() {
       </div>
 
       {/* Enterprise Operations & Client Channels Quick-Launch Bar */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-5">
         {/* Hub 1: Client Portal 2.0 */}
         <Link
           href={`/portal/${orgSlug}/dashboard`}
@@ -425,12 +426,31 @@ export default function DashboardOverviewPage() {
           </div>
         </Link>
 
-        {/* Hub 4: Public Booking Engine */}
+        {/* Hub 4: Contracts & E-Signatures */}
+        <Link
+          href="/dashboard/contracts"
+          className="border-border/80 from-card via-card group flex flex-col justify-between rounded-2xl border bg-gradient-to-b to-amber-500/5 p-3.5 shadow-2xs transition-all duration-200 hover:-translate-y-0.5 hover:border-amber-500/40 hover:shadow-xs sm:p-4"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400">
+              <FileSignature className="h-4 w-4" />
+            </div>
+            <ArrowUpRight className="text-muted-foreground h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-amber-600 dark:group-hover:text-amber-400" />
+          </div>
+          <div className="mt-3">
+            <span className="text-foreground text-xs font-bold">Contracts &amp; E-Sign</span>
+            <p className="text-muted-foreground mt-0.5 line-clamp-1 text-[11px]">
+              SHA-256 Digital Agreements
+            </p>
+          </div>
+        </Link>
+
+        {/* Hub 5: Public Booking Engine */}
         <Link
           href={`/book/${orgSlug}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="border-border/80 from-card via-card group flex flex-col justify-between rounded-2xl border bg-gradient-to-b to-purple-500/5 p-3.5 shadow-2xs transition-all duration-200 hover:-translate-y-0.5 hover:border-purple-500/40 hover:shadow-xs sm:p-4"
+          className="border-border/80 from-card via-card group flex flex-col justify-between rounded-2xl border bg-gradient-to-b to-purple-500/5 p-3.5 shadow-2xs transition-all duration-200 hover:-translate-y-0.5 hover:border-purple-500/40 hover:shadow-xs sm:p-4 col-span-2 sm:col-span-1"
         >
           <div className="flex items-center justify-between">
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400">
@@ -441,7 +461,7 @@ export default function DashboardOverviewPage() {
           <div className="mt-3">
             <span className="text-foreground text-xs font-bold">Public Booking</span>
             <p className="text-muted-foreground mt-0.5 line-clamp-1 text-[11px]">
-              Client Self-Scheduling Engine
+              Client Scheduling Engine
             </p>
           </div>
         </Link>

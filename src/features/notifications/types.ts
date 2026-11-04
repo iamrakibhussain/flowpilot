@@ -7,6 +7,8 @@ export type NotificationType =
   | "QUOTE_SENT"
   | "QUOTE_ACCEPTED"
   | "QUOTE_DECLINED"
+  | "CONTRACT_SENT"
+  | "CONTRACT_SIGNED"
   | "TEAM_INVITE"
   | "SECURITY_ALERT"
   | "PROJECT_CREATED"
