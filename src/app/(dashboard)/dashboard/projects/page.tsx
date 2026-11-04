@@ -216,7 +216,7 @@ export default function ProjectsPage() {
       {/* Filter Tabs & Search Bar */}
       <div className="border-border/70 flex flex-col gap-3 border-b pb-3.5 sm:flex-row sm:items-center sm:justify-between">
         {/* Status Tabs with Live Count Pills */}
-        <div className="flex items-center gap-1.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-1 sm:pb-0">
+        <div className="flex [scrollbar-width:none] items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 [&::-webkit-scrollbar]:hidden">
           {(
             [
               { key: "ALL", label: "All Projects", count: statsData?.totalProjects },

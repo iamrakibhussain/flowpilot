@@ -125,14 +125,16 @@ export function CountersignModal({ contract, isOpen, onClose }: CountersignModal
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="w-[95vw] max-w-lg p-4 sm:p-6 rounded-2xl max-h-[92vh] overflow-y-auto">
+      <DialogContent className="max-h-[92vh] w-[95vw] max-w-lg overflow-y-auto rounded-2xl p-4 sm:p-6">
         <DialogHeader>
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 sm:h-10 sm:w-10 dark:bg-emerald-500/20 dark:text-emerald-400">
               <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
             <div>
-              <DialogTitle className="text-base sm:text-lg font-bold">Countersign Agreement</DialogTitle>
+              <DialogTitle className="text-base font-bold sm:text-lg">
+                Countersign Agreement
+              </DialogTitle>
               <DialogDescription className="text-xs">
                 Finalize {contract?.contractNumber} with your authorized counter-signature.
               </DialogDescription>
@@ -182,13 +184,15 @@ export function CountersignModal({ contract, isOpen, onClose }: CountersignModal
           {/* Signature Area */}
           {signatureMode === "draw" ? (
             <div>
-              <div className="flex flex-wrap items-center justify-between gap-1.5 mb-1.5 text-xs">
-                <span className="text-muted-foreground text-[11px] font-semibold">Select Ink Color</span>
+              <div className="mb-1.5 flex flex-wrap items-center justify-between gap-1.5 text-xs">
+                <span className="text-muted-foreground text-[11px] font-semibold">
+                  Select Ink Color
+                </span>
                 <div className="flex items-center gap-1.5 sm:gap-2">
                   <button
                     type="button"
                     onClick={() => setInkColor("#1d4ed8")}
-                    className={`flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold cursor-pointer ${
+                    className={`flex cursor-pointer items-center gap-1 rounded px-2 py-0.5 text-[10px] font-bold ${
                       inkColor === "#1d4ed8"
                         ? "bg-blue-600 text-white shadow-sm"
                         : "bg-muted text-muted-foreground hover:text-foreground"
@@ -199,13 +203,14 @@ export function CountersignModal({ contract, isOpen, onClose }: CountersignModal
                   <button
                     type="button"
                     onClick={() => setInkColor("#0f172a")}
-                    className={`flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold cursor-pointer ${
+                    className={`flex cursor-pointer items-center gap-1 rounded px-2 py-0.5 text-[10px] font-bold ${
                       inkColor === "#0f172a"
                         ? "bg-slate-900 text-white shadow-sm dark:bg-slate-100 dark:text-slate-900"
                         : "bg-muted text-muted-foreground hover:text-foreground"
                     }`}
                   >
-                    <span className="h-2 w-2 rounded-full bg-slate-900 dark:bg-slate-100" /> Charcoal Black
+                    <span className="h-2 w-2 rounded-full bg-slate-900 dark:bg-slate-100" />{" "}
+                    Charcoal Black
                   </button>
                 </div>
               </div>
@@ -228,19 +233,23 @@ export function CountersignModal({ contract, isOpen, onClose }: CountersignModal
                   <div className="text-muted-foreground pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-xs">
                     <PenTool className="text-muted-foreground/60 mb-1 h-4 w-4" />
                     <span>Draw your authorized signature here</span>
-                    <span className="text-[10px] text-muted-foreground/50 mt-0.5">Mouse, stylus, or touch</span>
+                    <span className="text-muted-foreground/50 mt-0.5 text-[10px]">
+                      Mouse, stylus, or touch
+                    </span>
                   </div>
                 )}
                 {/* Subtle Baseline */}
-                <div className="pointer-events-none absolute bottom-5 left-8 right-8 border-b border-dashed border-slate-300 dark:border-slate-700 flex justify-between">
-                  <span className="text-[8px] font-mono text-slate-400 -mt-3.5">X Authorized Officer</span>
+                <div className="pointer-events-none absolute right-8 bottom-5 left-8 flex justify-between border-b border-dashed border-slate-300 dark:border-slate-700">
+                  <span className="-mt-3.5 font-mono text-[8px] text-slate-400">
+                    X Authorized Officer
+                  </span>
                 </div>
               </div>
               <div className="mt-1 flex justify-end">
                 <button
                   type="button"
                   onClick={clearCanvas}
-                  className="text-muted-foreground hover:text-foreground flex items-center gap-1 text-[11px] font-semibold cursor-pointer"
+                  className="text-muted-foreground hover:text-foreground flex cursor-pointer items-center gap-1 text-[11px] font-semibold"
                 >
                   <RotateCcw className="h-3 w-3" /> Clear canvas
                 </button>
@@ -265,15 +274,20 @@ export function CountersignModal({ contract, isOpen, onClose }: CountersignModal
             </p>
           </div>
 
-          <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 pt-2">
-            <Button variant="outline" size="sm" onClick={onClose} className="w-full sm:w-auto cursor-pointer">
+          <div className="flex flex-col-reverse justify-end gap-2 pt-2 sm:flex-row">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onClose}
+              className="w-full cursor-pointer sm:w-auto"
+            >
               Cancel
             </Button>
             <Button
               size="sm"
               disabled={!isSignReady || countersignMutation.isPending}
               onClick={handleCountersign}
-              className="w-full sm:w-auto bg-emerald-600 font-bold text-white shadow-md hover:bg-emerald-700 cursor-pointer"
+              className="w-full cursor-pointer bg-emerald-600 font-bold text-white shadow-md hover:bg-emerald-700 sm:w-auto"
             >
               {countersignMutation.isPending ? (
                 <>

@@ -31,4 +31,3 @@ describe("Contracts & E-Signatures Feature Unit Suite", () => {
     expect(mockChecksum).toHaveLength(64);
   });
 });
-

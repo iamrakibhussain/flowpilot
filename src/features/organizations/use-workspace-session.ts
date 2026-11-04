@@ -21,7 +21,11 @@ export interface WorkspaceSessionState {
 export function useWorkspaceSession(): WorkspaceSessionState {
   // Use TanStack Query to deduplicate requests across all header/sidebar/dashboard components.
   // The user remains logged in until they explicitly click the logout button.
-  const { data: session, isLoading, isError } = useQuery<AuthSession | null>({
+  const {
+    data: session,
+    isLoading,
+    isError,
+  } = useQuery<AuthSession | null>({
     queryKey: queryKeys.auth.session(),
     queryFn: async () => {
       try {

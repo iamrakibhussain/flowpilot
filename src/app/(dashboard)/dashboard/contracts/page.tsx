@@ -13,9 +13,7 @@ import {
   ExternalLink,
   Copy,
   Check,
-  FileCheck2,
   Trash2,
-  Sparkles,
   Eye,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -125,9 +123,6 @@ export default function ContractsPage() {
   const pendingCount = contracts.filter(
     (c) => c.status === "PENDING_SIGNATURE" || c.status === "VIEWED"
   ).length;
-  const signedCount = contracts.filter(
-    (c) => c.status === "SIGNED" || c.status === "COUNTERSIGNED"
-  ).length;
   const readyToCountersignCount = contracts.filter((c) => c.status === "SIGNED").length;
   const finalizedCount = contracts.filter((c) => c.status === "COUNTERSIGNED").length;
   const draftCount = contracts.filter((c) => c.status === "DRAFT").length;
@@ -207,19 +202,20 @@ export default function ContractsPage() {
             <h1 className="text-foreground text-2xl font-black tracking-tight sm:text-3xl">
               Contracts & E-Signatures
             </h1>
-            <span className="rounded-full bg-blue-500/10 border border-blue-500/30 px-2.5 py-0.5 text-[11px] font-extrabold text-blue-600 dark:bg-blue-500/20 dark:text-blue-400">
+            <span className="rounded-full border border-blue-500/30 bg-blue-500/10 px-2.5 py-0.5 text-[11px] font-extrabold text-blue-600 dark:bg-blue-500/20 dark:text-blue-400">
               ESIGN & UETA Active
             </span>
           </div>
           <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
-            Draft, dispatch, and legally execute binding commercial agreements with cryptographic SHA-256 digital audit trails.
+            Draft, dispatch, and legally execute binding commercial agreements with cryptographic
+            SHA-256 digital audit trails.
           </p>
         </div>
 
-        <div className="flex items-center gap-2 w-full sm:w-auto">
+        <div className="flex w-full items-center gap-2 sm:w-auto">
           <Button
             onClick={() => setIsCreateModalOpen(true)}
-            className="w-full sm:w-auto cursor-pointer rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 px-4 py-2 text-xs font-bold text-white shadow-lg shadow-blue-500/25 hover:from-blue-700 hover:to-indigo-800 transition-all justify-center"
+            className="w-full cursor-pointer justify-center rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 px-4 py-2 text-xs font-bold text-white shadow-lg shadow-blue-500/25 transition-all hover:from-blue-700 hover:to-indigo-800 sm:w-auto"
           >
             <Plus className="mr-1.5 h-4 w-4" /> Draft Contract
           </Button>
@@ -231,8 +227,8 @@ export default function ContractsPage() {
         {/* Total Contracts */}
         <div
           onClick={() => handleSelectStatusTab("ALL")}
-          className={`border-border/80 bg-card rounded-2xl border p-4 shadow-sm transition-all cursor-pointer hover:border-blue-500/50 hover:shadow-md ${
-            activeStatusTab === "ALL" ? "ring-2 ring-blue-500/40 border-blue-500/60" : ""
+          className={`border-border/80 bg-card cursor-pointer rounded-2xl border p-4 shadow-sm transition-all hover:border-blue-500/50 hover:shadow-md ${
+            activeStatusTab === "ALL" ? "border-blue-500/60 ring-2 ring-blue-500/40" : ""
           }`}
         >
           <div className="text-muted-foreground flex items-center justify-between">
@@ -246,8 +242,10 @@ export default function ContractsPage() {
         {/* Awaiting Signature */}
         <div
           onClick={() => handleSelectStatusTab("PENDING_SIGNATURE")}
-          className={`border-border/80 bg-card rounded-2xl border p-4 shadow-sm transition-all cursor-pointer hover:border-amber-500/50 hover:shadow-md ${
-            activeStatusTab === "PENDING_SIGNATURE" ? "ring-2 ring-amber-500/40 border-amber-500/60" : ""
+          className={`border-border/80 bg-card cursor-pointer rounded-2xl border p-4 shadow-sm transition-all hover:border-amber-500/50 hover:shadow-md ${
+            activeStatusTab === "PENDING_SIGNATURE"
+              ? "border-amber-500/60 ring-2 ring-amber-500/40"
+              : ""
           }`}
         >
           <div className="text-muted-foreground flex items-center justify-between">
@@ -265,8 +263,8 @@ export default function ContractsPage() {
         {/* Ready to Countersign */}
         <div
           onClick={() => handleSelectStatusTab("SIGNED")}
-          className={`border-border/80 bg-card rounded-2xl border p-4 shadow-sm transition-all cursor-pointer hover:border-emerald-500/50 hover:shadow-md ${
-            activeStatusTab === "SIGNED" ? "ring-2 ring-emerald-500/40 border-emerald-500/60" : ""
+          className={`border-border/80 bg-card cursor-pointer rounded-2xl border p-4 shadow-sm transition-all hover:border-emerald-500/50 hover:shadow-md ${
+            activeStatusTab === "SIGNED" ? "border-emerald-500/60 ring-2 ring-emerald-500/40" : ""
           }`}
         >
           <div className="text-muted-foreground flex items-center justify-between">
@@ -284,8 +282,10 @@ export default function ContractsPage() {
         {/* Finalized Sealed */}
         <div
           onClick={() => handleSelectStatusTab("COUNTERSIGNED")}
-          className={`border-border/80 bg-card rounded-2xl border p-4 shadow-sm transition-all cursor-pointer hover:border-indigo-500/50 hover:shadow-md ${
-            activeStatusTab === "COUNTERSIGNED" ? "ring-2 ring-indigo-500/40 border-indigo-500/60" : ""
+          className={`border-border/80 bg-card cursor-pointer rounded-2xl border p-4 shadow-sm transition-all hover:border-indigo-500/50 hover:shadow-md ${
+            activeStatusTab === "COUNTERSIGNED"
+              ? "border-indigo-500/60 ring-2 ring-indigo-500/40"
+              : ""
           }`}
         >
           <div className="text-muted-foreground flex items-center justify-between">
@@ -301,20 +301,35 @@ export default function ContractsPage() {
 
       {/* Filter Tabs & Search Bar */}
       <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
-        <div className="border-border/80 bg-muted/40 flex items-center gap-1.5 rounded-xl border p-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="border-border/80 bg-muted/40 flex [scrollbar-width:none] items-center gap-1.5 overflow-x-auto rounded-xl border p-1 [&::-webkit-scrollbar]:hidden">
           {[
             { id: "ALL", label: "All Contracts", shortLabel: "All", count: totalContracts },
-            { id: "PENDING_SIGNATURE", label: "Awaiting Signature", shortLabel: "Awaiting", count: pendingCount },
-            { id: "SIGNED", label: "Ready to Countersign", shortLabel: "Ready", count: readyToCountersignCount },
-            { id: "COUNTERSIGNED", label: "Finalized", shortLabel: "Finalized", count: finalizedCount },
+            {
+              id: "PENDING_SIGNATURE",
+              label: "Awaiting Signature",
+              shortLabel: "Awaiting",
+              count: pendingCount,
+            },
+            {
+              id: "SIGNED",
+              label: "Ready to Countersign",
+              shortLabel: "Ready",
+              count: readyToCountersignCount,
+            },
+            {
+              id: "COUNTERSIGNED",
+              label: "Finalized",
+              shortLabel: "Finalized",
+              count: finalizedCount,
+            },
             { id: "DRAFT", label: "Drafts", shortLabel: "Drafts", count: draftCount },
           ].map((tab) => (
             <button
               key={tab.id}
               onClick={() => handleSelectStatusTab(tab.id as "ALL" | ContractStatus)}
-              className={`flex items-center gap-1.5 rounded-lg px-2.5 sm:px-3 py-1.5 text-xs font-semibold transition-all shrink-0 cursor-pointer ${
+              className={`flex shrink-0 cursor-pointer items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-all sm:px-3 ${
                 activeStatusTab === tab.id
-                  ? "bg-background text-foreground shadow-sm font-bold"
+                  ? "bg-background text-foreground font-bold shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -322,7 +337,7 @@ export default function ContractsPage() {
               <span className="hidden sm:inline">{tab.label}</span>
               {tab.count !== undefined && (
                 <span
-                  className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono ${
+                  className={`py-0.2 rounded-full px-1.5 font-mono text-[10px] ${
                     activeStatusTab === tab.id
                       ? "bg-blue-600 text-white"
                       : "bg-muted text-muted-foreground"
@@ -369,7 +384,7 @@ export default function ContractsPage() {
             <Button
               size="sm"
               onClick={() => setIsCreateModalOpen(true)}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 font-bold text-white shadow-md hover:from-blue-700 hover:to-indigo-700 cursor-pointer"
+              className="cursor-pointer bg-gradient-to-r from-blue-600 to-indigo-600 font-bold text-white shadow-md hover:from-blue-700 hover:to-indigo-700"
             >
               <Plus className="mr-1.5 h-3.5 w-3.5" /> Draft Contract
             </Button>
@@ -383,31 +398,31 @@ export default function ContractsPage() {
               contract.status === "COUNTERSIGNED"
                 ? "border-l-emerald-500 hover:border-l-emerald-600"
                 : contract.status === "SIGNED"
-                ? "border-l-emerald-400 hover:border-l-emerald-500"
-                : contract.status === "PENDING_SIGNATURE"
-                ? "border-l-amber-500 hover:border-l-amber-600"
-                : contract.status === "VIEWED"
-                ? "border-l-blue-500 hover:border-l-blue-600"
-                : contract.status === "DECLINED"
-                ? "border-l-rose-500 hover:border-l-rose-600"
-                : "border-l-slate-400 hover:border-l-slate-500";
+                  ? "border-l-emerald-400 hover:border-l-emerald-500"
+                  : contract.status === "PENDING_SIGNATURE"
+                    ? "border-l-amber-500 hover:border-l-amber-600"
+                    : contract.status === "VIEWED"
+                      ? "border-l-blue-500 hover:border-l-blue-600"
+                      : contract.status === "DECLINED"
+                        ? "border-l-rose-500 hover:border-l-rose-600"
+                        : "border-l-slate-400 hover:border-l-slate-500";
 
             return (
               <div
                 key={contract.id}
                 onClick={() => handleOpenInspection(contract)}
-                className={`group border-border/80 bg-card flex flex-col justify-between gap-4 rounded-2xl border border-l-4 ${borderAccent} p-4 transition-all hover:shadow-lg hover:border-blue-500/40 sm:flex-row sm:items-center sm:p-5 cursor-pointer relative overflow-hidden`}
+                className={`group border-border/80 bg-card flex flex-col justify-between gap-4 rounded-2xl border border-l-4 ${borderAccent} relative cursor-pointer overflow-hidden p-4 transition-all hover:border-blue-500/40 hover:shadow-lg sm:flex-row sm:items-center sm:p-5`}
               >
                 <div className="flex items-start gap-3.5">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500/15 to-indigo-500/15 border border-blue-500/20 text-blue-600 font-extrabold text-sm dark:text-blue-400 shadow-sm">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-blue-500/20 bg-gradient-to-br from-blue-500/15 to-indigo-500/15 text-sm font-extrabold text-blue-600 shadow-sm dark:text-blue-400">
                     {clientInitial}
                   </div>
                   <div>
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-muted-foreground font-mono text-xs font-bold bg-muted/60 px-2 py-0.5 rounded-md border border-border/50">
+                      <span className="text-muted-foreground bg-muted/60 border-border/50 rounded-md border px-2 py-0.5 font-mono text-xs font-bold">
                         {contract.contractNumber}
                       </span>
-                      <h3 className="text-foreground text-sm font-bold group-hover:text-blue-600 transition-colors">
+                      <h3 className="text-foreground text-sm font-bold transition-colors group-hover:text-blue-600">
                         {contract.title}
                       </h3>
                       {getStatusBadge(contract.status)}
@@ -415,7 +430,8 @@ export default function ContractsPage() {
 
                     <div className="text-muted-foreground mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
                       <span className="font-medium">
-                        Client: <strong className="text-foreground">{contract.customer?.name}</strong>{" "}
+                        Client:{" "}
+                        <strong className="text-foreground">{contract.customer?.name}</strong>{" "}
                         {contract.customer?.company && (
                           <span className="text-muted-foreground/80 font-normal">
                             ({contract.customer.company})
@@ -427,7 +443,7 @@ export default function ContractsPage() {
                       {contract.signerName && (
                         <>
                           <span>•</span>
-                          <span className="text-emerald-600 font-bold dark:text-emerald-400">
+                          <span className="font-bold text-emerald-600 dark:text-emerald-400">
                             Signed by {contract.signerName}
                           </span>
                         </>
@@ -435,8 +451,10 @@ export default function ContractsPage() {
                     </div>
 
                     {/* Progress Milestone Line */}
-                    <div className="mt-2.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px] text-muted-foreground">
-                      <span className="font-semibold text-slate-700 dark:text-slate-300">Timeline:</span>
+                    <div className="text-muted-foreground mt-2.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px]">
+                      <span className="font-semibold text-slate-700 dark:text-slate-300">
+                        Timeline:
+                      </span>
                       <div className="flex flex-wrap items-center gap-1 font-mono">
                         <span className="font-bold text-blue-600 dark:text-blue-400">Draft</span>
                         <span>→</span>
@@ -483,7 +501,7 @@ export default function ContractsPage() {
                         </span>
                       </div>
                       {contract.contentChecksum && (
-                        <div className="hidden md:flex items-center gap-1 font-mono text-[9px] text-emerald-600 dark:text-emerald-400 ml-2">
+                        <div className="ml-2 hidden items-center gap-1 font-mono text-[9px] text-emerald-600 md:flex dark:text-emerald-400">
                           <ShieldCheck className="h-3 w-3" />
                           <span>SHA-256 Verified</span>
                         </div>
@@ -493,7 +511,7 @@ export default function ContractsPage() {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex flex-wrap items-center gap-2 sm:shrink-0 pt-3 border-t border-border/50 sm:pt-0 sm:border-t-0 w-full sm:w-auto">
+                <div className="border-border/50 flex w-full flex-wrap items-center gap-2 border-t pt-3 sm:w-auto sm:shrink-0 sm:border-t-0 sm:pt-0">
                   {/* View Agreement */}
                   <Button
                     size="sm"
@@ -502,7 +520,7 @@ export default function ContractsPage() {
                       e.stopPropagation();
                       handleOpenInspection(contract);
                     }}
-                    className="flex-1 sm:flex-none justify-center cursor-pointer gap-1.5 text-xs font-semibold hover:border-blue-500/40 hover:bg-blue-50/50 dark:hover:bg-blue-950/20"
+                    className="flex-1 cursor-pointer justify-center gap-1.5 text-xs font-semibold hover:border-blue-500/40 hover:bg-blue-50/50 sm:flex-none dark:hover:bg-blue-950/20"
                   >
                     <Eye className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" /> View Agreement
                   </Button>
@@ -516,7 +534,7 @@ export default function ContractsPage() {
                         handleSendForSignature(contract);
                       }}
                       disabled={sendMutation.isPending}
-                      className="flex-1 sm:flex-none justify-center cursor-pointer border-blue-500/40 text-blue-600 hover:bg-blue-500/10 dark:text-blue-400 font-semibold"
+                      className="flex-1 cursor-pointer justify-center border-blue-500/40 font-semibold text-blue-600 hover:bg-blue-500/10 sm:flex-none dark:text-blue-400"
                     >
                       <Send className="mr-1.5 h-3.5 w-3.5" /> Send for Signature
                     </Button>
@@ -531,7 +549,7 @@ export default function ContractsPage() {
                           e.stopPropagation();
                           handleCopySigningLink(contract);
                         }}
-                        className="flex-1 sm:flex-none justify-center cursor-pointer"
+                        className="flex-1 cursor-pointer justify-center sm:flex-none"
                       >
                         {copiedContractId === contract.id ? (
                           <>
@@ -550,7 +568,7 @@ export default function ContractsPage() {
                           target="_blank"
                           rel="noreferrer"
                           onClick={(e) => e.stopPropagation()}
-                          className="flex-1 sm:flex-none justify-center border-border text-foreground hover:bg-muted inline-flex h-8 items-center rounded-xl border px-3 text-xs font-semibold"
+                          className="border-border text-foreground hover:bg-muted inline-flex h-8 flex-1 items-center justify-center rounded-xl border px-3 text-xs font-semibold sm:flex-none"
                         >
                           <ExternalLink className="mr-1.5 h-3.5 w-3.5" /> Preview Sign
                         </a>
@@ -565,7 +583,7 @@ export default function ContractsPage() {
                         e.stopPropagation();
                         setSelectedContractForCountersign(contract);
                       }}
-                      className="w-full sm:w-auto justify-center cursor-pointer bg-gradient-to-r from-emerald-600 to-teal-600 font-bold text-white shadow-md hover:from-emerald-700 hover:to-teal-700"
+                      className="w-full cursor-pointer justify-center bg-gradient-to-r from-emerald-600 to-teal-600 font-bold text-white shadow-md hover:from-emerald-700 hover:to-teal-700 sm:w-auto"
                     >
                       <FileSignature className="mr-1.5 h-3.5 w-3.5" /> Countersign Agreement
                     </Button>
@@ -577,7 +595,7 @@ export default function ContractsPage() {
                       target="_blank"
                       rel="noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      className="flex-1 sm:flex-none justify-center inline-flex h-8 items-center rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-3 text-xs font-extrabold text-emerald-700 hover:bg-emerald-500/20 dark:text-emerald-300 shadow-sm"
+                      className="inline-flex h-8 flex-1 items-center justify-center rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-3 text-xs font-extrabold text-emerald-700 shadow-sm hover:bg-emerald-500/20 sm:flex-none dark:text-emerald-300"
                     >
                       <ShieldCheck className="mr-1.5 h-3.5 w-3.5 text-emerald-600" /> Certificate
                     </a>
@@ -591,7 +609,7 @@ export default function ContractsPage() {
                         e.stopPropagation();
                         deleteMutation.mutate(contract.id);
                       }}
-                      className="text-rose-500 hover:bg-rose-500/10 hover:text-rose-600 cursor-pointer shrink-0"
+                      className="shrink-0 cursor-pointer text-rose-500 hover:bg-rose-500/10 hover:text-rose-600"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>

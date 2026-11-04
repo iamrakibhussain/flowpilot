@@ -336,7 +336,7 @@ export default function QuotesPage() {
 
       {/* Filter Tabs & Search Bar */}
       <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
-        <div className="bg-muted/50 border-border/60 flex items-center gap-1.5 rounded-xl border p-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="bg-muted/50 border-border/60 flex [scrollbar-width:none] items-center gap-1.5 overflow-x-auto rounded-xl border p-1 [&::-webkit-scrollbar]:hidden">
           {(
             [
               { label: "All", value: "ALL" },
@@ -351,7 +351,7 @@ export default function QuotesPage() {
             <button
               key={tab.value}
               onClick={() => handleSelectStatus(tab.value)}
-              className={`rounded-lg px-3 py-1 text-xs font-medium transition-all shrink-0 cursor-pointer ${
+              className={`shrink-0 cursor-pointer rounded-lg px-3 py-1 text-xs font-medium transition-all ${
                 statusFilter === tab.value
                   ? "bg-background text-foreground font-semibold shadow-xs"
                   : "text-muted-foreground hover:text-foreground"

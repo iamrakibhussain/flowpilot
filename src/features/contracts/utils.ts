@@ -55,7 +55,9 @@ export function interpolateContractVariables(
   const businessName = context.businessName?.trim() || "FlowPilot Enterprise";
   const contractNumber = context.contractNumber?.trim() || "CNT-DRAFT";
   const effectiveDate = formatLegalDate(context.effectiveDate);
-  const expiresDate = context.expiresDate ? formatLegalDate(context.expiresDate) : "Until Terminated";
+  const expiresDate = context.expiresDate
+    ? formatLegalDate(context.expiresDate)
+    : "Until Terminated";
 
   let interpolated = content
     // Client Name
@@ -190,4 +192,3 @@ export function parseContractClauses(rawContent: string): ContractClause[] {
   flushParagraph();
   return clauses;
 }
-

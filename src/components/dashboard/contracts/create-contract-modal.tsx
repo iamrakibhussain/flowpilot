@@ -14,7 +14,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { useCustomers } from "@/features/customers/use-customers";
 import { useCreateContract } from "@/features/contracts/use-contracts";
-import { Sparkles, ShieldCheck, Loader2, FileSignature, Wand2, Eye, PenLine, Check } from "lucide-react";
+import {
+  Sparkles,
+  ShieldCheck,
+  Loader2,
+  FileSignature,
+  Wand2,
+  Eye,
+  PenLine,
+  Check,
+} from "lucide-react";
 import { interpolateContractVariables } from "@/features/contracts/utils";
 import { ContractDocumentPaper } from "./contract-document-paper";
 
@@ -195,14 +204,16 @@ export function CreateContractModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-h-[92vh] w-[95vw] max-w-3xl overflow-y-auto p-4 sm:p-6 rounded-2xl">
+      <DialogContent className="max-h-[92vh] w-[95vw] max-w-3xl overflow-y-auto rounded-2xl p-4 sm:p-6">
         <DialogHeader>
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 sm:h-10 sm:w-10 dark:bg-blue-500/20 dark:text-blue-400">
               <FileSignature className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
             <div>
-              <DialogTitle className="text-base sm:text-lg font-bold">Draft Legal Contract</DialogTitle>
+              <DialogTitle className="text-base font-bold sm:text-lg">
+                Draft Legal Contract
+              </DialogTitle>
               <DialogDescription className="text-xs">
                 Draft a legally binding agreement ready for cryptographic client e-signature.
               </DialogDescription>
@@ -221,7 +232,7 @@ export function CreateContractModal({
                 <button
                   type="button"
                   onClick={handleAutoFillVariables}
-                  className="flex items-center gap-1 text-[11px] font-semibold text-blue-600 hover:text-blue-700 cursor-pointer dark:text-blue-400"
+                  className="flex cursor-pointer items-center gap-1 text-[11px] font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400"
                 >
                   <Wand2 className="h-3 w-3" /> Auto-fill client into template
                 </button>
@@ -261,17 +272,21 @@ export function CreateContractModal({
                     type="button"
                     key={tmpl.name}
                     onClick={() => applyTemplate(tmpl)}
-                    className={`flex flex-col items-start rounded-xl border p-3 text-left transition-all cursor-pointer relative ${
+                    className={`relative flex cursor-pointer flex-col items-start rounded-xl border p-3 text-left transition-all ${
                       isSelected
                         ? "border-blue-500 bg-blue-500/10 shadow-sm ring-1 ring-blue-500/30"
                         : "border-border/70 hover:border-primary/50 hover:bg-muted/40"
                     }`}
                   >
-                    <div className="flex items-center justify-between w-full">
-                      <span className={`text-xs font-bold ${isSelected ? "text-blue-600 dark:text-blue-400" : "text-foreground"}`}>
+                    <div className="flex w-full items-center justify-between">
+                      <span
+                        className={`text-xs font-bold ${isSelected ? "text-blue-600 dark:text-blue-400" : "text-foreground"}`}
+                      >
                         {tmpl.name}
                       </span>
-                      {isSelected && <Check className="h-3.5 w-3.5 text-blue-600 shrink-0 dark:text-blue-400" />}
+                      {isSelected && (
+                        <Check className="h-3.5 w-3.5 shrink-0 text-blue-600 dark:text-blue-400" />
+                      )}
                     </div>
                     <span className="text-muted-foreground mt-1 line-clamp-2 text-[10px] leading-relaxed">
                       {tmpl.description}
@@ -310,12 +325,12 @@ export function CreateContractModal({
           </div>
 
           {/* Mode Switcher: Edit Terms vs Live Legal Paper Preview */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border/80 pb-2 pt-1">
-            <div className="flex w-full sm:w-auto items-center gap-1 rounded-xl bg-muted/60 p-1">
+          <div className="border-border/80 flex flex-col justify-between gap-2 border-b pt-1 pb-2 sm:flex-row sm:items-center">
+            <div className="bg-muted/60 flex w-full items-center gap-1 rounded-xl p-1 sm:w-auto">
               <button
                 type="button"
                 onClick={() => setViewTab("edit")}
-                className={`flex flex-1 sm:flex-none items-center justify-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all cursor-pointer ${
+                className={`flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all sm:flex-none ${
                   viewTab === "edit"
                     ? "bg-background text-foreground shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
@@ -327,7 +342,7 @@ export function CreateContractModal({
               <button
                 type="button"
                 onClick={() => setViewTab("preview")}
-                className={`flex flex-1 sm:flex-none items-center justify-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all cursor-pointer ${
+                className={`flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all sm:flex-none ${
                   viewTab === "preview"
                     ? "bg-background text-foreground shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
@@ -339,7 +354,7 @@ export function CreateContractModal({
             </div>
 
             {viewTab === "edit" && (
-              <span className="text-[10px] text-muted-foreground font-mono">
+              <span className="text-muted-foreground font-mono text-[10px]">
                 Markdown headings & variables supported
               </span>
             )}
@@ -365,7 +380,7 @@ export function CreateContractModal({
                       key={v.tag}
                       type="button"
                       onClick={() => insertVariable(v.tag)}
-                      className="border-border/80 bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground rounded-lg border px-2.5 py-1 font-mono text-[10px] font-semibold transition-colors cursor-pointer"
+                      className="border-border/80 bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground cursor-pointer rounded-lg border px-2.5 py-1 font-mono text-[10px] font-semibold transition-colors"
                     >
                       + {v.tag}
                     </button>
@@ -376,7 +391,8 @@ export function CreateContractModal({
               {/* Content Editor */}
               <div>
                 <label className="text-foreground text-xs font-semibold">
-                  Contract Terms & Clauses (Markdown / Text) <span className="text-rose-500">*</span>
+                  Contract Terms & Clauses (Markdown / Text){" "}
+                  <span className="text-rose-500">*</span>
                 </label>
                 <textarea
                   rows={9}
@@ -393,7 +409,7 @@ export function CreateContractModal({
               </div>
             </>
           ) : (
-            <div className="rounded-2xl border border-slate-200 bg-slate-100/70 p-2 sm:p-4 max-h-[50vh] overflow-y-auto dark:border-slate-800 dark:bg-slate-950/60 shadow-inner">
+            <div className="max-h-[50vh] overflow-y-auto rounded-2xl border border-slate-200 bg-slate-100/70 p-2 shadow-inner sm:p-4 dark:border-slate-800 dark:bg-slate-950/60">
               <ContractDocumentPaper
                 contract={{
                   id: "preview-contract",
@@ -425,20 +441,26 @@ export function CreateContractModal({
           )}
 
           {/* Footer Actions */}
-          <div className="border-border/60 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 border-t pt-4">
+          <div className="border-border/60 flex flex-col-reverse gap-3 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="text-muted-foreground flex items-center gap-1.5 text-[11px]">
-              <ShieldCheck className="h-4 w-4 text-emerald-500 shrink-0" />
+              <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-500" />
               <span>SHA-256 cryptographic audit trail attached on signature.</span>
             </div>
-            <div className="flex items-center gap-2 justify-end w-full sm:w-auto">
-              <Button type="button" variant="outline" size="sm" onClick={onClose} className="w-full sm:w-auto cursor-pointer">
+            <div className="flex w-full items-center justify-end gap-2 sm:w-auto">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={onClose}
+                className="w-full cursor-pointer sm:w-auto"
+              >
                 Cancel
               </Button>
               <Button
                 type="submit"
                 size="sm"
                 disabled={createMutation.isPending}
-                className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 font-semibold text-white shadow-md hover:from-blue-700 hover:to-indigo-700 cursor-pointer"
+                className="w-full cursor-pointer bg-gradient-to-r from-blue-600 to-indigo-600 font-semibold text-white shadow-md hover:from-blue-700 hover:to-indigo-700 sm:w-auto"
               >
                 {createMutation.isPending ? (
                   <>

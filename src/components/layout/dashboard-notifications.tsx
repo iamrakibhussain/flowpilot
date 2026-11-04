@@ -357,7 +357,7 @@ export function DashboardNotifications() {
         </div>
 
         {/* Filter Pills */}
-        <div className="border-border/60 bg-muted/30 flex items-center gap-1.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden border-b px-3 py-2 text-xs">
+        <div className="border-border/60 bg-muted/30 flex [scrollbar-width:none] items-center gap-1.5 overflow-x-auto border-b px-3 py-2 text-xs [&::-webkit-scrollbar]:hidden">
           <button
             type="button"
             onClick={(e) => {

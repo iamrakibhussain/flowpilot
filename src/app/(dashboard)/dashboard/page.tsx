@@ -450,7 +450,7 @@ export default function DashboardOverviewPage() {
           href={`/book/${orgSlug}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="border-border/80 from-card via-card group flex flex-col justify-between rounded-2xl border bg-gradient-to-b to-purple-500/5 p-3.5 shadow-2xs transition-all duration-200 hover:-translate-y-0.5 hover:border-purple-500/40 hover:shadow-xs sm:p-4 col-span-2 sm:col-span-1"
+          className="border-border/80 from-card via-card group col-span-2 flex flex-col justify-between rounded-2xl border bg-gradient-to-b to-purple-500/5 p-3.5 shadow-2xs transition-all duration-200 hover:-translate-y-0.5 hover:border-purple-500/40 hover:shadow-xs sm:col-span-1 sm:p-4"
         >
           <div className="flex items-center justify-between">
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400">

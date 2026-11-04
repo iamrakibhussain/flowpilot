@@ -212,11 +212,11 @@ export default function PublicContractSigningPage() {
               variant="outline"
               size="sm"
               onClick={handlePrint}
-              className="gap-1.5 text-xs font-semibold cursor-pointer"
+              className="cursor-pointer gap-1.5 text-xs font-semibold"
             >
               <Printer className="h-3.5 w-3.5" /> Print / Save PDF
             </Button>
-            <div className="hidden sm:flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
+            <div className="hidden items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-600 sm:flex dark:text-emerald-400">
               <Lock className="h-3 w-3" /> 256-bit Encrypted
             </div>
           </div>
@@ -227,8 +227,8 @@ export default function PublicContractSigningPage() {
       <main className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
         {/* Guiding Action Banner for Signatories */}
         {!isSigned && !isDeclined && (
-          <div className="mb-6 rounded-2xl border border-blue-500/30 bg-blue-500/10 p-4 sm:p-5 shadow-sm">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="mb-6 rounded-2xl border border-blue-500/30 bg-blue-500/10 p-4 shadow-sm sm:p-5">
+            <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
               <div className="flex items-start gap-3.5">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-white shadow-md shadow-blue-500/20">
                   <FileSignature className="h-5 w-5" />
@@ -237,14 +237,16 @@ export default function PublicContractSigningPage() {
                   <h3 className="text-sm font-bold text-blue-900 dark:text-blue-200">
                     Review & Complete Electronic Signature
                   </h3>
-                  <p className="mt-0.5 text-xs text-blue-800/80 dark:text-blue-300/80 leading-relaxed">
-                    Please carefully review the formal terms of this commercial agreement below. When ready, draw or type your signature in the signature section at the bottom of the page.
+                  <p className="mt-0.5 text-xs leading-relaxed text-blue-800/80 dark:text-blue-300/80">
+                    Please carefully review the formal terms of this commercial agreement below.
+                    When ready, draw or type your signature in the signature section at the bottom
+                    of the page.
                   </p>
                 </div>
               </div>
               <a
                 href="#signature-execution-card"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/20 transition-all shrink-0 cursor-pointer"
+                className="inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 text-xs font-bold text-white shadow-md shadow-blue-500/20 transition-all hover:bg-blue-700"
               >
                 <PenTool className="h-3.5 w-3.5" /> Jump to Sign ↓
               </a>
@@ -255,7 +257,7 @@ export default function PublicContractSigningPage() {
         {/* Status Notification Banners */}
         {isSigned && (
           <div className="mb-6 rounded-2xl border border-emerald-500/40 bg-emerald-500/10 p-5 shadow-sm">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
               <div className="flex items-start gap-3.5">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-md">
                   <CheckCircle2 className="h-5 w-5" />
@@ -282,7 +284,7 @@ export default function PublicContractSigningPage() {
 
               <Button
                 onClick={handlePrint}
-                className="w-full sm:w-auto bg-emerald-600 font-bold text-white shadow-md hover:bg-emerald-700 gap-1.5 cursor-pointer"
+                className="w-full cursor-pointer gap-1.5 bg-emerald-600 font-bold text-white shadow-md hover:bg-emerald-700 sm:w-auto"
               >
                 <Printer className="h-4 w-4" /> Download Official PDF
               </Button>
@@ -298,7 +300,7 @@ export default function PublicContractSigningPage() {
                 <h3 className="text-sm font-bold text-rose-800 dark:text-rose-300">
                   Document Marked as Declined
                 </h3>
-                <p className="text-xs text-rose-700 dark:text-rose-400 mt-1">
+                <p className="mt-1 text-xs text-rose-700 dark:text-rose-400">
                   This document was declined by the recipient. Contact the service provider if you
                   wish to request an updated proposal.
                 </p>
@@ -308,30 +310,25 @@ export default function PublicContractSigningPage() {
         )}
 
         {/* High-Fidelity Legal Paper Display */}
-        <div className="overflow-hidden shadow-2xl rounded-2xl">
-          <ContractDocumentPaper
-            contract={contract}
-            elementId="public-signing-contract-paper"
-          />
+        <div className="overflow-hidden rounded-2xl shadow-2xl">
+          <ContractDocumentPaper contract={contract} elementId="public-signing-contract-paper" />
         </div>
 
         {/* Signing Ceremony Form (Displayed Only when Not Signed and Not Declined) */}
         {!isSigned && !isDeclined && (
           <div
             id="signature-execution-card"
-            className="mt-8 sm:mt-10 border-border/80 bg-card rounded-2xl border p-4 sm:p-8 shadow-xl scroll-mt-20"
+            className="border-border/80 bg-card mt-8 scroll-mt-20 rounded-2xl border p-4 shadow-xl sm:mt-10 sm:p-8"
           >
             <div className="flex items-center gap-3">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400">
                 <FileSignature className="h-6 w-6" />
               </div>
               <div>
-                <h3 className="text-foreground text-lg font-bold">
-                  Execute Electronic Signature
-                </h3>
+                <h3 className="text-foreground text-lg font-bold">Execute Electronic Signature</h3>
                 <p className="text-muted-foreground text-xs">
-                  Review the document terms above, confirm your signatory credentials, and apply your
-                  legally binding electronic signature.
+                  Review the document terms above, confirm your signatory credentials, and apply
+                  your legally binding electronic signature.
                 </p>
               </div>
             </div>
@@ -372,7 +369,7 @@ export default function PublicContractSigningPage() {
                   <button
                     type="button"
                     onClick={() => setSignatureMode("draw")}
-                    className={`flex-1 rounded-lg py-1.5 font-bold transition-all cursor-pointer ${
+                    className={`flex-1 cursor-pointer rounded-lg py-1.5 font-bold transition-all ${
                       signatureMode === "draw"
                         ? "bg-background text-foreground shadow-sm"
                         : "text-muted-foreground"
@@ -383,7 +380,7 @@ export default function PublicContractSigningPage() {
                   <button
                     type="button"
                     onClick={() => setSignatureMode("type")}
-                    className={`flex-1 rounded-lg py-1.5 font-bold transition-all cursor-pointer ${
+                    className={`flex-1 cursor-pointer rounded-lg py-1.5 font-bold transition-all ${
                       signatureMode === "type"
                         ? "bg-background text-foreground shadow-sm"
                         : "text-muted-foreground"
@@ -422,15 +419,15 @@ export default function PublicContractSigningPage() {
                     <button
                       type="button"
                       onClick={clearCanvas}
-                      className="text-muted-foreground hover:text-foreground flex items-center gap-1 text-[11px] font-semibold cursor-pointer"
+                      className="text-muted-foreground hover:text-foreground flex cursor-pointer items-center gap-1 text-[11px] font-semibold"
                     >
                       <RotateCcw className="h-3 w-3" /> Clear canvas
                     </button>
                   </div>
                 </div>
               ) : (
-                <div className="border-border bg-slate-50 flex h-[170px] items-center justify-center rounded-2xl border-2 border-dashed p-4 dark:bg-slate-900">
-                  <span className="text-slate-900 font-serif text-4xl sm:text-5xl tracking-wide italic dark:text-slate-100">
+                <div className="border-border flex h-[170px] items-center justify-center rounded-2xl border-2 border-dashed bg-slate-50 p-4 dark:bg-slate-900">
+                  <span className="font-serif text-4xl tracking-wide text-slate-900 italic sm:text-5xl dark:text-slate-100">
                     {signerName || "Your Digital Signature"}
                   </span>
                 </div>
@@ -460,9 +457,9 @@ export default function PublicContractSigningPage() {
                     className="border-border mt-0.5 h-4 w-4 rounded text-blue-600 focus:ring-blue-500"
                   />
                   <span className="text-muted-foreground text-xs leading-normal">
-                    I confirm that I have reviewed the entirety of this commercial agreement, understand
-                    its provisions, and agree that my electronic signature constitutes a legally binding
-                    execution under ESIGN (15 U.S.C. § 7001) and UETA regulations.
+                    I confirm that I have reviewed the entirety of this commercial agreement,
+                    understand its provisions, and agree that my electronic signature constitutes a
+                    legally binding execution under ESIGN (15 U.S.C. § 7001) and UETA regulations.
                   </span>
                 </label>
               </div>
@@ -472,7 +469,7 @@ export default function PublicContractSigningPage() {
                 <button
                   type="button"
                   onClick={() => setIsDeclineModalOpen(true)}
-                  className="text-xs font-semibold text-rose-500 hover:text-rose-600 hover:underline cursor-pointer"
+                  className="cursor-pointer text-xs font-semibold text-rose-500 hover:text-rose-600 hover:underline"
                 >
                   Decline this agreement
                 </button>
@@ -481,12 +478,12 @@ export default function PublicContractSigningPage() {
                   size="lg"
                   disabled={!canSign || signMutation.isPending}
                   onClick={handleSign}
-                  className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 font-bold text-white shadow-lg shadow-blue-500/25 hover:from-blue-700 hover:to-indigo-700 cursor-pointer"
+                  className="w-full cursor-pointer bg-gradient-to-r from-blue-600 to-indigo-600 font-bold text-white shadow-lg shadow-blue-500/25 hover:from-blue-700 hover:to-indigo-700 sm:w-auto"
                 >
                   {signMutation.isPending ? (
                     <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating Cryptographic Audit
-                      Seal...
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating Cryptographic
+                      Audit Seal...
                     </>
                   ) : (
                     <>
@@ -505,8 +502,8 @@ export default function PublicContractSigningPage() {
             <div className="border-border bg-card w-full max-w-md rounded-2xl border p-6 shadow-xl">
               <h3 className="text-foreground text-base font-bold">Decline Agreement</h3>
               <p className="text-muted-foreground mt-1 text-xs">
-                Please provide a brief reason for declining this contract so the business can address
-                your concerns.
+                Please provide a brief reason for declining this contract so the business can
+                address your concerns.
               </p>
               <textarea
                 rows={3}
@@ -515,15 +512,20 @@ export default function PublicContractSigningPage() {
                 placeholder="e.g. Terms on section 3 need revision..."
                 className="border-input bg-background text-foreground mt-3 w-full rounded-xl border p-2.5 text-xs focus:ring-2 focus:ring-rose-500 focus:outline-none"
               />
-              <div className="mt-4 flex flex-col-reverse sm:flex-row justify-end gap-2">
-                <Button variant="outline" size="sm" onClick={() => setIsDeclineModalOpen(false)} className="w-full sm:w-auto cursor-pointer">
+              <div className="mt-4 flex flex-col-reverse justify-end gap-2 sm:flex-row">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsDeclineModalOpen(false)}
+                  className="w-full cursor-pointer sm:w-auto"
+                >
                   Cancel
                 </Button>
                 <Button
                   size="sm"
                   disabled={!declineReason.trim() || declineMutation.isPending}
                   onClick={handleDecline}
-                  className="w-full sm:w-auto bg-rose-600 font-bold text-white hover:bg-rose-700 cursor-pointer"
+                  className="w-full cursor-pointer bg-rose-600 font-bold text-white hover:bg-rose-700 sm:w-auto"
                 >
                   {declineMutation.isPending ? "Submitting..." : "Confirm Decline"}
                 </Button>
