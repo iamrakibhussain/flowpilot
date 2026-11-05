@@ -27,6 +27,7 @@ import {
   FileCheck2,
   FolderKanban,
   FileSignature,
+  Repeat,
 } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import {
@@ -116,6 +117,13 @@ export function DashboardSidebar({
             href: "/dashboard/invoices",
             icon: FileText,
             badge: "Live",
+            badgeVariant: "success",
+          },
+          {
+            name: "Recurring & Retainers",
+            href: "/dashboard/recurring",
+            icon: Repeat,
+            badge: "New",
             badgeVariant: "success",
           },
           {
