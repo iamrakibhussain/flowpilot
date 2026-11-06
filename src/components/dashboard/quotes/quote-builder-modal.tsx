@@ -315,7 +315,7 @@ function QuoteBuilderForm({
               </select>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               <Input
                 value={newClientName}
                 onChange={(e) => setNewClientName(e.target.value)}
@@ -364,18 +364,18 @@ function QuoteBuilderForm({
           </Button>
         </div>
 
-        <div className="max-h-[30vh] space-y-2 overflow-y-auto pr-1">
+        <div className="max-h-[35vh] space-y-2.5 overflow-y-auto pr-1">
           {items.map((item, idx) => (
             <div
               key={item.id}
-              className="border-border/60 bg-muted/20 grid grid-cols-12 items-center gap-2 rounded-xl border p-2.5"
+              className="border-border/60 bg-muted/20 flex flex-col gap-2.5 rounded-2xl border p-3 sm:grid sm:grid-cols-12 sm:items-center sm:gap-2 sm:p-2.5"
             >
-              <div className="col-span-12 space-y-1 sm:col-span-6">
+              <div className="space-y-1 sm:col-span-6">
                 {services.length > 0 && (
                   <select
                     value={item.serviceId || ""}
                     onChange={(e) => handleServiceSelect(item.id, e.target.value)}
-                    className="border-border bg-background text-muted-foreground mb-1 h-7 w-full rounded-lg border px-2 text-[11px]"
+                    className="border-border bg-background text-muted-foreground mb-1 h-7.5 w-full rounded-lg border px-2 text-[11px] sm:h-7"
                   >
                     <option value="">⚡ Autofill from Catalog...</option>
                     {services.map((s) => (
@@ -389,53 +389,62 @@ function QuoteBuilderForm({
                   value={item.description}
                   onChange={(e) => handleItemChange(item.id, "description", e.target.value)}
                   placeholder={`Item #${idx + 1} description & scope`}
-                  className="h-8 rounded-lg text-xs"
+                  className="h-8.5 rounded-lg text-xs sm:h-8"
                   required
                 />
               </div>
 
-              <div className="col-span-4 sm:col-span-2">
-                <Input
-                  type="number"
-                  min="1"
-                  value={item.quantity}
-                  onChange={(e) =>
-                    handleItemChange(item.id, "quantity", parseInt(e.target.value, 10) || 1)
-                  }
-                  placeholder="Qty"
-                  className="h-8 rounded-lg text-center text-xs"
-                />
-              </div>
-
-              <div className="col-span-5 sm:col-span-3">
-                <div className="relative">
-                  <span className="text-muted-foreground absolute top-1/2 left-2.5 -translate-y-1/2 text-xs">
-                    $
+              <div className="flex items-center gap-2 sm:contents">
+                <div className="flex-1 sm:col-span-2">
+                  <span className="text-muted-foreground mb-0.5 block text-[10px] font-semibold sm:hidden">
+                    Qty
                   </span>
                   <Input
                     type="number"
-                    step="0.01"
-                    min="0"
-                    value={item.unitPrice}
+                    min="1"
+                    value={item.quantity}
                     onChange={(e) =>
-                      handleItemChange(item.id, "unitPrice", parseFloat(e.target.value) || 0)
+                      handleItemChange(item.id, "quantity", parseInt(e.target.value, 10) || 1)
                     }
-                    placeholder="0.00"
-                    className="h-8 rounded-lg pl-6 font-mono text-xs"
+                    placeholder="Qty"
+                    className="h-8.5 rounded-lg text-center text-xs sm:h-8"
                   />
                 </div>
-              </div>
 
-              <div className="col-span-3 flex items-center justify-end sm:col-span-1">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleRemoveItem(item.id)}
-                  className="text-muted-foreground hover:text-destructive h-7 w-7 p-0"
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </Button>
+                <div className="flex-[1.5] sm:col-span-3">
+                  <span className="text-muted-foreground mb-0.5 block text-[10px] font-semibold sm:hidden">
+                    Unit Price ($)
+                  </span>
+                  <div className="relative">
+                    <span className="text-muted-foreground absolute top-1/2 left-2.5 -translate-y-1/2 text-xs">
+                      $
+                    </span>
+                    <Input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      value={item.unitPrice}
+                      onChange={(e) =>
+                        handleItemChange(item.id, "unitPrice", parseFloat(e.target.value) || 0)
+                      }
+                      placeholder="0.00"
+                      className="h-8.5 rounded-lg pl-6 font-mono text-xs sm:h-8"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-end justify-end pt-3 sm:col-span-1 sm:items-center sm:pt-0">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleRemoveItem(item.id)}
+                    className="text-muted-foreground hover:text-destructive h-8.5 w-8.5 rounded-lg p-0 hover:bg-rose-500/10 sm:h-7 sm:w-7"
+                    title="Remove line item"
+                  >
+                    <Trash2 className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
+                  </Button>
+                </div>
               </div>
             </div>
           ))}
@@ -564,14 +573,19 @@ function QuoteBuilderForm({
         </div>
       </div>
 
-      <DialogFooter className="gap-2 sm:gap-0">
-        <Button type="button" variant="outline" onClick={onClose} className="rounded-xl">
+      <DialogFooter className="flex-col-reverse gap-2 pt-2 sm:flex-row sm:gap-0">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onClose}
+          className="h-10 w-full rounded-xl sm:h-9 sm:w-auto"
+        >
           Cancel
         </Button>
         <Button
           type="submit"
           disabled={createQuoteMutation.isPending}
-          className="rounded-xl bg-blue-600 font-medium text-white hover:bg-blue-700"
+          className="h-10 w-full rounded-xl bg-blue-600 font-medium text-white hover:bg-blue-700 sm:h-9 sm:w-auto"
         >
           {createQuoteMutation.isPending ? "Generating..." : "Save & Generate Estimate"}
         </Button>
@@ -593,7 +607,7 @@ export function QuoteBuilderModal({
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       {isOpen && (
-        <DialogContent className="max-h-[92vh] w-[95vw] overflow-y-auto rounded-3xl p-4 sm:max-w-3xl sm:p-8">
+        <DialogContent className="max-h-[94vh] w-[95vw] overflow-y-auto rounded-3xl p-3.5 sm:max-w-3xl sm:p-7">
           <QuoteBuilderForm
             key={`${isOpen}-${initialCustomerId || ""}-${initialCustomerName || ""}`}
             onClose={onClose}

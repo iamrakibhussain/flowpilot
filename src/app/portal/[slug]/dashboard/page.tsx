@@ -22,6 +22,9 @@ import {
   FolderKanban,
   Sparkles,
   ExternalLink,
+  Bell,
+  FileCheck2,
+  ShieldCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,9 +36,23 @@ import {
   useUpdatePortalProfile,
   useLogoutPortal,
   usePortalQuoteToken,
+  useSignPortalContract,
+  useAcceptPortalQuote,
+  usePortalNotifications,
+  useMarkPortalNotificationRead,
+  useMarkAllPortalNotificationsRead,
 } from "@/features/portal/use-portal";
-import type { PortalAppointment, PortalInvoice } from "@/features/portal/types";
+import type {
+  PortalAppointment,
+  PortalInvoice,
+  SignPortalContractInput,
+  AcceptPortalQuoteInput,
+} from "@/features/portal/types";
 import { printElementById } from "@/lib/utils/print";
+import { PortalContractsHub } from "@/components/portal/portal-contracts-hub";
+import { PortalQuotesHub } from "@/components/portal/portal-quotes-hub";
+import { PortalRescheduleModal } from "@/components/portal/portal-reschedule-modal";
+import { PortalNotificationsDrawer } from "@/components/portal/portal-notifications-drawer";
 
 function getRelativeCountdown(dateStr: string): string {
   const target = new Date(dateStr).getTime();
@@ -163,17 +180,17 @@ export default function ClientPortalDashboardPage() {
   const slug = typeof params?.slug === "string" ? params.slug : "";
 
   const [activeTab, setActiveTab] = React.useState<
-    "appointments" | "quotes" | "projects" | "invoices" | "profile"
+    "appointments" | "contracts" | "quotes" | "projects" | "invoices" | "profile"
   >("appointments");
 
   // Modal states
   const [rescheduleAppt, setRescheduleAppt] = React.useState<PortalAppointment | null>(null);
-  const [rescheduleDate, setRescheduleDate] = React.useState("");
   const [cancelAppt, setCancelAppt] = React.useState<PortalAppointment | null>(null);
   const [cancelReason, setCancelReason] = React.useState("");
   const [activeReceiptInvoice, setActiveReceiptInvoice] = React.useState<PortalInvoice | null>(
     null
   );
+  const [isNotificationsDrawerOpen, setIsNotificationsDrawerOpen] = React.useState(false);
   const [openingQuoteId, setOpeningQuoteId] = React.useState<string | null>(null);
   const [actionMessage, setActionMessage] = React.useState<{
     type: "success" | "error";
@@ -186,6 +203,28 @@ export default function ClientPortalDashboardPage() {
   const cancelMutation = useCancelPortalAppointment();
   const logoutMutation = useLogoutPortal();
   const quoteTokenMutation = usePortalQuoteToken();
+  const signContractMutation = useSignPortalContract();
+  const acceptQuoteMutation = useAcceptPortalQuote();
+  const { data: notificationsData } = usePortalNotifications();
+  const markNotificationReadMutation = useMarkPortalNotificationRead();
+  const markAllNotificationsReadMutation = useMarkAllPortalNotificationsRead();
+
+  // Handlers for contracts & quotes
+  const handleSignContract = async (contractId: string, input: SignPortalContractInput) => {
+    await signContractMutation.mutateAsync({ contractId, input });
+  };
+
+  const handleAcceptQuote = async (quoteId: string, input: AcceptPortalQuoteInput) => {
+    const res = await acceptQuoteMutation.mutateAsync({ quoteId, input });
+    return {
+      convertedInvoiceId: res.convertedInvoiceId,
+      paymentToken: res.paymentToken,
+    };
+  };
+
+  const handleOpenPaymentToken = (paymentToken: string) => {
+    router.push(`/pay/${paymentToken}`);
+  };
 
   // Handle opening quote in review portal
   const handleOpenQuote = async (quoteId: string) => {
@@ -212,24 +251,23 @@ export default function ClientPortalDashboardPage() {
   };
 
   // Handle reschedule submit
-  const handleExecuteReschedule = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!rescheduleAppt || !rescheduleDate) return;
+  const handleExecuteReschedule = async (newScheduledAt: string) => {
+    if (!rescheduleAppt) return;
 
     setActionMessage(null);
     try {
       await rescheduleMutation.mutateAsync({
         id: rescheduleAppt.id,
-        input: { newScheduledAt: new Date(rescheduleDate).toISOString() },
+        input: { newScheduledAt },
       });
       setRescheduleAppt(null);
-      setRescheduleDate("");
       setActionMessage({ type: "success", text: "Appointment rescheduled successfully!" });
     } catch (err: unknown) {
       setActionMessage({
         type: "error",
         text: err instanceof Error ? err.message : "Failed to reschedule appointment.",
       });
+      throw err;
     }
   };
 
@@ -293,8 +331,13 @@ export default function ClientPortalDashboardPage() {
     );
   }
 
-  const { organization, customer, appointments, invoices, quotes, projects } = data;
+  const { organization, customer, appointments, invoices, quotes, projects, contracts } = data;
   const brandColor = organization.brandColor || "#2563eb";
+
+  const contractsList = contracts?.list || [];
+  const pendingContractsCount = contracts?.metrics?.pendingCount || 0;
+  const notificationsList = notificationsData?.notifications || [];
+  const unreadNotificationsCount = notificationsData?.unreadCount || 0;
 
   const pendingQuotes =
     quotes?.list?.filter((q) => q.status === "SENT" || q.status === "DRAFT") || [];
@@ -314,29 +357,29 @@ export default function ClientPortalDashboardPage() {
 
       {/* Top Client Brand Header */}
       <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/85 backdrop-blur-xl transition-all dark:border-slate-800/80 dark:bg-slate-900/85">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <div className="flex items-center gap-3">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-3.5 sm:px-6">
+          <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
             {organization.logoUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={organization.logoUrl}
                 alt={organization.name}
-                className="h-9 w-9 rounded-xl border border-slate-200 bg-slate-100 object-contain p-1 shadow-2xs dark:border-slate-700 dark:bg-slate-800"
+                className="h-8 w-8 shrink-0 rounded-xl border border-slate-200 bg-slate-100 object-contain p-1 shadow-2xs sm:h-9 sm:w-9 dark:border-slate-700 dark:bg-slate-800"
               />
             ) : (
               <div
                 style={{ backgroundColor: brandColor }}
-                className="flex h-9 w-9 items-center justify-center rounded-xl text-sm font-black text-white shadow-md shadow-blue-500/20"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-xs font-black text-white shadow-md shadow-blue-500/20 sm:h-9 sm:w-9 sm:text-sm"
               >
                 {organization.name.charAt(0).toUpperCase()}
               </div>
             )}
-            <div>
+            <div className="min-w-0">
               <div className="flex items-center gap-1.5">
-                <span className="text-sm font-bold tracking-tight sm:text-base">
+                <span className="xs:max-w-[170px] max-w-[110px] truncate text-xs font-bold tracking-tight sm:max-w-none sm:text-base">
                   {organization.name}
                 </span>
-                <span className="inline-flex items-center gap-0.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                <span className="xs:inline-flex hidden items-center gap-0.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
                   <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
                   Verified Hub
                 </span>
@@ -347,9 +390,24 @@ export default function ClientPortalDashboardPage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
+            {/* Notification Bell Badge */}
+            <button
+              type="button"
+              onClick={() => setIsNotificationsDrawerOpen(true)}
+              aria-label="View notifications"
+              className="relative flex h-8.5 w-8.5 cursor-pointer items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-2xs transition hover:bg-slate-50 active:scale-95 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
+            >
+              <Bell className="h-4 w-4" />
+              {unreadNotificationsCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[9px] font-black text-white ring-2 ring-white dark:ring-slate-900">
+                  {unreadNotificationsCount > 9 ? "9+" : unreadNotificationsCount}
+                </span>
+              )}
+            </button>
+
             <div className="flex items-center gap-2 text-xs sm:border-l sm:border-slate-200 sm:pl-3 dark:sm:border-slate-800">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 font-bold text-white shadow-2xs">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-xs font-bold text-white shadow-2xs">
                 {customer.name.charAt(0).toUpperCase()}
               </div>
               <div className="hidden flex-col text-left leading-tight sm:flex">
@@ -363,7 +421,8 @@ export default function ClientPortalDashboardPage() {
               variant="outline"
               size="sm"
               onClick={handleLogout}
-              className="h-8.5 cursor-pointer gap-1.5 rounded-xl border-slate-200 text-xs font-semibold text-slate-600 shadow-2xs transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 dark:border-slate-800 dark:text-slate-400 dark:hover:border-rose-900/60 dark:hover:bg-rose-950/40 dark:hover:text-rose-400"
+              className="h-8.5 cursor-pointer gap-1.5 rounded-xl border-slate-200 px-2.5 text-xs font-semibold text-slate-600 shadow-2xs transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 active:scale-95 sm:px-3 dark:border-slate-800 dark:text-slate-400 dark:hover:border-rose-900/60 dark:hover:bg-rose-950/40 dark:hover:text-rose-400"
+              title="Sign Out of Portal"
             >
               <LogOut className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">Sign Out</span>
@@ -373,7 +432,7 @@ export default function ClientPortalDashboardPage() {
       </header>
 
       {/* Main Container */}
-      <main className="mx-auto max-w-6xl space-y-6 px-4 pt-6 sm:px-6 sm:pt-8">
+      <main className="mx-auto max-w-6xl space-y-5 px-3.5 pt-5 sm:px-6 sm:pt-8">
         {/* Action feedback toast */}
         {actionMessage && (
           <div
@@ -402,12 +461,12 @@ export default function ClientPortalDashboardPage() {
 
         {/* Priority Action Required Ambient Banner */}
         {(pendingQuotes.length > 0 || pendingInvoices.length > 0) && (
-          <div className="relative overflow-hidden rounded-3xl border border-amber-300/80 bg-gradient-to-r from-amber-500/10 via-amber-400/5 to-orange-500/10 p-5 shadow-sm backdrop-blur-xl sm:p-6 dark:border-amber-500/30 dark:from-amber-950/40 dark:via-amber-900/20 dark:to-orange-950/30">
+          <div className="relative overflow-hidden rounded-3xl border border-amber-300/80 bg-gradient-to-r from-amber-500/10 via-amber-400/5 to-orange-500/10 p-4 shadow-sm backdrop-blur-xl sm:p-6 dark:border-amber-500/30 dark:from-amber-950/40 dark:via-amber-900/20 dark:to-orange-950/30">
             <div className="pointer-events-none absolute -top-12 -right-12 h-36 w-36 rounded-full bg-amber-400/20 blur-2xl" />
-            <div className="relative z-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-start gap-3.5">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-amber-500 text-white shadow-md shadow-amber-500/30">
-                  <Sparkles className="h-5 w-5" />
+            <div className="relative z-10 flex flex-col gap-3.5 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-start gap-3">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-amber-500 text-white shadow-md shadow-amber-500/30 sm:h-10 sm:w-10">
+                  <Sparkles className="h-4 w-4 sm:h-5 sm:w-5" />
                 </div>
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
@@ -419,7 +478,7 @@ export default function ClientPortalDashboardPage() {
                       {pendingQuotes.length + pendingInvoices.length === 1 ? "" : "s"}
                     </span>
                   </div>
-                  <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">
+                  <p className="text-xs leading-relaxed font-semibold text-slate-800 sm:text-sm dark:text-slate-200">
                     {pendingQuotes.length > 0 && pendingInvoices.length > 0 ? (
                       <>
                         You have{" "}
@@ -453,7 +512,7 @@ export default function ClientPortalDashboardPage() {
                 </div>
               </div>
 
-              <div className="flex w-full flex-col gap-2.5 sm:w-auto sm:flex-row sm:items-center">
+              <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
                 {pendingQuotes.length > 0 && (
                   <Button
                     onClick={() => handleOpenQuote(pendingQuotes[0].id)}
@@ -486,13 +545,13 @@ export default function ClientPortalDashboardPage() {
         )}
 
         {/* Welcome Hero Banner */}
-        <div className="relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-5 shadow-sm backdrop-blur-xl sm:flex sm:items-center sm:justify-between sm:p-7 dark:border-slate-800/80 dark:bg-slate-900/90">
+        <div className="relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-4.5 shadow-sm backdrop-blur-xl sm:flex sm:items-center sm:justify-between sm:p-7 dark:border-slate-800/80 dark:bg-slate-900/90">
           <div className="pointer-events-none absolute -top-16 -right-16 h-48 w-48 rounded-full bg-blue-500/10 blur-3xl dark:bg-blue-600/15" />
           <div className="relative z-10 space-y-1.5">
-            <h1 className="text-xl font-black tracking-tight sm:text-2xl">
+            <h1 className="text-lg font-black tracking-tight sm:text-2xl">
               Welcome back, {customer.name.split(" ")[0]}!
             </h1>
-            <p className="text-xs text-slate-500 sm:text-sm dark:text-slate-400">
+            <p className="text-xs leading-relaxed text-slate-500 sm:text-sm dark:text-slate-400">
               You have{" "}
               <strong className="font-bold text-slate-800 dark:text-slate-200">
                 {appointments.upcoming.length} upcoming
@@ -509,7 +568,7 @@ export default function ClientPortalDashboardPage() {
             </p>
           </div>
 
-          <div className="relative z-10 mt-4 sm:mt-0">
+          <div className="relative z-10 mt-3.5 sm:mt-0">
             <Button
               onClick={() =>
                 router.push(
@@ -517,7 +576,7 @@ export default function ClientPortalDashboardPage() {
                 )
               }
               style={{ backgroundColor: brandColor }}
-              className="h-11 w-full shrink-0 cursor-pointer gap-2 rounded-xl text-xs font-bold text-white shadow-md shadow-blue-500/20 transition hover:opacity-90 sm:h-10 sm:w-auto sm:text-sm"
+              className="h-11 w-full shrink-0 cursor-pointer gap-2 rounded-xl text-xs font-bold text-white shadow-md shadow-blue-500/20 transition hover:opacity-90 active:scale-98 sm:h-10 sm:w-auto sm:text-sm"
             >
               <PlusCircle className="h-4 w-4" />
               Book New Session
@@ -540,6 +599,27 @@ export default function ClientPortalDashboardPage() {
             <span className="py-0.2 rounded-full bg-blue-100 px-1.5 text-[10px] font-bold text-blue-700 dark:bg-blue-900/60 dark:text-blue-300">
               {appointments.upcoming.length}
             </span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("contracts")}
+            className={`flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition-all sm:px-4 ${
+              activeTab === "contracts"
+                ? "bg-white text-slate-900 shadow-sm dark:bg-slate-900 dark:text-slate-100"
+                : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
+            }`}
+          >
+            <FileCheck2 className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
+            <span className="truncate">Contracts</span>
+            {pendingContractsCount > 0 ? (
+              <span className="py-0.2 rounded-full bg-amber-100 px-1.5 text-[10px] font-bold text-amber-700 dark:bg-amber-900/60 dark:text-amber-300">
+                {pendingContractsCount} Action
+              </span>
+            ) : (
+              <span className="py-0.2 rounded-full bg-slate-100 px-1.5 text-[10px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                {contractsList.length}
+              </span>
+            )}
           </button>
 
           <button
@@ -737,9 +817,6 @@ export default function ClientPortalDashboardPage() {
                             size="sm"
                             onClick={() => {
                               setRescheduleAppt(appt);
-                              setRescheduleDate(
-                                new Date(appt.scheduledAt).toISOString().slice(0, 16)
-                              );
                             }}
                             className="h-10 flex-1 cursor-pointer rounded-xl border-slate-200 text-xs font-bold shadow-2xs transition hover:bg-slate-100 sm:h-9 dark:border-slate-700 dark:hover:bg-slate-800"
                           >
@@ -802,177 +879,32 @@ export default function ClientPortalDashboardPage() {
           </div>
         )}
 
-        {/* TAB 2: PROPOSALS & ESTIMATES */}
+        {/* TAB 2: CONTRACTS & DIGITAL SIGNING */}
+        {activeTab === "contracts" && (
+          <PortalContractsHub
+            contracts={contractsList}
+            customerName={customer.name}
+            customerEmail={customer.email}
+            brandColor={brandColor}
+            onSignContract={handleSignContract}
+            onSuccess={(msg) => setActionMessage({ type: "success", text: msg })}
+            onError={(msg) => setActionMessage({ type: "error", text: msg })}
+          />
+        )}
+
+        {/* TAB 3: PROPOSALS & ESTIMATES */}
         {activeTab === "quotes" && (
-          <div className="space-y-6">
-            {/* Financial Telemetry Cards */}
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-              <Card className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm sm:p-5 dark:border-slate-800/90 dark:bg-slate-900">
-                <CardContent className="space-y-1 p-0">
-                  <span className="text-[10px] font-bold tracking-wider text-slate-500 uppercase sm:text-xs">
-                    Total Proposals
-                  </span>
-                  <div className="text-xl font-extrabold text-slate-900 sm:text-2xl dark:text-slate-100">
-                    {quotes?.metrics?.totalProposals || 0}
-                  </div>
-                  <p className="hidden text-[11px] text-slate-400 sm:block">
-                    Service quotes on record
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm sm:p-5 dark:border-slate-800/90 dark:bg-slate-900">
-                <CardContent className="space-y-1 p-0">
-                  <span className="text-[10px] font-bold tracking-wider text-slate-500 uppercase sm:text-xs">
-                    Awaiting Signature
-                  </span>
-                  <div className="text-xl font-extrabold text-amber-600 sm:text-2xl dark:text-amber-400">
-                    {quotes?.metrics?.pendingCount || 0}
-                  </div>
-                  <p className="hidden text-[11px] text-slate-400 sm:block">Ready for acceptance</p>
-                </CardContent>
-              </Card>
-
-              <Card className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm sm:p-5 dark:border-slate-800/90 dark:bg-slate-900">
-                <CardContent className="space-y-1 p-0">
-                  <span className="text-[10px] font-bold tracking-wider text-slate-500 uppercase sm:text-xs">
-                    Accepted &amp; Signed
-                  </span>
-                  <div className="text-xl font-extrabold text-emerald-600 sm:text-2xl dark:text-emerald-400">
-                    {quotes?.metrics?.acceptedCount || 0}
-                  </div>
-                  <p className="hidden text-[11px] text-slate-400 sm:block">Confirmed proposals</p>
-                </CardContent>
-              </Card>
-
-              <Card className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm sm:p-5 dark:border-slate-800/90 dark:bg-slate-900">
-                <CardContent className="space-y-1 p-0">
-                  <span className="text-[10px] font-bold tracking-wider text-slate-500 uppercase sm:text-xs">
-                    Total Value
-                  </span>
-                  <div className="text-xl font-extrabold text-slate-900 sm:text-2xl dark:text-slate-100">
-                    ${quotes?.metrics?.totalValue || "0.00"}
-                  </div>
-                  <p className="hidden text-[11px] text-slate-400 sm:block">Cumulative estimated</p>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Proposals List */}
-            <div className="space-y-3">
-              <h2 className="text-base font-bold sm:text-lg">Service Proposals &amp; Estimates</h2>
-
-              {activeQuotesList.length === 0 ? (
-                <Card className="rounded-2xl border border-dashed border-slate-300 bg-white/50 p-8 text-center dark:border-slate-800 dark:bg-slate-900/50">
-                  <CardContent className="space-y-2 p-0">
-                    <FileText className="mx-auto h-10 w-10 text-slate-400" />
-                    <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                      No proposals on file
-                    </p>
-                    <p className="text-xs text-slate-500">
-                      You don&apos;t have any service proposals or estimates right now.
-                    </p>
-                  </CardContent>
-                </Card>
-              ) : (
-                <div className="divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:divide-slate-800 dark:border-slate-800 dark:bg-slate-900">
-                  {activeQuotesList.map((quote) => {
-                    const isPending = quote.status === "SENT" || quote.status === "DRAFT";
-                    const isAccepted = quote.status === "ACCEPTED";
-                    const isDeclined = quote.status === "DECLINED";
-
-                    return (
-                      <div
-                        key={quote.id}
-                        className="flex flex-col justify-between gap-4 p-5 transition-all hover:bg-slate-50/60 sm:flex-row sm:items-center dark:hover:bg-slate-800/40"
-                      >
-                        <div className="space-y-1">
-                          <div className="flex items-center justify-between gap-2.5 sm:justify-start">
-                            <span className="text-sm font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
-                              {quote.quoteNumber}
-                            </span>
-                            <span
-                              className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold ${
-                                isAccepted
-                                  ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                                  : isDeclined
-                                    ? "border border-rose-500/30 bg-rose-500/10 text-rose-600 dark:text-rose-400"
-                                    : "border border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-400"
-                              }`}
-                            >
-                              {isPending
-                                ? "Pending Signature"
-                                : isAccepted
-                                  ? "Accepted & Signed"
-                                  : quote.status}
-                            </span>
-                            {/* Visible on mobile only */}
-                            <div className="text-right text-sm font-black text-slate-900 sm:hidden dark:text-slate-100">
-                              ${quote.totalAmount.toFixed(2)}
-                            </div>
-                          </div>
-                          <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">
-                            {quote.title}
-                          </h4>
-                          <div className="flex flex-wrap items-center gap-1.5 text-xs text-slate-500">
-                            <span>Issued: {new Date(quote.issuedAt).toLocaleDateString()}</span>
-                            {quote.expiresAt && (
-                              <>
-                                <span>•</span>
-                                <span>
-                                  Expires: {new Date(quote.expiresAt).toLocaleDateString()}
-                                </span>
-                              </>
-                            )}
-                            {quote.itemsCount > 0 && (
-                              <>
-                                <span>•</span>
-                                <span>
-                                  {quote.itemsCount} line item{quote.itemsCount === 1 ? "" : "s"}
-                                </span>
-                              </>
-                            )}
-                          </div>
-                        </div>
-
-                        <div className="flex flex-col items-stretch gap-2.5 sm:flex-row sm:items-center sm:justify-end">
-                          {/* Desktop Price */}
-                          <div className="hidden pr-2 text-right sm:block">
-                            <div className="text-base font-black text-slate-900 dark:text-slate-100">
-                              ${quote.totalAmount.toFixed(2)}
-                            </div>
-                            <div className="text-[10px] font-medium text-slate-400">
-                              Total Estimate
-                            </div>
-                          </div>
-
-                          <Button
-                            onClick={() => handleOpenQuote(quote.id)}
-                            disabled={openingQuoteId === quote.id}
-                            style={{ backgroundColor: isPending ? brandColor : undefined }}
-                            variant={isPending ? "default" : "outline"}
-                            size="sm"
-                            className={`h-10 cursor-pointer gap-1.5 rounded-xl px-4 text-xs font-bold transition hover:opacity-90 sm:h-9 ${
-                              isPending
-                                ? "text-white shadow-sm"
-                                : "border-slate-200 text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
-                            }`}
-                          >
-                            {openingQuoteId === quote.id ? (
-                              <span className="animate-spin text-xs">⟳</span>
-                            ) : (
-                              <ExternalLink className="h-3.5 w-3.5" />
-                            )}
-                            {isPending ? "Review & Sign Online" : "View Proposal"}
-                          </Button>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          </div>
+          <PortalQuotesHub
+            quotes={activeQuotesList}
+            brandColor={brandColor}
+            currency={organization.currency || "USD"}
+            customerName={customer.name}
+            customerEmail={customer.email}
+            onAcceptQuote={handleAcceptQuote}
+            onOpenPaymentToken={handleOpenPaymentToken}
+            onSuccess={(msg) => setActionMessage({ type: "success", text: msg })}
+            onError={(msg) => setActionMessage({ type: "error", text: msg })}
+          />
         )}
 
         {/* TAB 3: PROJECTS & MILESTONES */}
@@ -1280,69 +1212,31 @@ export default function ClientPortalDashboardPage() {
         )}
       </main>
 
-      {/* RESCHEDULE MODAL */}
+      {/* POLICY-AWARE RESCHEDULE MODAL */}
       {rescheduleAppt && (
-        <div className="animate-in fade-in fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-md duration-200">
-          <div className="animate-in fade-in zoom-in-95 w-full max-w-md space-y-5 rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl duration-200 sm:p-7 dark:border-slate-800 dark:bg-slate-900">
-            <div className="flex items-center justify-between">
-              <h3 className="text-base font-extrabold text-slate-900 dark:text-slate-100">
-                Reschedule Appointment
-              </h3>
-              <button
-                onClick={() => setRescheduleAppt(null)}
-                className="cursor-pointer p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-
-            <div className="space-y-1 rounded-2xl border border-blue-200/80 bg-blue-50/80 p-3.5 text-xs text-blue-800 dark:border-blue-900/60 dark:bg-blue-950/50 dark:text-blue-200">
-              <p className="font-bold">{rescheduleAppt.title}</p>
-              <p className="text-blue-600 dark:text-blue-300">
-                Current: {new Date(rescheduleAppt.scheduledAt).toLocaleString()}
-              </p>
-            </div>
-
-            <form onSubmit={handleExecuteReschedule} className="space-y-4">
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300">
-                  Select New Date &amp; Time
-                </label>
-                <Input
-                  type="datetime-local"
-                  required
-                  min={new Date().toISOString().slice(0, 16)}
-                  value={rescheduleDate}
-                  onChange={(e) => setRescheduleDate(e.target.value)}
-                  className="h-11 rounded-xl bg-slate-50 font-medium dark:bg-slate-950"
-                />
-                <p className="text-[11px] text-slate-500">
-                  Minimum notice required: {organization.minNoticeHours || 2} hours prior.
-                </p>
-              </div>
-
-              <div className="flex items-center gap-2.5 pt-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setRescheduleAppt(null)}
-                  className="h-11 flex-1 cursor-pointer rounded-xl font-bold sm:h-10"
-                >
-                  Keep Existing
-                </Button>
-                <Button
-                  type="submit"
-                  disabled={rescheduleMutation.isPending || !rescheduleDate}
-                  style={{ backgroundColor: brandColor }}
-                  className="h-11 flex-1 cursor-pointer rounded-xl font-bold text-white shadow-md shadow-blue-500/20 sm:h-10"
-                >
-                  {rescheduleMutation.isPending ? "Updating..." : "Confirm Time"}
-                </Button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <PortalRescheduleModal
+          appointment={rescheduleAppt}
+          brandColor={brandColor}
+          minNoticeHours={organization.minNoticeHours || 2}
+          isOpen={Boolean(rescheduleAppt)}
+          onClose={() => setRescheduleAppt(null)}
+          onReschedule={handleExecuteReschedule}
+        />
       )}
+
+      {/* NOTIFICATIONS & ACTIVITY DRAWER */}
+      <PortalNotificationsDrawer
+        notifications={notificationsList}
+        unreadCount={unreadNotificationsCount}
+        isOpen={isNotificationsDrawerOpen}
+        onClose={() => setIsNotificationsDrawerOpen(false)}
+        onMarkAsRead={async (id) => {
+          await markNotificationReadMutation.mutateAsync(id);
+        }}
+        onMarkAllAsRead={async () => {
+          await markAllNotificationsReadMutation.mutateAsync();
+        }}
+      />
 
       {/* CANCELLATION MODAL */}
       {cancelAppt && (

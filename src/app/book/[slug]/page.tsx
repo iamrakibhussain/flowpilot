@@ -386,10 +386,10 @@ export default function PublicBookingPortalPage() {
           className="h-1 w-full transition-colors duration-300"
           style={{ backgroundColor: profile.brandColor || "#2563eb" }}
         />
-        <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3.5 sm:px-6">
-          <div className="flex min-w-0 items-center gap-3">
+        <div className="mx-auto flex max-w-4xl items-center justify-between px-3.5 py-3 sm:px-6 sm:py-3.5">
+          <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
             <div
-              className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl text-sm font-black text-white shadow-sm ring-1 ring-slate-200/50 transition-colors duration-300 dark:ring-slate-700/50"
+              className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-xl text-sm font-black text-white shadow-sm ring-1 ring-slate-200/50 transition-colors duration-300 sm:h-10 sm:w-10 dark:ring-slate-700/50"
               style={{ backgroundColor: profile.brandColor || "#2563eb" }}
             >
               {profile.logoUrl ? (
@@ -404,32 +404,32 @@ export default function PublicBookingPortalPage() {
               )}
             </div>
             <div className="min-w-0">
-              <h1 className="text-foreground truncate text-sm font-bold sm:text-base">
+              <h1 className="text-foreground max-w-[130px] truncate text-xs font-bold sm:max-w-none sm:text-base">
                 {profile.name}
               </h1>
-              <span className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
+              <span className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-600 sm:text-[11px] dark:text-emerald-400">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
-                {profile.tagline || "Live Client Scheduling Portal"}
+                <span className="truncate">{profile.tagline || "Live Client Scheduling"}</span>
               </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
             <Link
-              href={`/portal/${slug}`}
-              className="border-border/80 bg-card text-foreground hover:bg-muted/80 flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold shadow-2xs transition sm:px-3"
-              title="Already a client? Sign in to manage bookings & invoices"
+              href={portalMe?.customer ? `/portal/${slug}/dashboard` : `/portal/${slug}`}
+              className="border-border/80 bg-card text-foreground hover:bg-muted/80 flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-semibold shadow-2xs transition active:scale-95 sm:gap-1.5 sm:px-3"
+              title="Client Portal Dashboard"
             >
               <User className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
               <span>
                 <span className="hidden sm:inline">Client </span>Portal
               </span>
             </Link>
-            <div className="border-border/80 bg-card text-muted-foreground hidden items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium shadow-2xs sm:flex">
+            <div className="border-border/80 bg-card text-muted-foreground hidden items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium shadow-2xs lg:flex">
               <Globe className="h-3 w-3 text-blue-500" />
               <span>{clientTimezone || "Local Time"}</span>
             </div>
-            <div className="border-border/80 bg-card text-muted-foreground flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold shadow-2xs">
+            <div className="border-border/80 bg-card text-muted-foreground flex items-center gap-1 rounded-full border px-2 py-1 text-xs font-semibold shadow-2xs sm:gap-1.5 sm:px-3">
               <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
               <span className="hidden sm:inline">Verified Business</span>
             </div>
@@ -438,10 +438,10 @@ export default function PublicBookingPortalPage() {
       </header>
 
       {/* Main Container */}
-      <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-6 sm:px-6 sm:py-10">
+      <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-5 sm:px-6 sm:py-10">
         {/* Business Notice Banner */}
         {profile.bookingNotice && step !== 5 && (
-          <div className="mb-6 flex items-start gap-2.5 rounded-2xl border border-blue-200/80 bg-blue-50 p-3.5 text-xs text-blue-700 shadow-2xs dark:border-blue-800/60 dark:bg-blue-950/40 dark:text-blue-300">
+          <div className="mb-5 flex items-start gap-2.5 rounded-2xl border border-blue-200/80 bg-blue-50 p-3.5 text-xs text-blue-700 shadow-2xs sm:mb-6 dark:border-blue-800/60 dark:bg-blue-950/40 dark:text-blue-300">
             <Info className="mt-0.5 h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" />
             <span>{profile.bookingNotice}</span>
           </div>
@@ -449,8 +449,62 @@ export default function PublicBookingPortalPage() {
 
         {/* Interactive 4-Step Stepper (Steps 1 to 4) */}
         {step !== 5 && (
-          <div className="mb-8 space-y-3">
-            <div className="grid grid-cols-4 gap-2 sm:gap-3">
+          <div className="mb-6 space-y-3 sm:mb-8">
+            {/* Mobile Stepper Header (< md) */}
+            <div className="flex flex-col gap-2 md:hidden">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  {step > 1 ? (
+                    <button
+                      type="button"
+                      onClick={() => setStep((step - 1) as 1 | 2 | 3 | 4)}
+                      className="border-border/80 bg-card text-foreground hover:bg-muted flex h-8 cursor-pointer items-center gap-1 rounded-xl border px-2.5 text-xs font-bold shadow-2xs transition active:scale-95"
+                    >
+                      <ArrowLeft className="h-3.5 w-3.5" />
+                      Back
+                    </button>
+                  ) : (
+                    <span className="bg-primary/10 text-primary flex h-8 items-center rounded-xl px-2.5 text-xs font-bold">
+                      Step 1 of 4
+                    </span>
+                  )}
+                  <span className="text-foreground text-xs font-extrabold">
+                    {step === 1 && "Select Service"}
+                    {step === 2 && "Choose Specialist"}
+                    {step === 3 && "Pick Date & Time"}
+                    {step === 4 && "Client Intake"}
+                  </span>
+                </div>
+                {step > 1 && (
+                  <span className="text-muted-foreground text-[11px] font-bold">
+                    Step {step} of 4
+                  </span>
+                )}
+              </div>
+
+              {/* 4-Step Segmented Bar on Mobile */}
+              <div className="grid grid-cols-4 gap-1.5">
+                {[1, 2, 3, 4].map((sNum) => {
+                  const isPassed = step > sNum;
+                  const isCurrent = step === sNum;
+                  return (
+                    <div
+                      key={sNum}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                        isPassed
+                          ? "bg-emerald-500"
+                          : isCurrent
+                            ? "bg-primary ring-primary/20 shadow-xs ring-2"
+                            : "bg-muted"
+                      }`}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Desktop Stepper Grid (>= md) */}
+            <div className="hidden grid-cols-4 gap-2 sm:gap-3 md:grid">
               {[
                 { num: 1, label: "Service", subtitle: "Select Offering" },
                 { num: 2, label: "Specialist", subtitle: "Staff Member" },
@@ -484,7 +538,7 @@ export default function PublicBookingPortalPage() {
                     >
                       {isPassed ? <Check className="h-3.5 w-3.5" /> : s.num}
                     </div>
-                    <div className="hidden min-w-0 md:block">
+                    <div className="min-w-0">
                       <p
                         className={`truncate text-xs font-bold ${
                           isCurrent
@@ -505,8 +559,8 @@ export default function PublicBookingPortalPage() {
               })}
             </div>
 
-            {/* Micro Progress Track */}
-            <div className="h-1 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
+            {/* Micro Progress Track on Desktop */}
+            <div className="hidden h-1 w-full overflow-hidden rounded-full bg-slate-200 md:block dark:bg-slate-800">
               <div
                 className="h-full bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500 shadow-xs transition-all duration-300 ease-out"
                 style={{ width: `${(step / 4) * 100}%` }}
@@ -529,7 +583,7 @@ export default function PublicBookingPortalPage() {
 
             {/* Category Pills */}
             {categories.length > 1 && (
-              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
+              <div className="flex [scrollbar-width:none] items-center gap-1.5 overflow-x-auto pb-1 text-xs [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                 <button
                   type="button"
                   onClick={() => setSelectedCategory("ALL")}
@@ -630,7 +684,7 @@ export default function PublicBookingPortalPage() {
         {/* STEP 2: CHOOSE SPECIALIST */}
         {step === 2 && selectedService && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex items-start justify-between gap-3 sm:items-center">
               <div>
                 <h2 className="text-foreground text-2xl font-black tracking-tight sm:text-3xl">
                   Choose a Specialist
@@ -646,10 +700,10 @@ export default function PublicBookingPortalPage() {
                 variant="outline"
                 size="sm"
                 onClick={() => setStep(1)}
-                className="border-border/80 text-foreground hover:bg-muted flex cursor-pointer items-center gap-1.5 text-xs"
+                className="border-border/80 text-foreground hover:bg-muted flex shrink-0 cursor-pointer items-center gap-1.5 text-xs"
               >
                 <ArrowLeft className="h-3.5 w-3.5" />
-                Change Service
+                <span className="hidden sm:inline">Change </span>Service
               </Button>
             </div>
 
@@ -716,7 +770,7 @@ export default function PublicBookingPortalPage() {
         {/* STEP 3: PICK DATE & LIVE TIME SLOT */}
         {step === 3 && selectedService && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex items-start justify-between gap-3 sm:items-center">
               <div>
                 <h2 className="text-foreground text-2xl font-black tracking-tight sm:text-3xl">
                   Select Date &amp; Time
@@ -730,17 +784,17 @@ export default function PublicBookingPortalPage() {
                 variant="outline"
                 size="sm"
                 onClick={() => setStep(2)}
-                className="border-border/80 text-foreground hover:bg-muted flex cursor-pointer items-center gap-1.5 text-xs"
+                className="border-border/80 text-foreground hover:bg-muted flex shrink-0 cursor-pointer items-center gap-1.5 text-xs"
               >
                 <ArrowLeft className="h-3.5 w-3.5" />
-                Specialist
+                <span className="hidden sm:inline">Change </span>Specialist
               </Button>
             </div>
 
             {/* Date Horizontal Picker Slider */}
             <div>
               <p className="text-foreground mb-2.5 text-xs font-bold">Available Dates</p>
-              <div className="flex items-center gap-2 overflow-x-auto pb-2">
+              <div className="flex [scrollbar-width:none] items-center gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                 {upcomingDates.map((item) => {
                   const isSelected = selectedDate === item.dateStr;
                   return (
@@ -751,7 +805,7 @@ export default function PublicBookingPortalPage() {
                         setSelectedDate(item.dateStr);
                         setSelectedSlot(null);
                       }}
-                      className={`relative min-w-[76px] shrink-0 cursor-pointer rounded-2xl border px-3 py-2.5 text-center transition-all ${
+                      className={`relative min-w-[72px] shrink-0 cursor-pointer rounded-2xl border px-3 py-2.5 text-center transition-all active:scale-95 sm:min-w-[76px] ${
                         isSelected
                           ? "border-blue-600 bg-gradient-to-r from-blue-600 to-indigo-600 font-bold text-white shadow-md shadow-blue-500/20"
                           : "border-border/80 bg-card text-muted-foreground hover:border-border hover:text-foreground shadow-2xs"
@@ -785,7 +839,7 @@ export default function PublicBookingPortalPage() {
 
             {/* Time Slot Selector with Period Grouping */}
             <div className="pt-2">
-              <div className="mb-3.5 flex items-center justify-between">
+              <div className="mb-3.5 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-foreground text-xs font-bold">
                   Available openings on{" "}
                   <span className="text-primary font-bold">
@@ -937,7 +991,7 @@ export default function PublicBookingPortalPage() {
         {/* STEP 4: CLIENT INTAKE & DETAILS */}
         {step === 4 && selectedService && selectedSlot && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex items-start justify-between gap-3 sm:items-center">
               <div>
                 <h2 className="text-foreground text-2xl font-black tracking-tight sm:text-3xl">
                   Client Information
@@ -951,16 +1005,54 @@ export default function PublicBookingPortalPage() {
                 variant="outline"
                 size="sm"
                 onClick={() => setStep(3)}
-                className="border-border/80 text-foreground hover:bg-muted flex cursor-pointer items-center gap-1.5 text-xs"
+                className="border-border/80 text-foreground hover:bg-muted flex shrink-0 cursor-pointer items-center gap-1.5 text-xs"
               >
                 <ArrowLeft className="h-3.5 w-3.5" />
-                Change Time
+                <span className="hidden sm:inline">Change </span>Time
               </Button>
             </div>
 
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
               {/* Form Input Column */}
               <div className="space-y-4 lg:col-span-2">
+                {/* Mobile Quick Booking Summary (< lg) */}
+                <div className="block rounded-2xl border border-blue-200/80 bg-blue-50/70 p-3.5 text-xs lg:hidden dark:border-blue-900/60 dark:bg-blue-950/40">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="min-w-0 space-y-0.5">
+                      <span className="text-[10px] font-bold tracking-wider text-blue-700 uppercase dark:text-blue-300">
+                        Selected Offering
+                      </span>
+                      <p className="truncate font-bold text-slate-900 dark:text-slate-100">
+                        {selectedService.name}
+                      </p>
+                      <p className="text-[11px] text-slate-600 dark:text-slate-400">
+                        {new Date(selectedDate).toLocaleDateString("en-US", {
+                          weekday: "short",
+                          month: "short",
+                          day: "numeric",
+                        })}{" "}
+                        • {selectedSlot.startTime} – {selectedSlot.endTime}
+                      </p>
+                    </div>
+                    <div className="shrink-0 text-right">
+                      <span className="font-mono text-base font-black text-slate-900 dark:text-slate-100">
+                        ${selectedService.price.toFixed(2)}
+                      </span>
+                      {selectedService.requireDeposit && (
+                        <span className="block text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                          Deposit: $
+                          {selectedService.depositType === "PERCENTAGE"
+                            ? (
+                                (selectedService.price * (selectedService.depositAmount || 0)) /
+                                100
+                              ).toFixed(2)
+                            : Number(selectedService.depositAmount).toFixed(2)}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
                 {portalMe?.customer && (
                   <div className="flex items-center gap-2.5 rounded-xl border border-blue-500/20 bg-blue-500/10 p-3 text-xs text-blue-700 dark:text-blue-300">
                     <User className="h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" />

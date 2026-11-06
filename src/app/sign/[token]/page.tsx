@@ -49,10 +49,45 @@ export default function PublicContractSigningPage() {
   const [hasDrawn, setHasDrawn] = React.useState(false);
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
 
-  // Canvas drawing handlers
+  // High-DPI Canvas Setup
+  const setupCanvas = React.useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) return;
+
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+
+    ctx.scale(dpr, dpr);
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.lineWidth = 2.5;
+    ctx.strokeStyle = "#0f172a";
+  }, []);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setupCanvas();
+    }, 150);
+    window.addEventListener("resize", setupCanvas);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", setupCanvas);
+    };
+  }, [setupCanvas, signatureMode]);
+
+  // Canvas drawing handlers with full touch-event safety and preventDefault
   const startDrawing = (
     e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>
   ) => {
+    if ("touches" in e) {
+      e.stopPropagation();
+    }
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -61,12 +96,12 @@ export default function PublicContractSigningPage() {
     setIsDrawing(true);
     setHasDrawn(true);
     const rect = canvas.getBoundingClientRect();
-    const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
-    const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
-    const scaleX = canvas.width / (rect.width || 1);
-    const scaleY = canvas.height / (rect.height || 1);
-    const x = (clientX - rect.left) * scaleX;
-    const y = (clientY - rect.top) * scaleY;
+    const touch = "touches" in e ? e.touches[0] : null;
+    if ("touches" in e && !touch) return;
+    const clientX = touch ? touch.clientX : (e as React.MouseEvent).clientX;
+    const clientY = touch ? touch.clientY : (e as React.MouseEvent).clientY;
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
 
     ctx.beginPath();
     ctx.moveTo(x, y);
@@ -78,18 +113,22 @@ export default function PublicContractSigningPage() {
 
   const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     if (!isDrawing) return;
+    if ("touches" in e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     const rect = canvas.getBoundingClientRect();
-    const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
-    const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
-    const scaleX = canvas.width / (rect.width || 1);
-    const scaleY = canvas.height / (rect.height || 1);
-    const x = (clientX - rect.left) * scaleX;
-    const y = (clientY - rect.top) * scaleY;
+    const touch = "touches" in e ? e.touches[0] : null;
+    if ("touches" in e && !touch) return;
+    const clientX = touch ? touch.clientX : (e as React.MouseEvent).clientX;
+    const clientY = touch ? touch.clientY : (e as React.MouseEvent).clientY;
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
 
     ctx.lineTo(x, y);
     ctx.stroke();
@@ -192,13 +231,13 @@ export default function PublicContractSigningPage() {
     <div className="min-h-screen bg-slate-100/70 pb-24 dark:bg-slate-950">
       {/* Top Formal Sticky Header */}
       <header className="border-border/60 bg-background/95 sticky top-0 z-30 border-b backdrop-blur-md">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-sm font-black text-white shadow-md shadow-blue-500/20">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-3.5 py-2.5 sm:px-6 sm:py-3">
+          <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-xs font-black text-white shadow-md shadow-blue-500/20 sm:text-sm">
               FP
             </div>
-            <div>
-              <span className="text-foreground text-xs font-bold">
+            <div className="min-w-0">
+              <span className="text-foreground xs:max-w-[200px] block max-w-[140px] truncate text-xs font-bold sm:max-w-none sm:text-sm">
                 {contract.organization.name}
               </span>
               <p className="text-muted-foreground font-mono text-[10px]">
@@ -207,14 +246,16 @@ export default function PublicContractSigningPage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
             <Button
               variant="outline"
               size="sm"
               onClick={handlePrint}
-              className="cursor-pointer gap-1.5 text-xs font-semibold"
+              className="h-8.5 cursor-pointer gap-1.5 rounded-xl px-2.5 text-xs font-semibold sm:px-3"
             >
-              <Printer className="h-3.5 w-3.5" /> Print / Save PDF
+              <Printer className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Print / Save PDF</span>
+              <span className="inline sm:hidden">PDF</span>
             </Button>
             <div className="hidden items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-600 sm:flex dark:text-emerald-400">
               <Lock className="h-3 w-3" /> 256-bit Encrypted
@@ -224,7 +265,19 @@ export default function PublicContractSigningPage() {
       </header>
 
       {/* Main Execution Container */}
-      <main className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
+      <main className="mx-auto max-w-5xl px-3.5 pt-6 sm:px-6 sm:pt-8">
+        {/* Floating Quick Action Pill for Mobile (< sm) */}
+        {!isSigned && !isDeclined && (
+          <div className="fixed inset-x-4 bottom-4 z-40 sm:hidden">
+            <a
+              href="#signature-execution-card"
+              className="flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 font-bold text-white shadow-xl shadow-blue-500/30 transition-all active:scale-98"
+            >
+              <PenTool className="h-4 w-4" />
+              <span>Sign This Agreement ↓</span>
+            </a>
+          </div>
+        )}
         {/* Guiding Action Banner for Signatories */}
         {!isSigned && !isDeclined && (
           <div className="mb-6 rounded-2xl border border-blue-500/30 bg-blue-500/10 p-4 shadow-sm sm:p-5">
@@ -246,7 +299,7 @@ export default function PublicContractSigningPage() {
               </div>
               <a
                 href="#signature-execution-card"
-                className="inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 text-xs font-bold text-white shadow-md shadow-blue-500/20 transition-all hover:bg-blue-700"
+                className="inline-flex w-full shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 text-xs font-bold text-white shadow-md shadow-blue-500/20 transition-all hover:bg-blue-700 sm:w-auto"
               >
                 <PenTool className="h-3.5 w-3.5" /> Jump to Sign ↓
               </a>
@@ -365,7 +418,7 @@ export default function PublicContractSigningPage() {
               {/* Mode Switcher */}
               <div>
                 <label className="text-foreground text-xs font-bold">Signature Method</label>
-                <div className="bg-muted mt-1 flex max-w-xs rounded-xl p-1 text-xs">
+                <div className="bg-muted mt-1 flex w-full rounded-xl p-1 text-xs sm:max-w-xs">
                   <button
                     type="button"
                     onClick={() => setSignatureMode("draw")}
@@ -397,8 +450,6 @@ export default function PublicContractSigningPage() {
                   <div className="border-border relative overflow-hidden rounded-2xl border-2 border-dashed bg-white shadow-inner dark:bg-slate-900">
                     <canvas
                       ref={canvasRef}
-                      width={800}
-                      height={170}
                       onMouseDown={startDrawing}
                       onMouseMove={draw}
                       onMouseUp={stopDrawing}
@@ -469,7 +520,7 @@ export default function PublicContractSigningPage() {
                 <button
                   type="button"
                   onClick={() => setIsDeclineModalOpen(true)}
-                  className="cursor-pointer text-xs font-semibold text-rose-500 hover:text-rose-600 hover:underline"
+                  className="cursor-pointer py-2 text-center text-xs font-semibold text-rose-500 hover:text-rose-600 hover:underline sm:py-0"
                 >
                   Decline this agreement
                 </button>
@@ -478,7 +529,7 @@ export default function PublicContractSigningPage() {
                   size="lg"
                   disabled={!canSign || signMutation.isPending}
                   onClick={handleSign}
-                  className="w-full cursor-pointer bg-gradient-to-r from-blue-600 to-indigo-600 font-bold text-white shadow-lg shadow-blue-500/25 hover:from-blue-700 hover:to-indigo-700 sm:w-auto"
+                  className="h-12 w-full cursor-pointer bg-gradient-to-r from-blue-600 to-indigo-600 text-sm font-bold text-white shadow-lg shadow-blue-500/25 hover:from-blue-700 hover:to-indigo-700 sm:h-11 sm:w-auto"
                 >
                   {signMutation.isPending ? (
                     <>
