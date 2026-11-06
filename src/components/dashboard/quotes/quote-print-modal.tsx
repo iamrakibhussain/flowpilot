@@ -83,53 +83,66 @@ export function QuotePrintModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-h-[94vh] max-w-4xl overflow-y-auto rounded-3xl border-slate-200/90 bg-slate-900/40 p-4 shadow-2xl backdrop-blur-xl sm:p-7 print:static print:max-h-none print:w-full print:max-w-none print:transform-none print:overflow-visible print:border-none print:bg-white print:p-0 print:shadow-none">
+      <DialogContent className="max-h-[94vh] max-w-4xl overflow-y-auto rounded-3xl border-slate-200/90 bg-slate-900/40 p-3 shadow-2xl backdrop-blur-xl sm:p-7 print:static print:max-h-none print:w-full print:max-w-none print:transform-none print:overflow-visible print:border-none print:bg-white print:p-0 print:shadow-none">
         {/* Action Header (Hidden during printing) */}
         <DialogHeader className="flex flex-col items-start justify-between gap-3 border-b border-slate-200/20 pb-4 sm:flex-row sm:items-center print:hidden">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/20">
-              <Printer className="h-5 w-5" />
+          <div className="flex w-full items-center justify-between sm:w-auto">
+            <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/20 sm:h-10 sm:w-10">
+                <Printer className="h-4 w-4 sm:h-5 sm:w-5" />
+              </div>
+              <div className="min-w-0">
+                <DialogTitle className="truncate text-sm font-bold text-white sm:text-base">
+                  Executive Proposal Studio
+                </DialogTitle>
+                <DialogDescription className="hidden truncate text-xs text-slate-300 xs:block">
+                  Formatted for signature, archival, and print/PDF export.
+                </DialogDescription>
+              </div>
             </div>
-            <div>
-              <DialogTitle className="text-base font-bold text-white">
-                Executive Proposal Studio
-              </DialogTitle>
-              <DialogDescription className="text-xs text-slate-300">
-                Pixel-perfect Swiss statement formatted for client signature, archival, and
-                print/PDF export.
-              </DialogDescription>
-            </div>
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={onClose}
+              className="ml-2 h-8 w-8 shrink-0 rounded-xl border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white sm:hidden"
+            >
+              <X className="h-4 w-4" />
+            </Button>
           </div>
-          <div className="flex w-full items-center justify-end gap-2 sm:w-auto">
+
+          <div className="flex w-full flex-col items-stretch justify-end gap-2 sm:w-auto sm:flex-row sm:items-center">
             {emailStatus.sent && (
               <span className="flex items-center gap-1 rounded-lg border border-emerald-500/30 bg-emerald-950/40 px-2.5 py-1 text-xs font-medium text-emerald-400">
                 <CheckCircle2 className="h-3 w-3 text-emerald-400" />
                 {emailStatus.message}
               </span>
             )}
-            <Button
-              type="button"
-              onClick={handleSendEmail}
-              disabled={sendEmailMutation.isPending}
-              className="h-9 gap-1.5 rounded-xl bg-emerald-600 px-3.5 text-xs font-semibold text-white shadow-sm hover:bg-emerald-500 active:scale-98 disabled:opacity-50"
-            >
-              <Send className="h-3.5 w-3.5" />
-              <span>{sendEmailMutation.isPending ? "Sending..." : "Send by Email"}</span>
-            </Button>
-            <Button
-              type="button"
-              onClick={handlePrint}
-              className="h-9 gap-1.5 rounded-xl bg-blue-600 px-4 text-xs font-semibold text-white shadow-sm hover:bg-blue-500 active:scale-98"
-            >
-              <Printer className="h-3.5 w-3.5" />
-              <span>Print / Export PDF</span>
-            </Button>
+            <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:items-center">
+              <Button
+                type="button"
+                onClick={handleSendEmail}
+                disabled={sendEmailMutation.isPending}
+                className="h-9 justify-center gap-1.5 rounded-xl bg-emerald-600 px-3 text-xs font-semibold text-white shadow-sm hover:bg-emerald-500 active:scale-98 disabled:opacity-50"
+              >
+                <Send className="h-3.5 w-3.5" />
+                <span>{sendEmailMutation.isPending ? "Sending..." : "Send Email"}</span>
+              </Button>
+              <Button
+                type="button"
+                onClick={handlePrint}
+                className="h-9 justify-center gap-1.5 rounded-xl bg-blue-600 px-3.5 text-xs font-semibold text-white shadow-sm hover:bg-blue-500 active:scale-98"
+              >
+                <Printer className="h-3.5 w-3.5" />
+                <span>Print / PDF</span>
+              </Button>
+            </div>
             <Button
               type="button"
               variant="outline"
               size="icon"
               onClick={onClose}
-              className="h-9 w-9 rounded-xl border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white"
+              className="hidden h-9 w-9 shrink-0 rounded-xl border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white sm:inline-flex"
             >
               <X className="h-4 w-4" />
             </Button>
@@ -139,7 +152,7 @@ export function QuotePrintModal({
         {/* Printable Proposal Canvas */}
         <div
           id="flowpilot-quote-sheet"
-          className="relative mx-auto my-3 w-full max-w-3xl overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 font-sans text-slate-900 shadow-xl sm:p-12 print:m-0 print:w-full print:border-none print:p-0 print:shadow-none"
+          className="relative mx-auto my-2 w-full max-w-3xl overflow-hidden rounded-2xl border border-slate-200 bg-white p-3.5 font-sans text-slate-900 shadow-xl sm:my-3 sm:p-10 md:p-12 print:m-0 print:w-full print:border-none print:p-0 print:shadow-none"
         >
           {/* Subtle Top Classic Brand Accent Bar */}
           <div
@@ -149,8 +162,8 @@ export function QuotePrintModal({
 
           {/* Watermark Stamps */}
           {isAccepted && (
-            <div className="pointer-events-none absolute top-36 right-12 z-10 -rotate-12 opacity-85 select-none">
-              <div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-emerald-600 bg-emerald-50/70 px-6 py-2.5 shadow-sm">
+            <div className="pointer-events-none z-10 my-3 flex select-none justify-center opacity-90 sm:absolute sm:top-36 sm:right-12 sm:my-0 sm:block sm:-rotate-12">
+              <div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-emerald-600 bg-emerald-50/70 px-4 py-2 shadow-sm sm:px-6 sm:py-2.5">
                 <span className="font-mono text-xs font-black tracking-[0.25em] text-emerald-700 uppercase">
                   ✓ DIGITALLY ACCEPTED
                 </span>
@@ -168,8 +181,8 @@ export function QuotePrintModal({
           )}
 
           {isExpired && (
-            <div className="pointer-events-none absolute top-36 right-12 z-10 -rotate-12 opacity-85 select-none">
-              <div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-amber-600 bg-amber-50/70 px-6 py-2.5 shadow-sm">
+            <div className="pointer-events-none z-10 my-3 flex select-none justify-center opacity-90 sm:absolute sm:top-36 sm:right-12 sm:my-0 sm:block sm:-rotate-12">
+              <div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-amber-600 bg-amber-50/70 px-4 py-2 shadow-sm sm:px-6 sm:py-2.5">
                 <span className="font-mono text-xs font-black tracking-[0.25em] text-amber-700 uppercase">
                   ⚠ ESTIMATE EXPIRED
                 </span>
@@ -299,20 +312,20 @@ export function QuotePrintModal({
           </div>
 
           {/* Schedule of Deliverables Table */}
-          <div className="overflow-hidden rounded-xl border border-slate-200 shadow-2xs">
-            <table className="w-full text-left text-xs">
+          <div className="overflow-x-auto rounded-xl border border-slate-200 shadow-2xs [scrollbar-width:thin] print:overflow-visible">
+            <table className="w-full min-w-[500px] text-left text-xs sm:min-w-full print:min-w-full">
               <thead className="border-b border-slate-200 bg-slate-50 font-semibold tracking-wider text-slate-600 uppercase">
                 <tr>
-                  <th scope="col" className="px-4 py-3">
+                  <th scope="col" className="px-3.5 py-2.5 sm:px-4 sm:py-3">
                     Deliverable / Service Description
                   </th>
-                  <th scope="col" className="px-4 py-3 text-center">
+                  <th scope="col" className="px-3 py-2.5 text-center sm:px-4 sm:py-3">
                     Qty
                   </th>
-                  <th scope="col" className="px-4 py-3 text-right">
+                  <th scope="col" className="px-3 py-2.5 text-right sm:px-4 sm:py-3">
                     Unit Investment
                   </th>
-                  <th scope="col" className="px-4 py-3 text-right">
+                  <th scope="col" className="px-3.5 py-2.5 text-right sm:px-4 sm:py-3">
                     Amount
                   </th>
                 </tr>
@@ -321,7 +334,7 @@ export function QuotePrintModal({
                 {quote.items && quote.items.length > 0 ? (
                   quote.items.map((it, idx) => (
                     <tr key={it.id || idx} className="hover:bg-slate-50/50">
-                      <td className="px-4 py-3">
+                      <td className="px-3.5 py-2.5 sm:px-4 sm:py-3">
                         <p className="font-semibold text-slate-900">{it.description}</p>
                         {it.serviceName && (
                           <span className="mt-0.5 inline-block rounded-md bg-blue-50 px-1.5 py-0.5 text-[10px] font-medium text-blue-700">
@@ -329,13 +342,13 @@ export function QuotePrintModal({
                           </span>
                         )}
                       </td>
-                      <td className="px-4 py-3 text-center font-mono text-slate-700">
+                      <td className="px-3 py-2.5 text-center font-mono text-slate-700 sm:px-4 sm:py-3">
                         {it.quantity}
                       </td>
-                      <td className="px-4 py-3 text-right font-mono text-slate-700">
+                      <td className="px-3 py-2.5 text-right font-mono text-slate-700 sm:px-4 sm:py-3">
                         ${Number(it.unitPrice).toFixed(2)}
                       </td>
-                      <td className="px-4 py-3 text-right font-mono font-bold text-slate-900">
+                      <td className="px-3.5 py-2.5 text-right font-mono font-bold text-slate-900 sm:px-4 sm:py-3">
                         ${Number(it.amount || it.quantity * it.unitPrice).toFixed(2)}
                       </td>
                     </tr>
@@ -353,7 +366,7 @@ export function QuotePrintModal({
 
           {/* Financial Breakdown & Totals */}
           <div className="mt-4 flex justify-end">
-            <div className="w-full max-w-xs space-y-2 rounded-xl border border-slate-200 bg-slate-50/70 p-4">
+            <div className="w-full space-y-2 rounded-xl border border-slate-200 bg-slate-50/70 p-3.5 sm:max-w-xs sm:p-4">
               <div className="flex justify-between text-xs text-slate-600">
                 <span>Subtotal:</span>
                 <span className="font-mono text-slate-900">${quote.subtotal.toFixed(2)}</span>
@@ -457,12 +470,12 @@ export function QuotePrintModal({
             </div>
 
             {/* Verification Security Footer */}
-            <div className="mt-6 flex flex-col items-center justify-between gap-2 border-t border-slate-100 pt-4 text-[10px] text-slate-400 sm:flex-row">
-              <span className="font-mono font-bold tracking-wider text-slate-500">
+            <div className="mt-6 flex flex-col items-center justify-between gap-2 border-t border-slate-100 pt-4 text-center text-[10px] text-slate-400 sm:flex-row sm:text-left">
+              <span className="break-all font-mono font-bold tracking-wider text-slate-500">
                 {verificationHash}
               </span>
               <span className="flex items-center gap-1 font-semibold text-slate-500">
-                <Lock className="h-3 w-3 text-emerald-500" />
+                <Lock className="h-3 w-3 shrink-0 text-emerald-500" />
                 256-Bit Encrypted Audit Trail • ESIGN & UETA Compliant
               </span>
               <span>Page 1 of 1</span>

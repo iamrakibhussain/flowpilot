@@ -239,7 +239,7 @@ export default function QuotesPage() {
 
         <Button
           onClick={() => setIsBuilderOpen(true)}
-          className="gap-2 rounded-xl bg-blue-600 font-medium text-white shadow-xs hover:bg-blue-700"
+          className="h-10 w-full gap-2 rounded-xl bg-blue-600 font-medium text-white shadow-xs hover:bg-blue-700 sm:w-auto"
         >
           <Plus className="h-4 w-4" />
           Create Estimate

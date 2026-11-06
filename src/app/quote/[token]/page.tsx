@@ -59,6 +59,9 @@ export default function PublicQuotePage({ params }: PageProps) {
   const startDrawing = (
     e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>
   ) => {
+    if ("touches" in e) {
+      e.preventDefault();
+    }
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -73,6 +76,9 @@ export default function PublicQuotePage({ params }: PageProps) {
   };
 
   const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    if ("touches" in e) {
+      e.preventDefault();
+    }
     if (!isDrawing) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -464,7 +470,7 @@ export default function PublicQuotePage({ params }: PageProps) {
             {/* Digital Signing Form (Interactive when open) */}
             {!isAlreadyAccepted && !isDeclined && !isExpired && (
               <div className="border-border space-y-4 border-t pt-6 print:hidden">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
                   <div>
                     <h4 className="text-foreground flex items-center gap-2 text-sm font-bold">
                       <PenTool className="h-4 w-4 text-blue-600" /> Electronic Signature & Formal
@@ -474,11 +480,11 @@ export default function PublicQuotePage({ params }: PageProps) {
                       Please provide your legal name and signature below to execute this agreement.
                     </p>
                   </div>
-                  <div className="bg-muted/60 border-border flex gap-1.5 rounded-xl border p-1">
+                  <div className="bg-muted/60 border-border grid w-full grid-cols-2 gap-1.5 rounded-xl border p-1 sm:flex sm:w-auto">
                     <button
                       type="button"
                       onClick={() => setSignatureMode("draw")}
-                      className={`rounded-lg px-2.5 py-1 text-xs font-medium transition-all ${
+                      className={`rounded-lg px-2.5 py-1.5 text-center text-xs font-medium transition-all sm:py-1 ${
                         signatureMode === "draw"
                           ? "bg-background text-foreground font-semibold shadow-xs"
                           : "text-muted-foreground hover:text-foreground"
@@ -489,7 +495,7 @@ export default function PublicQuotePage({ params }: PageProps) {
                     <button
                       type="button"
                       onClick={() => setSignatureMode("type")}
-                      className={`rounded-lg px-2.5 py-1 text-xs font-medium transition-all ${
+                      className={`rounded-lg px-2.5 py-1.5 text-center text-xs font-medium transition-all sm:py-1 ${
                         signatureMode === "type"
                           ? "bg-background text-foreground font-semibold shadow-xs"
                           : "text-muted-foreground hover:text-foreground"

@@ -120,7 +120,7 @@ export function parseContractClauses(rawContent: string): ContractClause[] {
     }
 
     // Markdown H1 Title (# Title)
-    if (line.startsWith("# ")) {
+    if (/^#\s+/.test(line)) {
       flushParagraph();
       clauses.push({
         id: `title-${clauses.length}`,
@@ -130,10 +130,10 @@ export function parseContractClauses(rawContent: string): ContractClause[] {
       continue;
     }
 
-    // Markdown H2 Section (## 1. Scope / ## Section Name)
-    if (line.startsWith("## ")) {
+    // Markdown H2 Section (## 1. Scope / ## Section Name or ##Section)
+    if (/^##\s*/.test(line)) {
       flushParagraph();
-      const rawHeading = line.replace(/^##\s+/, "").trim();
+      const rawHeading = line.replace(/^##\s*/, "").trim();
       clauses.push({
         id: `sec-${clauses.length}`,
         type: "section",
@@ -143,10 +143,10 @@ export function parseContractClauses(rawContent: string): ContractClause[] {
       continue;
     }
 
-    // Markdown H3 Subsection (### 1.1 ...)
-    if (line.startsWith("### ")) {
+    // Markdown H3+ Subsection (### 1.1 ... or ####)
+    if (/^#{3,}\s*/.test(line)) {
       flushParagraph();
-      const rawHeading = line.replace(/^###\s+/, "").trim();
+      const rawHeading = line.replace(/^#+\s*/, "").trim();
       clauses.push({
         id: `subsec-${clauses.length}`,
         type: "subsection",

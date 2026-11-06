@@ -23,6 +23,24 @@ interface ContractDocumentPaperProps {
   hideHeaderActions?: boolean;
 }
 
+/**
+ * Safely format inline markdown bolding **text** without raw asterisks
+ */
+function renderFormattedInlineText(text: string) {
+  if (!text) return "";
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  return parts.map((part, idx) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong key={idx} className="font-bold text-slate-900 dark:text-white">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    return part;
+  });
+}
+
 export function ContractDocumentPaper({
   contract,
   elementId = "printable-contract-document",
@@ -245,14 +263,16 @@ export function ContractDocumentPaper({
                 <span className="shrink-0 font-mono font-bold text-slate-600 select-none dark:text-slate-400">
                   {clause.number}
                 </span>
-                <p className="leading-relaxed">{clause.content}</p>
+                <p className="leading-relaxed">
+                  {renderFormattedInlineText(clause.content)}
+                </p>
               </div>
             );
           }
 
           return (
             <p key={clause.id} className="text-left leading-relaxed sm:text-justify">
-              {clause.content}
+              {renderFormattedInlineText(clause.content)}
             </p>
           );
         })}

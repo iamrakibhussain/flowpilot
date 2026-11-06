@@ -112,6 +112,59 @@ export interface PortalProjectSummary {
   progressPercentage: number;
 }
 
+export interface PortalContract {
+  id: string;
+  contractNumber: string;
+  title: string;
+  content: string;
+  status: "DRAFT" | "PENDING_SIGNATURE" | "VIEWED" | "SIGNED" | "COUNTERSIGNED" | "DECLINED" | "VOIDED";
+  issuedAt: string;
+  expiresAt: string | null;
+  viewedAt: string | null;
+  signedAt: string | null;
+  signerName: string | null;
+  signerEmail: string | null;
+  signatureData: string | null;
+  signatureType: "CANVAS" | "TYPED" | null;
+  contentChecksum: string | null;
+  countersignedAt: string | null;
+  countersignerName: string | null;
+  quoteId: string | null;
+  projectId: string | null;
+}
+
+export interface PortalNotification {
+  id: string;
+  type: string;
+  title: string;
+  message: string;
+  actionUrl: string | null;
+  isRead: boolean;
+  createdAt: string;
+}
+
+export interface PortalTimeSlot {
+  startTime: string;
+  endTime: string;
+  staffMemberId?: string;
+  staffName?: string;
+}
+
+export interface SignPortalContractInput {
+  signerName: string;
+  signerEmail: string;
+  signatureData: string;
+  signatureType: "CANVAS" | "TYPED";
+  clientNotes?: string | null;
+}
+
+export interface AcceptPortalQuoteInput {
+  signerName: string;
+  signerEmail?: string;
+  signatureData?: string | null;
+  clientNotes?: string | null;
+}
+
 export interface PortalDashboardData {
   organization: PortalOrganization;
   customer: PortalCustomer;
@@ -144,6 +197,14 @@ export interface PortalDashboardData {
       totalProjects: number;
       activeCount: number;
       completedCount: number;
+    };
+  };
+  contracts?: {
+    list: PortalContract[];
+    metrics: {
+      totalContracts: number;
+      pendingCount: number;
+      signedCount: number;
     };
   };
 }

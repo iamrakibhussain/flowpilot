@@ -127,6 +127,13 @@ export function DashboardSidebar({
             badgeVariant: "success",
           },
           {
+            name: "Workflows & Automations",
+            href: "/dashboard/automations",
+            icon: Zap,
+            badge: "New",
+            badgeVariant: "success",
+          },
+          {
             name: "Online Payments",
             href: "/dashboard/payments",
             icon: CreditCard,

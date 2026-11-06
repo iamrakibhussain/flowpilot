@@ -158,22 +158,22 @@ export function QuoteQuickPeekDrawer({
       <div className="fixed inset-y-0 right-0 flex max-w-full pl-0 sm:pl-10">
         <div
           onClick={(e) => e.stopPropagation()}
-          className="bg-background border-border flex h-full w-screen max-w-md flex-col border-l shadow-2xl"
+          className="bg-background border-border flex h-full w-screen max-w-full flex-col border-l shadow-2xl sm:max-w-md"
         >
           {/* Header */}
-          <div className="border-border flex items-center justify-between border-b p-5">
-            <div className="flex items-center gap-2.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
+          <div className="border-border flex items-center justify-between border-b p-4 sm:p-5">
+            <div className="flex min-w-0 items-center gap-2.5 pr-2">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
                 <FileCheck2 className="h-4 w-4" />
               </div>
-              <div>
+              <div className="min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="text-foreground font-mono text-sm font-bold tracking-tight">
+                  <span className="text-foreground truncate font-mono text-sm font-bold tracking-tight">
                     {quote.quoteNumber}
                   </span>
                   <button
                     onClick={handleCopyNumber}
-                    className="text-muted-foreground hover:text-foreground p-0.5 transition-colors"
+                    className="text-muted-foreground hover:text-foreground shrink-0 p-0.5 transition-colors"
                     title="Copy Estimate Number"
                   >
                     {copiedNumber ? (
@@ -183,7 +183,7 @@ export function QuoteQuickPeekDrawer({
                     )}
                   </button>
                 </div>
-                <p className="text-muted-foreground line-clamp-1 text-xs">{quote.title}</p>
+                <p className="text-muted-foreground truncate text-xs">{quote.title}</p>
               </div>
             </div>
 
@@ -191,7 +191,7 @@ export function QuoteQuickPeekDrawer({
               variant="ghost"
               size="sm"
               onClick={onClose}
-              className="text-muted-foreground hover:text-foreground h-8 w-8 rounded-full p-0"
+              className="text-muted-foreground hover:text-foreground h-8 w-8 shrink-0 rounded-full p-0"
             >
               <X className="h-4 w-4" />
             </Button>
@@ -339,26 +339,26 @@ export function QuoteQuickPeekDrawer({
           </div>
 
           {/* Footer Actions */}
-          <div className="border-border bg-muted/20 space-y-2 border-t p-4">
+          <div className="border-border bg-muted/20 space-y-2 border-t p-3.5 sm:p-4">
             {onPrint && (
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => onPrint(quote)}
-                className="border-border/80 h-9 w-full gap-1.5 rounded-xl text-xs font-semibold"
+                className="border-border/80 h-10 w-full gap-1.5 rounded-xl text-xs font-bold sm:h-9"
               >
                 <Printer className="h-3.5 w-3.5" />
                 Print / Export Proposal PDF
               </Button>
             )}
 
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2 xs:grid-cols-2">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handleCopyLink}
                 disabled={sendQuoteMutation.isPending}
-                className="h-9 gap-1.5 rounded-xl text-xs"
+                className="h-9 gap-1.5 rounded-xl text-xs font-semibold"
               >
                 {copiedLink ? (
                   <>
@@ -376,7 +376,7 @@ export function QuoteQuickPeekDrawer({
                 size="sm"
                 onClick={handleSendQuote}
                 disabled={sendQuoteMutation.isPending}
-                className="h-9 gap-1.5 rounded-xl bg-blue-600 text-xs text-white hover:bg-blue-700"
+                className="h-9 gap-1.5 rounded-xl bg-blue-600 text-xs font-semibold text-white hover:bg-blue-700"
               >
                 <Send className="h-3.5 w-3.5" />
                 {sendQuoteMutation.isPending ? "Sending..." : "Send by Email"}
