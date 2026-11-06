@@ -58,18 +58,33 @@ export async function getFlowRules(
     organizationId,
   });
 
-  const raw = response.data as any;
+  const raw = response.data as unknown as
+    | {
+        rules?: FlowRuleListItem[];
+        total?: number;
+        page?: number;
+        limit?: number;
+      }
+    | FlowRuleListItem[];
   const rulesList: FlowRuleListItem[] = Array.isArray(raw)
     ? raw
-    : Array.isArray(raw?.rules)
-      ? raw.rules
+    : Array.isArray((raw as { rules?: FlowRuleListItem[] })?.rules)
+      ? (raw as { rules: FlowRuleListItem[] }).rules
       : [];
 
   const total =
-    typeof raw?.total === "number" ? raw.total : (response.meta?.totalCount ?? rulesList.length);
+    typeof (raw as { total?: number })?.total === "number"
+      ? (raw as { total: number }).total
+      : (response.meta?.totalCount ?? rulesList.length);
 
-  const page = typeof raw?.page === "number" ? raw.page : (response.meta?.page ?? 1);
-  const limit = typeof raw?.limit === "number" ? raw.limit : (response.meta?.limit ?? 20);
+  const page =
+    typeof (raw as { page?: number })?.page === "number"
+      ? (raw as { page: number }).page
+      : (response.meta?.page ?? 1);
+  const limit =
+    typeof (raw as { limit?: number })?.limit === "number"
+      ? (raw as { limit: number }).limit
+      : (response.meta?.limit ?? 20);
 
   return {
     rules: rulesList,
@@ -182,18 +197,33 @@ export async function getFlowRuleExecutions(
     organizationId,
   });
 
-  const raw = response.data as any;
+  const raw = response.data as unknown as
+    | {
+        executions?: FlowRuleExecutionItem[];
+        total?: number;
+        page?: number;
+        limit?: number;
+      }
+    | FlowRuleExecutionItem[];
   const execsList: FlowRuleExecutionItem[] = Array.isArray(raw)
     ? raw
-    : Array.isArray(raw?.executions)
-      ? raw.executions
+    : Array.isArray((raw as { executions?: FlowRuleExecutionItem[] })?.executions)
+      ? (raw as { executions: FlowRuleExecutionItem[] }).executions
       : [];
 
   const total =
-    typeof raw?.total === "number" ? raw.total : (response.meta?.totalCount ?? execsList.length);
+    typeof (raw as { total?: number })?.total === "number"
+      ? (raw as { total: number }).total
+      : (response.meta?.totalCount ?? execsList.length);
 
-  const page = typeof raw?.page === "number" ? raw.page : (response.meta?.page ?? 1);
-  const limit = typeof raw?.limit === "number" ? raw.limit : (response.meta?.limit ?? 20);
+  const page =
+    typeof (raw as { page?: number })?.page === "number"
+      ? (raw as { page: number }).page
+      : (response.meta?.page ?? 1);
+  const limit =
+    typeof (raw as { limit?: number })?.limit === "number"
+      ? (raw as { limit: number }).limit
+      : (response.meta?.limit ?? 20);
 
   return {
     executions: execsList,

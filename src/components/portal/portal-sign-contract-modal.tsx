@@ -8,13 +8,11 @@ import {
   Type,
   RotateCcw,
   ShieldCheck,
-  CheckCircle2,
   AlertCircle,
   FileText,
   Calendar,
   Lock,
   ArrowRight,
-  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -124,12 +122,16 @@ export function PortalSignContractModal({
     ctx.strokeStyle = "#0f172a";
   }, []);
 
+  const handleClose = React.useCallback(() => {
+    setErrorMsg(null);
+    setHasDrawn(false);
+    setAgreedToTerms(false);
+    setActiveMobileTab("DOCUMENT");
+    onClose();
+  }, [onClose]);
+
   React.useEffect(() => {
     if (isOpen) {
-      setErrorMsg(null);
-      setHasDrawn(false);
-      setAgreedToTerms(false);
-      setActiveMobileTab("DOCUMENT");
       const timer = setTimeout(() => {
         setupCanvas();
       }, 100);
@@ -151,12 +153,12 @@ export function PortalSignContractModal({
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen && !isSubmitting) {
-        onClose();
+        handleClose();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, isSubmitting, onClose]);
+  }, [isOpen, isSubmitting, handleClose]);
 
   // Drawing Event Handlers
   const getCanvasCoordinates = (
@@ -313,7 +315,7 @@ export function PortalSignContractModal({
   return (
     <div
       onClick={(e) => {
-        if (e.target === e.currentTarget && !isSubmitting) onClose();
+        if (e.target === e.currentTarget && !isSubmitting) handleClose();
       }}
       className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-slate-950/75 p-3 backdrop-blur-md sm:p-4"
     >
@@ -344,7 +346,7 @@ export function PortalSignContractModal({
           <button
             type="button"
             disabled={isSubmitting}
-            onClick={onClose}
+            onClick={handleClose}
             className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl text-slate-400 hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200"
           >
             <X className="h-5 w-5" />
@@ -639,7 +641,7 @@ export function PortalSignContractModal({
                 type="button"
                 variant="outline"
                 disabled={isSubmitting}
-                onClick={onClose}
+                onClick={handleClose}
                 className="h-11 flex-1 cursor-pointer rounded-xl font-bold sm:h-10"
               >
                 Review Later

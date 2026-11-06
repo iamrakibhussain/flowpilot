@@ -38,8 +38,18 @@ interface RuleBuilderModalProps {
   initialTemplate?: Partial<CreateFlowRuleInput> | null;
 }
 
-export function RuleBuilderModal({
-  isOpen,
+export function RuleBuilderModal(props: RuleBuilderModalProps) {
+  if (!props.isOpen) return null;
+
+  return (
+    <RuleBuilderModalContent
+      key={`${props.editRule?.id || "new"}-${props.initialTemplate?.title || "default"}`}
+      {...props}
+    />
+  );
+}
+
+function RuleBuilderModalContent({
   onClose,
   editRule,
   initialTemplate,
@@ -47,90 +57,73 @@ export function RuleBuilderModal({
   const [currentStep, setCurrentStep] = React.useState<1 | 2 | 3 | 4>(1);
 
   // Form states
-  const [title, setTitle] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [trigger, setTrigger] = React.useState<FlowRuleTrigger>("CONTRACT_SIGNED");
-  const [action, setAction] = React.useState<FlowRuleAction>("CREATE_PROJECT");
+  const [title, setTitle] = React.useState(
+    () =>
+      editRule?.title ||
+      initialTemplate?.title ||
+      "Contract Signed ➔ Launch Delivery Project"
+  );
+  const [description, setDescription] = React.useState(
+    () =>
+      editRule?.description ||
+      initialTemplate?.description ||
+      "Automatically create a delivery project with kickoff checklist upon contract signing."
+  );
+  const [trigger, setTrigger] = React.useState<FlowRuleTrigger>(
+    () => editRule?.trigger || initialTemplate?.trigger || "CONTRACT_SIGNED"
+  );
+  const [action, setAction] = React.useState<FlowRuleAction>(
+    () => editRule?.action || initialTemplate?.action || "CREATE_PROJECT"
+  );
 
   // Conditions
-  const [minAmount, setMinAmount] = React.useState<string>("");
+  const [minAmount, setMinAmount] = React.useState<string>(() =>
+    editRule?.conditions?.minAmount
+      ? String(editRule.conditions.minAmount)
+      : initialTemplate?.conditions?.minAmount
+        ? String(initialTemplate.conditions.minAmount)
+        : ""
+  );
 
   // Action config
   const [projectTitleTemplate, setProjectTitleTemplate] = React.useState(
-    "Delivery: {{entityTitle}}"
+    () =>
+      editRule?.actionConfig?.projectTitleTemplate ||
+      initialTemplate?.actionConfig?.projectTitleTemplate ||
+      "Delivery: {{entityTitle}}"
   );
-  const [depositPercent, setDepositPercent] = React.useState("50");
-  const [paymentDueDays, setPaymentDueDays] = React.useState("14");
+  const [depositPercent, setDepositPercent] = React.useState(() =>
+    editRule?.actionConfig?.depositPercent
+      ? String(editRule.actionConfig.depositPercent)
+      : initialTemplate?.actionConfig?.depositPercent
+        ? String(initialTemplate.actionConfig.depositPercent)
+        : "50"
+  );
+  const [paymentDueDays, setPaymentDueDays] = React.useState(() =>
+    editRule?.actionConfig?.paymentDueDays
+      ? String(editRule.actionConfig.paymentDueDays)
+      : "14"
+  );
   const [emailSubjectTemplate, setEmailSubjectTemplate] = React.useState(
-    "Welcome to your project: {{entityTitle}}"
+    () =>
+      editRule?.actionConfig?.emailSubjectTemplate ||
+      "Welcome to your project: {{entityTitle}}"
   );
   const [emailBodyTemplate, setEmailBodyTemplate] = React.useState(
-    "Hello {{customerName}},\n\nThank you for choosing FlowPilot. Your delivery workflow has begun!"
+    () =>
+      editRule?.actionConfig?.emailBodyTemplate ||
+      (editRule
+        ? ""
+        : "Hello {{customerName}},\n\nThank you for choosing FlowPilot. Your delivery workflow has begun!")
   );
   const [notificationMessage, setNotificationMessage] = React.useState(
-    "New automated workflow event triggered."
+    () =>
+      editRule?.actionConfig?.notificationMessage ||
+      (editRule ? "" : "New automated workflow event triggered.")
   );
 
   const createMutation = useCreateFlowRule();
   const updateMutation = useUpdateFlowRule();
-
-  // Populate state on open or edit
-  React.useEffect(() => {
-    if (!isOpen) return;
-
-    if (editRule) {
-      setTitle(editRule.title);
-      setDescription(editRule.description || "");
-      setTrigger(editRule.trigger);
-      setAction(editRule.action);
-      setMinAmount(editRule.conditions?.minAmount ? String(editRule.conditions.minAmount) : "");
-      setProjectTitleTemplate(
-        editRule.actionConfig?.projectTitleTemplate || "Delivery: {{entityTitle}}"
-      );
-      setDepositPercent(
-        editRule.actionConfig?.depositPercent ? String(editRule.actionConfig.depositPercent) : "50"
-      );
-      setPaymentDueDays(
-        editRule.actionConfig?.paymentDueDays ? String(editRule.actionConfig.paymentDueDays) : "14"
-      );
-      setEmailSubjectTemplate(
-        editRule.actionConfig?.emailSubjectTemplate || "Welcome: {{entityTitle}}"
-      );
-      setEmailBodyTemplate(editRule.actionConfig?.emailBodyTemplate || "");
-      setNotificationMessage(editRule.actionConfig?.notificationMessage || "");
-      setCurrentStep(1);
-    } else if (initialTemplate) {
-      setTitle(initialTemplate.title || "");
-      setDescription(initialTemplate.description || "");
-      if (initialTemplate.trigger) setTrigger(initialTemplate.trigger);
-      if (initialTemplate.action) setAction(initialTemplate.action);
-      if (initialTemplate.conditions?.minAmount) {
-        setMinAmount(String(initialTemplate.conditions.minAmount));
-      }
-      if (initialTemplate.actionConfig?.projectTitleTemplate) {
-        setProjectTitleTemplate(initialTemplate.actionConfig.projectTitleTemplate);
-      }
-      if (initialTemplate.actionConfig?.depositPercent) {
-        setDepositPercent(String(initialTemplate.actionConfig.depositPercent));
-      }
-      setCurrentStep(1);
-    } else {
-      // Default reset
-      setTitle("Contract Signed ➔ Launch Delivery Project");
-      setDescription(
-        "Automatically create a delivery project with kickoff checklist upon contract signing."
-      );
-      setTrigger("CONTRACT_SIGNED");
-      setAction("CREATE_PROJECT");
-      setMinAmount("");
-      setProjectTitleTemplate("Delivery: {{entityTitle}}");
-      setDepositPercent("50");
-      setPaymentDueDays("14");
-      setCurrentStep(1);
-    }
-  }, [isOpen, editRule, initialTemplate]);
-
-  if (!isOpen) return null;
 
   const triggerOptions: Array<{
     id: FlowRuleTrigger;
@@ -665,7 +658,7 @@ export function RuleBuilderModal({
               type="button"
               variant="outline"
               size="sm"
-              onClick={() => setCurrentStep((prev) => (prev - 1) as any)}
+              onClick={() => setCurrentStep((prev) => (Math.max(1, prev - 1) as 1 | 2 | 3 | 4))}
               className="h-8.5 text-xs"
             >
               <ArrowLeft className="mr-1.5 h-3.5 w-3.5" />
@@ -679,7 +672,7 @@ export function RuleBuilderModal({
             <Button
               type="button"
               size="sm"
-              onClick={() => setCurrentStep((prev) => (prev + 1) as any)}
+              onClick={() => setCurrentStep((prev) => (Math.min(4, prev + 1) as 1 | 2 | 3 | 4))}
               className="bg-primary text-primary-foreground h-10 px-4 text-xs font-semibold sm:h-9"
             >
               Continue

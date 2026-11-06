@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { X, Play, CheckCircle2, AlertTriangle, Sparkles, Terminal, Activity } from "lucide-react";
+import { X, Play, CheckCircle2, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,22 +21,21 @@ export function TestRuleModal({ rule, isOpen, onClose }: TestRuleModalProps) {
 
   const testMutation = useTestFlowRule();
 
+  const handleClose = React.useCallback(() => {
+    setTestResult(null);
+    setEntityTitle("Enterprise Web Platform");
+    setSimulatedAmount("2500");
+    onClose();
+  }, [onClose]);
+
   // Close on Escape key
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) onClose();
+      if (e.key === "Escape" && isOpen) handleClose();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose]);
-
-  React.useEffect(() => {
-    if (isOpen) {
-      setTestResult(null);
-      setEntityTitle("Enterprise Web Platform");
-      setSimulatedAmount("2500");
-    }
-  }, [isOpen]);
+  }, [isOpen, handleClose]);
 
   if (!isOpen || !rule) return null;
 
@@ -60,7 +59,7 @@ export function TestRuleModal({ rule, isOpen, onClose }: TestRuleModalProps) {
   return (
     <div
       onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
+        if (e.target === e.currentTarget) handleClose();
       }}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-2 backdrop-blur-sm sm:p-4"
     >
@@ -82,7 +81,7 @@ export function TestRuleModal({ rule, isOpen, onClose }: TestRuleModalProps) {
           <Button
             variant="ghost"
             size="icon"
-            onClick={onClose}
+            onClick={handleClose}
             aria-label="Close test modal"
             className="text-muted-foreground hover:text-foreground h-9 w-9 shrink-0 rounded-xl"
           >
@@ -167,7 +166,7 @@ export function TestRuleModal({ rule, isOpen, onClose }: TestRuleModalProps) {
         <div className="border-border/80 bg-card flex items-center justify-end border-t px-4 py-2.5 sm:px-5 sm:py-3">
           <Button
             variant="outline"
-            onClick={onClose}
+            onClick={handleClose}
             className="h-9 w-full text-xs font-semibold sm:w-auto"
           >
             Close Simulation

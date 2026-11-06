@@ -52,11 +52,6 @@ export function PortalRescheduleModal({
     isOpen
   );
 
-  React.useEffect(() => {
-    setSelectedSlotTime(null);
-    setErrorMessage(null);
-  }, [selectedDate, isOpen]);
-
   // Handle ESC key
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -142,7 +137,7 @@ export function PortalRescheduleModal({
             <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-600" />
             <span>
               Policy Notice: Changes require at least <strong>{minNoticeHours} hours</strong> notice.
-              Your selected time will automatically sync with your specialist's schedule.
+              Your selected time will automatically sync with your specialist&apos;s schedule.
             </span>
           </div>
 
@@ -161,7 +156,11 @@ export function PortalRescheduleModal({
               type="date"
               value={selectedDate}
               min={new Date().toISOString().slice(0, 10)}
-              onChange={(e) => setSelectedDate(e.target.value)}
+              onChange={(e) => {
+                setSelectedDate(e.target.value);
+                setSelectedSlotTime(null);
+                setErrorMessage(null);
+              }}
               className="h-10 rounded-xl bg-slate-50 font-semibold dark:bg-slate-950"
             />
           </div>
