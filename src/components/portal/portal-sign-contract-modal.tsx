@@ -574,7 +574,9 @@ export function PortalSignContractModal({
                     {!hasDrawn && (
                       <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-1 text-slate-400">
                         <PenTool className="h-5 w-5 opacity-40" />
-                        <span className="text-xs font-medium">Draw signature here with pen/finger</span>
+                        <span className="text-xs font-medium">
+                          Draw signature here with pen/finger
+                        </span>
                       </div>
                     )}
                     <button
@@ -598,7 +600,7 @@ export function PortalSignContractModal({
                       className="h-10 rounded-xl bg-slate-50 text-xs font-semibold dark:bg-slate-950"
                     />
                     <div className="flex h-24 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-950">
-                      <span className="font-serif text-2xl italic tracking-wide text-slate-900 sm:text-3xl dark:text-slate-100">
+                      <span className="font-serif text-2xl tracking-wide text-slate-900 italic sm:text-3xl dark:text-slate-100">
                         {typedSignature.trim() || signerName || "Signature Preview"}
                       </span>
                     </div>
@@ -629,8 +631,9 @@ export function PortalSignContractModal({
                   className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                 />
                 <span>
-                  I confirm that I am <strong>{signerName || "the authorized signer"}</strong>, and I agree to be
-                  legally bound by electronic record and signature under ESIGN Act &amp; applicable commercial laws.
+                  I confirm that I am <strong>{signerName || "the authorized signer"}</strong>, and
+                  I agree to be legally bound by electronic record and signature under ESIGN Act
+                  &amp; applicable commercial laws.
                 </span>
               </label>
             </div>

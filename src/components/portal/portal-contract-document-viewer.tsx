@@ -92,8 +92,7 @@ export function PortalContractDocumentViewer({
     return parseContractClauses(interpolatedContent);
   }, [interpolatedContent]);
 
-  const isSigned =
-    contract.status === "SIGNED" || contract.status === "COUNTERSIGNED";
+  const isSigned = contract.status === "SIGNED" || contract.status === "COUNTERSIGNED";
   const isCountersigned = contract.status === "COUNTERSIGNED";
 
   return (
@@ -104,13 +103,8 @@ export function PortalContractDocumentViewer({
             type="button"
             variant="outline"
             size="sm"
-            onClick={() =>
-              printElementById(
-                containerId,
-                `Contract-${contract.contractNumber}`
-              )
-            }
-            className="h-8.5 sm:h-9 w-full sm:w-auto cursor-pointer gap-2 rounded-xl text-xs font-bold shadow-2xs hover:bg-slate-100 dark:hover:bg-slate-800"
+            onClick={() => printElementById(containerId, `Contract-${contract.contractNumber}`)}
+            className="h-8.5 w-full cursor-pointer gap-2 rounded-xl text-xs font-bold shadow-2xs hover:bg-slate-100 sm:h-9 sm:w-auto dark:hover:bg-slate-800"
           >
             <Printer className="h-3.5 w-3.5" />
             Print / Save Document
@@ -121,7 +115,7 @@ export function PortalContractDocumentViewer({
       {/* Printable Legal Document Sheet */}
       <div
         id={containerId}
-        className="relative mx-auto w-full overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-3.5 sm:p-8 md:p-12 shadow-sm dark:border-slate-800 dark:bg-slate-900 print:rounded-none print:border-none print:p-0 print:shadow-none"
+        className="relative mx-auto w-full overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-3.5 shadow-sm sm:p-8 md:p-12 dark:border-slate-800 dark:bg-slate-900 print:rounded-none print:border-none print:p-0 print:shadow-none"
       >
         {/* Top Accent Gradient Line */}
         <div
@@ -137,9 +131,7 @@ export function PortalContractDocumentViewer({
                 {organizationName}
               </span>
               {organizationEmail && (
-                <p className="font-mono text-[11px] text-slate-500">
-                  {organizationEmail}
-                </p>
+                <p className="font-mono text-[11px] text-slate-500">{organizationEmail}</p>
               )}
             </div>
 
@@ -149,7 +141,7 @@ export function PortalContractDocumentViewer({
                 <span>{contract.contractNumber}</span>
               </div>
               <span
-                className={`rounded-full px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider ${
+                className={`rounded-full px-2.5 py-0.5 text-[10px] font-extrabold tracking-wider uppercase ${
                   isCountersigned
                     ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300"
                     : isSigned
@@ -193,9 +185,7 @@ export function PortalContractDocumentViewer({
             <p className="mt-1 text-xs font-bold text-slate-900 dark:text-slate-100">
               {organizationName}
             </p>
-            {organizationEmail && (
-              <p className="text-[11px] text-slate-500">{organizationEmail}</p>
-            )}
+            {organizationEmail && <p className="text-[11px] text-slate-500">{organizationEmail}</p>}
           </div>
 
           <div>
@@ -207,9 +197,7 @@ export function PortalContractDocumentViewer({
               {contract.signerName || customerName}
               {customerCompany ? ` • ${customerCompany}` : ""}
             </p>
-            <p className="text-[11px] text-slate-500">
-              {contract.signerEmail || customerEmail}
-            </p>
+            <p className="text-[11px] text-slate-500">{contract.signerEmail || customerEmail}</p>
           </div>
         </div>
 
@@ -249,9 +237,7 @@ export function PortalContractDocumentViewer({
                   <span className="shrink-0 font-mono font-bold text-slate-500">
                     {clause.number}
                   </span>
-                  <p className="leading-relaxed">
-                    {renderFormattedInlineText(clause.content)}
-                  </p>
+                  <p className="leading-relaxed">{renderFormattedInlineText(clause.content)}</p>
                 </div>
               );
             }
@@ -276,18 +262,15 @@ export function PortalContractDocumentViewer({
                   </span>
                 </div>
                 <p className="mt-1 text-xs text-emerald-700/90 dark:text-emerald-400/90">
-                  Digitally executed by{" "}
-                  <strong>{contract.signerName || customerName}</strong> (
+                  Digitally executed by <strong>{contract.signerName || customerName}</strong> (
                   {contract.signerEmail || customerEmail})
                 </p>
                 <p className="text-[11px] text-emerald-600/80 dark:text-emerald-500/80">
                   Timestamp:{" "}
-                  {contract.signedAt
-                    ? new Date(contract.signedAt).toLocaleString()
-                    : "Recorded"}
+                  {contract.signedAt ? new Date(contract.signedAt).toLocaleString() : "Recorded"}
                 </p>
                 {contract.contentChecksum && (
-                  <p className="mt-2 font-mono text-[10px] text-emerald-700 dark:text-emerald-400 break-all">
+                  <p className="mt-2 font-mono text-[10px] break-all text-emerald-700 dark:text-emerald-400">
                     SHA-256 Audit Seal: {contract.contentChecksum}
                   </p>
                 )}
@@ -302,7 +285,7 @@ export function PortalContractDocumentViewer({
                     alt="Client Signature"
                     className="h-12 max-w-[160px] object-contain sm:h-14 sm:max-w-[200px]"
                   />
-                  <span className="mt-1 text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+                  <span className="mt-1 text-[9px] font-bold tracking-widest text-slate-400 uppercase">
                     Digital Signature Stamp
                   </span>
                 </div>

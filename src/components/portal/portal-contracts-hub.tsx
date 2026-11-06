@@ -74,7 +74,9 @@ export function PortalContractsHub({
     if (!selectedContractForSigning) return;
     try {
       await onSignContract(selectedContractForSigning.id, input);
-      onSuccess(`Document ${selectedContractForSigning.contractNumber} digitally signed successfully.`);
+      onSuccess(
+        `Document ${selectedContractForSigning.contractNumber} digitally signed successfully.`
+      );
       setSelectedContractForSigning(null);
     } catch (err: unknown) {
       onError(err instanceof Error ? err.message : "Failed to sign contract.");
@@ -198,8 +200,7 @@ export function PortalContractsHub({
               contract.status === "PENDING_SIGNATURE" ||
               contract.status === "VIEWED" ||
               contract.status === "DRAFT";
-            const isSigned =
-              contract.status === "SIGNED" || contract.status === "COUNTERSIGNED";
+            const isSigned = contract.status === "SIGNED" || contract.status === "COUNTERSIGNED";
 
             return (
               <Card

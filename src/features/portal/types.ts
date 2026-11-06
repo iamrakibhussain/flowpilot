@@ -117,7 +117,8 @@ export interface PortalContract {
   contractNumber: string;
   title: string;
   content: string;
-  status: "DRAFT" | "PENDING_SIGNATURE" | "VIEWED" | "SIGNED" | "COUNTERSIGNED" | "DECLINED" | "VOIDED";
+  status:
+    "DRAFT" | "PENDING_SIGNATURE" | "VIEWED" | "SIGNED" | "COUNTERSIGNED" | "DECLINED" | "VOIDED";
   issuedAt: string;
   expiresAt: string | null;
   viewedAt: string | null;

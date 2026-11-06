@@ -253,7 +253,7 @@ export function PortalQuotesHub({
                   </div>
 
                   {quote.notes && (
-                    <p className="mt-3 text-xs text-slate-500 italic line-clamp-2">
+                    <p className="mt-3 line-clamp-2 text-xs text-slate-500 italic">
                       &quot;{quote.notes}&quot;
                     </p>
                   )}
@@ -415,8 +415,8 @@ export function PortalQuotesHub({
                 Proposal Approved!
               </h3>
               <p className="mt-1 text-xs text-slate-500">
-                Proposal <strong>{depositPrompt.quoteNumber}</strong> is now accepted. An initial deposit
-                invoice has been automatically generated for you.
+                Proposal <strong>{depositPrompt.quoteNumber}</strong> is now accepted. An initial
+                deposit invoice has been automatically generated for you.
               </p>
             </div>
 

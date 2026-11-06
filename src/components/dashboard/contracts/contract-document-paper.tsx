@@ -263,9 +263,7 @@ export function ContractDocumentPaper({
                 <span className="shrink-0 font-mono font-bold text-slate-600 select-none dark:text-slate-400">
                   {clause.number}
                 </span>
-                <p className="leading-relaxed">
-                  {renderFormattedInlineText(clause.content)}
-                </p>
+                <p className="leading-relaxed">{renderFormattedInlineText(clause.content)}</p>
               </div>
             );
           }

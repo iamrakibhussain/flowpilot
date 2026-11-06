@@ -315,7 +315,7 @@ function QuoteBuilderForm({
               </select>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               <Input
                 value={newClientName}
                 onChange={(e) => setNewClientName(e.target.value)}
@@ -439,7 +439,7 @@ function QuoteBuilderForm({
                     variant="ghost"
                     size="sm"
                     onClick={() => handleRemoveItem(item.id)}
-                    className="text-muted-foreground hover:text-destructive hover:bg-rose-500/10 h-8.5 w-8.5 rounded-lg p-0 sm:h-7 sm:w-7"
+                    className="text-muted-foreground hover:text-destructive h-8.5 w-8.5 rounded-lg p-0 hover:bg-rose-500/10 sm:h-7 sm:w-7"
                     title="Remove line item"
                   >
                     <Trash2 className="h-4 w-4 sm:h-3.5 sm:w-3.5" />

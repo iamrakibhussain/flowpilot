@@ -364,22 +364,22 @@ export default function ClientPortalDashboardPage() {
               <img
                 src={organization.logoUrl}
                 alt={organization.name}
-                className="h-8 w-8 sm:h-9 sm:w-9 shrink-0 rounded-xl border border-slate-200 bg-slate-100 object-contain p-1 shadow-2xs dark:border-slate-700 dark:bg-slate-800"
+                className="h-8 w-8 shrink-0 rounded-xl border border-slate-200 bg-slate-100 object-contain p-1 shadow-2xs sm:h-9 sm:w-9 dark:border-slate-700 dark:bg-slate-800"
               />
             ) : (
               <div
                 style={{ backgroundColor: brandColor }}
-                className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-xl text-xs sm:text-sm font-black text-white shadow-md shadow-blue-500/20"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-xs font-black text-white shadow-md shadow-blue-500/20 sm:h-9 sm:w-9 sm:text-sm"
               >
                 {organization.name.charAt(0).toUpperCase()}
               </div>
             )}
             <div className="min-w-0">
               <div className="flex items-center gap-1.5">
-                <span className="truncate text-xs sm:text-base font-bold tracking-tight max-w-[110px] xs:max-w-[170px] sm:max-w-none">
+                <span className="xs:max-w-[170px] max-w-[110px] truncate text-xs font-bold tracking-tight sm:max-w-none sm:text-base">
                   {organization.name}
                 </span>
-                <span className="hidden xs:inline-flex items-center gap-0.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                <span className="xs:inline-flex hidden items-center gap-0.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
                   <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
                   Verified Hub
                 </span>
@@ -421,7 +421,7 @@ export default function ClientPortalDashboardPage() {
               variant="outline"
               size="sm"
               onClick={handleLogout}
-              className="h-8.5 cursor-pointer gap-1.5 rounded-xl border-slate-200 px-2.5 sm:px-3 text-xs font-semibold text-slate-600 shadow-2xs transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 active:scale-95 dark:border-slate-800 dark:text-slate-400 dark:hover:border-rose-900/60 dark:hover:bg-rose-950/40 dark:hover:text-rose-400"
+              className="h-8.5 cursor-pointer gap-1.5 rounded-xl border-slate-200 px-2.5 text-xs font-semibold text-slate-600 shadow-2xs transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 active:scale-95 sm:px-3 dark:border-slate-800 dark:text-slate-400 dark:hover:border-rose-900/60 dark:hover:bg-rose-950/40 dark:hover:text-rose-400"
               title="Sign Out of Portal"
             >
               <LogOut className="h-3.5 w-3.5" />
@@ -461,11 +461,11 @@ export default function ClientPortalDashboardPage() {
 
         {/* Priority Action Required Ambient Banner */}
         {(pendingQuotes.length > 0 || pendingInvoices.length > 0) && (
-          <div className="relative overflow-hidden rounded-3xl border border-amber-300/80 bg-gradient-to-r from-amber-500/10 via-amber-400/5 to-orange-500/10 p-4 sm:p-6 shadow-sm backdrop-blur-xl dark:border-amber-500/30 dark:from-amber-950/40 dark:via-amber-900/20 dark:to-orange-950/30">
+          <div className="relative overflow-hidden rounded-3xl border border-amber-300/80 bg-gradient-to-r from-amber-500/10 via-amber-400/5 to-orange-500/10 p-4 shadow-sm backdrop-blur-xl sm:p-6 dark:border-amber-500/30 dark:from-amber-950/40 dark:via-amber-900/20 dark:to-orange-950/30">
             <div className="pointer-events-none absolute -top-12 -right-12 h-36 w-36 rounded-full bg-amber-400/20 blur-2xl" />
             <div className="relative z-10 flex flex-col gap-3.5 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-start gap-3">
-                <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-2xl bg-amber-500 text-white shadow-md shadow-amber-500/30">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-amber-500 text-white shadow-md shadow-amber-500/30 sm:h-10 sm:w-10">
                   <Sparkles className="h-4 w-4 sm:h-5 sm:w-5" />
                 </div>
                 <div className="space-y-1">
@@ -478,7 +478,7 @@ export default function ClientPortalDashboardPage() {
                       {pendingQuotes.length + pendingInvoices.length === 1 ? "" : "s"}
                     </span>
                   </div>
-                  <p className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 leading-relaxed">
+                  <p className="text-xs leading-relaxed font-semibold text-slate-800 sm:text-sm dark:text-slate-200">
                     {pendingQuotes.length > 0 && pendingInvoices.length > 0 ? (
                       <>
                         You have{" "}
@@ -551,7 +551,7 @@ export default function ClientPortalDashboardPage() {
             <h1 className="text-lg font-black tracking-tight sm:text-2xl">
               Welcome back, {customer.name.split(" ")[0]}!
             </h1>
-            <p className="text-xs text-slate-500 sm:text-sm dark:text-slate-400 leading-relaxed">
+            <p className="text-xs leading-relaxed text-slate-500 sm:text-sm dark:text-slate-400">
               You have{" "}
               <strong className="font-bold text-slate-800 dark:text-slate-200">
                 {appointments.upcoming.length} upcoming
@@ -576,7 +576,7 @@ export default function ClientPortalDashboardPage() {
                 )
               }
               style={{ backgroundColor: brandColor }}
-              className="h-11 w-full shrink-0 cursor-pointer gap-2 rounded-xl text-xs font-bold text-white shadow-md shadow-blue-500/20 transition hover:opacity-90 sm:h-10 sm:w-auto sm:text-sm active:scale-98"
+              className="h-11 w-full shrink-0 cursor-pointer gap-2 rounded-xl text-xs font-bold text-white shadow-md shadow-blue-500/20 transition hover:opacity-90 active:scale-98 sm:h-10 sm:w-auto sm:text-sm"
             >
               <PlusCircle className="h-4 w-4" />
               Book New Session

@@ -233,11 +233,11 @@ export default function PublicContractSigningPage() {
       <header className="border-border/60 bg-background/95 sticky top-0 z-30 border-b backdrop-blur-md">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-3.5 py-2.5 sm:px-6 sm:py-3">
           <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-xs sm:text-sm font-black text-white shadow-md shadow-blue-500/20">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-xs font-black text-white shadow-md shadow-blue-500/20 sm:text-sm">
               FP
             </div>
             <div className="min-w-0">
-              <span className="text-foreground block max-w-[140px] xs:max-w-[200px] sm:max-w-none truncate text-xs font-bold sm:text-sm">
+              <span className="text-foreground xs:max-w-[200px] block max-w-[140px] truncate text-xs font-bold sm:max-w-none sm:text-sm">
                 {contract.organization.name}
               </span>
               <p className="text-muted-foreground font-mono text-[10px]">
@@ -251,7 +251,7 @@ export default function PublicContractSigningPage() {
               variant="outline"
               size="sm"
               onClick={handlePrint}
-              className="h-8.5 cursor-pointer gap-1.5 rounded-xl px-2.5 sm:px-3 text-xs font-semibold"
+              className="h-8.5 cursor-pointer gap-1.5 rounded-xl px-2.5 text-xs font-semibold sm:px-3"
             >
               <Printer className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">Print / Save PDF</span>
@@ -271,7 +271,7 @@ export default function PublicContractSigningPage() {
           <div className="fixed inset-x-4 bottom-4 z-40 sm:hidden">
             <a
               href="#signature-execution-card"
-              className="flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 font-bold text-white shadow-xl shadow-blue-500/30 active:scale-98 transition-all"
+              className="flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 font-bold text-white shadow-xl shadow-blue-500/30 transition-all active:scale-98"
             >
               <PenTool className="h-4 w-4" />
               <span>Sign This Agreement ↓</span>
@@ -299,7 +299,7 @@ export default function PublicContractSigningPage() {
               </div>
               <a
                 href="#signature-execution-card"
-                className="inline-flex w-full sm:w-auto justify-center shrink-0 cursor-pointer items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 text-xs font-bold text-white shadow-md shadow-blue-500/20 transition-all hover:bg-blue-700"
+                className="inline-flex w-full shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 text-xs font-bold text-white shadow-md shadow-blue-500/20 transition-all hover:bg-blue-700 sm:w-auto"
               >
                 <PenTool className="h-3.5 w-3.5" /> Jump to Sign ↓
               </a>
@@ -418,7 +418,7 @@ export default function PublicContractSigningPage() {
               {/* Mode Switcher */}
               <div>
                 <label className="text-foreground text-xs font-bold">Signature Method</label>
-                <div className="bg-muted mt-1 flex w-full sm:max-w-xs rounded-xl p-1 text-xs">
+                <div className="bg-muted mt-1 flex w-full rounded-xl p-1 text-xs sm:max-w-xs">
                   <button
                     type="button"
                     onClick={() => setSignatureMode("draw")}
@@ -520,7 +520,7 @@ export default function PublicContractSigningPage() {
                 <button
                   type="button"
                   onClick={() => setIsDeclineModalOpen(true)}
-                  className="cursor-pointer py-2 sm:py-0 text-center text-xs font-semibold text-rose-500 hover:text-rose-600 hover:underline"
+                  className="cursor-pointer py-2 text-center text-xs font-semibold text-rose-500 hover:text-rose-600 hover:underline sm:py-0"
                 >
                   Decline this agreement
                 </button>

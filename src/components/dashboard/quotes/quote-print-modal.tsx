@@ -95,7 +95,7 @@ export function QuotePrintModal({
                 <DialogTitle className="truncate text-sm font-bold text-white sm:text-base">
                   Executive Proposal Studio
                 </DialogTitle>
-                <DialogDescription className="hidden truncate text-xs text-slate-300 xs:block">
+                <DialogDescription className="xs:block hidden truncate text-xs text-slate-300">
                   Formatted for signature, archival, and print/PDF export.
                 </DialogDescription>
               </div>
@@ -162,7 +162,7 @@ export function QuotePrintModal({
 
           {/* Watermark Stamps */}
           {isAccepted && (
-            <div className="pointer-events-none z-10 my-3 flex select-none justify-center opacity-90 sm:absolute sm:top-36 sm:right-12 sm:my-0 sm:block sm:-rotate-12">
+            <div className="pointer-events-none z-10 my-3 flex justify-center opacity-90 select-none sm:absolute sm:top-36 sm:right-12 sm:my-0 sm:block sm:-rotate-12">
               <div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-emerald-600 bg-emerald-50/70 px-4 py-2 shadow-sm sm:px-6 sm:py-2.5">
                 <span className="font-mono text-xs font-black tracking-[0.25em] text-emerald-700 uppercase">
                   ✓ DIGITALLY ACCEPTED
@@ -181,7 +181,7 @@ export function QuotePrintModal({
           )}
 
           {isExpired && (
-            <div className="pointer-events-none z-10 my-3 flex select-none justify-center opacity-90 sm:absolute sm:top-36 sm:right-12 sm:my-0 sm:block sm:-rotate-12">
+            <div className="pointer-events-none z-10 my-3 flex justify-center opacity-90 select-none sm:absolute sm:top-36 sm:right-12 sm:my-0 sm:block sm:-rotate-12">
               <div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-amber-600 bg-amber-50/70 px-4 py-2 shadow-sm sm:px-6 sm:py-2.5">
                 <span className="font-mono text-xs font-black tracking-[0.25em] text-amber-700 uppercase">
                   ⚠ ESTIMATE EXPIRED
@@ -312,7 +312,7 @@ export function QuotePrintModal({
           </div>
 
           {/* Schedule of Deliverables Table */}
-          <div className="overflow-x-auto rounded-xl border border-slate-200 shadow-2xs [scrollbar-width:thin] print:overflow-visible">
+          <div className="[scrollbar-width:thin] overflow-x-auto rounded-xl border border-slate-200 shadow-2xs print:overflow-visible">
             <table className="w-full min-w-[500px] text-left text-xs sm:min-w-full print:min-w-full">
               <thead className="border-b border-slate-200 bg-slate-50 font-semibold tracking-wider text-slate-600 uppercase">
                 <tr>
@@ -471,7 +471,7 @@ export function QuotePrintModal({
 
             {/* Verification Security Footer */}
             <div className="mt-6 flex flex-col items-center justify-between gap-2 border-t border-slate-100 pt-4 text-center text-[10px] text-slate-400 sm:flex-row sm:text-left">
-              <span className="break-all font-mono font-bold tracking-wider text-slate-500">
+              <span className="font-mono font-bold tracking-wider break-all text-slate-500">
                 {verificationHash}
               </span>
               <span className="flex items-center gap-1 font-semibold text-slate-500">

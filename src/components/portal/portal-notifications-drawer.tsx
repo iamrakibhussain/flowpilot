@@ -114,7 +114,9 @@ export function PortalNotificationsDrawer({
                     Activity &amp; Updates
                   </h3>
                   <p className="text-[11px] text-slate-400">
-                    {unreadCount > 0 ? `${unreadCount} unread notices` : "All notifications caught up"}
+                    {unreadCount > 0
+                      ? `${unreadCount} unread notices`
+                      : "All notifications caught up"}
                   </p>
                 </div>
               </div>
@@ -152,7 +154,8 @@ export function PortalNotificationsDrawer({
                     No Notifications Yet
                   </h4>
                   <p className="mt-1 text-xs text-slate-400">
-                    You will receive real-time updates when milestones, invoices, or contracts are issued.
+                    You will receive real-time updates when milestones, invoices, or contracts are
+                    issued.
                   </p>
                 </div>
               ) : (
@@ -183,7 +186,7 @@ export function PortalNotificationsDrawer({
                               <span className="h-2 w-2 shrink-0 rounded-full bg-blue-600" />
                             )}
                           </div>
-                          <p className="text-xs text-slate-600 line-clamp-2 dark:text-slate-300">
+                          <p className="line-clamp-2 text-xs text-slate-600 dark:text-slate-300">
                             {item.message}
                           </p>
                           <span className="flex items-center gap-1 pt-1 text-[10px] text-slate-400">

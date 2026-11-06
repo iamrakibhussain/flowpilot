@@ -49,19 +49,12 @@ export function RuleBuilderModal(props: RuleBuilderModalProps) {
   );
 }
 
-function RuleBuilderModalContent({
-  onClose,
-  editRule,
-  initialTemplate,
-}: RuleBuilderModalProps) {
+function RuleBuilderModalContent({ onClose, editRule, initialTemplate }: RuleBuilderModalProps) {
   const [currentStep, setCurrentStep] = React.useState<1 | 2 | 3 | 4>(1);
 
   // Form states
   const [title, setTitle] = React.useState(
-    () =>
-      editRule?.title ||
-      initialTemplate?.title ||
-      "Contract Signed ➔ Launch Delivery Project"
+    () => editRule?.title || initialTemplate?.title || "Contract Signed ➔ Launch Delivery Project"
   );
   const [description, setDescription] = React.useState(
     () =>
@@ -100,14 +93,10 @@ function RuleBuilderModalContent({
         : "50"
   );
   const [paymentDueDays, setPaymentDueDays] = React.useState(() =>
-    editRule?.actionConfig?.paymentDueDays
-      ? String(editRule.actionConfig.paymentDueDays)
-      : "14"
+    editRule?.actionConfig?.paymentDueDays ? String(editRule.actionConfig.paymentDueDays) : "14"
   );
   const [emailSubjectTemplate, setEmailSubjectTemplate] = React.useState(
-    () =>
-      editRule?.actionConfig?.emailSubjectTemplate ||
-      "Welcome to your project: {{entityTitle}}"
+    () => editRule?.actionConfig?.emailSubjectTemplate || "Welcome to your project: {{entityTitle}}"
   );
   const [emailBodyTemplate, setEmailBodyTemplate] = React.useState(
     () =>
@@ -658,7 +647,7 @@ function RuleBuilderModalContent({
               type="button"
               variant="outline"
               size="sm"
-              onClick={() => setCurrentStep((prev) => (Math.max(1, prev - 1) as 1 | 2 | 3 | 4))}
+              onClick={() => setCurrentStep((prev) => Math.max(1, prev - 1) as 1 | 2 | 3 | 4)}
               className="h-8.5 text-xs"
             >
               <ArrowLeft className="mr-1.5 h-3.5 w-3.5" />
@@ -672,7 +661,7 @@ function RuleBuilderModalContent({
             <Button
               type="button"
               size="sm"
-              onClick={() => setCurrentStep((prev) => (Math.min(4, prev + 1) as 1 | 2 | 3 | 4))}
+              onClick={() => setCurrentStep((prev) => Math.min(4, prev + 1) as 1 | 2 | 3 | 4)}
               className="bg-primary text-primary-foreground h-10 px-4 text-xs font-semibold sm:h-9"
             >
               Continue

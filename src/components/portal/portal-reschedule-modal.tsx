@@ -136,8 +136,9 @@ export function PortalRescheduleModal({
           <div className="flex items-start gap-2 rounded-xl bg-amber-50/80 p-2.5 text-[11px] text-amber-800 dark:bg-amber-950/40 dark:text-amber-300">
             <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-600" />
             <span>
-              Policy Notice: Changes require at least <strong>{minNoticeHours} hours</strong> notice.
-              Your selected time will automatically sync with your specialist&apos;s schedule.
+              Policy Notice: Changes require at least <strong>{minNoticeHours} hours</strong>{" "}
+              notice. Your selected time will automatically sync with your specialist&apos;s
+              schedule.
             </span>
           </div>
 
@@ -169,20 +170,27 @@ export function PortalRescheduleModal({
           <div className="space-y-2 pt-1">
             <label className="flex items-center justify-between text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300">
               <span>Available Time Slots</span>
-              {isLoadingSlots && <span className="text-[11px] text-slate-400">Loading open slots...</span>}
+              {isLoadingSlots && (
+                <span className="text-[11px] text-slate-400">Loading open slots...</span>
+              )}
             </label>
 
             {isLoadingSlots ? (
               <div className="grid grid-cols-3 gap-2">
                 {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <div key={i} className="h-10 animate-pulse rounded-xl bg-slate-100 dark:bg-slate-800" />
+                  <div
+                    key={i}
+                    className="h-10 animate-pulse rounded-xl bg-slate-100 dark:bg-slate-800"
+                  />
                 ))}
               </div>
             ) : !slots || slots.length === 0 ? (
               <div className="rounded-2xl border border-dashed border-slate-200 p-6 text-center text-xs text-slate-500 dark:border-slate-800">
                 <Clock className="mx-auto h-6 w-6 opacity-40" />
                 <p className="mt-2 font-medium">No open slots available on this date.</p>
-                <p className="text-[11px] text-slate-400">Please choose another day from the calendar above.</p>
+                <p className="text-[11px] text-slate-400">
+                  Please choose another day from the calendar above.
+                </p>
               </div>
             ) : (
               <div className="grid max-h-48 grid-cols-2 gap-2 overflow-y-auto sm:grid-cols-3">

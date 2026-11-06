@@ -146,13 +146,8 @@ export function usePortalContract(contractId: string, enabled = true) {
 export function useSignPortalContract() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({
-      contractId,
-      input,
-    }: {
-      contractId: string;
-      input: SignPortalContractInput;
-    }) => signPortalContract(contractId, input),
+    mutationFn: ({ contractId, input }: { contractId: string; input: SignPortalContractInput }) =>
+      signPortalContract(contractId, input),
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: portalKeys.contracts() });
       queryClient.invalidateQueries({
@@ -167,13 +162,8 @@ export function useSignPortalContract() {
 export function useAcceptPortalQuote() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({
-      quoteId,
-      input,
-    }: {
-      quoteId: string;
-      input: AcceptPortalQuoteInput;
-    }) => acceptPortalQuote(quoteId, input),
+    mutationFn: ({ quoteId, input }: { quoteId: string; input: AcceptPortalQuoteInput }) =>
+      acceptPortalQuote(quoteId, input),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: portalKeys.dashboard() });
       queryClient.invalidateQueries({ queryKey: portalKeys.notifications() });
@@ -181,11 +171,7 @@ export function useAcceptPortalQuote() {
   });
 }
 
-export function usePortalAppointmentSlots(
-  appointmentId: string,
-  dateStr: string,
-  enabled = true
-) {
+export function usePortalAppointmentSlots(appointmentId: string, dateStr: string, enabled = true) {
   return useQuery({
     queryKey: portalKeys.slots(appointmentId, dateStr),
     queryFn: () => getPortalAppointmentSlots(appointmentId, dateStr),

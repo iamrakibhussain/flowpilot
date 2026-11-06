@@ -458,17 +458,17 @@ export default function PublicBookingPortalPage() {
                     <button
                       type="button"
                       onClick={() => setStep((step - 1) as 1 | 2 | 3 | 4)}
-                      className="flex h-8 cursor-pointer items-center gap-1 rounded-xl border border-border/80 bg-card px-2.5 text-xs font-bold text-foreground shadow-2xs transition hover:bg-muted active:scale-95"
+                      className="border-border/80 bg-card text-foreground hover:bg-muted flex h-8 cursor-pointer items-center gap-1 rounded-xl border px-2.5 text-xs font-bold shadow-2xs transition active:scale-95"
                     >
                       <ArrowLeft className="h-3.5 w-3.5" />
                       Back
                     </button>
                   ) : (
-                    <span className="flex h-8 items-center rounded-xl bg-primary/10 px-2.5 text-xs font-bold text-primary">
+                    <span className="bg-primary/10 text-primary flex h-8 items-center rounded-xl px-2.5 text-xs font-bold">
                       Step 1 of 4
                     </span>
                   )}
-                  <span className="text-xs font-extrabold text-foreground">
+                  <span className="text-foreground text-xs font-extrabold">
                     {step === 1 && "Select Service"}
                     {step === 2 && "Choose Specialist"}
                     {step === 3 && "Pick Date & Time"}
@@ -476,7 +476,7 @@ export default function PublicBookingPortalPage() {
                   </span>
                 </div>
                 {step > 1 && (
-                  <span className="text-[11px] font-bold text-muted-foreground">
+                  <span className="text-muted-foreground text-[11px] font-bold">
                     Step {step} of 4
                   </span>
                 )}
@@ -494,7 +494,7 @@ export default function PublicBookingPortalPage() {
                         isPassed
                           ? "bg-emerald-500"
                           : isCurrent
-                            ? "bg-primary shadow-xs ring-2 ring-primary/20"
+                            ? "bg-primary ring-primary/20 shadow-xs ring-2"
                             : "bg-muted"
                       }`}
                     />
@@ -504,7 +504,7 @@ export default function PublicBookingPortalPage() {
             </div>
 
             {/* Desktop Stepper Grid (>= md) */}
-            <div className="hidden grid-cols-4 gap-2 md:grid sm:gap-3">
+            <div className="hidden grid-cols-4 gap-2 sm:gap-3 md:grid">
               {[
                 { num: 1, label: "Service", subtitle: "Select Offering" },
                 { num: 2, label: "Specialist", subtitle: "Staff Member" },
@@ -583,7 +583,7 @@ export default function PublicBookingPortalPage() {
 
             {/* Category Pills */}
             {categories.length > 1 && (
-              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+              <div className="flex [scrollbar-width:none] items-center gap-1.5 overflow-x-auto pb-1 text-xs [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                 <button
                   type="button"
                   onClick={() => setSelectedCategory("ALL")}
@@ -794,7 +794,7 @@ export default function PublicBookingPortalPage() {
             {/* Date Horizontal Picker Slider */}
             <div>
               <p className="text-foreground mb-2.5 text-xs font-bold">Available Dates</p>
-              <div className="flex items-center gap-2 overflow-x-auto pb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+              <div className="flex [scrollbar-width:none] items-center gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                 {upcomingDates.map((item) => {
                   const isSelected = selectedDate === item.dateStr;
                   return (
@@ -805,7 +805,7 @@ export default function PublicBookingPortalPage() {
                         setSelectedDate(item.dateStr);
                         setSelectedSlot(null);
                       }}
-                      className={`relative min-w-[72px] sm:min-w-[76px] shrink-0 cursor-pointer rounded-2xl border px-3 py-2.5 text-center transition-all active:scale-95 ${
+                      className={`relative min-w-[72px] shrink-0 cursor-pointer rounded-2xl border px-3 py-2.5 text-center transition-all active:scale-95 sm:min-w-[76px] ${
                         isSelected
                           ? "border-blue-600 bg-gradient-to-r from-blue-600 to-indigo-600 font-bold text-white shadow-md shadow-blue-500/20"
                           : "border-border/80 bg-card text-muted-foreground hover:border-border hover:text-foreground shadow-2xs"
@@ -1019,7 +1019,7 @@ export default function PublicBookingPortalPage() {
                 <div className="block rounded-2xl border border-blue-200/80 bg-blue-50/70 p-3.5 text-xs lg:hidden dark:border-blue-900/60 dark:bg-blue-950/40">
                   <div className="flex items-center justify-between gap-3">
                     <div className="min-w-0 space-y-0.5">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-blue-700 dark:text-blue-300">
+                      <span className="text-[10px] font-bold tracking-wider text-blue-700 uppercase dark:text-blue-300">
                         Selected Offering
                       </span>
                       <p className="truncate font-bold text-slate-900 dark:text-slate-100">
