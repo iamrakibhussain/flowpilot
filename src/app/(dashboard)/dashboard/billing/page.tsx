@@ -276,11 +276,11 @@ export default function BillingPage() {
 
       {/* Verification in Progress Banner */}
       {verifyCheckoutMutation.isPending && (
-        <div className="flex items-center gap-3 rounded-lg border border-primary/30 bg-primary/10 p-4 text-sm text-primary">
+        <div className="border-primary/30 bg-primary/10 text-primary flex items-center gap-3 rounded-lg border p-4 text-sm">
           <Loader2 className="h-5 w-5 shrink-0 animate-spin" />
           <div>
             <p className="font-semibold">Confirming your subscription with Stripe...</p>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-muted-foreground text-xs">
               Please wait a moment while we verify your payment and update your plan limits.
             </p>
           </div>
