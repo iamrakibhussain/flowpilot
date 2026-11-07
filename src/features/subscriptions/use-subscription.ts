@@ -7,6 +7,7 @@ import {
   getBillingHistory,
   createCheckoutSession,
   createCustomerPortalSession,
+  verifyCheckoutSession,
   changeSubscriptionPlan,
   cancelSubscription,
   resumeSubscription,
@@ -89,6 +90,18 @@ export function useCreateCheckoutSession() {
   return useMutation({
     mutationFn: (payload: CreateCheckoutSessionPayload) =>
       createCheckoutSession(payload, organizationId || undefined),
+  });
+}
+
+/**
+ * Hook to verify and activate a completed Stripe checkout session
+ */
+export function useVerifyCheckoutSession() {
+  const { organizationId } = useWorkspaceSession();
+
+  return useMutation({
+    mutationFn: (payload: { sessionId: string }) =>
+      verifyCheckoutSession(payload.sessionId, organizationId || undefined),
   });
 }
 

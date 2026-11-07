@@ -156,6 +156,11 @@ describe("BillingPage Component", () => {
       mutateAsync: vi.fn(),
       isPending: false,
     } as unknown as ReturnType<typeof SubHooks.useResumeSubscription>);
+
+    vi.spyOn(SubHooks, "useVerifyCheckoutSession").mockReturnValue({
+      mutateAsync: vi.fn(),
+      isPending: false,
+    } as unknown as ReturnType<typeof SubHooks.useVerifyCheckoutSession>);
   });
 
   it("renders page header and active plan overview", () => {

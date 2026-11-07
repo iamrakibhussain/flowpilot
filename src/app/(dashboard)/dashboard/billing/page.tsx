@@ -44,6 +44,7 @@ import {
   useSubscriptionPlans,
   useBillingHistory,
   useCreateCheckoutSession,
+  useVerifyCheckoutSession,
   useCustomerPortal,
   useChangeSubscriptionPlan,
   useCancelSubscription,
@@ -69,6 +70,7 @@ export default function BillingPage() {
   const changePlanMutation = useChangeSubscriptionPlan();
   const cancelMutation = useCancelSubscription();
   const resumeMutation = useResumeSubscription();
+  const verifyCheckoutMutation = useVerifyCheckoutSession();
 
   // Local state
   const [selectedInterval, setSelectedInterval] =
@@ -79,6 +81,42 @@ export default function BillingPage() {
   const [actionSuccess, setActionSuccess] = React.useState<string | null>(null);
   const [upgradingSlug, setUpgradingSlug] = React.useState<string | null>(null);
   const [isManagingCards, setIsManagingCards] = React.useState(false);
+  const [isVerifyingCheckout, setIsVerifyingCheckout] = React.useState(false);
+
+  // Auto-verify and sync Stripe checkout session upon return to dashboard
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get("session_id");
+    const checkoutStatus = urlParams.get("checkout");
+
+    if (sessionId && checkoutStatus === "success" && !isVerifyingCheckout) {
+      setIsVerifyingCheckout(true);
+      setActionSuccess("Verifying your subscription checkout with Stripe...");
+
+      verifyCheckoutMutation
+        .mutateAsync({ sessionId })
+        .then((updatedSub) => {
+          setActionSuccess(
+            `🎉 Payment successful! Your workspace has been upgraded to the ${updatedSub.plan.name} plan.`
+          );
+          refetchSub();
+          // Clean the query parameters from URL cleanly without page reload
+          const cleanUrl = window.location.pathname;
+          window.history.replaceState({}, document.title, cleanUrl);
+        })
+        .catch((err) => {
+          setActionError(
+            err instanceof Error
+              ? err.message
+              : "Failed to automatically activate plan from checkout session"
+          );
+        })
+        .finally(() => {
+          setIsVerifyingCheckout(false);
+        });
+    }
+  }, []);
 
   const activePlan = subscription?.plan;
   const usage = subscription?.usage;

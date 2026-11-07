@@ -93,6 +93,21 @@ export async function createCustomerPortalSession(
 }
 
 /**
+ * Verify and activate a completed Stripe checkout session
+ */
+export async function verifyCheckoutSession(
+  sessionId: string,
+  organizationId?: string
+): Promise<OrganizationSubscriptionResponse> {
+  const response = await apiClient.post<OrganizationSubscriptionResponse>(
+    "/subscriptions/verify-checkout",
+    { sessionId },
+    { organizationId }
+  );
+  return response.data;
+}
+
+/**
  * Change / switch subscription plan directly
  */
 export async function changeSubscriptionPlan(
