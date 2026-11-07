@@ -81,7 +81,7 @@ export default function BillingPage() {
   const [actionSuccess, setActionSuccess] = React.useState<string | null>(null);
   const [upgradingSlug, setUpgradingSlug] = React.useState<string | null>(null);
   const [isManagingCards, setIsManagingCards] = React.useState(false);
-  const [isVerifyingCheckout, setIsVerifyingCheckout] = React.useState(false);
+  const hasVerifiedCheckoutRef = React.useRef(false);
 
   // Auto-verify and sync Stripe checkout session upon return to dashboard
   React.useEffect(() => {
@@ -90,9 +90,10 @@ export default function BillingPage() {
     const sessionId = urlParams.get("session_id");
     const checkoutStatus = urlParams.get("checkout");
 
-    if (sessionId && checkoutStatus === "success" && !isVerifyingCheckout) {
-      setIsVerifyingCheckout(true);
-      setActionSuccess("Verifying your subscription checkout with Stripe...");
+    if (sessionId && checkoutStatus === "success" && !hasVerifiedCheckoutRef.current) {
+      hasVerifiedCheckoutRef.current = true;
+      // Clean the query parameters from URL cleanly
+      window.history.replaceState({}, document.title, window.location.pathname);
 
       verifyCheckoutMutation
         .mutateAsync({ sessionId })
@@ -101,9 +102,6 @@ export default function BillingPage() {
             `🎉 Payment successful! Your workspace has been upgraded to the ${updatedSub.plan.name} plan.`
           );
           refetchSub();
-          // Clean the query parameters from URL cleanly without page reload
-          const cleanUrl = window.location.pathname;
-          window.history.replaceState({}, document.title, cleanUrl);
         })
         .catch((err) => {
           setActionError(
@@ -111,12 +109,9 @@ export default function BillingPage() {
               ? err.message
               : "Failed to automatically activate plan from checkout session"
           );
-        })
-        .finally(() => {
-          setIsVerifyingCheckout(false);
         });
     }
-  }, []);
+  }, [verifyCheckoutMutation, refetchSub]);
 
   const activePlan = subscription?.plan;
   const usage = subscription?.usage;
