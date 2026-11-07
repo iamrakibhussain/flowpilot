@@ -97,11 +97,15 @@ export function useCreateCheckoutSession() {
  * Hook to verify and activate a completed Stripe checkout session
  */
 export function useVerifyCheckoutSession() {
+  const queryClient = useQueryClient();
   const { organizationId } = useWorkspaceSession();
 
   return useMutation({
     mutationFn: (payload: { sessionId: string }) =>
       verifyCheckoutSession(payload.sessionId, organizationId || undefined),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: SUBSCRIPTION_QUERY_KEYS.all });
+    },
   });
 }
 

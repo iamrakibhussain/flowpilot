@@ -88,12 +88,11 @@ export default function BillingPage() {
     if (typeof window === "undefined") return;
     const urlParams = new URLSearchParams(window.location.search);
     const sessionId = urlParams.get("session_id");
-    const checkoutStatus = urlParams.get("checkout");
+    const checkoutStatus = urlParams.get("checkout") || urlParams.get("status");
+    const isSuccess = checkoutStatus === "success" || Boolean(sessionId);
 
-    if (sessionId && checkoutStatus === "success" && !hasVerifiedCheckoutRef.current) {
+    if (sessionId && isSuccess && !hasVerifiedCheckoutRef.current) {
       hasVerifiedCheckoutRef.current = true;
-      // Clean the query parameters from URL cleanly
-      window.history.replaceState({}, document.title, window.location.pathname);
 
       verifyCheckoutMutation
         .mutateAsync({ sessionId })
@@ -101,6 +100,7 @@ export default function BillingPage() {
           setActionSuccess(
             `🎉 Payment successful! Your workspace has been upgraded to the ${updatedSub.plan.name} plan.`
           );
+          window.history.replaceState({}, document.title, window.location.pathname);
           refetchSub();
         })
         .catch((err) => {
@@ -109,6 +109,7 @@ export default function BillingPage() {
               ? err.message
               : "Failed to automatically activate plan from checkout session"
           );
+          window.history.replaceState({}, document.title, window.location.pathname);
         });
     }
   }, [verifyCheckoutMutation, refetchSub]);
@@ -272,6 +273,19 @@ export default function BillingPage() {
         title="Subscription & Billing"
         description={`Manage the FlowPilot SaaS subscription, capacity quotas, and past invoices for ${organizationName}.`}
       />
+
+      {/* Verification in Progress Banner */}
+      {verifyCheckoutMutation.isPending && (
+        <div className="flex items-center gap-3 rounded-lg border border-primary/30 bg-primary/10 p-4 text-sm text-primary">
+          <Loader2 className="h-5 w-5 shrink-0 animate-spin" />
+          <div>
+            <p className="font-semibold">Confirming your subscription with Stripe...</p>
+            <p className="text-xs text-muted-foreground">
+              Please wait a moment while we verify your payment and update your plan limits.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Action Messages */}
       {actionError && (

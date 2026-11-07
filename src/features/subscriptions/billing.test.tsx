@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import BillingPage from "@/app/(dashboard)/dashboard/billing/page";
 import * as WorkspaceHook from "@/features/organizations/use-workspace-session";
 import * as SubHooks from "@/features/subscriptions/use-subscription";
@@ -224,5 +224,30 @@ describe("BillingPage Component", () => {
     const ownerRequiredButtons = screen.getAllByRole("button", { name: "Owner Required" });
     expect(ownerRequiredButtons.length).toBe(2);
     expect(ownerRequiredButtons[0]).toBeDisabled();
+  });
+
+  it("triggers verifyCheckoutMutation when session_id is present in URL", async () => {
+    const mockVerify = vi.fn().mockResolvedValue({
+      plan: { name: "Professional" },
+    });
+
+    vi.spyOn(SubHooks, "useVerifyCheckoutSession").mockReturnValue({
+      mutateAsync: mockVerify,
+      isPending: false,
+    } as unknown as ReturnType<typeof SubHooks.useVerifyCheckoutSession>);
+
+    // Set search params in jsdom window
+    Object.defineProperty(window, "location", {
+      value: new URL(
+        "http://localhost:3000/dashboard/billing?status=success&session_id=cs_test_mock123"
+      ),
+      writable: true,
+    });
+
+    await act(async () => {
+      render(<BillingPage />);
+    });
+
+    expect(mockVerify).toHaveBeenCalledWith({ sessionId: "cs_test_mock123" });
   });
 });
