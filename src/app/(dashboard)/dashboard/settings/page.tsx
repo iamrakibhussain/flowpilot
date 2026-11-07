@@ -8,6 +8,7 @@ import { z } from "zod";
 import {
   Building2,
   DollarSign,
+  CreditCard,
   Calendar,
   Bell,
   Shield,
@@ -149,7 +150,8 @@ const BRAND_PALETTES = [
   { name: "Titanium Slate", hex: "#475569", bg: "bg-slate-600" },
 ];
 
-type SettingsTab = "general" | "finance" | "booking" | "notifications" | "security" | "audit";
+type SettingsTab =
+  "general" | "finance" | "billing" | "booking" | "notifications" | "security" | "audit";
 
 export default function WorkspaceSettingsPage() {
   const router = useRouter();
@@ -786,6 +788,7 @@ export default function WorkspaceSettingsPage() {
           {[
             { id: "general", label: "General & Branding", icon: Building2 },
             { id: "finance", label: "Finance & Invoicing", icon: DollarSign },
+            { id: "billing", label: "Subscription & Plans", icon: CreditCard },
             { id: "booking", label: "Scheduling & Policies", icon: Calendar },
             { id: "notifications", label: "Alerts & Notifications", icon: Bell },
             { id: "security", label: "Security & Credentials", icon: Shield },
@@ -1674,6 +1677,69 @@ export default function WorkspaceSettingsPage() {
                     accurate.
                   </span>
                 </label>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* TAB: SAAS SUBSCRIPTION & BILLING */}
+      {activeTab === "billing" && (
+        <div className="space-y-6">
+          <Card className="border-border/80 from-card to-card/95 bg-gradient-to-b shadow-xs">
+            <CardHeader className="flex flex-row items-start gap-3.5 pb-4">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-blue-500/20 bg-blue-500/10 text-blue-600 shadow-2xs dark:text-blue-400">
+                <CreditCard className="h-5 w-5" />
+              </div>
+              <div className="flex-1">
+                <CardTitle className="text-foreground text-base font-bold">
+                  FlowPilot Platform Subscription & Billing
+                </CardTitle>
+                <CardDescription className="text-muted-foreground mt-0.5 text-xs">
+                  Manage your organization&apos;s SaaS tier, capacity quotas, automations, and
+                  billing invoices.
+                </CardDescription>
+              </div>
+              <Button
+                size="sm"
+                className="bg-blue-600 font-medium text-white shadow-xs hover:bg-blue-700"
+                onClick={() => router.push("/dashboard/billing")}
+              >
+                Open Full Billing Cockpit
+                <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
+              </Button>
+            </CardHeader>
+            <CardContent className="space-y-4 pt-2">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <div className="border-border/80 bg-muted/20 rounded-xl border p-4">
+                  <div className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
+                    SaaS Subscription
+                  </div>
+                  <div className="text-foreground mt-1 text-lg font-bold">
+                    Starter / Scale Tiers
+                  </div>
+                  <p className="text-muted-foreground mt-0.5 text-xs">
+                    Self-service plan management with Stripe checkout.
+                  </p>
+                </div>
+                <div className="border-border/80 bg-muted/20 rounded-xl border p-4">
+                  <div className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
+                    Operational Quotas
+                  </div>
+                  <div className="text-foreground mt-1 text-lg font-bold">Live Quota Tracking</div>
+                  <p className="text-muted-foreground mt-0.5 text-xs">
+                    Team members, CRM customers, projects & services.
+                  </p>
+                </div>
+                <div className="border-border/80 bg-muted/20 rounded-xl border p-4">
+                  <div className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
+                    Invoices & Receipts
+                  </div>
+                  <div className="text-foreground mt-1 text-lg font-bold">PDF Tax Invoices</div>
+                  <p className="text-muted-foreground mt-0.5 text-xs">
+                    Automated receipt generation and portal access.
+                  </p>
+                </div>
               </div>
             </CardContent>
           </Card>
