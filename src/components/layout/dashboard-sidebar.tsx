@@ -198,7 +198,16 @@ export function DashboardSidebar({
       },
       {
         title: "Configuration",
-        items: [{ name: "Organization Settings", href: "/dashboard/settings", icon: Settings }],
+        items: [
+          {
+            name: "Subscription & Billing",
+            href: "/dashboard/billing",
+            icon: CreditCard,
+            badge: "Plans",
+            badgeVariant: "success",
+          },
+          { name: "Organization Settings", href: "/dashboard/settings", icon: Settings },
+        ],
       },
     ],
     [orgSlug]
