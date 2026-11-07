@@ -86,13 +86,9 @@ export async function createCustomerPortalSession(
   organizationId?: string
 ): Promise<{ portalUrl: string }> {
   const payload = typeof options === "string" ? { returnUrl: options } : options || {};
-  const response = await apiClient.post<{ portalUrl: string }>(
-    "/subscriptions/portal",
-    payload,
-    {
-      organizationId,
-    }
-  );
+  const response = await apiClient.post<{ portalUrl: string }>("/subscriptions/portal", payload, {
+    organizationId,
+  });
   return response.data;
 }
 

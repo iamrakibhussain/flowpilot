@@ -164,7 +164,12 @@ export default function BillingPage() {
       historyElement.scrollIntoView({ behavior: "smooth", block: "start" });
       historyElement.classList.add("ring-2", "ring-primary/40", "rounded-2xl", "transition-all");
       setTimeout(() => {
-        historyElement.classList.remove("ring-2", "ring-primary/40", "rounded-2xl", "transition-all");
+        historyElement.classList.remove(
+          "ring-2",
+          "ring-primary/40",
+          "rounded-2xl",
+          "transition-all"
+        );
       }, 2000);
     }
   };
@@ -332,11 +337,7 @@ export default function BillingPage() {
                 Manage Cards
                 <ArrowUpRight className="text-muted-foreground ml-1 h-3 w-3" />
               </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleManageInvoices}
-              >
+              <Button variant="outline" size="sm" onClick={handleManageInvoices}>
                 <Receipt className="mr-1.5 h-4 w-4" />
                 Manage Invoices
               </Button>
