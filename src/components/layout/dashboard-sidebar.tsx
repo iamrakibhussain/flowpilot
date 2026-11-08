@@ -41,6 +41,7 @@ import {
 import { UserNav } from "@/components/layout/user-nav";
 import { useWorkspaceSession } from "@/features/organizations/use-workspace-session";
 import { useOrganizationSettings } from "@/features/organizations/use-organization-settings";
+import { resolveStorageUrl } from "@/lib/utils/resolve-image-url";
 
 export interface DashboardSidebarProps {
   isCollapsed: boolean;
@@ -277,7 +278,7 @@ export function DashboardSidebar({
                   {logoUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      src={logoUrl}
+                      src={resolveStorageUrl(logoUrl) || logoUrl}
                       alt={displayOrgName}
                       className="h-full w-full object-cover"
                     />
