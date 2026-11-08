@@ -40,6 +40,7 @@ import {
   Send,
   Plus,
   CalendarX,
+  Loader2,
 } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
@@ -72,6 +73,8 @@ import {
   useCheckSlug,
   useWorkspaceAuditLogs,
 } from "@/features/organizations/use-organization-settings";
+import { useUploadOrganizationLogo } from "@/features/storage/use-storage";
+import { resolveStorageUrl } from "@/lib/utils/resolve-image-url";
 import { BlockTimeModal } from "@/components/dashboard/appointments/block-time-modal";
 import { useBlockedTimes, useDeleteBlockedTime } from "@/features/staff/use-blocked-time";
 import type { BlockedTimeItem } from "@/features/staff/types";
@@ -179,6 +182,8 @@ export default function WorkspaceSettingsPage() {
   const checkSlugMutation = useCheckSlug();
 
   // Advanced Logo & Brand Asset States
+  const uploadLogoMutation = useUploadOrganizationLogo();
+  const [isUploadingLogo, setIsUploadingLogo] = React.useState(false);
   const [logoInputMode, setLogoInputMode] = React.useState<"upload" | "url">("upload");
   const [logoContrastMode, setLogoContrastMode] = React.useState<"light" | "dark">("light");
   const [isDraggingLogo, setIsDraggingLogo] = React.useState(false);
@@ -277,8 +282,8 @@ export default function WorkspaceSettingsPage() {
     setFeedbackMsg(null);
   };
 
-  // Image upload processor
-  const processImageFile = (file: File) => {
+  // Cloud storage logo upload processor
+  const processImageFile = async (file: File) => {
     if (!file.type.startsWith("image/")) {
       setFeedbackMsg({
         type: "error",
@@ -286,20 +291,35 @@ export default function WorkspaceSettingsPage() {
       });
       return;
     }
-    if (file.size > 2 * 1024 * 1024) {
+    if (file.size > 5 * 1024 * 1024) {
       setFeedbackMsg({
         type: "error",
-        text: "File size exceeds 2MB limit. Please choose a smaller asset.",
+        text: "File size exceeds 5MB limit. Please choose a smaller asset.",
       });
       return;
     }
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result === "string") {
-        handleFieldChange("logoUrl", reader.result);
+
+    try {
+      setIsUploadingLogo(true);
+      setFeedbackMsg(null);
+      const res = await uploadLogoMutation.mutateAsync({ file });
+      handleFieldChange("logoUrl", res.logoUrl);
+      setFeedbackMsg({
+        type: "success",
+        text: "Workspace brand logo uploaded to cloud storage successfully.",
+      });
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to upload logo to cloud storage.";
+      setFeedbackMsg({
+        type: "error",
+        text: msg,
+      });
+    } finally {
+      setIsUploadingLogo(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
       }
-    };
-    reader.readAsDataURL(file);
+    }
   };
 
   const handleLogoDrop = (e: React.DragEvent) => {
@@ -1030,7 +1050,7 @@ export default function WorkspaceSettingsPage() {
                         <div className="flex items-center gap-3">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
-                            src={formData.logoUrl}
+                            src={resolveStorageUrl(formData.logoUrl) || formData.logoUrl}
                             alt="Logo preview"
                             className="h-10 w-10 object-contain"
                           />
@@ -1046,21 +1066,40 @@ export default function WorkspaceSettingsPage() {
                             type="button"
                             variant="outline"
                             size="sm"
+                            disabled={isUploadingLogo}
                             onClick={() => fileInputRef.current?.click()}
                             className="h-7 text-[11px]"
                           >
-                            Replace
+                            {isUploadingLogo ? (
+                              <>
+                                <Loader2 className="mr-1 h-3 w-3 animate-spin" />
+                                Uploading...
+                              </>
+                            ) : (
+                              "Replace"
+                            )}
                           </Button>
                           <Button
                             type="button"
                             variant="outline"
                             size="sm"
+                            disabled={isUploadingLogo}
                             onClick={() => handleFieldChange("logoUrl", null)}
                             className="h-7 text-[11px] text-rose-500 hover:text-rose-600"
                           >
                             Remove
                           </Button>
                         </div>
+                      </div>
+                    ) : isUploadingLogo ? (
+                      <div className="border-border/80 bg-muted/10 flex flex-col items-center justify-center rounded-xl border border-dashed p-6 text-center">
+                        <Loader2 className="text-primary mb-2 h-6 w-6 animate-spin" />
+                        <p className="text-foreground text-xs font-semibold">
+                          Uploading brand logo to cloud storage...
+                        </p>
+                        <p className="text-muted-foreground mt-0.5 text-[10px]">
+                          Verifying content signature and persisting asset
+                        </p>
                       </div>
                     ) : (
                       <div
@@ -1350,7 +1389,7 @@ export default function WorkspaceSettingsPage() {
                     {formData.logoUrl ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
-                        src={formData.logoUrl}
+                        src={resolveStorageUrl(formData.logoUrl) || formData.logoUrl}
                         alt="Workspace Logo"
                         className="h-12 w-12 rounded-xl border object-contain p-1 shadow-2xs"
                         onError={(e) => {
