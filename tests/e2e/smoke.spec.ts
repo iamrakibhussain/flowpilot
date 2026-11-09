@@ -17,7 +17,7 @@ test.describe("Frontend Foundation & Marketing Smoke Suite", () => {
 
     // Dual CTAs
     const getStartedBtn = page.getByRole("link", { name: /Get Started Free/i }).first();
-    await expect(getStartedBtn).toHaveAttribute("href", "/login");
+    await expect(getStartedBtn).toHaveAttribute("href", "/register");
 
     const liveWorkspaceBtn = page.getByRole("link", { name: /Explore Live Workspace/i }).first();
     await expect(liveWorkspaceBtn).toHaveAttribute("href", "/dashboard");

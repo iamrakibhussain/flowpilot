@@ -50,7 +50,7 @@ export const AuroraBackground: React.FC<AuroraBackgroundProps> = ({ className = 
 
       {/* 2. Living React Bits Aurora Waves (Active when mounted & motion is allowed) */}
       {isClient && !shouldReduceMotion && (
-        <div className="relative h-full w-full">
+        <div className="relative h-full w-full overflow-hidden">
           {/* Upper Aurora Wave (FlowPilot #315fe8 - 14% peak opacity) */}
           <motion.div
             animate={{

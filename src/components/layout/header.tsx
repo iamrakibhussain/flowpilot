@@ -260,7 +260,7 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
 
             {/* Desktop Navigation with Framer Motion Sliding Spring Capsule */}
             <nav
-              className="hidden shrink-0 items-center gap-1 whitespace-nowrap md:flex"
+              className="hidden shrink-0 items-center gap-1 whitespace-nowrap lg:flex"
               aria-label="Primary Desktop Navigation"
             >
               {navItems.map((item) => {
@@ -434,7 +434,7 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
           </div>
 
           {/* Right: Command Trigger, Sign In & Shimmering CTA */}
-          <div className="hidden shrink-0 items-center gap-2 whitespace-nowrap md:flex lg:gap-2.5">
+          <div className="hidden shrink-0 items-center gap-2 whitespace-nowrap lg:flex lg:gap-2.5">
             {/* Interactive Command Palette Trigger (Linear/Raycast style) */}
             <div className="group/cmd relative">
               <button
@@ -485,7 +485,7 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
           </div>
 
           {/* Mobile Menu & Quick Command Button */}
-          <div className="flex items-center gap-2 md:hidden">
+          <div className="flex items-center gap-2 lg:hidden">
             <button
               type="button"
               onClick={() => setIsCommandPaletteOpen(true)}
@@ -525,7 +525,7 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.98 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="border-border/90 bg-surface/95 pointer-events-auto relative mx-auto mt-2 max-w-6xl overflow-hidden rounded-2xl border p-5 shadow-2xl backdrop-blur-2xl md:hidden"
+              className="border-border/90 bg-surface/95 pointer-events-auto relative mx-auto mt-2 max-w-6xl overflow-hidden rounded-2xl border p-5 shadow-2xl backdrop-blur-2xl lg:hidden"
             >
               {/* Specular Top Rim Light */}
               <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/25" />
