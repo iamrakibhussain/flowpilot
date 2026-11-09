@@ -17,7 +17,7 @@ export const metadata = {
 
 export default function HomePage() {
   return (
-    <div className="relative flex flex-col">
+    <div className="relative flex flex-col overflow-x-clip">
       {/* Subtle React Bits Light Aurora Background across the entire homepage */}
       <AuroraBackground />
 

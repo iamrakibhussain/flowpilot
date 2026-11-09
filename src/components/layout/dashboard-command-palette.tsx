@@ -333,7 +333,7 @@ export function DashboardCommandPalette({ isOpen, onClose }: DashboardCommandPal
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-start justify-center px-4 pt-16 sm:pt-24">
+      <div className="fixed inset-0 z-50 flex items-start justify-center px-2 pt-10 sm:px-4 sm:pt-20">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -350,7 +350,7 @@ export function DashboardCommandPalette({ isOpen, onClose }: DashboardCommandPal
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: -10 }}
           transition={{ duration: 0.2 }}
-          className="relative w-full max-w-2xl overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 shadow-2xl backdrop-blur-2xl"
+          className="relative max-h-[calc(100dvh-5rem)] w-full max-w-2xl overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 shadow-2xl backdrop-blur-2xl"
           role="dialog"
           aria-modal="true"
           aria-label="Operations Command Palette"
@@ -417,7 +417,7 @@ export function DashboardCommandPalette({ isOpen, onClose }: DashboardCommandPal
           </div>
 
           {/* Results List */}
-          <div className="max-h-[380px] space-y-1 divide-y divide-slate-100 overflow-y-auto p-2">
+          <div className="max-h-[min(380px,50dvh)] space-y-1 divide-y divide-slate-100 overflow-y-auto p-2">
             {filteredEntries.length === 0 ? (
               <div className="p-8 text-center text-xs text-slate-500">
                 <Search className="mx-auto mb-2 h-6 w-6 text-slate-300" />
@@ -476,17 +476,17 @@ export function DashboardCommandPalette({ isOpen, onClose }: DashboardCommandPal
           </div>
 
           {/* Footer Bar */}
-          <div className="flex items-center justify-between border-t border-slate-100 bg-slate-50/70 px-4 py-2.5 text-[11px] text-slate-500">
-            <span className="flex items-center gap-1.5">
-              <Sparkles className="text-primary h-3 w-3" />
-              <span>FlowPilot Operations Command System</span>
+          <div className="flex items-center justify-between border-t border-slate-100 bg-slate-50/70 px-3 py-2 text-[10px] text-slate-500 sm:px-4 sm:py-2.5 sm:text-[11px]">
+            <span className="flex items-center gap-1.5 truncate">
+              <Sparkles className="text-primary h-3 w-3 shrink-0" />
+              <span className="truncate">FlowPilot Command</span>
             </span>
-            <div className="flex items-center gap-3">
+            <div className="flex shrink-0 items-center gap-2 sm:gap-3">
               <span>
-                Press <kbd className="font-mono font-bold text-slate-700">↵</kbd> to select
+                <kbd className="font-mono font-bold text-slate-700">↵</kbd> select
               </span>
               <span>
-                <kbd className="font-mono font-bold text-slate-700">ESC</kbd> to close
+                <kbd className="font-mono font-bold text-slate-700">ESC</kbd> close
               </span>
             </div>
           </div>
