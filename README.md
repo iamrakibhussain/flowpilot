@@ -1,180 +1,175 @@
-# FlowPilot — Frontend Architecture & Foundation
+# FlowPilot — Multi-Tenant Business Operations SaaS
 
-> **Product Vision**: _"One workspace to run a service business."_  
-> **Status**: **Phase 0 — Engineering Foundation & Architecture Baseline**  
-> **Backend Service**: `flowpilot-backend` (Separate repository / Express REST API)
+[![Next.js 16](https://img.shields.io/badge/Next.js-16.4.2-black?style=flat&logo=next.js)](https://nextjs.org/)
+[![React 19](https://img.shields.io/badge/React-19.3.0-blue?style=flat&logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7+-blue?style=flat&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS 4](https://img.shields.io/badge/Tailwind_CSS-4.0-38bdf8?style=flat&logo=tailwindcss)](https://tailwindcss.com/)
+[![Vitest](https://img.shields.io/badge/Vitest-5.0.4-green?style=flat&logo=vitest)](https://vitest.dev/)
+[![Playwright](https://img.shields.io/badge/Playwright-E2E-orange?style=flat&logo=playwright)](https://playwright.dev/)
 
-FlowPilot is a modern multi-tenant Business Operations SaaS engineered to unify CRM, appointment scheduling, staff coordination, invoicing, and payment reconciliation for service businesses, agencies, and consulting teams.
+> **"One unified operations platform for modern service businesses, digital agencies, and consultancies."**
 
-This repository (`flowpilot`) contains the standalone frontend application layer. It is architected for strict type safety, predictable multi-tenant boundaries, WCAG 2.2 AA accessibility, and modular design system scalability.
+FlowPilot is a full-stack, multi-tenant Business Operations SaaS engineered to unify CRM, specialist shift scheduling, collision-free appointment booking, quotes with digital signature ceremonies, sequential invoicing, and automated Stripe billing.
 
----
-
-## 1. Current Project Status
-
-- **Architecture Foundation**: Complete and validated.
-- **Business Feature Implementation**: Strictly deferred to upcoming phases per architectural guidelines. No production business features (appointment booking, real invoices, live CRM records) have been created yet.
-- **Integration Readiness**: The typed `ApiClient`, error normalizer, and TanStack Query client are configured to connect to `flowpilot-backend` over REST.
+This repository (`flowpilot`) contains the frontend application layer. It is built with Next.js 16 App Router, React 19, Tailwind CSS 4, and Radix UI primitives, connecting over REST to the [`flowpilot-backend`](https://github.com/iamrakibhussain/flowpilot-backend) API engine.
 
 ---
 
-## 2. Technology Stack
+## 1. Live Portfolio Demonstration
 
-| Layer                   | Technology            | Version         | Purpose                                                     |
-| :---------------------- | :-------------------- | :-------------- | :---------------------------------------------------------- |
-| **Framework**           | Next.js (App Router)  | `16.4.0`        | React Server Components, Turbopack, nested route groups     |
-| **Runtime Library**     | React                 | `19.3.0`        | Declarative UI rendering, concurrent features               |
-| **Type System**         | TypeScript            | `^5.0`          | Strict compilation (`strict: true`, no `any`)               |
-| **Styling**             | Tailwind CSS          | `^4.0`          | Design tokens via `@theme` & CSS variables                  |
-| **Headless Primitives** | Radix UI              | Latest          | Accessible Dialog, DropdownMenu, Tabs, and Slot primitives  |
-| **Icons**               | Lucide React          | `^1.56.0`       | Modern, consistent iconography                              |
-| **Form Handling**       | React Hook Form       | `^7.90.0`       | High-performance uncontrolled form state management         |
-| **Validation**          | Zod                   | `^3.25.76`      | Runtime schema validation and type inference                |
-| **Server State**        | TanStack Query        | `^5.104.2`      | Asynchronous server state caching, retry, and deduplication |
-| **Unit Testing**        | Vitest                | `^5.0.4`        | Blazing fast ESM unit and component test runner             |
-| **DOM Testing**         | React Testing Library | `^16.3.3`       | User-centric, accessible component assertion utilities      |
-| **Browser Testing**     | Playwright            | `^1.64.0`       | Cross-browser end-to-end integration testing                |
-| **Code Quality**        | ESLint & Prettier     | `^9.0` / `^3.9` | Flat config linting and Tailwind class formatting           |
+| Resource             | URL / Access                                                            |
+| :------------------- | :---------------------------------------------------------------------- |
+| **Live Web App**     | `https://[your-app-name].vercel.app` _(Configured on owner deployment)_ |
+| **Backend REST API** | `https://[your-backend-name].onrender.com/api/v1/health`                |
+| **Portfolio Access** | Register a new tenant at `/register` or sign in with your credentials   |
+| **Multi-Tenancy**    | Isolated tenant workspace per registered account                        |
+
+_Visitors can register a fresh organization via `/register` to test the full multi-tenant onboarding flow and explore operations in an isolated workspace._
 
 ---
 
-## 3. Repository Structure
+## 2. Key Product Capabilities
 
-```
-flowpilot/
-├── .github/workflows/ci.yml       # GitHub Actions continuous integration pipeline
-├── docs/                          # Architectural documentation & specifications
-│   ├── FRONTEND-ARCHITECTURE.md   # System topology, RSC strategy, security
-│   ├── DESIGN-SYSTEM.md           # Color tokens, typography, radii, component catalogue
-│   ├── UI-UX-SPECIFICATION.md     # States matrix, forms, navigation, tables
-│   ├── API-INTEGRATION.md         # Request envelopes, error mapping, query keys
-│   ├── AUTHENTICATION-FRONTEND.md # Multi-tenant session model, cookie security
-│   ├── ACCESSIBILITY.md           # WCAG 2.2 AA standards, keyboard navigation, focus
-│   ├── TESTING-STRATEGY.md        # Testing pyramid, Vitest, Playwright conventions
-│   ├── CODE-STANDARDS.md          # TypeScript rules, naming, import organization
-│   ├── ARCHITECTURE-DECISIONS.md  # ADRs 001 through 008
-│   └── IMPLEMENTATION-ROADMAP.md  # Progressive milestone plan (Phases 0 through 7)
-├── public/                        # Static assets and icons
-├── src/
-│   ├── app/                       # Next.js App Router route groups
-│   │   ├── (public)/              # Public routes & architecture verification overview
-│   │   ├── (auth)/                # Authentication route group & validation shell
-│   │   ├── (dashboard)/           # Multi-tenant workspace layout shell
-│   │   ├── globals.css            # Tailwind v4 theme and semantic CSS variables
-│   │   ├── layout.tsx             # Root layout with QueryProvider & skip-link
-│   │   ├── loading.tsx            # Global loading fallback
-│   │   ├── error.tsx              # Route error boundary
-│   │   ├── not-found.tsx          # Accessible 404 page
-│   │   └── global-error.tsx       # Root failure recovery boundary
-│   ├── components/
-│   │   ├── ui/                    # Design system primitives (Button, Input, Card, etc.)
-│   │   ├── feedback/              # EmptyState, ErrorState, LoadingState
-│   │   ├── layout/                # Container, PageHeader
-│   │   └── providers/             # QueryProvider
-│   ├── features/                  # Domain-specific types & future modules
-│   │   ├── auth/                  # User, AuthSession, WorkspaceRole types
-│   │   └── organizations/         # Organization & Member types
-│   ├── lib/
-│   │   ├── api/                   # ApiClient, error classes, query keys factory
-│   │   ├── config/                # Validated environment configuration (env.ts)
-│   │   └── utils/                 # cn class merging utility
-│   └── types/                     # Shared cross-cutting frontend TypeScript contracts
-├── tests/
-│   ├── setup.ts                   # Vitest setup file
-│   ├── unit/                      # Vitest unit test suites
-│   └── e2e/                       # Playwright smoke test suites
-├── .editorconfig                  # Universal formatting settings
-├── .env.example                   # Environment variable template
-├── .gitignore                     # Git ignore rules
-├── .prettierrc.json               # Prettier configuration
-├── eslint.config.mjs              # ESLint 9 flat configuration
-├── next.config.ts                 # Next.js 16 configuration with Turbopack
-├── package.json                   # Project manifest & npm scripts
-├── tsconfig.json                  # Strict TypeScript compiler options
-└── vitest.config.mts              # Vitest test configuration
+- **Strict Multi-Tenancy:** Complete tenant isolation across workspaces, memberships, and billing profiles.
+- **Operations Dashboard:** Live financial metrics, active customer summaries, and upcoming specialist schedules.
+- **Appointment Scheduling Engine:** Specialist shift allocation, buffer time management, and double-booking prevention.
+- **Quotes & Legal Digital Signatures:** Branded client estimates with cryptographic signature ceremonies and audit trails.
+- **Invoicing & Stripe Payments:** Strictly sequential, collision-free invoice generation with Stripe Checkout integration (Test Mode).
+- **Recurring Retainers:** Automated monthly and annual retainer billing schedules.
+- **Client Self-Service Portal:** Magic-link authenticated portal for external clients to review appointments and settle invoices.
+- **Cloud Storage:** Supabase Storage integration with public CDN assets and private 900-second signed URLs.
+- **Product-Wide Responsive Design:** Validated across 8 distinct viewports (320px to 1920px) with touch-friendly navigation drawers.
+
+---
+
+## 3. Architecture Overview
+
+```mermaid
+flowchart LR
+    subgraph Frontend["Frontend Tier (Vercel)"]
+        UI["Next.js 16 App Router (React 19)"]
+        TQ["TanStack Query Cache Layer"]
+        Rewrites["Next.js Server Rewrites (/api/v1/*)"]
+    end
+
+    subgraph Backend["Backend Tier (Render)"]
+        API["Express.js / TypeScript REST API"]
+        Auth["Argon2id Session & Auth Engine"]
+        Tenant["Multi-Tenant Isolation Middleware"]
+    end
+
+    subgraph DataTier["Data & Cloud Tier (Supabase)"]
+        DB[("PostgreSQL 15+ (Prisma ORM)")]
+        Storage["Supabase Storage (Public & Private)"]
+    end
+
+    UI --> TQ --> Rewrites
+    Rewrites -->|"1st-Party Stream"| API
+    API --> Auth --> Tenant
+    Tenant --> DB
+    Tenant --> Storage
 ```
 
 ---
 
-## 4. Prerequisites
+## 4. Technology Stack
 
-- **Node.js**: `v24.x` (or `v20.x` LTS minimum)
-- **Package Manager**: `npm` `v11.x` (or compatible)
+- **Framework:** Next.js 16.4.2 (App Router with Turbopack)
+- **UI Library:** React 19.3.0
+- **Styling:** Tailwind CSS 4 with custom CSS variables & GPU-accelerated Aurora animations
+- **Component Primitives:** Radix UI (Dialog, Dropdown Menu, Tabs, Slot)
+- **Forms & Validation:** React Hook Form + Zod (Strict schema validation)
+- **Data Fetching & Cache:** TanStack Query 5 (React Query with optimistic mutations)
+- **Icons & Motion:** Lucide React & Framer Motion
+- **Testing:** Vitest 5.0.4 (Unit & Component testing with jsdom) & Playwright (Responsive viewports & E2E smoke)
 
 ---
 
-## 5. Getting Started & Installation
+## 5. Local Development Setup
 
-1. **Clone the repository**:
+### Prerequisites
+
+- Node.js 20+ LTS or Node.js 24 LTS
+- Running backend service: [`flowpilot-backend`](https://github.com/iamrakibhussain/flowpilot-backend) on port 4000
+
+### Installation Steps
+
+1. Clone the repository:
 
    ```bash
-   git clone <repository-url> flowpilot
+   git clone https://github.com/iamrakibhussain/flowpilot.git
    cd flowpilot
    ```
 
-2. **Configure environment variables**:
-
-   ```bash
-   cp .env.example .env.local
-   ```
-
-   Inspect `.env.local` and adjust `NEXT_PUBLIC_API_BASE_URL` if your local backend runs on a different port.
-
-3. **Install dependencies**:
+2. Install dependencies:
 
    ```bash
    npm install
    ```
 
-4. **Start the development server**:
+3. Configure local environment variables:
+
+   ```bash
+   cp .env.example .env.local
+   ```
+
+   _(Defaults are pre-configured for local development connecting to `http://localhost:4000/api/v1`)_
+
+4. Start the Next.js development server:
    ```bash
    npm run dev
    ```
-   Open [http://localhost:3000](http://localhost:3000) to view the Architecture Overview and Verification page.
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 6. Development & Quality Commands
+## 6. Testing & Quality Verification
 
-| Command                   | Action                                                                               |
-| :------------------------ | :----------------------------------------------------------------------------------- |
-| `npm run dev`             | Starts local Next.js development server with Turbopack                               |
-| `npm run build`           | Builds optimized production bundle                                                   |
-| `npm run start`           | Starts production server                                                             |
-| `npm run type-check`      | Runs strict TypeScript compiler check (`tsc --noEmit`)                               |
-| `npm run lint`            | Runs ESLint 9 across all files                                                       |
-| `npm run lint:fix`        | Runs ESLint and automatically fixes fixable issues                                   |
-| `npm run format`          | Formats all files using Prettier and Tailwind plugin                                 |
-| `npm run format:check`    | Verifies code formatting conformance without modifying files                         |
-| `npm run test:unit`       | Executes all Vitest unit and component tests                                         |
-| `npm run test:unit:watch` | Starts Vitest in interactive watch mode                                              |
-| `npm run test:e2e`        | Runs Playwright end-to-end browser test suite                                        |
-| `npm run validate`        | Runs full pre-commit pipeline (`type-check` + `lint` + `format:check` + `test:unit`) |
+FlowPilot enforces zero-tolerance code quality standards:
 
----
+```bash
+# Run complete validation suite (type-check, lint, format, unit tests):
+npm run validate
 
-## 7. Documentation Index
+# Run Vitest unit & component test suite (71 tests across 17 files):
+npm run test:unit
 
-Detailed architectural specifications are located in `/docs/`:
+# Run TypeScript strict type-check:
+npm run type-check
 
-1. [FRONTEND-ARCHITECTURE.md](docs/FRONTEND-ARCHITECTURE.md) — System topology, RSC strategy, security.
-2. [DESIGN-SYSTEM.md](docs/DESIGN-SYSTEM.md) — Tokens, typography, component catalogue, contrast.
-3. [UI-UX-SPECIFICATION.md](docs/UI-UX-SPECIFICATION.md) — States matrix, forms, navigation, tables.
-4. [API-INTEGRATION.md](docs/API-INTEGRATION.md) — Request envelopes, error mapping, query keys.
-5. [AUTHENTICATION-FRONTEND.md](docs/AUTHENTICATION-FRONTEND.md) — Multi-tenant session model, cookie security.
-6. [ACCESSIBILITY.md](docs/ACCESSIBILITY.md) — WCAG 2.2 AA standards, keyboard navigation, focus.
-7. [TESTING-STRATEGY.md](docs/TESTING-STRATEGY.md) — Testing pyramid, Vitest, Playwright conventions.
-8. [CODE-STANDARDS.md](docs/CODE-STANDARDS.md) — TypeScript rules, naming, import organization.
-9. [ARCHITECTURE-DECISIONS.md](docs/ARCHITECTURE-DECISIONS.md) — ADRs 001 through 008.
-10. [IMPLEMENTATION-ROADMAP.md](docs/IMPLEMENTATION-ROADMAP.md) — Progressive milestone roadmap (Phases 0 through 7).
+# Run ESLint static analysis:
+npm run lint
+
+# Run Playwright responsive matrix tests:
+npx playwright test tests/e2e/responsive-audit.spec.ts
+```
 
 ---
 
-## 8. Known Limitations & Planned Backend Integration
+## 7. Security Architecture & Safeguards
 
-1. **Backend Dependency**: Full authentication, customer management, and appointment scheduling require the separate `flowpilot-backend` Express REST API service to be developed and deployed.
-2. **Mock Mode Isolation**: The frontend includes validation harnesses, but does not simulate production database records.
-3. **OpenAPI Generation**: Once `flowpilot-backend` publishes an OpenAPI v3 document, client types can be automatically synchronized via code generation.
-   #   f l o w p i l o t 
-    
-    
+- **No Third-Party Cookie Dependency:** Next.js server-side rewrites route `/api/v1/*` to the upstream backend, allowing session cookies to operate as 1st-party cookies across modern browsers.
+- **Defense in Depth:** Helmet HTTP security headers (CSP, HSTS, X-Frame-Options: DENY, X-Content-Type-Options: nosniff).
+- **Session Protection:** Session tokens stored in `HttpOnly; SameSite; Secure` cookies; zero sensitive tokens stored in `localStorage`.
+- **Voluntary User Logout:** Users remain authenticated until they explicitly click "Log Out"—no unexpected session expirations mid-task.
+
+---
+
+## 8. Portfolio Demo Limitations
+
+This deployment is configured as a public portfolio demonstration:
+
+- **Test Mode Payments:** Stripe operates exclusively with test API keys; no live financial transactions occur.
+- **Console Email Transport:** Transactional emails are logged to server stdout rather than dispatched via external SMTP relays.
+- **Render Free Wakeup:** If the free-tier backend is asleep, the initial request may take ~30-50 seconds to warm up.
+
+---
+
+## 9. Documentation Directory
+
+- [Deployment Architecture](docs/deployment/portfolio-demo-architecture.md)
+- [Step-by-Step Setup Guide](docs/deployment/portfolio-demo-setup.md)
+- [Environment Variables Matrix](docs/deployment/environment-variables.md)
+- [Demo Safeguards & Limitations](docs/deployment/demo-safety-and-limitations.md)
+- [Recruiter Demo Walkthrough](docs/portfolio/recruiter-demo-walkthrough.md)
+- [Technical Interview Notes](docs/portfolio/interview-architecture-notes.md)
