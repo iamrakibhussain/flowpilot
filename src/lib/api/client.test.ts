@@ -120,4 +120,82 @@ describe("ApiClient HTTP boundary", () => {
 
     await expect(client.post("/auth/register", {})).rejects.toThrowError(ValidationError);
   });
+
+  it("resolves relative baseUrl correctly using base origin", async () => {
+    const relativeClient = new ApiClient({
+      baseUrl: "/api/v1",
+      defaultTimeoutMs: 5000,
+    });
+
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      headers: {
+        get: (name: string) => (name.toLowerCase() === "content-type" ? "application/json" : null),
+      },
+      json: async () => ({ success: true, data: { status: "healthy" } }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await relativeClient.get("/health");
+
+    expect(fetchMock).toHaveBeenCalled();
+    const calledUrl = fetchMock.mock.calls[0]?.[0] as string;
+    expect(calledUrl).toMatch(/\/api\/v1\/health$/);
+  });
+
+  it("prevents duplicate /api/v1 when caller passes /api/v1 in endpoint with relative baseUrl", async () => {
+    const relativeClient = new ApiClient({
+      baseUrl: "/api/v1",
+      defaultTimeoutMs: 5000,
+    });
+
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      headers: {
+        get: (name: string) => (name.toLowerCase() === "content-type" ? "application/json" : null),
+      },
+      json: async () => ({ success: true, data: {} }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await relativeClient.post("/api/v1/auth/login", { email: "test@example.com" });
+
+    expect(fetchMock).toHaveBeenCalled();
+    const calledUrl = fetchMock.mock.calls[0]?.[0] as string;
+    expect(calledUrl).toMatch(/\/api\/v1\/auth\/login$/);
+    expect(calledUrl).not.toContain("/api/v1/api/v1");
+  });
+
+  it("prevents duplicate /api/v1 with absolute same-origin API baseUrl", async () => {
+    const absoluteClient = new ApiClient({
+      baseUrl: "https://flowpilot-saas-app.vercel.app/api/v1",
+      defaultTimeoutMs: 5000,
+    });
+
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      headers: {
+        get: (name: string) => (name.toLowerCase() === "content-type" ? "application/json" : null),
+      },
+      json: async () => ({ success: true, data: {} }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    // Call with standard endpoint
+    await absoluteClient.get("/auth/me");
+    expect(fetchMock).toHaveBeenLastCalledWith(
+      "https://flowpilot-saas-app.vercel.app/api/v1/auth/me",
+      expect.anything()
+    );
+
+    // Call with duplicate endpoint prefix
+    await absoluteClient.post("/api/v1/auth/login", {});
+    expect(fetchMock).toHaveBeenLastCalledWith(
+      "https://flowpilot-saas-app.vercel.app/api/v1/auth/login",
+      expect.anything()
+    );
+  });
 });

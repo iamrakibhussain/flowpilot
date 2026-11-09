@@ -1,5 +1,28 @@
 import { z } from "zod";
 
+export const apiBaseUrlSchema = z
+  .string()
+  .trim()
+  .min(1, "NEXT_PUBLIC_API_BASE_URL cannot be empty")
+  .refine(
+    (val) => {
+      if (val.startsWith("/")) {
+        return !val.startsWith("//") && !val.includes(" ");
+      }
+      try {
+        const parsed = new URL(val);
+        return parsed.protocol === "http:" || parsed.protocol === "https:";
+      } catch {
+        return false;
+      }
+    },
+    {
+      message:
+        "NEXT_PUBLIC_API_BASE_URL must be a valid absolute HTTP/HTTPS URL or a relative path starting with '/'",
+    }
+  )
+  .default("/api/v1");
+
 const envSchema = z.object({
   NEXT_PUBLIC_APP_ENV: z
     .enum(["development", "staging", "production", "test"])
@@ -8,10 +31,7 @@ const envSchema = z.object({
     .string()
     .url("NEXT_PUBLIC_APP_URL must be a valid URL")
     .default("http://localhost:3000"),
-  NEXT_PUBLIC_API_BASE_URL: z
-    .string()
-    .url("NEXT_PUBLIC_API_BASE_URL must be a valid URL")
-    .default("http://localhost:5000/api/v1"),
+  NEXT_PUBLIC_API_BASE_URL: apiBaseUrlSchema,
   NEXT_PUBLIC_API_TIMEOUT_MS: z.coerce
     .number()
     .positive("Timeout must be a positive integer")

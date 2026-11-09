@@ -42,8 +42,32 @@ export class ApiClient {
     endpoint: string,
     params?: Record<string, string | number | boolean | undefined | null>
   ): string {
-    const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
-    const url = new URL(`${this.baseUrl}${cleanEndpoint}`);
+    let cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+
+    // Prevent duplicate /api/v1 if both baseUrl and endpoint include the API prefix
+    const normalizedBaseUrl = this.baseUrl.replace(/\/+$/, "");
+    if (normalizedBaseUrl.endsWith("/api/v1")) {
+      if (cleanEndpoint === "/api/v1") {
+        cleanEndpoint = "";
+      } else if (cleanEndpoint.startsWith("/api/v1/")) {
+        cleanEndpoint = cleanEndpoint.slice(7); // strip leading '/api/v1'
+      }
+    }
+
+    let url: URL;
+    if (normalizedBaseUrl.startsWith("http://") || normalizedBaseUrl.startsWith("https://")) {
+      url = new URL(`${normalizedBaseUrl}${cleanEndpoint}`);
+    } else {
+      const rawOrigin =
+        typeof window !== "undefined" && window.location?.origin
+          ? window.location.origin
+          : (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000");
+      const baseOrigin = rawOrigin.replace(/\/+$/, "");
+      const normalizedPath = normalizedBaseUrl.startsWith("/")
+        ? normalizedBaseUrl
+        : `/${normalizedBaseUrl}`;
+      url = new URL(`${normalizedPath}${cleanEndpoint}`, baseOrigin);
+    }
 
     if (params) {
       Object.entries(params).forEach(([key, value]) => {

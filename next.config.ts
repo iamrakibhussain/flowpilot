@@ -15,11 +15,19 @@ const nextConfig: NextConfig = {
     },
   },
   async rewrites() {
-    const backendUrl =
+    const isProduction =
+      process.env.NODE_ENV === "production" || Boolean(process.env.VERCEL);
+    const defaultBackend = isProduction
+      ? "https://flowpilot-backend-01yp.onrender.com/api/v1"
+      : "http://localhost:4000/api/v1";
+
+    const rawBackendUrl =
       process.env.BACKEND_API_URL ||
-      process.env.NEXT_PUBLIC_API_BASE_URL ||
-      "http://localhost:4000/api/v1";
-    const backendOrigin = backendUrl.replace(/\/api\/v1\/?$/, "");
+      (process.env.NEXT_PUBLIC_API_BASE_URL?.startsWith("http")
+        ? process.env.NEXT_PUBLIC_API_BASE_URL
+        : undefined) ||
+      defaultBackend;
+    const backendOrigin = rawBackendUrl.replace(/\/api\/v1\/?$/, "").replace(/\/+$/, "");
     return [
       {
         source: "/api/v1/:path*",
