@@ -15,8 +15,7 @@ const nextConfig: NextConfig = {
     },
   },
   async rewrites() {
-    const isProduction =
-      process.env.NODE_ENV === "production" || Boolean(process.env.VERCEL);
+    const isProduction = process.env.NODE_ENV === "production" || Boolean(process.env.VERCEL);
     const defaultBackend = isProduction
       ? "https://flowpilot-backend-01yp.onrender.com/api/v1"
       : "http://localhost:4000/api/v1";

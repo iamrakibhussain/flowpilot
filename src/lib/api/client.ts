@@ -61,7 +61,7 @@ export class ApiClient {
       const rawOrigin =
         typeof window !== "undefined" && window.location?.origin
           ? window.location.origin
-          : (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000");
+          : process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
       const baseOrigin = rawOrigin.replace(/\/+$/, "");
       const normalizedPath = normalizedBaseUrl.startsWith("/")
         ? normalizedBaseUrl
