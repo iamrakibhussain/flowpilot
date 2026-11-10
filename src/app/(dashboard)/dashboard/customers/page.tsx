@@ -289,7 +289,7 @@ export default function CustomersDirectoryPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2.5">
-            <h1 className="text-foreground text-2xl font-extrabold tracking-tight sm:text-3xl">
+            <h1 className="text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
               Customer CRM Directory
             </h1>
             <span className="border-primary/20 bg-primary/10 text-primary hidden items-center gap-1 rounded-full border px-2.5 py-0.5 text-[11px] font-bold sm:inline-flex">
@@ -297,7 +297,7 @@ export default function CustomersDirectoryPage() {
               Linear Precision
             </span>
           </div>
-          <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
+          <p className="text-muted-foreground mt-1 text-xs sm:text-sm leading-relaxed">
             Unified multi-tenant client dossiers, operational engagements, and reconciled Lifetime
             Values for <strong className="text-foreground font-semibold">{organizationName}</strong>
             .

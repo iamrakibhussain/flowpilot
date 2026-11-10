@@ -267,7 +267,7 @@ export default function BillingPage() {
   };
 
   return (
-    <div className="space-y-8 pb-16">
+    <div className="space-y-6 sm:space-y-8 pb-12">
       {/* 1. Header */}
       <PageHeader
         title="Subscription & Billing"

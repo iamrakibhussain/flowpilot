@@ -274,7 +274,7 @@ export default function DashboardOverviewPage() {
       <div className="flex w-full max-w-full min-w-0 flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-foreground text-2xl font-black tracking-tight sm:text-3xl">
+            <h1 className="text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
               Welcome back, {userName}
             </h1>
             <span className="border-primary/20 bg-primary/10 text-primary inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[11px] font-bold">
@@ -282,7 +282,7 @@ export default function DashboardOverviewPage() {
               Live Hub
             </span>
           </div>
-          <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
+          <p className="text-muted-foreground mt-1 text-xs sm:text-sm leading-relaxed">
             Operations overview and real-time business activity for{" "}
             <span className="text-foreground font-semibold">{organizationName}</span>
           </p>

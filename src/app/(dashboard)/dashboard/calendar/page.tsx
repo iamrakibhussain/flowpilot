@@ -391,10 +391,10 @@ function CalendarContent() {
             </span>
           </div>
 
-          <h1 className="text-foreground mt-1.5 text-2xl font-black tracking-tight sm:text-3xl">
+          <h1 className="text-foreground mt-1.5 text-2xl font-bold tracking-tight sm:text-3xl">
             Calendar &amp; Operations Hub
           </h1>
-          <p className="text-muted-foreground mt-0.5 text-xs font-medium sm:text-sm">
+          <p className="text-muted-foreground mt-0.5 text-xs sm:text-sm leading-relaxed">
             Coordinate client sessions, assign specialists, and execute collision-free appointments.
           </p>
         </div>

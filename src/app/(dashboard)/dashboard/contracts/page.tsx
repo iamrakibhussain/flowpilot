@@ -199,14 +199,14 @@ export default function ContractsPage() {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <div className="flex items-center gap-2.5">
-            <h1 className="text-foreground text-2xl font-black tracking-tight sm:text-3xl">
+            <h1 className="text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
               Contracts & E-Signatures
             </h1>
             <span className="rounded-full border border-blue-500/30 bg-blue-500/10 px-2.5 py-0.5 text-[11px] font-extrabold text-blue-600 dark:bg-blue-500/20 dark:text-blue-400">
               ESIGN & UETA Active
             </span>
           </div>
-          <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
+          <p className="text-muted-foreground mt-1 text-xs sm:text-sm leading-relaxed">
             Draft, dispatch, and legally execute binding commercial agreements with cryptographic
             SHA-256 digital audit trails.
           </p>

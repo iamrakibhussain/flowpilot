@@ -227,11 +227,11 @@ export default function QuotesPage() {
       {/* Top Header */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-foreground flex items-center gap-2.5 text-2xl font-bold tracking-tight">
+          <h1 className="text-foreground flex items-center gap-2.5 text-2xl font-bold tracking-tight sm:text-3xl">
             <FileCheck2 className="h-6 w-6 text-blue-600 dark:text-blue-400" />
             Estimates & Client Proposals
           </h1>
-          <p className="text-muted-foreground mt-0.5 text-sm">
+          <p className="text-muted-foreground mt-1 text-xs sm:text-sm leading-relaxed">
             Create branded proposals, capture digital client signatures, and auto-convert to
             invoices.
           </p>
