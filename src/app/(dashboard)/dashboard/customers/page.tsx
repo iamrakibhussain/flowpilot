@@ -408,7 +408,7 @@ export default function CustomersDirectoryPage() {
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-foreground text-2xl font-black tracking-tight tabular-nums">
+            <span className="text-foreground text-2xl font-bold tracking-tight tabular-nums">
               {activeCount}
             </span>
             <span className="text-muted-foreground text-xs">/ {totalCount} total</span>
@@ -441,7 +441,7 @@ export default function CustomersDirectoryPage() {
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-foreground text-2xl font-black tracking-tight tabular-nums">
+            <span className="text-foreground text-2xl font-bold tracking-tight tabular-nums">
               {leadsCount}
             </span>
             <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">
@@ -472,7 +472,7 @@ export default function CustomersDirectoryPage() {
             </div>
           </div>
           <div className="mt-3 flex items-baseline justify-between">
-            <span className="text-foreground text-2xl font-black tracking-tight tabular-nums">
+            <span className="text-foreground text-2xl font-bold tracking-tight tabular-nums">
               ${totalPaidSum.toLocaleString("en-US", { minimumFractionDigits: 0 })}
             </span>
             {/* Embedded Micro SVG Sparkline */}
@@ -507,7 +507,7 @@ export default function CustomersDirectoryPage() {
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-foreground text-2xl font-black tracking-tight tabular-nums">
+            <span className="text-foreground text-2xl font-bold tracking-tight tabular-nums">
               {repeatRate}%
             </span>
             <span className="text-xs font-bold text-purple-600 dark:text-purple-400">

@@ -116,17 +116,17 @@ export function CustomerQuickPeekDrawer({
         <DialogPrimitive.Overlay className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-xs transition-opacity duration-300" />
 
         {/* Sliding Panel */}
-        <DialogPrimitive.Content className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right fixed inset-y-0 right-0 z-50 flex h-full w-full max-w-xl flex-col border-l border-slate-200/90 bg-white/95 shadow-2xl backdrop-blur-2xl duration-300 focus:outline-none">
+        <DialogPrimitive.Content className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right fixed inset-y-0 right-0 z-50 flex h-full w-full max-w-xl flex-col border-l border-border/80 bg-card text-foreground shadow-2xl backdrop-blur-2xl duration-300 focus:outline-none">
           {/* Header */}
-          <div className="relative border-b border-slate-200/80 p-5 sm:p-6">
+          <div className="relative border-b border-border/80 p-5 sm:p-6">
             {/* Ambient spot blur */}
             <div className="pointer-events-none absolute -top-10 -right-10 h-40 w-40 rounded-full bg-blue-500/10 blur-2xl" />
 
             <div className="flex items-start justify-between gap-4">
               <div className="flex items-center gap-3.5">
                 <div
-                  className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br text-lg font-black text-white shadow-md ${
-                    customer ? getAvatarGradient(customer.name) : "bg-slate-300"
+                  className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br text-lg font-bold text-white shadow-md ${
+                    customer ? getAvatarGradient(customer.name) : "bg-muted"
                   }`}
                 >
                   {initials}
@@ -134,7 +134,7 @@ export function CustomerQuickPeekDrawer({
 
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <DialogPrimitive.Title className="truncate text-lg font-extrabold text-slate-900">
+                    <DialogPrimitive.Title className="truncate text-lg font-bold tracking-tight text-foreground">
                       {customer?.name ?? "Loading Client..."}
                     </DialogPrimitive.Title>
 
@@ -142,10 +142,10 @@ export function CustomerQuickPeekDrawer({
                       <span
                         className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-bold ${
                           customer.status === "ACTIVE"
-                            ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                            ? "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-300"
                             : customer.status === "LEAD"
-                              ? "border-blue-200 bg-blue-50 text-blue-700"
-                              : "border-slate-200 bg-slate-100 text-slate-600"
+                              ? "border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-900/50 dark:bg-blue-950/40 dark:text-blue-300"
+                              : "border-border/80 bg-muted text-muted-foreground"
                         }`}
                       >
                         <span
@@ -154,7 +154,7 @@ export function CustomerQuickPeekDrawer({
                               ? "bg-emerald-500"
                               : customer.status === "LEAD"
                                 ? "bg-blue-500"
-                                : "bg-slate-400"
+                                : "bg-muted-foreground"
                           }`}
                         />
                         {customer.status}
@@ -162,20 +162,20 @@ export function CustomerQuickPeekDrawer({
                     )}
 
                     {isHighValue && (
-                      <span className="inline-flex items-center gap-1 rounded-full border border-amber-300/80 bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-amber-700">
-                        <Crown className="h-2.5 w-2.5 fill-amber-700 text-amber-700" />
+                      <span className="inline-flex items-center gap-1 rounded-full border border-amber-300/80 bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-amber-700 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-300">
+                        <Crown className="h-2.5 w-2.5 fill-amber-700 text-amber-700 dark:fill-amber-300 dark:text-amber-300" />
                         VIP
                       </span>
                     )}
                   </div>
 
                   {customer?.company ? (
-                    <div className="flex items-center gap-1.5 pt-0.5 text-xs text-slate-500">
-                      <Building2 className="h-3 w-3 text-slate-400" />
-                      <span className="font-semibold text-slate-700">{customer.company}</span>
+                    <div className="flex items-center gap-1.5 pt-0.5 text-xs text-muted-foreground">
+                      <Building2 className="h-3 w-3 text-muted-foreground/70" />
+                      <span className="font-semibold text-foreground">{customer.company}</span>
                     </div>
                   ) : (
-                    <p className="text-[11px] text-slate-400 italic">Individual Account</p>
+                    <p className="text-[11px] text-muted-foreground italic">Individual Account</p>
                   )}
                 </div>
               </div>
@@ -184,7 +184,7 @@ export function CustomerQuickPeekDrawer({
               <button
                 type="button"
                 onClick={onClose}
-                className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-xl border border-slate-200/80 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
+                className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-xl border border-border/80 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                 title="Close drawer (Esc)"
               >
                 <X className="h-4 w-4" />
@@ -197,7 +197,7 @@ export function CustomerQuickPeekDrawer({
               <div className="mt-4 flex flex-wrap items-center gap-2">
                 <Link
                   href={`/dashboard/customers/${customer.id}`}
-                  className="bg-primary hover:bg-primary/90 flex cursor-pointer items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold text-white shadow-xs transition-transform active:scale-95"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 flex cursor-pointer items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold shadow-xs transition-transform active:scale-95"
                 >
                   <span>Full 360° Profile</span>
                   <ExternalLink className="h-3 w-3" />
@@ -209,9 +209,9 @@ export function CustomerQuickPeekDrawer({
                   onClick={() => {
                     if (onEditCustomer) onEditCustomer(customer);
                   }}
-                  className="h-8 cursor-pointer rounded-xl border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                  className="h-8 cursor-pointer rounded-xl border-border/80 text-xs font-semibold text-foreground hover:bg-muted"
                 >
-                  <Edit3 className="mr-1 h-3 w-3 text-slate-400" />
+                  <Edit3 className="mr-1 h-3 w-3 text-muted-foreground" />
                   <span>Edit</span>
                 </Button>
 
@@ -221,9 +221,9 @@ export function CustomerQuickPeekDrawer({
                   onClick={() => {
                     if (onBookAppointment) onBookAppointment();
                   }}
-                  className="h-8 cursor-pointer rounded-xl border-blue-200 bg-blue-50/50 text-xs font-semibold text-blue-700 hover:bg-blue-100/50"
+                  className="h-8 cursor-pointer rounded-xl border-blue-200/80 bg-blue-50/50 text-xs font-semibold text-blue-700 hover:bg-blue-100/50 dark:border-blue-900/50 dark:bg-blue-950/40 dark:text-blue-300"
                 >
-                  <CalendarPlus className="mr-1 h-3 w-3 text-blue-600" />
+                  <CalendarPlus className="mr-1 h-3 w-3 text-blue-600 dark:text-blue-400" />
                   <span>Book</span>
                 </Button>
 
@@ -233,9 +233,9 @@ export function CustomerQuickPeekDrawer({
                   onClick={() => {
                     if (onCreateInvoice) onCreateInvoice();
                   }}
-                  className="h-8 cursor-pointer rounded-xl border-emerald-200 bg-emerald-50/50 text-xs font-semibold text-emerald-700 hover:bg-emerald-100/50"
+                  className="h-8 cursor-pointer rounded-xl border-emerald-200/80 bg-emerald-50/50 text-xs font-semibold text-emerald-700 hover:bg-emerald-100/50 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-300"
                 >
-                  <CreditCard className="mr-1 h-3 w-3 text-emerald-600" />
+                  <CreditCard className="mr-1 h-3 w-3 text-emerald-600 dark:text-emerald-400" />
                   <span>Invoice</span>
                 </Button>
 
@@ -243,10 +243,10 @@ export function CustomerQuickPeekDrawer({
                   size="sm"
                   variant="outline"
                   asChild
-                  className="h-8 cursor-pointer rounded-xl border-amber-200 bg-amber-50/50 text-xs font-semibold text-amber-700 hover:bg-amber-100/50"
+                  className="h-8 cursor-pointer rounded-xl border-amber-200/80 bg-amber-50/50 text-xs font-semibold text-amber-700 hover:bg-amber-100/50 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-300"
                 >
                   <Link href={`/dashboard/projects?customerId=${customer.id}`}>
-                    <FolderKanban className="mr-1 h-3 w-3 text-amber-600" />
+                    <FolderKanban className="mr-1 h-3 w-3 text-amber-600 dark:text-amber-400" />
                     <span>Projects</span>
                   </Link>
                 </Button>
@@ -258,94 +258,94 @@ export function CustomerQuickPeekDrawer({
           <div className="flex-1 space-y-6 overflow-y-auto p-5 sm:p-6">
             {isLoading || !customer ? (
               <div className="space-y-4">
-                <div className="h-24 animate-pulse rounded-2xl bg-slate-100" />
+                <div className="h-24 animate-pulse rounded-2xl bg-muted" />
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="h-16 animate-pulse rounded-xl bg-slate-100" />
-                  <div className="h-16 animate-pulse rounded-xl bg-slate-100" />
+                  <div className="h-16 animate-pulse rounded-xl bg-muted" />
+                  <div className="h-16 animate-pulse rounded-xl bg-muted" />
                 </div>
-                <div className="h-44 animate-pulse rounded-2xl bg-slate-100" />
+                <div className="h-44 animate-pulse rounded-2xl bg-muted" />
               </div>
             ) : (
               <>
                 {/* 4x Compact Telemetry KPI Tiles */}
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                  <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-3 shadow-2xs">
-                    <span className="text-[10px] font-bold tracking-wider text-slate-500 uppercase">
+                  <div className="rounded-2xl border border-border/80 bg-muted/40 p-3 shadow-2xs">
+                    <span className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
                       LTV
                     </span>
-                    <p className="mt-1 text-sm font-black text-slate-900 tabular-nums">
+                    <p className="mt-1 text-sm font-bold tracking-tight text-foreground tabular-nums">
                       {customer.totalInvoiced}
                     </p>
                   </div>
 
-                  <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-3 shadow-2xs">
-                    <span className="text-[10px] font-bold tracking-wider text-slate-500 uppercase">
+                  <div className="rounded-2xl border border-border/80 bg-muted/40 p-3 shadow-2xs">
+                    <span className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
                       Settled
                     </span>
-                    <p className="mt-1 text-sm font-black text-emerald-700 tabular-nums">
+                    <p className="mt-1 text-sm font-bold tracking-tight text-emerald-600 dark:text-emerald-400 tabular-nums">
                       {customer.totalPaid}
                     </p>
                   </div>
 
-                  <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-3 shadow-2xs">
-                    <span className="text-[10px] font-bold tracking-wider text-slate-500 uppercase">
+                  <div className="rounded-2xl border border-border/80 bg-muted/40 p-3 shadow-2xs">
+                    <span className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
                       Due
                     </span>
-                    <p className="mt-1 text-sm font-black text-amber-600 tabular-nums">
+                    <p className="mt-1 text-sm font-bold tracking-tight text-amber-600 dark:text-amber-400 tabular-nums">
                       {customer.outstandingBalance}
                     </p>
                   </div>
 
-                  <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-3 shadow-2xs">
-                    <span className="text-[10px] font-bold tracking-wider text-slate-500 uppercase">
+                  <div className="rounded-2xl border border-border/80 bg-muted/40 p-3 shadow-2xs">
+                    <span className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
                       Sessions
                     </span>
-                    <p className="mt-1 text-sm font-black text-indigo-700 tabular-nums">
+                    <p className="mt-1 text-sm font-bold tracking-tight text-indigo-600 dark:text-indigo-400 tabular-nums">
                       {customer.appointmentsCount}
                     </p>
                   </div>
                 </div>
 
                 {/* Contact Quick Chips */}
-                <div className="space-y-2 rounded-2xl border border-slate-200/80 bg-white p-3.5 shadow-2xs">
+                <div className="space-y-2 rounded-2xl border border-border/80 bg-card p-3.5 shadow-2xs">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-medium text-slate-500">Direct Email:</span>
+                    <span className="font-medium text-muted-foreground">Direct Email:</span>
                     <button
                       type="button"
                       onClick={(e) => handleCopy(customer.email, "drawer-email", e)}
-                      className="hover:text-primary flex cursor-pointer items-center gap-1.5 font-bold text-slate-800 transition-colors"
+                      className="hover:text-primary flex cursor-pointer items-center gap-1.5 font-semibold text-foreground transition-colors"
                     >
                       <span>{customer.email}</span>
                       {copiedKey === "drawer-email" ? (
                         <Check className="h-3 w-3 text-emerald-600" />
                       ) : (
-                        <Copy className="h-3 w-3 text-slate-400" />
+                        <Copy className="h-3 w-3 text-muted-foreground" />
                       )}
                     </button>
                   </div>
 
                   {customer.phone && (
-                    <div className="flex items-center justify-between border-t border-slate-100 pt-2 text-xs">
-                      <span className="font-medium text-slate-500">Direct Phone:</span>
+                    <div className="flex items-center justify-between border-t border-border/60 pt-2 text-xs">
+                      <span className="font-medium text-muted-foreground">Direct Phone:</span>
                       <button
                         type="button"
                         onClick={(e) => handleCopy(customer.phone!, "drawer-phone", e)}
-                        className="hover:text-primary flex cursor-pointer items-center gap-1.5 font-bold text-slate-800 transition-colors"
+                        className="hover:text-primary flex cursor-pointer items-center gap-1.5 font-semibold text-foreground transition-colors"
                       >
                         <span>{customer.phone}</span>
                         {copiedKey === "drawer-phone" ? (
                           <Check className="h-3 w-3 text-emerald-600" />
                         ) : (
-                          <Copy className="h-3 w-3 text-slate-400" />
+                          <Copy className="h-3 w-3 text-muted-foreground" />
                         )}
                       </button>
                     </div>
                   )}
 
                   {customer.address && (
-                    <div className="flex items-center justify-between border-t border-slate-100 pt-2 text-xs">
-                      <span className="font-medium text-slate-500">Address:</span>
-                      <span className="max-w-[240px] truncate font-medium text-slate-700">
+                    <div className="flex items-center justify-between border-t border-border/60 pt-2 text-xs">
+                      <span className="font-medium text-muted-foreground">Address:</span>
+                      <span className="max-w-[240px] truncate font-medium text-foreground">
                         {customer.address}
                       </span>
                     </div>
@@ -353,14 +353,14 @@ export function CustomerQuickPeekDrawer({
                 </div>
 
                 {/* Mini Segmented Tabs */}
-                <div className="no-scrollbar flex max-w-full items-center gap-1 overflow-x-auto rounded-xl border border-slate-200/80 bg-slate-100/90 p-1 text-xs font-bold">
+                <div className="no-scrollbar flex max-w-full items-center gap-1 overflow-x-auto rounded-xl border border-border/80 bg-muted/60 p-1 text-xs font-semibold">
                   <button
                     type="button"
                     onClick={() => setActiveTab("health")}
                     className={`flex-1 shrink-0 cursor-pointer rounded-lg px-2.5 py-1.5 text-center whitespace-nowrap transition-all ${
                       activeTab === "health"
-                        ? "bg-white text-slate-900 shadow-xs"
-                        : "text-slate-600 hover:text-slate-900"
+                        ? "bg-card text-foreground shadow-xs"
+                        : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     Health Radar
@@ -370,8 +370,8 @@ export function CustomerQuickPeekDrawer({
                     onClick={() => setActiveTab("invoices")}
                     className={`flex-1 shrink-0 cursor-pointer rounded-lg px-2.5 py-1.5 text-center whitespace-nowrap transition-all ${
                       activeTab === "invoices"
-                        ? "bg-white text-slate-900 shadow-xs"
-                        : "text-slate-600 hover:text-slate-900"
+                        ? "bg-card text-foreground shadow-xs"
+                        : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     Invoices ({customer.invoices.length})
@@ -381,8 +381,8 @@ export function CustomerQuickPeekDrawer({
                     onClick={() => setActiveTab("appointments")}
                     className={`flex-1 shrink-0 cursor-pointer rounded-lg px-2.5 py-1.5 text-center whitespace-nowrap transition-all ${
                       activeTab === "appointments"
-                        ? "bg-white text-slate-900 shadow-xs"
-                        : "text-slate-600 hover:text-slate-900"
+                        ? "bg-card text-foreground shadow-xs"
+                        : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     Sessions ({customer.appointments.length})
@@ -392,8 +392,8 @@ export function CustomerQuickPeekDrawer({
                     onClick={() => setActiveTab("notes")}
                     className={`flex-1 shrink-0 cursor-pointer rounded-lg px-2.5 py-1.5 text-center whitespace-nowrap transition-all ${
                       activeTab === "notes"
-                        ? "bg-white text-slate-900 shadow-xs"
-                        : "text-slate-600 hover:text-slate-900"
+                        ? "bg-card text-foreground shadow-xs"
+                        : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     Notes ({customer.parsedNotes.length})
@@ -403,19 +403,19 @@ export function CustomerQuickPeekDrawer({
                 {/* Tab 1: Health Radar Breakdown */}
                 {activeTab === "health" && health && (
                   <div className="space-y-4">
-                    <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-gradient-to-br from-white to-slate-50/80 p-5 shadow-2xs">
+                    <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-card p-5 shadow-2xs">
                       <div className="flex items-center justify-between">
                         <div>
-                          <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+                          <span className="text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
                             Account Health Score
                           </span>
                           <div className="mt-1 flex items-baseline gap-2">
-                            <span className="text-3xl font-black text-slate-900">
+                            <span className="text-3xl font-bold tracking-tight text-foreground tabular-nums">
                               {health.score}
                             </span>
-                            <span className="text-xs font-bold text-slate-400">/ 100</span>
+                            <span className="text-xs font-semibold text-muted-foreground">/ 100</span>
                             <span
-                              className={`ml-2 inline-flex items-center rounded-lg border px-2 py-0.5 text-xs font-extrabold ${health.badgeStyle}`}
+                              className={`ml-2 inline-flex items-center rounded-lg border px-2 py-0.5 text-xs font-bold ${health.badgeStyle}`}
                             >
                               Grade {health.grade} • {health.tierLabel}
                             </span>
@@ -426,7 +426,7 @@ export function CustomerQuickPeekDrawer({
                         <div className="relative flex h-16 w-16 items-center justify-center">
                           <svg className="h-16 w-16 -rotate-90" viewBox="0 0 36 36">
                             <path
-                              className="text-slate-100"
+                              className="text-muted/60"
                               strokeWidth="3.5"
                               stroke="currentColor"
                               fill="none"
@@ -441,28 +441,28 @@ export function CustomerQuickPeekDrawer({
                               d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                             />
                           </svg>
-                          <div className="absolute text-[11px] font-black text-slate-700">
+                          <div className="absolute text-[11px] font-bold text-foreground">
                             {health.velocityLabel.split(" ")[0]}
                           </div>
                         </div>
                       </div>
 
                       {/* Signals Checklist */}
-                      <div className="mt-4 space-y-2 border-t border-slate-100 pt-3">
-                        <span className="text-[11px] font-bold text-slate-500 uppercase">
+                      <div className="mt-4 space-y-2 border-t border-border/60 pt-3">
+                        <span className="text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
                           Operational Velocity Signals
                         </span>
                         <div className="space-y-1.5">
                           {health.signals.map((sig, idx) => (
                             <div key={idx} className="flex items-center gap-2 text-xs">
                               {sig.type === "positive" ? (
-                                <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-600" />
+                                <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" />
                               ) : sig.type === "warning" ? (
-                                <Clock className="h-3.5 w-3.5 shrink-0 text-amber-600" />
+                                <Clock className="h-3.5 w-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
                               ) : (
-                                <Activity className="h-3.5 w-3.5 shrink-0 text-blue-600" />
+                                <Activity className="h-3.5 w-3.5 shrink-0 text-blue-600 dark:text-blue-400" />
                               )}
-                              <span className="font-medium text-slate-700">{sig.label}</span>
+                              <span className="font-medium text-foreground">{sig.label}</span>
                             </div>
                           ))}
                         </div>
@@ -475,33 +475,33 @@ export function CustomerQuickPeekDrawer({
                 {activeTab === "invoices" && (
                   <div className="space-y-3">
                     {customer.invoices.length === 0 ? (
-                      <p className="py-8 text-center text-xs text-slate-400">
+                      <p className="py-8 text-center text-xs text-muted-foreground">
                         No invoices generated yet for this client.
                       </p>
                     ) : (
                       customer.invoices.slice(0, 5).map((inv) => (
                         <div
                           key={inv.id}
-                          className="flex items-center justify-between rounded-xl border border-slate-200/80 bg-white p-3 text-xs shadow-2xs"
+                          className="flex items-center justify-between rounded-xl border border-border/80 bg-card p-3 text-xs shadow-2xs"
                         >
                           <div>
-                            <p className="font-bold text-slate-900">Invoice #{inv.invoiceNumber}</p>
-                            <p className="text-[11px] text-slate-400">
+                            <p className="font-semibold text-foreground">Invoice #{inv.invoiceNumber}</p>
+                            <p className="text-[11px] text-muted-foreground">
                               Issued: {new Date(inv.issueDate).toLocaleDateString()}
                             </p>
                           </div>
                           <div className="flex items-center gap-2.5">
-                            <span className="font-extrabold text-slate-900 tabular-nums">
+                            <span className="font-bold tracking-tight text-foreground tabular-nums">
                               {inv.total}
                             </span>
                             <Badge
                               variant="outline"
-                              className={`text-[10px] font-bold ${
+                              className={`text-[10px] font-semibold ${
                                 inv.status === "PAID"
-                                  ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                                  ? "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-300"
                                   : inv.status === "OVERDUE"
-                                    ? "border-rose-200 bg-rose-50 text-rose-700"
-                                    : "border-amber-200 bg-amber-50 text-amber-700"
+                                    ? "border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-900/50 dark:bg-rose-950/40 dark:text-rose-300"
+                                    : "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-300"
                               }`}
                             >
                               {inv.status}
@@ -517,18 +517,18 @@ export function CustomerQuickPeekDrawer({
                 {activeTab === "appointments" && (
                   <div className="space-y-3">
                     {customer.appointments.length === 0 ? (
-                      <p className="py-8 text-center text-xs text-slate-400">
+                      <p className="py-8 text-center text-xs text-muted-foreground">
                         No appointments booked yet for this client.
                       </p>
                     ) : (
                       customer.appointments.slice(0, 5).map((apt) => (
                         <div
                           key={apt.id}
-                          className="flex items-center justify-between rounded-xl border border-slate-200/80 bg-white p-3 text-xs shadow-2xs"
+                          className="flex items-center justify-between rounded-xl border border-border/80 bg-card p-3 text-xs shadow-2xs"
                         >
                           <div>
-                            <p className="font-bold text-slate-900">{apt.title}</p>
-                            <p className="text-[11px] text-slate-400">
+                            <p className="font-semibold text-foreground">{apt.title}</p>
+                            <p className="text-[11px] text-muted-foreground">
                               {new Date(apt.scheduledAt).toLocaleString(undefined, {
                                 dateStyle: "short",
                                 timeStyle: "short",
@@ -536,7 +536,7 @@ export function CustomerQuickPeekDrawer({
                               • {apt.durationMinutes}m
                             </p>
                           </div>
-                          <Badge variant="outline" className="text-[10px] font-bold">
+                          <Badge variant="outline" className="text-[10px] font-semibold">
                             {apt.status}
                           </Badge>
                         </div>
@@ -555,11 +555,11 @@ export function CustomerQuickPeekDrawer({
                         onChange={(e) => setQuickNote(e.target.value)}
                         placeholder="Add quick operational note..."
                         rows={2}
-                        className="w-full rounded-xl border border-slate-200 bg-slate-50/70 p-2.5 text-xs text-slate-900 shadow-2xs outline-none focus:bg-white focus:ring-2 focus:ring-blue-500/20"
+                        className="w-full rounded-xl border border-border/80 bg-muted/30 p-2.5 text-xs text-foreground placeholder:text-muted-foreground shadow-2xs outline-none focus:bg-background focus:ring-2 focus:ring-primary/20"
                       />
                       <div className="flex items-center justify-between">
                         {noteSuccess && (
-                          <span className="flex items-center gap-1 text-[11px] font-bold text-emerald-600">
+                          <span className="flex items-center gap-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
                             <Check className="h-3 w-3" /> Saved!
                           </span>
                         )}
@@ -578,20 +578,20 @@ export function CustomerQuickPeekDrawer({
                     {/* Notes List */}
                     <div className="space-y-2 pt-2">
                       {customer.parsedNotes.length === 0 ? (
-                        <p className="py-6 text-center text-xs text-slate-400">
+                        <p className="py-6 text-center text-xs text-muted-foreground">
                           No staff notes recorded yet.
                         </p>
                       ) : (
                         customer.parsedNotes.slice(0, 4).map((note) => (
                           <div
                             key={note.id}
-                            className="rounded-xl border border-slate-200/80 bg-slate-50/60 p-3 text-xs"
+                            className="rounded-xl border border-border/80 bg-muted/30 p-3 text-xs"
                           >
-                            <div className="flex items-center justify-between text-[11px] text-slate-500">
-                              <span className="font-bold text-slate-700">{note.authorName}</span>
+                            <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+                              <span className="font-semibold text-foreground">{note.authorName}</span>
                               <span>{new Date(note.createdAt).toLocaleDateString()}</span>
                             </div>
-                            <p className="mt-1.5 whitespace-pre-wrap text-slate-700">
+                            <p className="mt-1.5 whitespace-pre-wrap text-foreground/90">
                               {note.content}
                             </p>
                           </div>
@@ -606,13 +606,13 @@ export function CustomerQuickPeekDrawer({
 
           {/* Drawer Footer with Quick Link */}
           {customer && (
-            <div className="flex items-center justify-between border-t border-slate-200/80 bg-slate-50/80 p-4 text-xs">
-              <span className="font-mono text-[11px] text-slate-500">
+            <div className="flex items-center justify-between border-t border-border/80 bg-muted/30 p-4 text-xs">
+              <span className="font-mono text-[11px] text-muted-foreground">
                 UUID: {customer.id.slice(0, 13)}...
               </span>
               <Link
                 href={`/dashboard/customers/${customer.id}`}
-                className="hover:text-primary flex items-center gap-1 font-bold text-slate-700"
+                className="hover:text-primary flex items-center gap-1 font-semibold text-foreground"
               >
                 <span>Navigate to 360° Profile</span>
                 <ChevronRight className="h-3.5 w-3.5" />

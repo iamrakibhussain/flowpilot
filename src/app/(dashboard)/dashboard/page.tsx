@@ -618,7 +618,7 @@ export default function DashboardOverviewPage() {
             </div>
           </div>
           <div className="mt-2 flex items-baseline gap-2 sm:mt-3">
-            <span className="text-foreground text-xl font-black tracking-tight sm:text-3xl">
+            <span className="text-foreground text-xl font-bold tracking-tight tabular-nums sm:text-3xl">
               {currentMetric.revenue}
             </span>
           </div>
@@ -672,7 +672,7 @@ export default function DashboardOverviewPage() {
               </div>
             </div>
             <div className="mt-2 flex items-baseline gap-2 sm:mt-3">
-              <span className="text-foreground text-xl font-black tracking-tight sm:text-3xl">
+              <span className="text-foreground text-xl font-bold tracking-tight tabular-nums sm:text-3xl">
                 {currentMetric.clients}
               </span>
             </div>
@@ -740,7 +740,7 @@ export default function DashboardOverviewPage() {
             </div>
           </div>
           <div className="mt-2 flex items-baseline gap-1.5 sm:mt-3 sm:gap-2">
-            <span className="text-foreground text-xl font-black tracking-tight sm:text-3xl">
+            <span className="text-foreground text-xl font-bold tracking-tight tabular-nums sm:text-3xl">
               {currentMetric.appointments}
             </span>
             <span className="text-muted-foreground text-[10px] font-medium sm:text-xs">booked</span>
@@ -779,7 +779,7 @@ export default function DashboardOverviewPage() {
             </div>
           </div>
           <div className="mt-2 flex items-baseline gap-2 sm:mt-3">
-            <span className="text-foreground text-xl font-black tracking-tight sm:text-3xl">
+            <span className="text-foreground text-xl font-bold tracking-tight tabular-nums sm:text-3xl">
               {currentMetric.responseTime}
             </span>
           </div>

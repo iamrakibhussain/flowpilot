@@ -331,7 +331,7 @@ export default function InvoicesDashboardPage() {
 
             <div className="mt-2.5 flex items-end justify-between sm:mt-3">
               <div>
-                <p className="text-foreground font-mono text-lg font-black tracking-tight tabular-nums sm:text-2xl">
+                <p className="text-foreground font-mono text-lg font-bold tracking-tight tabular-nums sm:text-2xl">
                   $
                   {stats
                     ? stats.totalBilled.toLocaleString("en-US", { minimumFractionDigits: 2 })
@@ -381,7 +381,7 @@ export default function InvoicesDashboardPage() {
 
             <div className="mt-2.5 flex items-end justify-between sm:mt-3">
               <div>
-                <p className="font-mono text-lg font-black tracking-tight text-emerald-600 tabular-nums sm:text-2xl dark:text-emerald-400">
+                <p className="font-mono text-lg font-bold tracking-tight text-emerald-600 tabular-nums sm:text-2xl dark:text-emerald-400">
                   $
                   {stats
                     ? stats.cashCollected.toLocaleString("en-US", { minimumFractionDigits: 2 })
@@ -447,7 +447,7 @@ export default function InvoicesDashboardPage() {
 
             <div className="mt-2.5 flex items-end justify-between sm:mt-3">
               <div>
-                <p className="font-mono text-lg font-black tracking-tight text-amber-600 tabular-nums sm:text-2xl dark:text-amber-400">
+                <p className="font-mono text-lg font-bold tracking-tight text-amber-600 tabular-nums sm:text-2xl dark:text-amber-400">
                   $
                   {stats
                     ? stats.pendingReceivables.toLocaleString("en-US", { minimumFractionDigits: 2 })
@@ -499,7 +499,7 @@ export default function InvoicesDashboardPage() {
 
             <div className="mt-2.5 flex items-end justify-between sm:mt-3">
               <div>
-                <p className="font-mono text-lg font-black tracking-tight text-rose-600 tabular-nums sm:text-2xl dark:text-rose-400">
+                <p className="font-mono text-lg font-bold tracking-tight text-rose-600 tabular-nums sm:text-2xl dark:text-rose-400">
                   $
                   {stats
                     ? stats.overdueAmount.toLocaleString("en-US", { minimumFractionDigits: 2 })
@@ -586,7 +586,7 @@ export default function InvoicesDashboardPage() {
                   </span>
                   <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500" />
                 </div>
-                <p className="mt-1 font-mono text-base font-black text-amber-600 tabular-nums sm:text-lg dark:text-amber-400">
+                <p className="mt-1 font-mono text-base font-bold text-amber-600 tabular-nums sm:text-lg dark:text-amber-400">
                   ${stats.aging.days30.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                 </p>
                 <p className="mt-0.5 text-[10px] text-amber-600 group-hover:underline dark:text-amber-400">
@@ -606,7 +606,7 @@ export default function InvoicesDashboardPage() {
                   </span>
                   <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-rose-500" />
                 </div>
-                <p className="mt-1 font-mono text-base font-black text-rose-600 tabular-nums sm:text-lg dark:text-rose-400">
+                <p className="mt-1 font-mono text-base font-bold text-rose-600 tabular-nums sm:text-lg dark:text-rose-400">
                   ${stats.aging.days60.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                 </p>
                 <p className="mt-0.5 text-[10px] text-rose-600 group-hover:underline dark:text-rose-400">
@@ -626,7 +626,7 @@ export default function InvoicesDashboardPage() {
                   </span>
                   <span className="h-1.5 w-1.5 shrink-0 animate-ping rounded-full bg-rose-600" />
                 </div>
-                <p className="mt-1 font-mono text-base font-black text-rose-600 tabular-nums sm:text-lg dark:text-rose-400">
+                <p className="mt-1 font-mono text-base font-bold text-rose-600 tabular-nums sm:text-lg dark:text-rose-400">
                   ${stats.aging.days90Plus.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                 </p>
                 <p className="mt-0.5 text-[10px] font-bold text-rose-600 group-hover:underline dark:text-rose-400">
@@ -1006,9 +1006,9 @@ export default function InvoicesDashboardPage() {
           <Card className="border-border/80 bg-card/70 overflow-hidden rounded-2xl shadow-2xs backdrop-blur-xl">
             <div className="overflow-x-auto">
               <table className="w-full min-w-[780px] text-left text-xs">
-                <thead className="border-border/60 bg-muted/20 text-muted-foreground border-b text-[10px] tracking-wider uppercase">
+                <thead className="border-border/60 bg-muted/40 text-muted-foreground border-b text-xs font-semibold tracking-wider uppercase">
                   <tr>
-                    <th className="w-10 px-4 py-4 text-center">
+                    <th className="w-10 px-4 py-3.5 text-center">
                       <input
                         type="checkbox"
                         checked={selectedInvoiceIds.size === invoices.length && invoices.length > 0}
@@ -1017,13 +1017,13 @@ export default function InvoicesDashboardPage() {
                         title="Select all visible statements"
                       />
                     </th>
-                    <th className="px-5 py-4 font-bold">Statement #</th>
-                    <th className="px-6 py-4 font-bold">Client Dossier</th>
-                    <th className="px-5 py-4 font-bold">Issue Date</th>
-                    <th className="px-5 py-4 font-bold">Due Schedule</th>
-                    <th className="px-6 py-4 text-right font-bold">Amount Due</th>
-                    <th className="px-5 py-4 font-bold">Status</th>
-                    <th className="px-6 py-4 text-right font-bold">Actions</th>
+                    <th className="px-5 py-3.5">Statement #</th>
+                    <th className="px-6 py-3.5">Client Dossier</th>
+                    <th className="px-5 py-3.5">Issue Date</th>
+                    <th className="px-5 py-3.5">Due Schedule</th>
+                    <th className="px-6 py-3.5 text-right">Amount Due</th>
+                    <th className="px-5 py-3.5">Status</th>
+                    <th className="px-6 py-3.5 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-border/40 divide-y">
