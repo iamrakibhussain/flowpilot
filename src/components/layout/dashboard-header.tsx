@@ -112,7 +112,10 @@ export function DashboardHeader({ onOpenMobile, onOpenCommand }: DashboardHeader
             {finalOrgName}
           </span>
           <ChevronRight className="text-muted-foreground/40 h-3.5 w-3.5" />
-          <span className="border-border/80 bg-muted/60 text-foreground rounded-lg border px-2.5 py-0.5 font-bold shadow-2xs">
+          <span
+            className="border-border/80 bg-muted/60 text-foreground max-w-[140px] truncate whitespace-nowrap rounded-lg border px-2.5 py-0.5 font-bold shadow-2xs sm:max-w-[200px]"
+            title={breadcrumbName}
+          >
             {breadcrumbName}
           </span>
         </nav>
