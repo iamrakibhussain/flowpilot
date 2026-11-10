@@ -89,71 +89,51 @@ export function DashboardSidebar({
             name: "Services & Catalog",
             href: "/dashboard/services",
             icon: Sparkles,
-            badge: "Live",
-            badgeVariant: "success",
           },
           {
             name: "Contracts & Signatures",
             href: "/dashboard/contracts",
             icon: FileSignature,
-            badge: "New",
-            badgeVariant: "success",
           },
           {
             name: "Estimates & Proposals",
             href: "/dashboard/quotes",
             icon: FileCheck2,
-            badge: "Live",
-            badgeVariant: "success",
           },
           {
             name: "Projects & Kanban",
             href: "/dashboard/projects",
             icon: FolderKanban,
-            badge: "Live",
-            badgeVariant: "success",
           },
           {
             name: "Invoices & Billing",
             href: "/dashboard/invoices",
             icon: FileText,
-            badge: "Live",
-            badgeVariant: "success",
           },
           {
             name: "Recurring & Retainers",
             href: "/dashboard/recurring",
             icon: Repeat,
-            badge: "New",
-            badgeVariant: "success",
           },
           {
             name: "Workflows & Automations",
             href: "/dashboard/automations",
             icon: Zap,
-            badge: "New",
-            badgeVariant: "success",
           },
           {
             name: "Online Payments",
             href: "/dashboard/payments",
             icon: CreditCard,
-            badge: "Live",
-            badgeVariant: "success",
           },
           {
             name: "Appointments & Calendar",
             href: "/dashboard/calendar",
             icon: Calendar,
-            badge: "Live",
-            badgeVariant: "success",
           },
           {
             name: "Customers (CRM)",
             href: "/dashboard/customers",
             icon: Users,
-            badge: "Live",
-            badgeVariant: "success",
           },
         ],
       },
@@ -161,19 +141,15 @@ export function DashboardSidebar({
         title: "Client Channels & Portals",
         items: [
           {
-            name: "Client Portal 2.0",
+            name: "Client Portal",
             href: `/portal/${orgSlug}/dashboard`,
             icon: Globe,
-            badge: "Client Hub",
-            badgeVariant: "success",
             external: true,
           },
           {
             name: "Public Booking Engine",
             href: `/book/${orgSlug}`,
             icon: ArrowUpRight,
-            badge: "Public",
-            badgeVariant: "success",
             external: true,
           },
         ],
@@ -185,15 +161,11 @@ export function DashboardSidebar({
             name: "Team & Staff",
             href: "/dashboard/staff",
             icon: ShieldCheck,
-            badge: "Live",
-            badgeVariant: "success",
           },
           {
             name: "Analytics & Reports",
             href: "/dashboard/analytics",
             icon: BarChart3,
-            badge: "Live",
-            badgeVariant: "success",
           },
         ],
       },
@@ -204,8 +176,6 @@ export function DashboardSidebar({
             name: "Subscription & Billing",
             href: "/dashboard/billing",
             icon: CreditCard,
-            badge: "Plans",
-            badgeVariant: "success",
           },
           { name: "Organization Settings", href: "/dashboard/settings", icon: Settings },
         ],
@@ -438,37 +408,6 @@ export function DashboardSidebar({
             </div>
           </div>
         ))}
-
-        {/* Workspace Resource & Capacity Meter (Visible when expanded) */}
-        {!collapsed && (
-          <div className="border-border/80 from-card to-card/90 mt-4 rounded-2xl border bg-gradient-to-b p-3.5 shadow-2xs">
-            <div className="flex items-center justify-between text-xs">
-              <span className="text-foreground flex items-center gap-1.5 font-bold">
-                <Zap className="h-3.5 w-3.5 fill-amber-500 text-amber-500" />
-                Growth Tier
-              </span>
-              <span className="text-primary text-[11px] font-semibold">64% Capacity</span>
-            </div>
-
-            <div className="bg-muted/70 mt-2.5 h-1.5 w-full overflow-hidden rounded-full">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 transition-all duration-500"
-                style={{ width: "64%" }}
-              />
-            </div>
-
-            <div className="text-muted-foreground mt-2 flex items-center justify-between text-[11px]">
-              <span>1,280 / 2,000 Clients</span>
-              <Link
-                href="/dashboard/settings"
-                onClick={() => isMobile && onCloseMobile()}
-                className="text-primary hover:text-primary-hover font-semibold hover:underline"
-              >
-                Upgrade
-              </Link>
-            </div>
-          </div>
-        )}
 
         {/* Back to Public Website Link */}
         <div className="border-border/60 mt-auto border-t pt-3">

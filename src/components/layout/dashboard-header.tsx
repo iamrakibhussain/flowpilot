@@ -49,15 +49,19 @@ export function DashboardHeader({ onOpenMobile, onOpenCommand }: DashboardHeader
     if (pathname === "/dashboard") return "Overview";
     if (pathname.includes("/analytics")) return "Business Intelligence";
     if (pathname.includes("/services")) return "Services & Catalog";
-    if (pathname.includes("/settings")) return "Organization Settings";
-    if (pathname.includes("/customers")) return "Customers (CRM)";
-    if (pathname.includes("/calendar") || pathname.includes("/appointments"))
-      return "Appointments & Calendar";
-    if (pathname.includes("/invoices")) return "Invoices & Billing";
+    if (pathname.includes("/contracts")) return "Contracts & Signatures";
     if (pathname.includes("/quotes")) return "Estimates & Proposals";
     if (pathname.includes("/projects")) return "Projects & Kanban";
+    if (pathname.includes("/invoices")) return "Invoices & Billing";
+    if (pathname.includes("/recurring")) return "Recurring & Retainers";
+    if (pathname.includes("/automations")) return "Workflows & Automations";
     if (pathname.includes("/payments")) return "Online Payments & Gateway";
+    if (pathname.includes("/calendar") || pathname.includes("/appointments"))
+      return "Appointments & Calendar";
+    if (pathname.includes("/customers")) return "Customers (CRM)";
     if (pathname.includes("/staff")) return "Team & Staff";
+    if (pathname.includes("/billing")) return "Subscription & Billing";
+    if (pathname.includes("/settings")) return "Organization Settings";
     return "Operations";
   }, [pathname]);
 

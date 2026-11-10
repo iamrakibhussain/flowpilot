@@ -316,34 +316,34 @@ export default function InvoicesDashboardPage() {
         </div>
 
         {/* Executive 4x Financial KPI Command Matrix with SVG Sparklines & DSO Telemetry */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
           {/* Card 1: Total Billed */}
-          <Card className="border-border/80 from-card to-card/90 group relative overflow-hidden rounded-2xl border bg-gradient-to-b p-5 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-500/40 hover:shadow-md">
+          <Card className="border-border/80 from-card to-card/90 group relative overflow-hidden rounded-2xl border bg-gradient-to-b p-3.5 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-500/40 hover:shadow-md sm:p-5">
             <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-blue-600" />
             <div className="text-muted-foreground flex items-center justify-between text-xs">
-              <span className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
+              <span className="text-muted-foreground truncate text-[10px] font-bold tracking-wider uppercase sm:text-xs">
                 Total Billed
               </span>
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 shadow-inner transition-transform group-hover:scale-105 dark:text-blue-400">
-                <Receipt className="h-4 w-4" />
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-blue-500/10 text-blue-600 shadow-inner transition-transform group-hover:scale-105 sm:h-8 sm:w-8 sm:rounded-xl dark:text-blue-400">
+                <Receipt className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               </div>
             </div>
 
-            <div className="mt-3 flex items-end justify-between">
+            <div className="mt-2.5 flex items-end justify-between sm:mt-3">
               <div>
-                <p className="text-foreground font-mono text-2xl font-black tracking-tight tabular-nums">
+                <p className="text-foreground font-mono text-lg font-black tracking-tight tabular-nums sm:text-2xl">
                   $
                   {stats
                     ? stats.totalBilled.toLocaleString("en-US", { minimumFractionDigits: 2 })
                     : "0.00"}
                 </p>
-                <div className="text-muted-foreground mt-1 flex items-center gap-1.5 text-[11px]">
-                  <span className="font-bold text-blue-600 dark:text-blue-400">+14.2% MoM</span>
+                <div className="text-muted-foreground mt-1 flex flex-wrap items-center gap-1 text-[10px] sm:gap-1.5 sm:text-[11px]">
+                  <span className="font-bold text-blue-600 dark:text-blue-400">+14.2%</span>
                   <span>•</span>
                   <span>{stats?.counts.total ?? 0} bills</span>
                 </div>
               </div>
-              <div className="h-8 w-24 shrink-0">
+              <div className="hidden h-8 w-20 shrink-0 sm:block sm:w-24">
                 <svg viewBox="0 0 100 32" className="h-full w-full overflow-visible">
                   <defs>
                     <linearGradient id="billedGrad" x1="0" y1="0" x2="0" y2="1">
@@ -368,32 +368,32 @@ export default function InvoicesDashboardPage() {
           </Card>
 
           {/* Card 2: Cash Collected */}
-          <Card className="border-border/80 from-card to-card/90 group relative overflow-hidden rounded-2xl border bg-gradient-to-b p-5 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-500/40 hover:shadow-md">
+          <Card className="border-border/80 from-card to-card/90 group relative overflow-hidden rounded-2xl border bg-gradient-to-b p-3.5 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-500/40 hover:shadow-md sm:p-5">
             <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600" />
             <div className="text-muted-foreground flex items-center justify-between text-xs">
-              <span className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
+              <span className="text-muted-foreground truncate text-[10px] font-bold tracking-wider uppercase sm:text-xs">
                 Cash Collected
               </span>
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 shadow-inner transition-transform group-hover:scale-105 dark:text-emerald-400">
-                <CheckCircle2 className="h-4 w-4" />
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600 shadow-inner transition-transform group-hover:scale-105 sm:h-8 sm:w-8 sm:rounded-xl dark:text-emerald-400">
+                <CheckCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               </div>
             </div>
 
-            <div className="mt-3 flex items-end justify-between">
+            <div className="mt-2.5 flex items-end justify-between sm:mt-3">
               <div>
-                <p className="font-mono text-2xl font-black tracking-tight text-emerald-600 tabular-nums dark:text-emerald-400">
+                <p className="font-mono text-lg font-black tracking-tight text-emerald-600 tabular-nums sm:text-2xl dark:text-emerald-400">
                   $
                   {stats
                     ? stats.cashCollected.toLocaleString("en-US", { minimumFractionDigits: 2 })
                     : "0.00"}
                 </p>
-                <div className="mt-1 flex items-center gap-1.5 text-[11px] text-emerald-600 dark:text-emerald-400">
-                  <span className="font-bold">Avg DSO: 4.8d</span>
+                <div className="mt-1 flex flex-wrap items-center gap-1 text-[10px] text-emerald-600 sm:gap-1.5 sm:text-[11px] dark:text-emerald-400">
+                  <span className="font-bold">DSO: 4.8d</span>
                   <span className="text-border">•</span>
-                  <span className="text-muted-foreground">{stats?.counts.paid ?? 0} settled</span>
+                  <span className="text-muted-foreground">{stats?.counts.paid ?? 0} paid</span>
                 </div>
               </div>
-              <div className="h-8 w-24 shrink-0">
+              <div className="hidden h-8 w-20 shrink-0 sm:block sm:w-24">
                 <svg viewBox="0 0 100 32" className="h-full w-full overflow-visible">
                   <defs>
                     <linearGradient id="cashGrad" x1="0" y1="0" x2="0" y2="1">
@@ -417,11 +417,11 @@ export default function InvoicesDashboardPage() {
             </div>
 
             {/* Micro Settlement Bar */}
-            <div className="mt-3 space-y-1">
-              <div className="flex items-center justify-between text-[10px]">
-                <span className="text-muted-foreground">Collection progress</span>
+            <div className="mt-2.5 space-y-1 sm:mt-3">
+              <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
+                <span className="text-muted-foreground">Collection</span>
                 <span className="font-bold text-emerald-600 dark:text-emerald-400">
-                  {settlementRate}% realized
+                  {settlementRate}%
                 </span>
               </div>
               <div className="bg-muted/60 h-1.5 w-full overflow-hidden rounded-full">
@@ -434,34 +434,34 @@ export default function InvoicesDashboardPage() {
           </Card>
 
           {/* Card 3: Pending Receivables */}
-          <Card className="border-border/80 from-card to-card/90 group relative overflow-hidden rounded-2xl border bg-gradient-to-b p-5 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:border-amber-500/40 hover:shadow-md">
+          <Card className="border-border/80 from-card to-card/90 group relative overflow-hidden rounded-2xl border bg-gradient-to-b p-3.5 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:border-amber-500/40 hover:shadow-md sm:p-5">
             <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600" />
             <div className="text-muted-foreground flex items-center justify-between text-xs">
-              <span className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
-                Pending Receivables
+              <span className="text-muted-foreground truncate text-[10px] font-bold tracking-wider uppercase sm:text-xs">
+                Pending
               </span>
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 shadow-inner transition-transform group-hover:scale-105 dark:text-amber-400">
-                <Clock className="h-4 w-4" />
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-amber-500/10 text-amber-600 shadow-inner transition-transform group-hover:scale-105 sm:h-8 sm:w-8 sm:rounded-xl dark:text-amber-400">
+                <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               </div>
             </div>
 
-            <div className="mt-3 flex items-end justify-between">
+            <div className="mt-2.5 flex items-end justify-between sm:mt-3">
               <div>
-                <p className="font-mono text-2xl font-black tracking-tight text-amber-600 tabular-nums dark:text-amber-400">
+                <p className="font-mono text-lg font-black tracking-tight text-amber-600 tabular-nums sm:text-2xl dark:text-amber-400">
                   $
                   {stats
                     ? stats.pendingReceivables.toLocaleString("en-US", { minimumFractionDigits: 2 })
                     : "0.00"}
                 </p>
-                <div className="text-muted-foreground mt-1 flex items-center gap-1.5 text-[11px]">
+                <div className="text-muted-foreground mt-1 flex flex-wrap items-center gap-1 text-[10px] sm:gap-1.5 sm:text-[11px]">
                   <span className="font-bold text-amber-600 dark:text-amber-400">
-                    Realize 94.6%
+                    94.6%
                   </span>
                   <span>•</span>
                   <span>{stats?.counts.pending ?? 0} active</span>
                 </div>
               </div>
-              <div className="h-8 w-24 shrink-0">
+              <div className="hidden h-8 w-20 shrink-0 sm:block sm:w-24">
                 <svg viewBox="0 0 100 32" className="h-full w-full overflow-visible">
                   <defs>
                     <linearGradient id="pendingGrad" x1="0" y1="0" x2="0" y2="1">
@@ -486,26 +486,26 @@ export default function InvoicesDashboardPage() {
           </Card>
 
           {/* Card 4: Overdue Risk */}
-          <Card className="border-border/80 from-card to-card/90 group relative overflow-hidden rounded-2xl border bg-gradient-to-b p-5 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:border-rose-500/40 hover:shadow-md">
+          <Card className="border-border/80 from-card to-card/90 group relative overflow-hidden rounded-2xl border bg-gradient-to-b p-3.5 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:border-rose-500/40 hover:shadow-md sm:p-5">
             <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-rose-500 via-red-500 to-rose-600" />
             <div className="text-muted-foreground flex items-center justify-between text-xs">
-              <span className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
+              <span className="text-muted-foreground truncate text-[10px] font-bold tracking-wider uppercase sm:text-xs">
                 Overdue Risk
               </span>
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-rose-500/10 text-rose-600 shadow-inner transition-transform group-hover:scale-105 dark:text-rose-400">
-                <AlertCircle className="h-4 w-4" />
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-rose-500/10 text-rose-600 shadow-inner transition-transform group-hover:scale-105 sm:h-8 sm:w-8 sm:rounded-xl dark:text-rose-400">
+                <AlertCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               </div>
             </div>
 
-            <div className="mt-3 flex items-end justify-between">
+            <div className="mt-2.5 flex items-end justify-between sm:mt-3">
               <div>
-                <p className="font-mono text-2xl font-black tracking-tight text-rose-600 tabular-nums dark:text-rose-400">
+                <p className="font-mono text-lg font-black tracking-tight text-rose-600 tabular-nums sm:text-2xl dark:text-rose-400">
                   $
                   {stats
                     ? stats.overdueAmount.toLocaleString("en-US", { minimumFractionDigits: 2 })
                     : "0.00"}
                 </p>
-                <div className="text-muted-foreground mt-1 flex items-center gap-1.5 text-[11px]">
+                <div className="text-muted-foreground mt-1 flex flex-wrap items-center gap-1 text-[10px] sm:gap-1.5 sm:text-[11px]">
                   <span className="font-bold text-rose-600 dark:text-rose-400">
                     Action Required
                   </span>
@@ -513,7 +513,7 @@ export default function InvoicesDashboardPage() {
                   <span>{stats?.counts.overdue ?? 0} late</span>
                 </div>
               </div>
-              <div className="h-8 w-24 shrink-0">
+              <div className="hidden h-8 w-20 shrink-0 sm:block sm:w-24">
                 <svg viewBox="0 0 100 32" className="h-full w-full overflow-visible">
                   <defs>
                     <linearGradient id="overdueGrad" x1="0" y1="0" x2="0" y2="1">

@@ -84,12 +84,12 @@ import { ApiClientError } from "@/lib/api/errors";
 // Supported Global Currencies
 const CURRENCIES = [
   { code: "USD", symbol: "$", name: "US Dollar ($)" },
-  { code: "EUR", symbol: "â‚¬", name: "Euro (â‚¬)" },
-  { code: "GBP", symbol: "Â£", name: "British Pound (Â£)" },
+  { code: "EUR", symbol: "€", name: "Euro (€)" },
+  { code: "GBP", symbol: "£", name: "British Pound (£)" },
   { code: "CAD", symbol: "CA$", name: "Canadian Dollar ($)" },
   { code: "AUD", symbol: "AU$", name: "Australian Dollar ($)" },
-  { code: "BDT", symbol: "à§³", name: "Bangladeshi Taka (à§³)" },
-  { code: "JPY", symbol: "Â¥", name: "Japanese Yen (Â¥)" },
+  { code: "BDT", symbol: "৳", name: "Bangladeshi Taka (৳)" },
+  { code: "JPY", symbol: "¥", name: "Japanese Yen (¥)" },
   { code: "SGD", symbol: "SG$", name: "Singapore Dollar ($)" },
   { code: "AED", symbol: "AED", name: "UAE Dirham (AED)" },
 ];
@@ -689,14 +689,14 @@ export default function WorkspaceSettingsPage() {
             </span>
             Configuration Engine Live
           </span>
-          <span className="text-border hidden sm:inline">â€¢</span>
+          <span className="text-border hidden sm:inline">•</span>
           <div className="flex items-center gap-1.5 font-mono text-[11px]">
             <span className="text-muted-foreground">Tenant:</span>
             <span className="text-foreground max-w-[140px] truncate font-bold sm:max-w-xs">
               {organizationName}
             </span>
           </div>
-          <span className="text-border hidden md:inline">â€¢</span>
+          <span className="text-border hidden md:inline">•</span>
           <div className="flex items-center gap-1.5">
             <span className="text-muted-foreground text-[10px]">Privilege:</span>
             <Badge
@@ -712,7 +712,7 @@ export default function WorkspaceSettingsPage() {
             <ShieldCheck className="h-3.5 w-3.5" />
             <span>RBAC Protected</span>
           </span>
-          <span className="text-border">â€¢</span>
+          <span className="text-border">•</span>
           <span className="flex items-center gap-1 text-blue-600 dark:text-blue-400">
             <Activity className="h-3.5 w-3.5" />
             <span>PostgreSQL Isolated</span>
@@ -924,12 +924,12 @@ export default function WorkspaceSettingsPage() {
                       )}
                       {slugStatus === "available" && (
                         <span className="font-mono text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
-                          âœ“ Available
+                          ✓ Available
                         </span>
                       )}
                       {slugStatus === "taken" && (
                         <span className="font-mono text-[10px] font-bold text-rose-600 dark:text-rose-400">
-                          âœ• Already Taken
+                          ✕ Already Taken
                         </span>
                       )}
                     </div>
@@ -951,7 +951,7 @@ export default function WorkspaceSettingsPage() {
                         <span className="text-foreground font-semibold">Public Booking:</span>{" "}
                         /book/{formData.slug || "slug"}
                       </span>
-                      <span className="text-muted-foreground/40">â€¢</span>
+                      <span className="text-muted-foreground/40">•</span>
                       <span className="inline-flex items-center gap-1 font-mono">
                         <span className="font-semibold text-blue-600 dark:text-blue-400">
                           Client Portal:
@@ -1466,7 +1466,7 @@ export default function WorkspaceSettingsPage() {
                 </div>
 
                 <p className="text-muted-foreground text-center text-[10px] leading-relaxed">
-                  âœ¦ Dynamic brand styles propagate across client-facing booking interfaces,
+                  ✦ Dynamic brand styles propagate across client-facing booking interfaces,
                   invoice statements, and digital receipts.
                 </p>
               </CardContent>
@@ -1511,7 +1511,7 @@ export default function WorkspaceSettingsPage() {
                   >
                     {CURRENCIES.map((c) => (
                       <option key={c.code} value={c.code}>
-                        {c.code} â€” {c.name}
+                        {c.code} — {c.name}
                       </option>
                     ))}
                   </select>
@@ -2319,7 +2319,7 @@ export default function WorkspaceSettingsPage() {
                 <div className="border-border/60 bg-muted/20 rounded-xl border p-3">
                   <span className="text-muted-foreground block text-[11px]">Corporate Email</span>
                   <span className="text-foreground text-sm font-semibold">
-                    {session?.user?.email || "â€”"}
+                    {session?.user?.email || "—"}
                   </span>
                 </div>
               </div>
@@ -2404,7 +2404,7 @@ export default function WorkspaceSettingsPage() {
                       id="currentPassword"
                       type={showCurrentPassword ? "text" : "password"}
                       autoComplete="current-password"
-                      placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                      placeholder="••••••••••••"
                       {...registerPassword("currentPassword")}
                       className="border-border/80 bg-background text-foreground pr-10 text-xs"
                     />
@@ -2440,7 +2440,7 @@ export default function WorkspaceSettingsPage() {
                       id="newPassword"
                       type={showNewPassword ? "text" : "password"}
                       autoComplete="new-password"
-                      placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                      placeholder="••••••••••••"
                       {...registerPassword("newPassword")}
                       className="border-border/80 bg-background text-foreground pr-10 text-xs"
                     />
@@ -2497,7 +2497,7 @@ export default function WorkspaceSettingsPage() {
                       id="confirmPassword"
                       type={showConfirmPassword ? "text" : "password"}
                       autoComplete="new-password"
-                      placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                      placeholder="••••••••••••"
                       {...registerPassword("confirmPassword")}
                       className="border-border/80 bg-background text-foreground pr-10 text-xs"
                     />
@@ -2590,7 +2590,7 @@ export default function WorkspaceSettingsPage() {
                       <Input
                         id="delete-password"
                         type="password"
-                        placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                        placeholder="••••••••••••"
                         {...registerDelete("password")}
                         className="border-border/80 bg-background text-xs"
                       />

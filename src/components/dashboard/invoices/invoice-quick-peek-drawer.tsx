@@ -87,7 +87,7 @@ Issue Date: ${new Date(invoice.issueDate).toLocaleDateString()}
 Due Date: ${new Date(invoice.dueDate).toLocaleDateString()}
 Total Due: $${invoice.total.toLocaleString("en-US", { minimumFractionDigits: 2 })}
 Line Items:
-${invoice.items.map((it) => `â€¢ ${it.description} â€” ${it.quantity}x @ $${it.unitPrice} = $${it.amount}`).join("\n")}`;
+${invoice.items.map((it) => `• ${it.description} — ${it.quantity}x @ $${it.unitPrice} = $${it.amount}`).join("\n")}`;
 
     await navigator.clipboard.writeText(summaryText);
     setCopiedSummary(true);
@@ -203,12 +203,12 @@ ${invoice.items.map((it) => `â€¢ ${it.description} â€” ${it.quantity}x 
               {/* Vintage Watermark Stamp */}
               {isPaid && (
                 <div className="pointer-events-none absolute top-4 right-4 z-20 rotate-[-12deg] rounded-lg border-2 border-emerald-400/80 bg-emerald-950/50 px-2.5 py-0.5 text-center font-mono text-[10px] font-black tracking-widest text-emerald-400 uppercase shadow-lg backdrop-blur-sm sm:top-6 sm:right-6 sm:rounded-xl sm:px-3.5 sm:py-1 sm:text-xs">
-                  âœ“ PAID & SETTLED
+                  ✓ PAID & SETTLED
                 </div>
               )}
               {isOverdue && (
                 <div className="pointer-events-none absolute top-4 right-4 z-20 rotate-[-12deg] rounded-lg border-2 border-rose-500/80 bg-rose-950/50 px-2.5 py-0.5 text-center font-mono text-[10px] font-black tracking-widest text-rose-400 uppercase shadow-lg backdrop-blur-sm sm:top-6 sm:right-6 sm:rounded-xl sm:px-3.5 sm:py-1 sm:text-xs">
-                  âš  OVERDUE RISK
+                  ⚠ OVERDUE RISK
                 </div>
               )}
 
@@ -338,7 +338,7 @@ ${invoice.items.map((it) => `â€¢ ${it.description} â€” ${it.quantity}x 
                 <div className="flex items-center justify-between gap-3">
                   <div className="min-w-0">
                     <p className="truncate font-mono text-xs font-semibold text-slate-800">
-                      /pay/[token] â€¢ Multi-Tenant Online Settlement
+                      /pay/[token] • Multi-Tenant Online Settlement
                     </p>
                     <p className="text-[10px] text-slate-400">
                       Zero-friction client checkout with WhatsApp, Email & dynamic QR code
