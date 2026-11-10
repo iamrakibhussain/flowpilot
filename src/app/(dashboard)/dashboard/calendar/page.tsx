@@ -399,7 +399,7 @@ function CalendarContent() {
           </p>
         </div>
 
-        <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:flex-nowrap">
+        <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto xl:flex-nowrap">
           <Button
             size="sm"
             variant="outline"
@@ -462,7 +462,7 @@ function CalendarContent() {
               </div>
             </div>
             <div className="mt-2.5 flex items-baseline justify-between">
-              <span className="text-foreground text-2xl font-black tabular-nums">
+              <span className="text-foreground text-2xl font-bold tracking-tight tabular-nums">
                 {todaySessions.length}
               </span>
               <span className="inline-flex items-center gap-1 rounded-full border border-blue-500/20 bg-blue-500/10 px-2 py-0.5 text-[10px] font-bold text-blue-600 dark:text-blue-400">
@@ -488,7 +488,7 @@ function CalendarContent() {
               </div>
             </div>
             <div className="mt-2.5 flex items-baseline justify-between">
-              <span className="text-foreground text-2xl font-black tabular-nums">
+              <span className="text-foreground text-2xl font-bold tracking-tight tabular-nums">
                 {confirmedSessions.length}
               </span>
               <span className="border-border/60 bg-muted/40 text-muted-foreground rounded-full border px-2 py-0.5 text-[10px] font-semibold">
@@ -513,7 +513,7 @@ function CalendarContent() {
               </div>
             </div>
             <div className="mt-2.5 flex items-baseline justify-between">
-              <span className="text-foreground text-2xl font-black tabular-nums">
+              <span className="text-foreground text-2xl font-bold tracking-tight tabular-nums">
                 {completedSessions.length}
               </span>
               <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
@@ -538,7 +538,7 @@ function CalendarContent() {
               </div>
             </div>
             <div className="mt-2.5 flex items-baseline justify-between">
-              <span className="text-foreground text-2xl font-black tabular-nums">
+              <span className="text-foreground text-2xl font-bold tracking-tight tabular-nums">
                 {staffMembers.length}
               </span>
               <span className="border-border/60 bg-muted/40 text-muted-foreground rounded-full border px-2 py-0.5 text-[10px] font-semibold">
@@ -894,7 +894,7 @@ function CalendarContent() {
         <div className="min-w-0 flex-1 space-y-4">
           {/* Controls & Filter Bar (Sliding Pill Segmented Switcher) */}
           <Card className="border-border/80 from-card to-card/90 rounded-2xl border bg-gradient-to-b p-3.5 shadow-2xs backdrop-blur-xl">
-            <div className="flex flex-col gap-3.5 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex flex-col gap-3.5 xl:flex-row xl:items-center xl:justify-between">
               {/* Date Navigator */}
               <div className="flex flex-wrap items-center justify-between gap-2 sm:justify-start sm:gap-3">
                 <div className="border-border/80 bg-muted/40 flex items-center rounded-xl border p-0.5 shadow-2xs">

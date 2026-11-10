@@ -223,7 +223,7 @@ export function DashboardSidebar({
           <button
             type="button"
             onClick={onCloseMobile}
-            className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+            className="text-muted-foreground hover:bg-muted hover:text-foreground cursor-pointer rounded-xl p-2 transition-colors"
             aria-label="Close menu"
           >
             <X className="h-5 w-5" />

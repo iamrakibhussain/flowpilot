@@ -185,7 +185,7 @@ ${invoice.items.map((it) => `• ${it.description} — ${it.quantity}x @ $${it.u
                 variant="ghost"
                 size="icon"
                 onClick={onClose}
-                className="text-muted-foreground hover:bg-muted hover:text-foreground h-8 w-8 cursor-pointer rounded-xl"
+                className="text-muted-foreground hover:bg-muted hover:text-foreground h-9 w-9 cursor-pointer rounded-xl"
               >
                 <X className="h-4 w-4" />
               </Button>

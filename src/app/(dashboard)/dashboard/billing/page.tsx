@@ -304,7 +304,7 @@ export default function BillingPage() {
 
       {/* Cancellation Warning Banner */}
       {subscription?.cancelAtPeriodEnd && (
-        <div className="flex items-center justify-between rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-amber-700">
+        <div className="flex flex-col gap-3 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-amber-700 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
             <AlertTriangle className="h-5 w-5 shrink-0 text-amber-600" />
             <div>
@@ -319,7 +319,7 @@ export default function BillingPage() {
             <Button
               size="sm"
               variant="outline"
-              className="border-amber-500/40 bg-white hover:bg-amber-50"
+              className="border-amber-500/40 bg-white hover:bg-amber-50 dark:bg-zinc-900 dark:hover:bg-zinc-800"
               onClick={handleResumeSubscription}
               disabled={resumeMutation.isPending}
             >
@@ -332,7 +332,7 @@ export default function BillingPage() {
 
       {/* 2. Current Plan Overview Card */}
       <Card className="border-border/80 shadow-sm">
-        <CardHeader className="flex flex-row items-start justify-between pb-4">
+        <CardHeader className="flex flex-col gap-3 pb-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <div className="flex items-center gap-2.5">
               <CardTitle className="text-xl font-bold">
@@ -344,7 +344,7 @@ export default function BillingPage() {
               {activePlan?.description || "Basic operations foundation for service professionals."}
             </CardDescription>
           </div>
-          <div className="text-right">
+          <div className="text-left sm:text-right">
             <div className="text-2xl font-bold">
               ${activePlan?.price || 0}
               <span className="text-muted-foreground text-xs font-normal">
@@ -554,10 +554,10 @@ export default function BillingPage() {
           </div>
 
           {/* Monthly / Annual Toggle */}
-          <div className="bg-muted/60 border-border/80 flex items-center rounded-lg border p-1">
+          <div className="bg-muted/60 border-border/80 flex w-full items-center justify-center rounded-lg border p-1 sm:w-auto">
             <button
               type="button"
-              className={`rounded-md px-3 py-1.5 text-xs font-medium transition-all ${
+              className={`flex-1 rounded-md px-3 py-1.5 text-center text-xs font-medium transition-all sm:flex-initial ${
                 billingInterval === "MONTHLY"
                   ? "text-foreground bg-white shadow-sm dark:bg-zinc-800"
                   : "text-muted-foreground hover:text-foreground"
@@ -568,7 +568,7 @@ export default function BillingPage() {
             </button>
             <button
               type="button"
-              className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all ${
+              className={`flex flex-1 items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all sm:flex-initial ${
                 billingInterval === "ANNUALLY"
                   ? "text-foreground bg-white shadow-sm dark:bg-zinc-800"
                   : "text-muted-foreground hover:text-foreground"

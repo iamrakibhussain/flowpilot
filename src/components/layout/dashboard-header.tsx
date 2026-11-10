@@ -72,7 +72,7 @@ export function DashboardHeader({ onOpenMobile, onOpenCommand }: DashboardHeader
         <button
           type="button"
           onClick={onOpenMobile}
-          className="text-muted-foreground hover:bg-muted/70 hover:text-foreground -ml-1 rounded-xl p-1.5 transition-colors sm:-ml-2 sm:p-2 lg:hidden"
+          className="text-muted-foreground hover:bg-muted/70 hover:text-foreground -ml-1 cursor-pointer rounded-xl p-2 transition-colors sm:-ml-2 lg:hidden"
           aria-label="Open navigation sidebar"
         >
           <Menu className="h-5 w-5" />
@@ -141,7 +141,7 @@ export function DashboardHeader({ onOpenMobile, onOpenCommand }: DashboardHeader
         <button
           type="button"
           onClick={onOpenCommand}
-          className="text-muted-foreground hover:bg-muted/70 hover:text-foreground flex h-8 w-8 items-center justify-center rounded-xl transition-colors sm:h-9 sm:w-9 md:hidden"
+          className="text-muted-foreground hover:bg-muted/70 hover:text-foreground flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl transition-colors md:hidden"
           aria-label="Open search palette"
         >
           <Search className="h-4 w-4" />
