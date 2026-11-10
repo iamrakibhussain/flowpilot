@@ -270,38 +270,11 @@ export default function DashboardOverviewPage() {
         </div>
       )}
 
-      {/* Enterprise Multi-Tenant Telemetry Strip */}
-      <div className="border-border/80 bg-card/70 text-muted-foreground flex w-full max-w-full min-w-0 flex-col justify-between gap-2 rounded-xl border px-3.5 py-2 text-[11px] shadow-2xs backdrop-blur-md sm:flex-row sm:items-center">
-        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-          <span className="text-foreground flex items-center gap-1.5 font-semibold">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-            </span>
-            Active Multi-Tenant Node
-          </span>
-          <span className="text-border hidden sm:inline">•</span>
-          <span className="font-mono text-[10px]">Region: us-east-multi-az</span>
-          <span className="text-border hidden md:inline">•</span>
-          <span className="hidden font-mono text-[10px] md:inline">
-            API Latency: 22ms (p99 &lt; 40ms)
-          </span>
-        </div>
-        <div className="flex items-center gap-2 font-medium">
-          <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
-            <ShieldCheck className="h-3.5 w-3.5" />
-            PCI-DSS Compliant
-          </span>
-          <span className="text-border">•</span>
-          <span className="text-primary font-semibold">Encrypted AES-256</span>
-        </div>
-      </div>
-
       {/* Welcome & Top Controls */}
       <div className="flex w-full max-w-full min-w-0 flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-foreground text-2xl font-black tracking-tight sm:text-3xl">
+            <h1 className="text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
               Welcome back, {userName}
             </h1>
             <span className="border-primary/20 bg-primary/10 text-primary inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[11px] font-bold">
@@ -309,8 +282,8 @@ export default function DashboardOverviewPage() {
               Live Hub
             </span>
           </div>
-          <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
-            Real-time multi-tenant telemetry for{" "}
+          <p className="text-muted-foreground mt-1 text-xs leading-relaxed sm:text-sm">
+            Operations overview and real-time business activity for{" "}
             <span className="text-foreground font-semibold">{organizationName}</span>
           </p>
         </div>
@@ -632,33 +605,33 @@ export default function DashboardOverviewPage() {
       )}
 
       {/* 4x High-Impact Reactive KPI Metric Cards */}
-      <div className="grid w-full max-w-full min-w-0 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid w-full max-w-full min-w-0 grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         {/* KPI 1: Total Revenue */}
-        <Card className="border-border/80 from-card to-card/90 hover:border-primary/40 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-5 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xs">
+        <Card className="border-border/80 from-card to-card/90 hover:border-primary/40 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-3.5 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xs sm:p-5">
           <div className="pointer-events-none absolute top-0 right-0 h-24 w-24 rounded-full bg-blue-500/[0.04] blur-xl" />
-          <div className="flex items-center justify-between">
-            <span className="text-muted-foreground text-xs font-bold tracking-wider uppercase">
+          <div className="flex items-center justify-between gap-1">
+            <span className="text-muted-foreground truncate text-[10px] font-bold tracking-wider uppercase sm:text-xs">
               Invoiced Volume
             </span>
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
-              <DollarSign className="h-4.5 w-4.5" />
+            <div className="flex h-7.5 w-7.5 shrink-0 items-center justify-center rounded-lg bg-blue-500/10 text-blue-600 sm:h-9 sm:w-9 sm:rounded-xl dark:text-blue-400">
+              <DollarSign className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
             </div>
           </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-foreground text-2xl font-black tracking-tight sm:text-3xl">
+          <div className="mt-2 flex items-baseline gap-2 sm:mt-3">
+            <span className="text-foreground text-xl font-bold tracking-tight tabular-nums sm:text-3xl">
               {currentMetric.revenue}
             </span>
           </div>
-          <div className="mt-2 flex items-center gap-2">
-            <span className="inline-flex items-center gap-0.5 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-1.5 py-0.5 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
+          <div className="mt-1.5 flex flex-wrap items-center gap-1.5 sm:mt-2 sm:gap-2">
+            <span className="inline-flex items-center gap-0.5 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-1.5 py-0.5 text-[10px] font-bold text-emerald-600 sm:text-[11px] dark:text-emerald-400">
               <TrendingUp className="h-3 w-3" />
               {currentMetric.revenueGrowth}
             </span>
-            <span className="text-muted-foreground text-[11px]">vs last period</span>
+            <span className="text-muted-foreground text-[10px] sm:text-[11px]">vs last period</span>
           </div>
 
           {/* Mini Sparkline SVG */}
-          <div className="mt-3 h-8 w-full">
+          <div className="mt-2 h-6 w-full sm:mt-3 sm:h-8">
             <svg
               className="h-full w-full overflow-visible"
               viewBox="0 0 100 25"
@@ -688,24 +661,24 @@ export default function DashboardOverviewPage() {
           className="group block focus-visible:outline-hidden"
           title="Open Customers CRM Directory"
         >
-          <Card className="border-border/80 from-card to-card/90 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-5 shadow-2xs transition-all duration-300 group-hover:-translate-y-0.5 group-hover:border-indigo-500/40 group-hover:shadow-xs">
+          <Card className="border-border/80 from-card to-card/90 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-3.5 shadow-2xs transition-all duration-300 group-hover:-translate-y-0.5 group-hover:border-indigo-500/40 group-hover:shadow-xs sm:p-5">
             <div className="pointer-events-none absolute top-0 right-0 h-24 w-24 rounded-full bg-indigo-500/[0.04] blur-xl" />
-            <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-xs font-bold tracking-wider uppercase">
-                Active CRM Clients
+            <div className="flex items-center justify-between gap-1">
+              <span className="text-muted-foreground truncate text-[10px] font-bold tracking-wider uppercase sm:text-xs">
+                Active Clients
               </span>
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 transition-colors group-hover:bg-indigo-600 group-hover:text-white dark:text-indigo-400">
-                <Users className="h-4.5 w-4.5" />
+              <div className="flex h-7.5 w-7.5 shrink-0 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-600 transition-colors group-hover:bg-indigo-600 group-hover:text-white sm:h-9 sm:w-9 sm:rounded-xl dark:text-indigo-400">
+                <Users className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
               </div>
             </div>
-            <div className="mt-3 flex items-baseline gap-2">
-              <span className="text-foreground text-2xl font-black tracking-tight sm:text-3xl">
+            <div className="mt-2 flex items-baseline gap-2 sm:mt-3">
+              <span className="text-foreground text-xl font-bold tracking-tight tabular-nums sm:text-3xl">
                 {currentMetric.clients}
               </span>
             </div>
-            <div className="mt-2 flex items-center justify-between">
+            <div className="mt-1.5 flex items-center justify-between sm:mt-2">
               <div className="flex items-center gap-1.5">
-                <span className="inline-flex items-center gap-0.5 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-1.5 py-0.5 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
+                <span className="inline-flex items-center gap-0.5 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-1.5 py-0.5 text-[10px] font-bold text-emerald-600 sm:text-[11px] dark:text-emerald-400">
                   <TrendingUp className="h-3 w-3" />
                   {currentMetric.clientsGrowth}
                 </span>
@@ -713,9 +686,7 @@ export default function DashboardOverviewPage() {
 
               {/* Client Avatar Stack */}
               {clientCount === 0 ? (
-                <span className="text-muted-foreground text-[10px] font-medium">
-                  No active accounts
-                </span>
+                <span className="text-muted-foreground text-[10px] font-medium">0 accounts</span>
               ) : (
                 <div className="flex -space-x-1.5">
                   {(recentClientInitials.length > 0 ? recentClientInitials : ["C"])
@@ -723,7 +694,7 @@ export default function DashboardOverviewPage() {
                     .map((initial, i) => (
                       <div
                         key={i}
-                        className={`ring-background flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-bold text-white ring-2 ${
+                        className={`ring-background flex h-5 w-5 items-center justify-center rounded-full text-[9px] font-bold text-white ring-2 sm:h-6 sm:w-6 sm:text-[10px] ${
                           i === 0 ? "bg-blue-600" : i === 1 ? "bg-indigo-600" : "bg-emerald-600"
                         }`}
                       >
@@ -731,7 +702,7 @@ export default function DashboardOverviewPage() {
                       </div>
                     ))}
                   {clientCount > 3 && (
-                    <div className="bg-muted ring-background text-muted-foreground flex h-6 w-6 items-center justify-center rounded-full text-[9px] font-bold ring-2">
+                    <div className="bg-muted ring-background text-muted-foreground flex h-5 w-5 items-center justify-center rounded-full text-[8px] font-bold ring-2 sm:h-6 sm:w-6 sm:text-[9px]">
                       +{clientCount - 3}
                     </div>
                   )}
@@ -739,53 +710,55 @@ export default function DashboardOverviewPage() {
               )}
             </div>
 
-            <div className="border-border/60 text-muted-foreground mt-3 flex items-center justify-between border-t pt-2.5 text-[11px]">
+            <div className="border-border/60 text-muted-foreground mt-3 flex items-center justify-between border-t pt-2.5 text-[10px] sm:text-[11px]">
               <span className="flex items-center gap-1">
                 Retention:{" "}
                 <strong className="text-foreground font-bold">
-                  {clientCount > 0 ? "98.2%" : "100.0%"}
+                  {clientCount > 0 ? "98.2%" : "100%"}
                 </strong>
               </span>
               <span className="flex items-center gap-0.5 font-bold text-indigo-600 transition-transform group-hover:translate-x-0.5 dark:text-indigo-400">
-                Manage CRM <ArrowRight className="h-3 w-3" />
+                <span className="hidden sm:inline">Manage CRM</span>
+                <span className="sm:hidden">CRM</span>
+                <ArrowRight className="h-3 w-3" />
               </span>
             </div>
           </Card>
         </Link>
 
         {/* KPI 3: Scheduled Appointments */}
-        <Card className="border-border/80 from-card to-card/90 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-5 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-500/40 hover:shadow-xs">
+        <Card className="border-border/80 from-card to-card/90 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-3.5 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-500/40 hover:shadow-xs sm:p-5">
           <div className="pointer-events-none absolute top-0 right-0 h-24 w-24 rounded-full bg-emerald-500/[0.04] blur-xl" />
-          <div className="flex items-center justify-between">
-            <span className="text-muted-foreground text-xs font-bold tracking-wider uppercase">
+          <div className="flex items-center justify-between gap-1">
+            <span className="text-muted-foreground truncate text-[10px] font-bold tracking-wider uppercase sm:text-xs">
               Appointments
             </span>
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-              <Calendar className="h-4.5 w-4.5" />
+            <div className="flex h-7.5 w-7.5 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600 sm:h-9 sm:w-9 sm:rounded-xl dark:text-emerald-400">
+              <Calendar className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
             </div>
           </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-foreground text-2xl font-black tracking-tight sm:text-3xl">
+          <div className="mt-2 flex items-baseline gap-1.5 sm:mt-3 sm:gap-2">
+            <span className="text-foreground text-xl font-bold tracking-tight tabular-nums sm:text-3xl">
               {currentMetric.appointments}
             </span>
-            <span className="text-muted-foreground text-xs font-medium">booked</span>
+            <span className="text-muted-foreground text-[10px] font-medium sm:text-xs">booked</span>
           </div>
-          <div className="mt-2 flex items-center gap-2">
-            <span className="text-foreground inline-flex items-center gap-1 text-[11px] font-semibold">
-              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-              {apptCount > 0 ? "94% completion rate" : "0 bookings recorded"}
+          <div className="mt-1.5 flex items-center gap-1.5 sm:mt-2 sm:gap-2">
+            <span className="text-foreground inline-flex items-center gap-1 text-[10px] font-semibold sm:text-[11px]">
+              <CheckCircle2 className="h-3 w-3 text-emerald-600 sm:h-3.5 sm:w-3.5 dark:text-emerald-400" />
+              {apptCount > 0 ? "94% completion" : "0 bookings"}
             </span>
           </div>
 
           {/* Progress bar */}
-          <div className="mt-3.5 space-y-1">
+          <div className="mt-2.5 space-y-1 sm:mt-3.5">
             <div className="bg-muted/70 h-1.5 w-full overflow-hidden rounded-full">
               <div
                 className="h-full rounded-full bg-emerald-500 transition-all duration-500"
                 style={{ width: `${apptCount > 0 ? 94 : 0}%` }}
               />
             </div>
-            <div className="text-muted-foreground flex justify-between text-[10px]">
+            <div className="text-muted-foreground flex justify-between text-[9px] sm:text-[10px]">
               <span>{currentMetric.appointmentsToday}</span>
               <span>{currentMetric.appointmentsUpcoming}</span>
             </div>
@@ -793,31 +766,26 @@ export default function DashboardOverviewPage() {
         </Card>
 
         {/* KPI 4: Operations SLA & Response */}
-        <Card className="border-border/80 from-card to-card/90 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-5 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-500/40 hover:shadow-xs">
+        <Card className="border-border/80 from-card to-card/90 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-3.5 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-500/40 hover:shadow-xs sm:p-5">
           <div className="pointer-events-none absolute top-0 right-0 h-24 w-24 rounded-full bg-cyan-500/[0.04] blur-xl" />
-          <div className="flex items-center justify-between">
-            <span className="text-muted-foreground text-xs font-bold tracking-wider uppercase">
-              Avg Response Time
+          <div className="flex items-center justify-between gap-1">
+            <span className="text-muted-foreground truncate text-[10px] font-bold tracking-wider uppercase sm:text-xs">
+              Response Time
             </span>
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400">
-              <Activity className="h-4.5 w-4.5" />
+            <div className="flex h-7.5 w-7.5 shrink-0 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-600 sm:h-9 sm:w-9 sm:rounded-xl dark:text-cyan-400">
+              <Activity className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
             </div>
           </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-foreground text-2xl font-black tracking-tight sm:text-3xl">
+          <div className="mt-2 flex items-baseline gap-2 sm:mt-3">
+            <span className="text-foreground text-xl font-bold tracking-tight tabular-nums sm:text-3xl">
               {currentMetric.responseTime}
             </span>
           </div>
-          <div className="mt-2 flex items-center gap-2">
-            <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+          <div className="mt-1.5 flex items-center gap-1.5 sm:mt-2 sm:gap-2">
+            <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-1.5 py-0.5 text-[9px] font-bold text-emerald-600 sm:px-2 sm:text-[10px] dark:text-emerald-400">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-              SLA Met (Target &lt; 30m)
+              SLA Met (&lt; 30m)
             </span>
-          </div>
-
-          <div className="border-border/60 text-muted-foreground mt-3 flex justify-between border-t pt-2.5 text-[11px]">
-            <span>Tenant Multi-Zone SLA:</span>
-            <span className="font-bold text-emerald-600 dark:text-emerald-400">99.98%</span>
           </div>
         </Card>
       </div>

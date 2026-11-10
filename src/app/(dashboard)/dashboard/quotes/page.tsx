@@ -227,11 +227,11 @@ export default function QuotesPage() {
       {/* Top Header */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-foreground flex items-center gap-2.5 text-2xl font-bold tracking-tight">
+          <h1 className="text-foreground flex items-center gap-2.5 text-2xl font-bold tracking-tight sm:text-3xl">
             <FileCheck2 className="h-6 w-6 text-blue-600 dark:text-blue-400" />
             Estimates & Client Proposals
           </h1>
-          <p className="text-muted-foreground mt-0.5 text-sm">
+          <p className="text-muted-foreground mt-1 text-xs leading-relaxed sm:text-sm">
             Create branded proposals, capture digital client signatures, and auto-convert to
             invoices.
           </p>
@@ -247,7 +247,7 @@ export default function QuotesPage() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card className="border-border/80 bg-card/60 rounded-2xl border backdrop-blur-xs">
           <CardContent className="p-4 sm:p-5">
             <div className="flex items-center justify-between">
@@ -257,7 +257,7 @@ export default function QuotesPage() {
               </div>
             </div>
             <div className="mt-3">
-              <span className="text-foreground font-mono text-xl font-bold sm:text-2xl">
+              <span className="text-foreground text-xl font-bold tracking-tight tabular-nums sm:text-2xl">
                 $
                 {(stats?.totalEstimatedValue || 0).toLocaleString("en-US", {
                   minimumFractionDigits: 2,
@@ -279,7 +279,7 @@ export default function QuotesPage() {
               </div>
             </div>
             <div className="mt-3">
-              <span className="font-mono text-xl font-bold text-emerald-600 sm:text-2xl dark:text-emerald-400">
+              <span className="text-xl font-bold tracking-tight text-emerald-600 tabular-nums sm:text-2xl dark:text-emerald-400">
                 $
                 {(stats?.acceptedValue || 0).toLocaleString("en-US", {
                   minimumFractionDigits: 2,
@@ -301,7 +301,7 @@ export default function QuotesPage() {
               </div>
             </div>
             <div className="mt-3">
-              <span className="text-foreground font-mono text-xl font-bold sm:text-2xl">
+              <span className="text-foreground text-xl font-bold tracking-tight tabular-nums sm:text-2xl">
                 $
                 {(stats?.pendingReviewValue || 0).toLocaleString("en-US", {
                   minimumFractionDigits: 2,
@@ -323,7 +323,7 @@ export default function QuotesPage() {
               </div>
             </div>
             <div className="mt-3">
-              <span className="text-foreground font-mono text-xl font-bold sm:text-2xl">
+              <span className="text-foreground text-xl font-bold tracking-tight tabular-nums sm:text-2xl">
                 {stats?.acceptanceRate || 0}%
               </span>
               <p className="text-muted-foreground mt-0.5 text-[11px]">

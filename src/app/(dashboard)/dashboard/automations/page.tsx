@@ -99,12 +99,12 @@ export default function AutomationsPage() {
               <Zap className="h-5 w-5" />
             </div>
             <div>
-              <h1 className="text-foreground text-xl font-black tracking-tight sm:text-2xl lg:text-3xl">
+              <h1 className="text-foreground text-xl font-bold tracking-tight sm:text-2xl lg:text-3xl">
                 FlowRules & Event Automations
               </h1>
             </div>
           </div>
-          <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
+          <p className="text-muted-foreground mt-1 text-xs leading-relaxed sm:text-sm">
             Event-driven workflow engines, conditional autonomous project launches, and instant
             client notifications.
           </p>

@@ -99,7 +99,7 @@ export function AutomationStatsBar({ stats, isLoading }: AutomationStatsBarProps
 
             <div className="mt-2.5">
               <div className="flex items-baseline gap-2">
-                <span className="text-foreground text-xl font-extrabold tracking-tight sm:text-2xl">
+                <span className="text-foreground text-xl font-bold tracking-tight tabular-nums sm:text-2xl">
                   {item.value}
                 </span>
                 {item.indicator && (

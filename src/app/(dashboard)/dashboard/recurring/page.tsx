@@ -103,12 +103,12 @@ export default function RecurringBillingPage() {
               <Repeat className="h-5 w-5" />
             </div>
             <div>
-              <h1 className="text-foreground text-xl font-black tracking-tight sm:text-2xl lg:text-3xl">
+              <h1 className="text-foreground text-xl font-bold tracking-tight sm:text-2xl lg:text-3xl">
                 Recurring & Subscriptions
               </h1>
             </div>
           </div>
-          <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
+          <p className="text-muted-foreground mt-1 text-xs leading-relaxed sm:text-sm">
             Autonomous client billing engines, cadence schedulers, and real-time retainer hour
             burn-downs.
           </p>
@@ -150,13 +150,13 @@ export default function RecurringBillingPage() {
       <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         {/* Card 1: Active Schedules */}
         <div className="border-border/80 from-card via-card/95 to-card/85 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-3.5 shadow-xs transition-all duration-300 hover:shadow-md sm:p-5">
-          <div className="text-muted-foreground mb-1.5 flex items-center justify-between text-[11px] font-black tracking-wider uppercase sm:text-xs">
+          <div className="text-muted-foreground mb-1.5 flex items-center justify-between text-[11px] font-bold tracking-wider uppercase sm:text-xs">
             <span className="truncate">Active Schedules</span>
             <div className="shrink-0 rounded-xl bg-emerald-500/10 p-1.5 text-emerald-600 sm:p-2 dark:text-emerald-400">
               <Repeat className="h-4 w-4" />
             </div>
           </div>
-          <div className="text-foreground font-mono text-xl font-black tracking-tight sm:text-2xl lg:text-3xl">
+          <div className="text-foreground font-mono text-xl font-bold tracking-tight tabular-nums sm:text-2xl lg:text-3xl">
             {stats?.activeSchedules ?? 0}
           </div>
           <span className="text-muted-foreground mt-1 block truncate text-[10px] sm:text-[11px]">
@@ -166,13 +166,13 @@ export default function RecurringBillingPage() {
 
         {/* Card 2: Estimated MRR */}
         <div className="border-border/80 from-card via-card/95 to-card/85 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-3.5 shadow-xs transition-all duration-300 hover:shadow-md sm:p-5">
-          <div className="text-muted-foreground mb-1.5 flex items-center justify-between text-[11px] font-black tracking-wider uppercase sm:text-xs">
+          <div className="text-muted-foreground mb-1.5 flex items-center justify-between text-[11px] font-bold tracking-wider uppercase sm:text-xs">
             <span className="truncate">Estimated MRR</span>
             <div className="bg-primary/10 text-primary shrink-0 rounded-xl p-1.5 sm:p-2">
               <TrendingUp className="h-4 w-4" />
             </div>
           </div>
-          <div className="text-foreground font-mono text-xl font-black tracking-tight sm:text-2xl lg:text-3xl">
+          <div className="text-foreground font-mono text-xl font-bold tracking-tight tabular-nums sm:text-2xl lg:text-3xl">
             ${(stats?.estimatedMRR ?? 0).toLocaleString("en-US", { minimumFractionDigits: 0 })}
           </div>
           <span className="text-muted-foreground mt-1 block truncate text-[10px] sm:text-[11px]">
@@ -182,13 +182,13 @@ export default function RecurringBillingPage() {
 
         {/* Card 3: Active Retainers */}
         <div className="border-border/80 from-card via-card/95 to-card/85 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-3.5 shadow-xs transition-all duration-300 hover:shadow-md sm:p-5">
-          <div className="text-muted-foreground mb-1.5 flex items-center justify-between text-[11px] font-black tracking-wider uppercase sm:text-xs">
+          <div className="text-muted-foreground mb-1.5 flex items-center justify-between text-[11px] font-bold tracking-wider uppercase sm:text-xs">
             <span className="truncate">Active Retainers</span>
             <div className="shrink-0 rounded-xl bg-indigo-500/10 p-1.5 text-indigo-600 sm:p-2 dark:text-indigo-400">
               <Clock className="h-4 w-4" />
             </div>
           </div>
-          <div className="text-foreground font-mono text-xl font-black tracking-tight sm:text-2xl lg:text-3xl">
+          <div className="text-foreground font-mono text-xl font-bold tracking-tight tabular-nums sm:text-2xl lg:text-3xl">
             {stats?.activeRetainers ?? 0}
           </div>
           <span className="text-muted-foreground mt-1 block truncate text-[10px] sm:text-[11px]">
@@ -198,13 +198,13 @@ export default function RecurringBillingPage() {
 
         {/* Card 4: Autonomous Invoices */}
         <div className="border-border/80 from-card via-card/95 to-card/85 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-3.5 shadow-xs transition-all duration-300 hover:shadow-md sm:p-5">
-          <div className="text-muted-foreground mb-1.5 flex items-center justify-between text-[11px] font-black tracking-wider uppercase sm:text-xs">
+          <div className="text-muted-foreground mb-1.5 flex items-center justify-between text-[11px] font-bold tracking-wider uppercase sm:text-xs">
             <span className="truncate">Auto Invoices</span>
             <div className="shrink-0 rounded-xl bg-blue-500/10 p-1.5 text-blue-600 sm:p-2 dark:text-blue-400">
               <FileCheck className="h-4 w-4" />
             </div>
           </div>
-          <div className="text-foreground font-mono text-xl font-black tracking-tight sm:text-2xl lg:text-3xl">
+          <div className="text-foreground font-mono text-xl font-bold tracking-tight tabular-nums sm:text-2xl lg:text-3xl">
             {stats?.totalGeneratedInvoices ?? 0}
           </div>
           <span className="text-muted-foreground mt-1 block truncate text-[10px] sm:text-[11px]">

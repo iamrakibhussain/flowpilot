@@ -112,8 +112,8 @@ export const HeroSection: React.FC = () => {
       <Container className="flex flex-col items-center text-center">
         {/* 1. Intelligent Announcement Pill (Frosted Glass & Ambient Glow) */}
         <motion.div
-          initial={{ opacity: 0, y: -12, filter: "blur(6px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="group border-primary/25 bg-surface/85 hover:border-primary/45 inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-medium shadow-xs backdrop-blur-xl transition-all hover:scale-[1.02]"
         >
@@ -134,10 +134,10 @@ export const HeroSection: React.FC = () => {
           <ArrowRight className="text-primary h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
         </motion.div>
 
-        {/* 2. Primary Headline with Cinematic Blur-In Reveal */}
+        {/* 2. Primary Headline with Smooth Fade & Elevation Reveal */}
         <motion.h1
-          initial={{ opacity: 0, y: 16, filter: "blur(8px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           className="text-foreground mt-5 max-w-4xl text-3xl font-extrabold tracking-tight sm:text-5xl md:text-6xl md:leading-[1.12]"
         >
@@ -149,8 +149,8 @@ export const HeroSection: React.FC = () => {
 
         {/* 3. Supporting Value Proposition Copy */}
         <motion.p
-          initial={{ opacity: 0, y: 12, filter: "blur(6px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="text-muted-foreground mt-4 max-w-2xl text-base leading-relaxed sm:text-lg md:text-xl"
         >

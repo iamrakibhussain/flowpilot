@@ -199,14 +199,14 @@ export default function ContractsPage() {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <div className="flex items-center gap-2.5">
-            <h1 className="text-foreground text-2xl font-black tracking-tight sm:text-3xl">
+            <h1 className="text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
               Contracts & E-Signatures
             </h1>
             <span className="rounded-full border border-blue-500/30 bg-blue-500/10 px-2.5 py-0.5 text-[11px] font-extrabold text-blue-600 dark:bg-blue-500/20 dark:text-blue-400">
               ESIGN & UETA Active
             </span>
           </div>
-          <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
+          <p className="text-muted-foreground mt-1 text-xs leading-relaxed sm:text-sm">
             Draft, dispatch, and legally execute binding commercial agreements with cryptographic
             SHA-256 digital audit trails.
           </p>
@@ -235,7 +235,9 @@ export default function ContractsPage() {
             <span className="text-[11px] font-bold tracking-wider uppercase">Total Contracts</span>
             <FileSignature className="h-4 w-4 text-blue-500" />
           </div>
-          <p className="text-foreground mt-2 font-mono text-2xl font-black">{totalContracts}</p>
+          <p className="text-foreground mt-2 font-mono text-2xl font-bold tracking-tight tabular-nums">
+            {totalContracts}
+          </p>
           <span className="text-muted-foreground text-[10px]">All legal documents</span>
         </div>
 
@@ -254,7 +256,7 @@ export default function ContractsPage() {
             </span>
             <Clock className="h-4 w-4 text-amber-500" />
           </div>
-          <p className="mt-2 font-mono text-2xl font-black text-amber-600 dark:text-amber-400">
+          <p className="mt-2 font-mono text-2xl font-bold tracking-tight text-amber-600 tabular-nums dark:text-amber-400">
             {pendingCount}
           </p>
           <span className="text-muted-foreground text-[10px]">Sent to clients for review</span>
@@ -273,7 +275,7 @@ export default function ContractsPage() {
             </span>
             <CheckCircle2 className="h-4 w-4 text-emerald-500" />
           </div>
-          <p className="mt-2 font-mono text-2xl font-black text-emerald-600 dark:text-emerald-400">
+          <p className="mt-2 font-mono text-2xl font-bold tracking-tight text-emerald-600 tabular-nums dark:text-emerald-400">
             {readyToCountersignCount}
           </p>
           <span className="text-muted-foreground text-[10px]">Signed by client, pending seal</span>
@@ -292,7 +294,9 @@ export default function ContractsPage() {
             <span className="text-[11px] font-bold tracking-wider uppercase">Finalized Sealed</span>
             <ShieldCheck className="h-4 w-4 text-indigo-500" />
           </div>
-          <p className="text-foreground mt-2 font-mono text-2xl font-black">{finalizedCount}</p>
+          <p className="text-foreground mt-2 font-mono text-2xl font-bold tracking-tight tabular-nums">
+            {finalizedCount}
+          </p>
           <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
             SHA-256 tamper-proof active
           </span>

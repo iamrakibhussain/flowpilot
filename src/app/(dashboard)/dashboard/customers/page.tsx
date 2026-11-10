@@ -289,7 +289,7 @@ export default function CustomersDirectoryPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2.5">
-            <h1 className="text-foreground text-2xl font-extrabold tracking-tight sm:text-3xl">
+            <h1 className="text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
               Customer CRM Directory
             </h1>
             <span className="border-primary/20 bg-primary/10 text-primary hidden items-center gap-1 rounded-full border px-2.5 py-0.5 text-[11px] font-bold sm:inline-flex">
@@ -297,7 +297,7 @@ export default function CustomersDirectoryPage() {
               Linear Precision
             </span>
           </div>
-          <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
+          <p className="text-muted-foreground mt-1 text-xs leading-relaxed sm:text-sm">
             Unified multi-tenant client dossiers, operational engagements, and reconciled Lifetime
             Values for <strong className="text-foreground font-semibold">{organizationName}</strong>
             .
@@ -408,7 +408,7 @@ export default function CustomersDirectoryPage() {
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-foreground text-2xl font-black tracking-tight tabular-nums">
+            <span className="text-foreground text-2xl font-bold tracking-tight tabular-nums">
               {activeCount}
             </span>
             <span className="text-muted-foreground text-xs">/ {totalCount} total</span>
@@ -441,7 +441,7 @@ export default function CustomersDirectoryPage() {
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-foreground text-2xl font-black tracking-tight tabular-nums">
+            <span className="text-foreground text-2xl font-bold tracking-tight tabular-nums">
               {leadsCount}
             </span>
             <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">
@@ -472,7 +472,7 @@ export default function CustomersDirectoryPage() {
             </div>
           </div>
           <div className="mt-3 flex items-baseline justify-between">
-            <span className="text-foreground text-2xl font-black tracking-tight tabular-nums">
+            <span className="text-foreground text-2xl font-bold tracking-tight tabular-nums">
               ${totalPaidSum.toLocaleString("en-US", { minimumFractionDigits: 0 })}
             </span>
             {/* Embedded Micro SVG Sparkline */}
@@ -507,7 +507,7 @@ export default function CustomersDirectoryPage() {
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-foreground text-2xl font-black tracking-tight tabular-nums">
+            <span className="text-foreground text-2xl font-bold tracking-tight tabular-nums">
               {repeatRate}%
             </span>
             <span className="text-xs font-bold text-purple-600 dark:text-purple-400">

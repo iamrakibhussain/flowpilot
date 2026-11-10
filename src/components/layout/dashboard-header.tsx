@@ -49,15 +49,19 @@ export function DashboardHeader({ onOpenMobile, onOpenCommand }: DashboardHeader
     if (pathname === "/dashboard") return "Overview";
     if (pathname.includes("/analytics")) return "Business Intelligence";
     if (pathname.includes("/services")) return "Services & Catalog";
-    if (pathname.includes("/settings")) return "Organization Settings";
-    if (pathname.includes("/customers")) return "Customers (CRM)";
-    if (pathname.includes("/calendar") || pathname.includes("/appointments"))
-      return "Appointments & Calendar";
-    if (pathname.includes("/invoices")) return "Invoices & Billing";
+    if (pathname.includes("/contracts")) return "Contracts & Signatures";
     if (pathname.includes("/quotes")) return "Estimates & Proposals";
     if (pathname.includes("/projects")) return "Projects & Kanban";
+    if (pathname.includes("/invoices")) return "Invoices & Billing";
+    if (pathname.includes("/recurring")) return "Recurring & Retainers";
+    if (pathname.includes("/automations")) return "Workflows & Automations";
     if (pathname.includes("/payments")) return "Online Payments & Gateway";
+    if (pathname.includes("/calendar") || pathname.includes("/appointments"))
+      return "Appointments & Calendar";
+    if (pathname.includes("/customers")) return "Customers (CRM)";
     if (pathname.includes("/staff")) return "Team & Staff";
+    if (pathname.includes("/billing")) return "Subscription & Billing";
+    if (pathname.includes("/settings")) return "Organization Settings";
     return "Operations";
   }, [pathname]);
 
@@ -68,7 +72,7 @@ export function DashboardHeader({ onOpenMobile, onOpenCommand }: DashboardHeader
         <button
           type="button"
           onClick={onOpenMobile}
-          className="text-muted-foreground hover:bg-muted/70 hover:text-foreground -ml-1 rounded-xl p-1.5 transition-colors sm:-ml-2 sm:p-2 lg:hidden"
+          className="text-muted-foreground hover:bg-muted/70 hover:text-foreground -ml-1 cursor-pointer rounded-xl p-2 transition-colors sm:-ml-2 lg:hidden"
           aria-label="Open navigation sidebar"
         >
           <Menu className="h-5 w-5" />
@@ -108,7 +112,10 @@ export function DashboardHeader({ onOpenMobile, onOpenCommand }: DashboardHeader
             {finalOrgName}
           </span>
           <ChevronRight className="text-muted-foreground/40 h-3.5 w-3.5" />
-          <span className="border-border/80 bg-muted/60 text-foreground rounded-lg border px-2.5 py-0.5 font-bold shadow-2xs">
+          <span
+            className="border-border/80 bg-muted/60 text-foreground max-w-[140px] truncate rounded-lg border px-2.5 py-0.5 font-bold whitespace-nowrap shadow-2xs sm:max-w-[200px]"
+            title={breadcrumbName}
+          >
             {breadcrumbName}
           </span>
         </nav>
@@ -137,7 +144,7 @@ export function DashboardHeader({ onOpenMobile, onOpenCommand }: DashboardHeader
         <button
           type="button"
           onClick={onOpenCommand}
-          className="text-muted-foreground hover:bg-muted/70 hover:text-foreground flex h-8 w-8 items-center justify-center rounded-xl transition-colors sm:h-9 sm:w-9 md:hidden"
+          className="text-muted-foreground hover:bg-muted/70 hover:text-foreground flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl transition-colors md:hidden"
           aria-label="Open search palette"
         >
           <Search className="h-4 w-4" />
