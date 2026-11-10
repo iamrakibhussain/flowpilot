@@ -267,7 +267,7 @@ export default function BillingPage() {
   };
 
   return (
-    <div className="space-y-6 sm:space-y-8 pb-12">
+    <div className="space-y-6 pb-12 sm:space-y-8">
       {/* 1. Header */}
       <PageHeader
         title="Subscription & Billing"
@@ -319,7 +319,7 @@ export default function BillingPage() {
             <Button
               size="sm"
               variant="outline"
-              className="border-amber-500/40 bg-background hover:bg-amber-500/10 text-amber-800 dark:text-amber-300"
+              className="bg-background border-amber-500/40 text-amber-800 hover:bg-amber-500/10 dark:text-amber-300"
               onClick={handleResumeSubscription}
               disabled={resumeMutation.isPending}
             >
@@ -559,7 +559,7 @@ export default function BillingPage() {
               type="button"
               className={`flex-1 rounded-md px-3 py-1.5 text-center text-xs font-medium transition-all sm:flex-initial ${
                 billingInterval === "MONTHLY"
-                  ? "bg-background text-foreground shadow-xs border border-border/60"
+                  ? "bg-background text-foreground border-border/60 border shadow-xs"
                   : "text-muted-foreground hover:text-foreground"
               }`}
               onClick={() => setSelectedInterval("MONTHLY")}
@@ -570,7 +570,7 @@ export default function BillingPage() {
               type="button"
               className={`flex flex-1 items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all sm:flex-initial ${
                 billingInterval === "ANNUALLY"
-                  ? "bg-background text-foreground shadow-xs border border-border/60"
+                  ? "bg-background text-foreground border-border/60 border shadow-xs"
                   : "text-muted-foreground hover:text-foreground"
               }`}
               onClick={() => setSelectedInterval("ANNUALLY")}

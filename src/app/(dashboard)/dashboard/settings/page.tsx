@@ -1466,8 +1466,8 @@ export default function WorkspaceSettingsPage() {
                 </div>
 
                 <p className="text-muted-foreground text-center text-[10px] leading-relaxed">
-                  ✦ Dynamic brand styles propagate across client-facing booking interfaces,
-                  invoice statements, and digital receipts.
+                  ✦ Dynamic brand styles propagate across client-facing booking interfaces, invoice
+                  statements, and digital receipts.
                 </p>
               </CardContent>
             </Card>

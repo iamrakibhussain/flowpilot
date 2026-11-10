@@ -22,7 +22,7 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
     <div
       role="alert"
       className={cn(
-        "border-destructive/25 bg-destructive/5 flex min-h-[280px] flex-col items-center justify-center rounded-2xl border p-8 sm:p-12 text-center",
+        "border-destructive/25 bg-destructive/5 flex min-h-[280px] flex-col items-center justify-center rounded-2xl border p-8 text-center sm:p-12",
         className
       )}
     >
@@ -32,8 +32,10 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
       >
         <AlertCircle className="h-6 w-6" />
       </div>
-      <h3 className="text-foreground text-base sm:text-lg font-semibold tracking-tight">{title}</h3>
-      <p className="text-muted-foreground mt-1.5 max-w-sm text-xs sm:text-sm leading-relaxed">{message}</p>
+      <h3 className="text-foreground text-base font-semibold tracking-tight sm:text-lg">{title}</h3>
+      <p className="text-muted-foreground mt-1.5 max-w-sm text-xs leading-relaxed sm:text-sm">
+        {message}
+      </p>
       {onRetry && (
         <div className="mt-5">
           <Button variant="outline" size="sm" onClick={onRetry} isLoading={isRetrying}>

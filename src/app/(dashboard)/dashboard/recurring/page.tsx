@@ -103,12 +103,12 @@ export default function RecurringBillingPage() {
               <Repeat className="h-5 w-5" />
             </div>
             <div>
-              <h1 className="text-foreground text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight">
+              <h1 className="text-foreground text-xl font-bold tracking-tight sm:text-2xl lg:text-3xl">
                 Recurring & Subscriptions
               </h1>
             </div>
           </div>
-          <p className="text-muted-foreground mt-1 text-xs sm:text-sm leading-relaxed">
+          <p className="text-muted-foreground mt-1 text-xs leading-relaxed sm:text-sm">
             Autonomous client billing engines, cadence schedulers, and real-time retainer hour
             burn-downs.
           </p>

@@ -270,7 +270,7 @@ export default function InvoicesDashboardPage() {
                     Live Engine
                   </span>
                 </div>
-                <p className="text-muted-foreground mt-0.5 text-xs sm:text-sm leading-relaxed">
+                <p className="text-muted-foreground mt-0.5 text-xs leading-relaxed sm:text-sm">
                   {organizationName || "Operations Command"} • Multi-tenant billing, aging radar
                   &amp; cash flow reconciliation
                 </p>
@@ -454,9 +454,7 @@ export default function InvoicesDashboardPage() {
                     : "0.00"}
                 </p>
                 <div className="text-muted-foreground mt-1 flex flex-wrap items-center gap-1 text-[10px] sm:gap-1.5 sm:text-[11px]">
-                  <span className="font-bold text-amber-600 dark:text-amber-400">
-                    94.6%
-                  </span>
+                  <span className="font-bold text-amber-600 dark:text-amber-400">94.6%</span>
                   <span>•</span>
                   <span>{stats?.counts.pending ?? 0} active</span>
                 </div>

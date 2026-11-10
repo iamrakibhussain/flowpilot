@@ -297,7 +297,7 @@ export default function CustomersDirectoryPage() {
               Linear Precision
             </span>
           </div>
-          <p className="text-muted-foreground mt-1 text-xs sm:text-sm leading-relaxed">
+          <p className="text-muted-foreground mt-1 text-xs leading-relaxed sm:text-sm">
             Unified multi-tenant client dossiers, operational engagements, and reconciled Lifetime
             Values for <strong className="text-foreground font-semibold">{organizationName}</strong>
             .

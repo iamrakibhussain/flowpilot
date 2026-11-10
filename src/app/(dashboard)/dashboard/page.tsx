@@ -282,7 +282,7 @@ export default function DashboardOverviewPage() {
               Live Hub
             </span>
           </div>
-          <p className="text-muted-foreground mt-1 text-xs sm:text-sm leading-relaxed">
+          <p className="text-muted-foreground mt-1 text-xs leading-relaxed sm:text-sm">
             Operations overview and real-time business activity for{" "}
             <span className="text-foreground font-semibold">{organizationName}</span>
           </p>
@@ -686,9 +686,7 @@ export default function DashboardOverviewPage() {
 
               {/* Client Avatar Stack */}
               {clientCount === 0 ? (
-                <span className="text-muted-foreground text-[10px] font-medium">
-                  0 accounts
-                </span>
+                <span className="text-muted-foreground text-[10px] font-medium">0 accounts</span>
               ) : (
                 <div className="flex -space-x-1.5">
                   {(recentClientInitials.length > 0 ? recentClientInitials : ["C"])

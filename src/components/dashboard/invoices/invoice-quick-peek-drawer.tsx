@@ -161,21 +161,21 @@ ${invoice.items.map((it) => `• ${it.description} — ${it.quantity}x @ $${it.u
 
             <div className="flex items-center gap-2.5">
               {isPaid ? (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-700 dark:text-emerald-400 shadow-2xs">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-700 shadow-2xs dark:text-emerald-400">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                   Paid & Settled
                 </span>
               ) : isOverdue ? (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-rose-500/25 bg-rose-500/10 px-2.5 py-1 text-xs font-bold text-rose-700 dark:text-rose-400 shadow-2xs">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-rose-500/25 bg-rose-500/10 px-2.5 py-1 text-xs font-bold text-rose-700 shadow-2xs dark:text-rose-400">
                   <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-rose-500" />
                   Overdue ({invoice.daysOverdue}d)
                 </span>
               ) : isCancelled ? (
-                <span className="inline-flex items-center rounded-full border border-border bg-muted/60 px-2.5 py-1 text-xs font-semibold text-muted-foreground line-through">
+                <span className="border-border bg-muted/60 text-muted-foreground inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold line-through">
                   Void / Cancelled
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/25 bg-amber-500/10 px-2.5 py-1 text-xs font-bold text-amber-700 dark:text-amber-400 shadow-2xs">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/25 bg-amber-500/10 px-2.5 py-1 text-xs font-bold text-amber-700 shadow-2xs dark:text-amber-400">
                   <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
                   Pending Payment
                 </span>
@@ -267,16 +267,16 @@ ${invoice.items.map((it) => `• ${it.description} — ${it.quantity}x @ $${it.u
               <Button
                 variant="outline"
                 onClick={() => onOpenPrintModal(invoice)}
-                className="cursor-pointer gap-1.5 rounded-xl border-border/80 text-xs font-semibold text-foreground shadow-2xs hover:bg-muted"
+                className="border-border/80 text-foreground hover:bg-muted cursor-pointer gap-1.5 rounded-xl text-xs font-semibold shadow-2xs"
               >
-                <Printer className="h-3.5 w-3.5 text-muted-foreground" />
+                <Printer className="text-muted-foreground h-3.5 w-3.5" />
                 <span>Print / PDF</span>
               </Button>
 
               <Button
                 variant="outline"
                 onClick={handleCopySummary}
-                className="cursor-pointer gap-1.5 rounded-xl border-border/80 text-xs font-semibold text-foreground shadow-2xs hover:bg-muted"
+                className="border-border/80 text-foreground hover:bg-muted cursor-pointer gap-1.5 rounded-xl text-xs font-semibold shadow-2xs"
               >
                 {copiedSummary ? (
                   <>
@@ -285,7 +285,7 @@ ${invoice.items.map((it) => `• ${it.description} — ${it.quantity}x @ $${it.u
                   </>
                 ) : (
                   <>
-                    <Copy className="h-3.5 w-3.5 text-muted-foreground" />
+                    <Copy className="text-muted-foreground h-3.5 w-3.5" />
                     <span>Summary</span>
                   </>
                 )}
@@ -325,7 +325,7 @@ ${invoice.items.map((it) => `• ${it.description} — ${it.quantity}x @ $${it.u
             {/* Hosted Client Checkout Portal (Live Simulator Card) */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold tracking-wider text-muted-foreground uppercase">
+                <span className="text-muted-foreground text-[11px] font-bold tracking-wider uppercase">
                   Hosted Client Checkout Portal
                 </span>
                 <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:border dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-300">
@@ -334,13 +334,13 @@ ${invoice.items.map((it) => `• ${it.description} — ${it.quantity}x @ $${it.u
                 </span>
               </div>
 
-              <div className="rounded-2xl border border-border/80 bg-muted/30 p-4 text-foreground shadow-2xs">
+              <div className="border-border/80 bg-muted/30 text-foreground rounded-2xl border p-4 shadow-2xs">
                 <div className="flex items-center justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="truncate font-mono text-xs font-semibold text-foreground">
+                    <p className="text-foreground truncate font-mono text-xs font-semibold">
                       /pay/[token] • Multi-Tenant Online Settlement
                     </p>
-                    <p className="text-[10px] text-muted-foreground">
+                    <p className="text-muted-foreground text-[10px]">
                       Zero-friction client checkout with WhatsApp, Email & dynamic QR code
                     </p>
                   </div>
@@ -365,7 +365,7 @@ ${invoice.items.map((it) => `• ${it.description} — ${it.quantity}x @ $${it.u
               <span className="text-muted-foreground text-[11px] font-bold tracking-wider uppercase">
                 Client Dossier
               </span>
-              <Card className="border-border/80 bg-card p-4.5 shadow-2xs transition-colors hover:border-border rounded-2xl border">
+              <Card className="border-border/80 bg-card hover:border-border rounded-2xl border p-4.5 shadow-2xs transition-colors">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-100 to-indigo-100 text-sm font-bold text-blue-700 ring-1 ring-blue-500/20 dark:from-blue-950 dark:to-indigo-950 dark:text-blue-300">
@@ -384,7 +384,9 @@ ${invoice.items.map((it) => `• ${it.description} — ${it.quantity}x @ $${it.u
                           {invoice.customerCompany}
                         </p>
                       )}
-                      <p className="text-muted-foreground truncate text-xs">{invoice.customerEmail}</p>
+                      <p className="text-muted-foreground truncate text-xs">
+                        {invoice.customerEmail}
+                      </p>
                     </div>
                   </div>
 
@@ -406,7 +408,7 @@ ${invoice.items.map((it) => `• ${it.description} — ${it.quantity}x @ $${it.u
               </span>
               <div className="border-border/80 bg-card overflow-hidden rounded-2xl border shadow-2xs">
                 <table className="w-full text-left text-xs">
-                  <thead className="border-border/60 bg-muted/40 text-muted-foreground border-b text-[10px] sm:text-xs font-semibold tracking-wider uppercase">
+                  <thead className="border-border/60 bg-muted/40 text-muted-foreground border-b text-[10px] font-semibold tracking-wider uppercase sm:text-xs">
                     <tr>
                       <th className="px-5 py-3">Item Description</th>
                       <th className="px-3 py-3 text-center">Qty</th>
@@ -414,13 +416,15 @@ ${invoice.items.map((it) => `• ${it.description} — ${it.quantity}x @ $${it.u
                       <th className="px-5 py-3 text-right">Line Total</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-border/40 divide-y text-foreground">
+                  <tbody className="divide-border/40 text-foreground divide-y">
                     {invoice.items.map((it, idx) => (
                       <tr key={it.id || idx} className="hover:bg-muted/30 transition-colors">
                         <td className="text-foreground px-5 py-3.5 font-semibold">
                           {it.description}
                         </td>
-                        <td className="text-muted-foreground px-3 py-3.5 text-center">{it.quantity}</td>
+                        <td className="text-muted-foreground px-3 py-3.5 text-center">
+                          {it.quantity}
+                        </td>
                         <td className="text-muted-foreground px-4 py-3.5 text-right font-mono">
                           ${it.unitPrice.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                         </td>
@@ -578,7 +582,7 @@ ${invoice.items.map((it) => `• ${it.description} — ${it.quantity}x @ $${it.u
                         size="sm"
                         variant="outline"
                         onClick={() => setIsConfirmingCancel(false)}
-                        className="cursor-pointer rounded-xl border-border/80 text-xs font-semibold text-foreground hover:bg-muted"
+                        className="border-border/80 text-foreground hover:bg-muted cursor-pointer rounded-xl text-xs font-semibold"
                       >
                         Cancel
                       </Button>
@@ -589,7 +593,7 @@ ${invoice.items.map((it) => `• ${it.description} — ${it.quantity}x @ $${it.u
                     type="button"
                     variant="ghost"
                     onClick={() => setIsConfirmingCancel(true)}
-                    className="cursor-pointer text-xs text-muted-foreground hover:bg-rose-500/10 hover:text-rose-600 dark:hover:text-rose-400"
+                    className="text-muted-foreground cursor-pointer text-xs hover:bg-rose-500/10 hover:text-rose-600 dark:hover:text-rose-400"
                   >
                     <Ban className="mr-1.5 h-3.5 w-3.5" />
                     <span>Void / Cancel Invoice</span>

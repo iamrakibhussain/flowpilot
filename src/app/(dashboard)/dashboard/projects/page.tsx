@@ -109,7 +109,7 @@ export default function ProjectsPage() {
               Live Workspace
             </span>
           </div>
-          <p className="text-muted-foreground mt-1 text-xs sm:text-sm leading-relaxed">
+          <p className="text-muted-foreground mt-1 text-xs leading-relaxed sm:text-sm">
             Manage deliverables, assign team tasks, and organize client execution pipelines.
           </p>
         </div>

@@ -231,7 +231,7 @@ export default function QuotesPage() {
             <FileCheck2 className="h-6 w-6 text-blue-600 dark:text-blue-400" />
             Estimates & Client Proposals
           </h1>
-          <p className="text-muted-foreground mt-1 text-xs sm:text-sm leading-relaxed">
+          <p className="text-muted-foreground mt-1 text-xs leading-relaxed sm:text-sm">
             Create branded proposals, capture digital client signatures, and auto-convert to
             invoices.
           </p>
@@ -279,7 +279,7 @@ export default function QuotesPage() {
               </div>
             </div>
             <div className="mt-3">
-              <span className="text-xl font-bold tracking-tight tabular-nums text-emerald-600 sm:text-2xl dark:text-emerald-400">
+              <span className="text-xl font-bold tracking-tight text-emerald-600 tabular-nums sm:text-2xl dark:text-emerald-400">
                 $
                 {(stats?.acceptedValue || 0).toLocaleString("en-US", {
                   minimumFractionDigits: 2,

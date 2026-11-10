@@ -206,7 +206,7 @@ export default function ContractsPage() {
               ESIGN & UETA Active
             </span>
           </div>
-          <p className="text-muted-foreground mt-1 text-xs sm:text-sm leading-relaxed">
+          <p className="text-muted-foreground mt-1 text-xs leading-relaxed sm:text-sm">
             Draft, dispatch, and legally execute binding commercial agreements with cryptographic
             SHA-256 digital audit trails.
           </p>
@@ -235,7 +235,9 @@ export default function ContractsPage() {
             <span className="text-[11px] font-bold tracking-wider uppercase">Total Contracts</span>
             <FileSignature className="h-4 w-4 text-blue-500" />
           </div>
-          <p className="text-foreground mt-2 font-mono text-2xl font-bold tracking-tight tabular-nums">{totalContracts}</p>
+          <p className="text-foreground mt-2 font-mono text-2xl font-bold tracking-tight tabular-nums">
+            {totalContracts}
+          </p>
           <span className="text-muted-foreground text-[10px]">All legal documents</span>
         </div>
 
@@ -292,7 +294,9 @@ export default function ContractsPage() {
             <span className="text-[11px] font-bold tracking-wider uppercase">Finalized Sealed</span>
             <ShieldCheck className="h-4 w-4 text-indigo-500" />
           </div>
-          <p className="text-foreground mt-2 font-mono text-2xl font-bold tracking-tight tabular-nums">{finalizedCount}</p>
+          <p className="text-foreground mt-2 font-mono text-2xl font-bold tracking-tight tabular-nums">
+            {finalizedCount}
+          </p>
           <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
             SHA-256 tamper-proof active
           </span>
