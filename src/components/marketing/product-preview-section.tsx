@@ -280,7 +280,7 @@ export const ProductPreviewSection: React.FC = () => {
         {/* Section Header */}
         <div className="mx-auto max-w-3xl text-center">
           <div>
-            <div className="border-border/80 bg-background/80 text-foreground inline-flex max-w-full flex-wrap items-center justify-center gap-1.5 sm:gap-2 rounded-full border px-3 py-1 sm:px-4 sm:py-1.5 text-xs font-semibold shadow-xs backdrop-blur-md">
+            <div className="border-border/80 bg-background/80 text-foreground inline-flex max-w-full flex-wrap items-center justify-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold shadow-xs backdrop-blur-md sm:gap-2 sm:px-4 sm:py-1.5">
               <span className="relative flex h-2 w-2 shrink-0">
                 <span className="bg-primary absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" />
                 <span className="bg-primary relative inline-flex h-2 w-2 rounded-full" />
@@ -341,7 +341,7 @@ export const ProductPreviewSection: React.FC = () => {
                     transition={{ type: "spring", stiffness: 380, damping: 30, mass: 0.8 }}
                   />
                 )}
-                <span className="relative z-10 flex items-center gap-2 min-w-0">
+                <span className="relative z-10 flex min-w-0 items-center gap-2">
                   <Flame
                     className={`h-4 w-4 shrink-0 transition-transform duration-300 ${
                       realityMode === "chaos"
@@ -389,7 +389,7 @@ export const ProductPreviewSection: React.FC = () => {
                     transition={{ type: "spring", stiffness: 380, damping: 30, mass: 0.8 }}
                   />
                 )}
-                <span className="relative z-10 flex items-center gap-2 min-w-0">
+                <span className="relative z-10 flex min-w-0 items-center gap-2">
                   <Sparkles
                     className={`h-4 w-4 shrink-0 transition-transform duration-300 ${
                       realityMode === "calm"
@@ -418,8 +418,10 @@ export const ProductPreviewSection: React.FC = () => {
 
           {/* Operational Friction & Simulation Disclaimer */}
           <div className="flex flex-wrap items-center justify-center gap-2 text-xs">
-            <div className="border-border/80 bg-background/90 inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full border px-3 py-1 sm:px-4 sm:py-1.5 shadow-2xs backdrop-blur-md">
-              <span className="text-muted-foreground font-medium hidden min-[380px]:inline">Operational Friction:</span>
+            <div className="border-border/80 bg-background/90 inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full border px-3 py-1 shadow-2xs backdrop-blur-md sm:px-4 sm:py-1.5">
+              <span className="text-muted-foreground hidden font-medium min-[380px]:inline">
+                Operational Friction:
+              </span>
               <span
                 className={`flex items-center gap-1.5 font-mono font-bold ${
                   realityMode === "calm"
@@ -428,7 +430,7 @@ export const ProductPreviewSection: React.FC = () => {
                 }`}
               >
                 <span
-                  className={`h-2 w-2 rounded-full shrink-0 ${
+                  className={`h-2 w-2 shrink-0 rounded-full ${
                     realityMode === "calm"
                       ? "animate-pulse bg-emerald-500"
                       : "animate-ping bg-rose-500"
@@ -454,14 +456,14 @@ export const ProductPreviewSection: React.FC = () => {
         </div>
 
         {/* 2. DAY FLIGHT SCRUBBER TIMELINE */}
-        <div className="relative mt-8 overflow-hidden rounded-2xl border border-neutral-200/90 bg-neutral-100/70 p-3 sm:p-4 shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-neutral-900/70">
+        <div className="relative mt-8 overflow-hidden rounded-2xl border border-neutral-200/90 bg-neutral-100/70 p-3 shadow-sm backdrop-blur-xl sm:p-4 dark:border-white/10 dark:bg-neutral-900/70">
           {/* Connected Laser Track background line */}
           <div className="via-primary/30 pointer-events-none absolute top-[34px] right-8 left-8 hidden h-[2px] -translate-y-1/2 bg-gradient-to-r from-transparent to-transparent sm:block" />
 
           <div className="relative flex flex-col gap-3.5 sm:flex-row sm:items-center sm:justify-between">
             {/* Timeline Nodes */}
             <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-              <span className="text-muted-foreground flex items-center gap-1.5 pr-1 font-mono text-[11px] font-bold tracking-wider uppercase shrink-0">
+              <span className="text-muted-foreground flex shrink-0 items-center gap-1.5 pr-1 font-mono text-[11px] font-bold tracking-wider uppercase">
                 <Clock className="text-primary h-3.5 w-3.5" />
                 <span>Day Flight:</span>
               </span>
@@ -472,7 +474,7 @@ export const ProductPreviewSection: React.FC = () => {
                     key={item.time}
                     type="button"
                     onClick={() => handleSelectTimelineNode(idx)}
-                    className={`relative inline-flex items-center gap-2 rounded-xl px-2.5 py-1 sm:px-3 sm:py-1.5 text-xs font-semibold transition-colors duration-200 focus-visible:outline-hidden ${
+                    className={`relative inline-flex items-center gap-2 rounded-xl px-2.5 py-1 text-xs font-semibold transition-colors duration-200 focus-visible:outline-hidden sm:px-3 sm:py-1.5 ${
                       isSelected
                         ? "font-bold text-white dark:text-neutral-950"
                         : "text-muted-foreground hover:text-foreground hover:bg-neutral-200/60 dark:hover:bg-neutral-800/60"
@@ -501,11 +503,11 @@ export const ProductPreviewSection: React.FC = () => {
             </div>
 
             {/* Play/Pause Day Simulator & Reset Control */}
-            <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-2">
+            <div className="flex w-full items-center justify-between gap-2 sm:w-auto sm:justify-end">
               <button
                 type="button"
                 onClick={() => setIsAutoPlaying((prev) => !prev)}
-                className={`focus-visible:ring-primary inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 sm:px-3.5 text-xs font-semibold shadow-xs transition-all focus-visible:ring-2 focus-visible:outline-hidden ${
+                className={`focus-visible:ring-primary inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-xs font-semibold shadow-xs transition-all focus-visible:ring-2 focus-visible:outline-hidden sm:px-3.5 ${
                   isAutoPlaying
                     ? "border-emerald-500/60 bg-emerald-500/15 text-emerald-600 shadow-[0_0_15px_rgba(16,185,129,0.25)] ring-2 ring-emerald-500/30 dark:text-emerald-400"
                     : "border-border/80 bg-background text-foreground hover:bg-muted/70 hover:border-primary/40"
@@ -539,8 +541,8 @@ export const ProductPreviewSection: React.FC = () => {
           {/* Current Story Context Banner */}
           <div className="border-border/70 mt-3 flex flex-col justify-between gap-2 border-t pt-2.5 text-xs sm:flex-row sm:items-center">
             <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
-              <span className="text-foreground font-bold shrink-0">{activeDayPoint.title}:</span>
-              <span className="text-muted-foreground line-clamp-2 sm:line-clamp-none min-w-0 flex-1">
+              <span className="text-foreground shrink-0 font-bold">{activeDayPoint.title}:</span>
+              <span className="text-muted-foreground line-clamp-2 min-w-0 flex-1 sm:line-clamp-none">
                 {realityMode === "calm" ? activeDayPoint.calmSummary : activeDayPoint.chaosSummary}
               </span>
             </div>
@@ -580,7 +582,7 @@ export const ProductPreviewSection: React.FC = () => {
             <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent dark:via-white/25" />
 
             {/* Desktop Modern Classic Titlebar / Omnibar Chrome */}
-            <div className="flex flex-wrap items-center justify-between gap-2.5 sm:gap-3 border-b border-neutral-200/80 bg-neutral-100/80 px-3.5 py-2.5 backdrop-blur-xl sm:px-5 sm:py-3 dark:border-white/10 dark:bg-neutral-900/80">
+            <div className="flex flex-wrap items-center justify-between gap-2.5 border-b border-neutral-200/80 bg-neutral-100/80 px-3.5 py-2.5 backdrop-blur-xl sm:gap-3 sm:px-5 sm:py-3 dark:border-white/10 dark:bg-neutral-900/80">
               {/* Genuine Mac Traffic Light Controls with Specular Rims & Hover Glyphs */}
               <div className="flex shrink-0 items-center gap-2" aria-hidden="true">
                 <span className="group flex h-3 w-3 items-center justify-center rounded-full border border-[#e0443e] bg-[#ff5f56] shadow-[0_0_8px_rgba(255,95,86,0.6)]">
@@ -598,7 +600,7 @@ export const ProductPreviewSection: React.FC = () => {
               </div>
 
               {/* Secure App Omnibar / URL Capsule */}
-              <div className="flex w-full order-3 sm:order-2 sm:w-auto sm:flex-1 sm:max-w-md justify-center items-center gap-2 rounded-full border border-neutral-300/80 bg-white/90 px-3 py-1 text-xs shadow-inner sm:px-4 sm:py-1.5 dark:border-white/10 dark:bg-neutral-950/90">
+              <div className="order-3 flex w-full items-center justify-center gap-2 rounded-full border border-neutral-300/80 bg-white/90 px-3 py-1 text-xs shadow-inner sm:order-2 sm:w-auto sm:max-w-md sm:flex-1 sm:px-4 sm:py-1.5 dark:border-white/10 dark:bg-neutral-950/90">
                 {realityMode === "calm" ? (
                   <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
                     <Lock className="h-3 w-3 shrink-0" />
@@ -635,9 +637,9 @@ export const ProductPreviewSection: React.FC = () => {
               </div>
 
               {/* Status Pod with Live Latency Indicator */}
-              <div className="flex shrink-0 order-2 sm:order-3 items-center gap-2">
+              <div className="order-2 flex shrink-0 items-center gap-2 sm:order-3">
                 <div
-                  className={`group/pod flex items-center gap-2 rounded-full border px-2.5 py-1 sm:px-3 text-[11px] font-medium shadow-2xs transition-all duration-300 hover:scale-[1.03] ${
+                  className={`group/pod flex items-center gap-2 rounded-full border px-2.5 py-1 text-[11px] font-medium shadow-2xs transition-all duration-300 hover:scale-[1.03] sm:px-3 ${
                     realityMode === "calm"
                       ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 hover:border-emerald-500/50 hover:shadow-[0_0_15px_rgba(16,185,129,0.25)] dark:text-emerald-300"
                       : "border-rose-500/40 bg-rose-500/15 text-rose-700 hover:border-rose-500/60 hover:shadow-[0_0_18px_rgba(244,63,94,0.3)] dark:text-rose-300"
@@ -961,21 +963,21 @@ export const ProductPreviewSection: React.FC = () => {
                           </div>
 
                           {/* Meeting Card 1 */}
-                          <div className="group relative overflow-hidden rounded-2xl border border-neutral-200/90 bg-gradient-to-br from-white via-neutral-50/90 to-neutral-100/60 p-3.5 sm:p-4.5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.008] hover:border-blue-500/40 hover:shadow-[0_16px_40px_rgba(37,99,235,0.12)] dark:border-white/10 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] dark:hover:border-blue-500/40">
+                          <div className="group relative overflow-hidden rounded-2xl border border-neutral-200/90 bg-gradient-to-br from-white via-neutral-50/90 to-neutral-100/60 p-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.008] hover:border-blue-500/40 hover:shadow-[0_16px_40px_rgba(37,99,235,0.12)] sm:p-4.5 dark:border-white/10 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] dark:hover:border-blue-500/40">
                             {/* Specular Top Rim */}
                             <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-blue-400/50 to-transparent" />
 
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                               <div className="flex min-w-0 flex-1 items-center gap-3 sm:gap-3.5">
-                                <div className="text-foreground flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl border border-neutral-300/80 bg-gradient-to-br from-neutral-100 to-neutral-200 font-mono text-xs font-bold shadow-xs dark:border-white/10 dark:from-neutral-800 dark:to-neutral-900">
+                                <div className="text-foreground flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-neutral-300/80 bg-gradient-to-br from-neutral-100 to-neutral-200 font-mono text-xs font-bold shadow-xs sm:h-11 sm:w-11 dark:border-white/10 dark:from-neutral-800 dark:to-neutral-900">
                                   09:00
                                 </div>
                                 <div className="min-w-0 flex-1">
                                   <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                                    <h4 className="text-sm font-bold tracking-tight truncate">
+                                    <h4 className="truncate text-sm font-bold tracking-tight">
                                       Enterprise Strategic Briefing
                                     </h4>
-                                    <span className="shrink-0 flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                                    <span className="flex shrink-0 items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
                                       <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
                                       Confirmed
                                     </span>
@@ -1024,7 +1026,7 @@ export const ProductPreviewSection: React.FC = () => {
                                   : "border-blue-500/50 bg-gradient-to-r from-blue-500/15 via-cyan-500/10 to-blue-500/15 text-blue-800 shadow-[0_0_20px_rgba(59,130,246,0.18)] ring-1 ring-blue-500/30 dark:text-blue-300"
                             }`}
                           >
-                            <div className="flex min-w-0 flex-1 items-center gap-2.5 sm:gap-3 text-xs font-semibold">
+                            <div className="flex min-w-0 flex-1 items-center gap-2.5 text-xs font-semibold sm:gap-3">
                               {bufferMinutes === 0 ? (
                                 <AlertTriangle className="h-4 w-4 shrink-0 animate-bounce text-rose-500" />
                               ) : (
@@ -1049,13 +1051,13 @@ export const ProductPreviewSection: React.FC = () => {
                           </motion.div>
 
                           {/* Meeting Card 2 (Dynamically shifts start time based on buffer) */}
-                          <div className="group relative overflow-hidden rounded-2xl border border-neutral-200/90 bg-gradient-to-br from-white via-neutral-50/90 to-neutral-100/60 p-3.5 sm:p-4.5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.008] hover:border-emerald-500/40 hover:shadow-[0_16px_40px_rgba(16,185,129,0.12)] dark:border-white/10 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] dark:hover:border-emerald-500/40">
+                          <div className="group relative overflow-hidden rounded-2xl border border-neutral-200/90 bg-gradient-to-br from-white via-neutral-50/90 to-neutral-100/60 p-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.008] hover:border-emerald-500/40 hover:shadow-[0_16px_40px_rgba(16,185,129,0.12)] sm:p-4.5 dark:border-white/10 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] dark:hover:border-emerald-500/40">
                             {/* Specular Top Rim */}
                             <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent" />
 
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                               <div className="flex min-w-0 flex-1 items-center gap-3 sm:gap-3.5">
-                                <div className="text-foreground flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl border border-neutral-300/80 bg-gradient-to-br from-neutral-100 to-neutral-200 font-mono text-xs font-bold shadow-xs dark:border-white/10 dark:from-neutral-800 dark:to-neutral-900">
+                                <div className="text-foreground flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-neutral-300/80 bg-gradient-to-br from-neutral-100 to-neutral-200 font-mono text-xs font-bold shadow-xs sm:h-11 sm:w-11 dark:border-white/10 dark:from-neutral-800 dark:to-neutral-900">
                                   {bufferMinutes === 0
                                     ? "10:00"
                                     : bufferMinutes === 15
@@ -1064,14 +1066,14 @@ export const ProductPreviewSection: React.FC = () => {
                                 </div>
                                 <div className="min-w-0 flex-1">
                                   <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                                    <h4 className="text-sm font-bold tracking-tight truncate">
+                                    <h4 className="truncate text-sm font-bold tracking-tight">
                                       Milestone Architecture Delivery
                                     </h4>
                                     <span className="border-border/80 bg-muted/80 text-muted-foreground shrink-0 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold">
                                       Protected in Queue
                                     </span>
                                   </div>
-                                  <p className="text-muted-foreground mt-1 text-xs truncate">
+                                  <p className="text-muted-foreground mt-1 truncate text-xs">
                                     Client:{" "}
                                     <strong className="text-foreground font-semibold">
                                       Meridian Health Group
@@ -1096,8 +1098,8 @@ export const ProductPreviewSection: React.FC = () => {
                         /* SCHEDULING CHAOS VIEW */
                         <div className="space-y-4">
                           {/* Disconnected Tool Strip */}
-                          <div className="flex w-full max-w-full items-center gap-2 overflow-x-auto rounded-xl border border-rose-500/30 bg-rose-500/[0.04] p-1.5 backdrop-blur-md scrollbar-none">
-                            <div className="flex items-center gap-1.5 text-xs font-semibold shrink-0">
+                          <div className="flex w-full max-w-full scrollbar-none items-center gap-2 overflow-x-auto rounded-xl border border-rose-500/30 bg-rose-500/[0.04] p-1.5 backdrop-blur-md">
+                            <div className="flex shrink-0 items-center gap-1.5 text-xs font-semibold">
                               <div className="flex items-center gap-1.5 rounded-lg border border-rose-500/50 bg-white/95 px-3 py-1.5 text-xs font-bold text-rose-600 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:bg-neutral-900 dark:text-rose-400">
                                 <AlertTriangle className="h-3.5 w-3.5 animate-pulse text-rose-500" />
                                 <span>Calendly (Overlap Error)</span>
@@ -1118,7 +1120,7 @@ export const ProductPreviewSection: React.FC = () => {
                           </div>
 
                           {/* Failure Alert Card */}
-                          <div className="group relative overflow-hidden rounded-2xl border border-rose-500/50 bg-gradient-to-br from-white via-rose-50/40 to-neutral-100/70 p-3.5 sm:p-4.5 shadow-[0_4px_25px_rgba(244,63,94,0.1),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.008] hover:border-rose-500/70 hover:shadow-[0_20px_45px_rgba(244,63,94,0.22)] dark:border-rose-500/40 dark:from-neutral-900/90 dark:via-rose-950/30 dark:to-neutral-950/90 dark:shadow-[0_4px_30px_rgba(244,63,94,0.15),inset_0_1px_0_rgba(255,255,255,0.08)]">
+                          <div className="group relative overflow-hidden rounded-2xl border border-rose-500/50 bg-gradient-to-br from-white via-rose-50/40 to-neutral-100/70 p-3.5 shadow-[0_4px_25px_rgba(244,63,94,0.1),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.008] hover:border-rose-500/70 hover:shadow-[0_20px_45px_rgba(244,63,94,0.22)] sm:p-4.5 dark:border-rose-500/40 dark:from-neutral-900/90 dark:via-rose-950/30 dark:to-neutral-950/90 dark:shadow-[0_4px_30px_rgba(244,63,94,0.15),inset_0_1px_0_rgba(255,255,255,0.08)]">
                             <div className="pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-rose-500 to-transparent" />
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                               <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-3.5">
@@ -1127,14 +1129,14 @@ export const ProductPreviewSection: React.FC = () => {
                                 </div>
                                 <div className="min-w-0 flex-1">
                                   <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                                    <h4 className="text-sm font-extrabold text-neutral-900 sm:text-base dark:text-white truncate">
+                                    <h4 className="truncate text-sm font-extrabold text-neutral-900 sm:text-base dark:text-white">
                                       Scheduling Stack Failure: 0m Buffer Collision
                                     </h4>
                                     <span className="shrink-0 rounded-md border border-rose-500/30 bg-rose-500/15 px-2 py-0.5 font-mono text-[10px] font-bold text-rose-600 dark:text-rose-400">
                                       45m Overlap
                                     </span>
                                   </div>
-                                  <p className="mt-1 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
+                                  <p className="mt-1 text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
                                     External Calendly allowed an unbuffered client booking directly
                                     during Sarah&apos;s review. Both clients were sent active Zoom
                                     links for overlapping times.
@@ -1151,23 +1153,23 @@ export const ProductPreviewSection: React.FC = () => {
                           </div>
 
                           {/* Meeting Card 1 */}
-                          <div className="group relative overflow-hidden rounded-2xl border border-rose-500/35 bg-gradient-to-br from-white via-neutral-50/90 to-rose-50/30 p-3.5 sm:p-4.5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.008] hover:border-rose-500/60 hover:shadow-[0_16px_40px_rgba(244,63,94,0.18)] dark:border-rose-500/30 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)]">
+                          <div className="group relative overflow-hidden rounded-2xl border border-rose-500/35 bg-gradient-to-br from-white via-neutral-50/90 to-rose-50/30 p-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.008] hover:border-rose-500/60 hover:shadow-[0_16px_40px_rgba(244,63,94,0.18)] sm:p-4.5 dark:border-rose-500/30 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)]">
                             <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-rose-500/40 to-transparent" />
                             <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
                               <div className="flex min-w-0 flex-1 items-center gap-3 sm:gap-3.5">
-                                <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-600 shadow-2xs dark:text-rose-400">
+                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-600 shadow-2xs sm:h-11 sm:w-11 dark:text-rose-400">
                                   <Calendar className="h-5 w-5" />
                                 </div>
                                 <div className="min-w-0 flex-1">
                                   <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                                    <h4 className="text-sm font-bold tracking-tight text-neutral-900 dark:text-white truncate">
+                                    <h4 className="truncate text-sm font-bold tracking-tight text-neutral-900 dark:text-white">
                                       Apex Solutions &bull; Strategic Briefing
                                     </h4>
                                     <span className="shrink-0 rounded-full border border-amber-500/30 bg-amber-500/15 px-2.5 py-0.5 text-[10px] font-bold text-amber-700 dark:text-amber-300">
                                       Booked via Calendly
                                     </span>
                                   </div>
-                                  <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400 truncate">
+                                  <p className="mt-1 truncate text-xs text-neutral-500 dark:text-neutral-400">
                                     Lead: Sarah Chen &bull; Booked via Calendly URL &bull; 45 min
                                   </p>
                                 </div>
@@ -1186,7 +1188,7 @@ export const ProductPreviewSection: React.FC = () => {
                           </div>
 
                           {/* Collision Warning Ribbon */}
-                          <div className="group relative overflow-hidden rounded-xl border border-rose-500/80 bg-gradient-to-r from-rose-600 via-rose-500 to-amber-600 p-3 sm:p-3.5 text-xs font-bold text-white shadow-[0_6px_25px_rgba(244,63,94,0.35)] transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_10px_35px_rgba(244,63,94,0.45)]">
+                          <div className="group relative overflow-hidden rounded-xl border border-rose-500/80 bg-gradient-to-r from-rose-600 via-rose-500 to-amber-600 p-3 text-xs font-bold text-white shadow-[0_6px_25px_rgba(244,63,94,0.35)] transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_10px_35px_rgba(244,63,94,0.45)] sm:p-3.5">
                             <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
                             <div className="relative z-10 flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
                               <div className="flex min-w-0 flex-1 items-center gap-2">
@@ -1195,30 +1197,30 @@ export const ProductPreviewSection: React.FC = () => {
                                   COLLISION: Meeting 2 was scheduled at 10:15 AM (0m Buffer Overlap)
                                 </span>
                               </div>
-                              <span className="shrink-0 self-start sm:self-auto rounded-md border border-white/30 bg-black/30 px-2.5 py-0.5 font-mono text-[10.5px] font-extrabold tracking-wider text-amber-200 uppercase backdrop-blur-xs">
+                              <span className="shrink-0 self-start rounded-md border border-white/30 bg-black/30 px-2.5 py-0.5 font-mono text-[10.5px] font-extrabold tracking-wider text-amber-200 uppercase backdrop-blur-xs sm:self-auto">
                                 45 min Overlap
                               </span>
                             </div>
                           </div>
 
                           {/* Meeting Card 2 */}
-                          <div className="group relative overflow-hidden rounded-2xl border border-rose-500/40 bg-gradient-to-br from-white via-neutral-50/90 to-rose-50/30 p-3.5 sm:p-4.5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.008] hover:border-rose-500/60 hover:shadow-[0_16px_40px_rgba(244,63,94,0.18)] dark:border-rose-500/30 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)]">
+                          <div className="group relative overflow-hidden rounded-2xl border border-rose-500/40 bg-gradient-to-br from-white via-neutral-50/90 to-rose-50/30 p-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.008] hover:border-rose-500/60 hover:shadow-[0_16px_40px_rgba(244,63,94,0.18)] sm:p-4.5 dark:border-rose-500/30 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)]">
                             <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-rose-500/40 to-transparent" />
                             <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
                               <div className="flex min-w-0 flex-1 items-center gap-3 sm:gap-3.5">
-                                <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-600 shadow-2xs dark:text-rose-400">
+                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-600 shadow-2xs sm:h-11 sm:w-11 dark:text-rose-400">
                                   <Calendar className="h-5 w-5" />
                                 </div>
                                 <div className="min-w-0 flex-1">
                                   <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                                    <h4 className="text-sm font-bold tracking-tight text-neutral-900 dark:text-white truncate">
+                                    <h4 className="truncate text-sm font-bold tracking-tight text-neutral-900 dark:text-white">
                                       Meridian Health &bull; Architecture Milestone Review
                                     </h4>
                                     <span className="shrink-0 rounded-full border border-rose-500/30 bg-rose-500/15 px-2.5 py-0.5 text-[10px] font-bold text-rose-700 dark:text-rose-300">
                                       Google Calendar Direct
                                     </span>
                                   </div>
-                                  <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400 truncate">
+                                  <p className="mt-1 truncate text-xs text-neutral-500 dark:text-neutral-400">
                                     Lead: Sarah Chen &bull; Google Calendar Direct Invite &bull; 45
                                     min
                                   </p>
@@ -1270,7 +1272,7 @@ export const ProductPreviewSection: React.FC = () => {
                             </div>
 
                             {/* Client Selector Segmented Pills */}
-                            <div className="border-border/80 bg-muted/60 relative inline-flex max-w-full overflow-x-auto rounded-xl border p-1 shadow-2xs scrollbar-none">
+                            <div className="border-border/80 bg-muted/60 relative inline-flex max-w-full scrollbar-none overflow-x-auto rounded-xl border p-1 shadow-2xs">
                               {(["apex", "meridian", "kinetic"] as const).map((key) => {
                                 const labels = {
                                   apex: "Apex Solutions",
@@ -1283,7 +1285,7 @@ export const ProductPreviewSection: React.FC = () => {
                                     key={key}
                                     type="button"
                                     onClick={() => setSelectedClient(key)}
-                                    className={`relative z-10 shrink-0 rounded-lg px-2.5 sm:px-3 py-1 text-xs font-semibold transition-colors duration-150 focus-visible:outline-hidden ${
+                                    className={`relative z-10 shrink-0 rounded-lg px-2.5 py-1 text-xs font-semibold transition-colors duration-150 focus-visible:outline-hidden sm:px-3 ${
                                       isSel
                                         ? "font-bold text-white dark:text-neutral-950"
                                         : "text-muted-foreground hover:text-foreground"
@@ -1306,7 +1308,7 @@ export const ProductPreviewSection: React.FC = () => {
                           {/* Dossier Grid */}
                           <div className="grid grid-cols-1 gap-3.5 sm:gap-4 md:grid-cols-3">
                             {/* Circular Health Dial */}
-                            <div className="group relative flex flex-col items-center justify-between overflow-hidden rounded-2xl border border-neutral-200/90 bg-gradient-to-br from-white via-neutral-50/90 to-neutral-100/60 p-3.5 sm:p-4.5 text-center shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1.5 hover:scale-[1.015] hover:border-emerald-500/40 hover:shadow-[0_16px_40px_rgba(16,185,129,0.14)] dark:border-white/10 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] dark:hover:border-emerald-500/40">
+                            <div className="group relative flex flex-col items-center justify-between overflow-hidden rounded-2xl border border-neutral-200/90 bg-gradient-to-br from-white via-neutral-50/90 to-neutral-100/60 p-3.5 text-center shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1.5 hover:scale-[1.015] hover:border-emerald-500/40 hover:shadow-[0_16px_40px_rgba(16,185,129,0.14)] sm:p-4.5 dark:border-white/10 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] dark:hover:border-emerald-500/40">
                               <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent" />
 
                               <p className="text-muted-foreground font-mono text-[10.5px] font-bold tracking-wider uppercase">
@@ -1365,7 +1367,7 @@ export const ProductPreviewSection: React.FC = () => {
                             </div>
 
                             {/* 6-Month Retainer Growth */}
-                            <div className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-neutral-200/90 bg-gradient-to-br from-white via-neutral-50/90 to-neutral-100/60 p-3.5 sm:p-4.5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1.5 hover:scale-[1.015] hover:border-blue-500/40 hover:shadow-[0_16px_40px_rgba(37,99,235,0.14)] dark:border-white/10 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] dark:hover:border-blue-500/40">
+                            <div className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-neutral-200/90 bg-gradient-to-br from-white via-neutral-50/90 to-neutral-100/60 p-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1.5 hover:scale-[1.015] hover:border-blue-500/40 hover:shadow-[0_16px_40px_rgba(37,99,235,0.14)] sm:p-4.5 dark:border-white/10 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] dark:hover:border-blue-500/40">
                               <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
 
                               <div>
@@ -1437,7 +1439,7 @@ export const ProductPreviewSection: React.FC = () => {
                             </div>
 
                             {/* Contract Tier & Governance */}
-                            <div className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-neutral-200/90 bg-gradient-to-br from-white via-neutral-50/90 to-neutral-100/60 p-3.5 sm:p-4.5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1.5 hover:scale-[1.015] hover:border-purple-500/40 hover:shadow-[0_16px_40px_rgba(168,85,247,0.14)] dark:border-white/10 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] dark:hover:border-purple-500/40">
+                            <div className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-neutral-200/90 bg-gradient-to-br from-white via-neutral-50/90 to-neutral-100/60 p-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1.5 hover:scale-[1.015] hover:border-purple-500/40 hover:shadow-[0_16px_40px_rgba(168,85,247,0.14)] sm:p-4.5 dark:border-white/10 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] dark:hover:border-purple-500/40">
                               <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-purple-500/40 to-transparent" />
 
                               <div>
@@ -1497,8 +1499,8 @@ export const ProductPreviewSection: React.FC = () => {
                         /* CRM CHAOS VIEW */
                         <div className="space-y-4">
                           {/* Disconnected Tool Strip */}
-                          <div className="flex w-full max-w-full items-center gap-2 overflow-x-auto rounded-xl border border-rose-500/30 bg-rose-500/[0.04] p-1.5 backdrop-blur-md scrollbar-none">
-                            <div className="flex items-center gap-1.5 text-xs font-semibold shrink-0">
+                          <div className="flex w-full max-w-full scrollbar-none items-center gap-2 overflow-x-auto rounded-xl border border-rose-500/30 bg-rose-500/[0.04] p-1.5 backdrop-blur-md">
+                            <div className="flex shrink-0 items-center gap-1.5 text-xs font-semibold">
                               <div className="flex items-center gap-1.5 rounded-lg border border-rose-500/50 bg-white/95 px-3 py-1.5 text-xs font-bold text-rose-600 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:bg-neutral-900 dark:text-rose-400">
                                 <FileSpreadsheet className="h-3.5 w-3.5 animate-pulse text-rose-500" />
                                 <span>Google Sheets (v4_FINAL_notes.xlsx)</span>
@@ -1519,7 +1521,7 @@ export const ProductPreviewSection: React.FC = () => {
                           </div>
 
                           {/* Failure Alert Card */}
-                          <div className="group relative overflow-hidden rounded-2xl border border-rose-500/50 bg-gradient-to-br from-white via-rose-50/40 to-neutral-100/70 p-3.5 sm:p-4.5 shadow-[0_4px_25px_rgba(244,63,94,0.1),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.008] hover:border-rose-500/70 hover:shadow-[0_20px_45px_rgba(244,63,94,0.22)] dark:border-rose-500/40 dark:from-neutral-900/90 dark:via-rose-950/30 dark:to-neutral-950/90 dark:shadow-[0_4px_30px_rgba(244,63,94,0.15),inset_0_1px_0_rgba(255,255,255,0.08)]">
+                          <div className="group relative overflow-hidden rounded-2xl border border-rose-500/50 bg-gradient-to-br from-white via-rose-50/40 to-neutral-100/70 p-3.5 shadow-[0_4px_25px_rgba(244,63,94,0.1),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.008] hover:border-rose-500/70 hover:shadow-[0_20px_45px_rgba(244,63,94,0.22)] sm:p-4.5 dark:border-rose-500/40 dark:from-neutral-900/90 dark:via-rose-950/30 dark:to-neutral-950/90 dark:shadow-[0_4px_30px_rgba(244,63,94,0.15),inset_0_1px_0_rgba(255,255,255,0.08)]">
                             <div className="pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-rose-500 to-transparent" />
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                               <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-3.5">
@@ -1528,14 +1530,14 @@ export const ProductPreviewSection: React.FC = () => {
                                 </div>
                                 <div className="min-w-0 flex-1">
                                   <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                                    <h4 className="text-sm font-extrabold text-neutral-900 sm:text-base dark:text-white truncate">
+                                    <h4 className="truncate text-sm font-extrabold text-neutral-900 sm:text-base dark:text-white">
                                       Fragmented Client Memory: Scattered Across 4 Tools
                                     </h4>
                                     <span className="shrink-0 rounded-md border border-rose-500/30 bg-rose-500/15 px-2 py-0.5 font-mono text-[10px] font-bold text-rose-600 dark:text-rose-400">
                                       Zero Sync
                                     </span>
                                   </div>
-                                  <p className="mt-1 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
+                                  <p className="mt-1 text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
                                     Account leads cannot find the signed scope of work or latest
                                     hourly rate. Client notes live in personal Apple Notes, while
                                     billing deliverables remain untracked.
@@ -1552,11 +1554,11 @@ export const ProductPreviewSection: React.FC = () => {
 
                           {/* 2 Diagnostic Risk Cards */}
                           <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
-                            <div className="group relative overflow-hidden rounded-2xl border border-rose-500/35 bg-gradient-to-br from-white via-neutral-50/90 to-rose-50/30 p-3.5 sm:p-4.5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1.5 hover:scale-[1.015] hover:border-rose-500/60 hover:shadow-[0_16px_40px_rgba(244,63,94,0.18)] dark:border-rose-500/30 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)]">
+                            <div className="group relative overflow-hidden rounded-2xl border border-rose-500/35 bg-gradient-to-br from-white via-neutral-50/90 to-rose-50/30 p-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1.5 hover:scale-[1.015] hover:border-rose-500/60 hover:shadow-[0_16px_40px_rgba(244,63,94,0.18)] sm:p-4.5 dark:border-rose-500/30 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)]">
                               <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-rose-500/40 to-transparent" />
                               <div className="flex flex-wrap items-center justify-between gap-1.5 text-xs">
                                 <div className="flex min-w-0 flex-1 items-center gap-2">
-                                  <span className="font-bold text-neutral-900 dark:text-white truncate">
+                                  <span className="truncate font-bold text-neutral-900 dark:text-white">
                                     Spreadsheet Billing Error
                                   </span>
                                   <span className="shrink-0 rounded-full border border-rose-500/40 bg-rose-500/15 px-2 py-0.5 font-mono text-[10px] font-bold text-rose-600 dark:text-rose-400">
@@ -1567,7 +1569,7 @@ export const ProductPreviewSection: React.FC = () => {
                                   -$1,000 Loss
                                 </span>
                               </div>
-                              <p className="mt-2 text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                              <p className="mt-2 text-xs leading-relaxed text-neutral-600 dark:text-neutral-400">
                                 Cell C14 shows{" "}
                                 <code className="rounded bg-rose-500/10 px-1 py-0.5 font-mono font-bold text-rose-600 dark:text-rose-400">
                                   #REF!
@@ -1583,11 +1585,11 @@ export const ProductPreviewSection: React.FC = () => {
                               </div>
                             </div>
 
-                            <div className="group relative overflow-hidden rounded-2xl border border-rose-500/35 bg-gradient-to-br from-white via-neutral-50/90 to-rose-50/30 p-3.5 sm:p-4.5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1.5 hover:scale-[1.015] hover:border-rose-500/60 hover:shadow-[0_16px_40px_rgba(244,63,94,0.18)] dark:border-rose-500/30 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)]">
+                            <div className="group relative overflow-hidden rounded-2xl border border-rose-500/35 bg-gradient-to-br from-white via-neutral-50/90 to-rose-50/30 p-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1.5 hover:scale-[1.015] hover:border-rose-500/60 hover:shadow-[0_16px_40px_rgba(244,63,94,0.18)] sm:p-4.5 dark:border-rose-500/30 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)]">
                               <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-amber-500/40 to-transparent" />
                               <div className="flex flex-wrap items-center justify-between gap-1.5 text-xs">
                                 <div className="flex min-w-0 flex-1 items-center gap-2">
-                                  <span className="font-bold text-neutral-900 dark:text-white truncate">
+                                  <span className="truncate font-bold text-neutral-900 dark:text-white">
                                     Lost Meeting Context
                                   </span>
                                   <span className="shrink-0 rounded-full border border-amber-500/40 bg-amber-500/15 px-2 py-0.5 font-mono text-[10px] font-bold text-amber-600 dark:text-amber-400">
@@ -1598,7 +1600,7 @@ export const ProductPreviewSection: React.FC = () => {
                                   Blind Call
                                 </span>
                               </div>
-                              <p className="mt-2 text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                              <p className="mt-2 text-xs leading-relaxed text-neutral-600 dark:text-neutral-400">
                                 Sarah Chen joins consultation with zero briefing history. Alex Vance
                                 mentions previous email commitments that nobody on the team has
                                 logged.
@@ -1686,7 +1688,7 @@ export const ProductPreviewSection: React.FC = () => {
                           </div>
 
                           {/* Invoice Statement */}
-                          <div className="group relative overflow-hidden rounded-2xl border border-neutral-200/90 bg-gradient-to-br from-white via-neutral-50/90 to-neutral-100/60 p-4 sm:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.008] hover:border-amber-500/40 hover:shadow-[0_16px_40px_rgba(245,158,11,0.12)] dark:border-white/10 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] dark:hover:border-amber-500/40">
+                          <div className="group relative overflow-hidden rounded-2xl border border-neutral-200/90 bg-gradient-to-br from-white via-neutral-50/90 to-neutral-100/60 p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.008] hover:border-amber-500/40 hover:shadow-[0_16px_40px_rgba(245,158,11,0.12)] sm:p-5 dark:border-white/10 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] dark:hover:border-amber-500/40">
                             {/* Specular Top Rim */}
                             <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-amber-500/40 to-transparent" />
 
@@ -1696,10 +1698,10 @@ export const ProductPreviewSection: React.FC = () => {
                                   FP
                                 </div>
                                 <div className="min-w-0 flex-1">
-                                  <h4 className="text-sm font-bold tracking-tight truncate">
+                                  <h4 className="truncate text-sm font-bold tracking-tight">
                                     FlowPilot Statement #FP-10892
                                   </h4>
-                                  <p className="text-muted-foreground text-xs truncate">
+                                  <p className="text-muted-foreground truncate text-xs">
                                     Billed to:{" "}
                                     <strong className="text-foreground font-semibold">
                                       Apex Solutions Inc.
@@ -1709,11 +1711,11 @@ export const ProductPreviewSection: React.FC = () => {
                                 </div>
                               </div>
 
-                              <div className="text-left sm:text-right shrink-0">
+                              <div className="shrink-0 text-left sm:text-right">
                                 <p className="text-muted-foreground font-mono text-[10px] font-bold tracking-wider uppercase">
                                   Settlement Method
                                 </p>
-                                <p className="text-foreground flex items-center justify-start sm:justify-end gap-1 font-mono text-xs font-bold">
+                                <p className="text-foreground flex items-center justify-start gap-1 font-mono text-xs font-bold sm:justify-end">
                                   <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
                                   {currency} Stripe Connect
                                 </p>
@@ -1729,7 +1731,7 @@ export const ProductPreviewSection: React.FC = () => {
                               </div>
                               <div className="flex items-center justify-between gap-2 py-1.5">
                                 <div className="min-w-0 flex-1 pr-2">
-                                  <p className="text-foreground font-medium truncate">
+                                  <p className="text-foreground truncate font-medium">
                                     Monthly Strategic Advisory Retainer
                                   </p>
                                   <p className="text-muted-foreground font-mono text-[10px] sm:hidden">
@@ -1761,7 +1763,7 @@ export const ProductPreviewSection: React.FC = () => {
                               </div>
                               <div className="flex items-center justify-between gap-2 py-1.5">
                                 <div className="min-w-0 flex-1 pr-2">
-                                  <p className="text-foreground font-medium truncate">
+                                  <p className="text-foreground truncate font-medium">
                                     Dynamic Buffer Engine Protocol Module
                                   </p>
                                   <p className="text-muted-foreground font-mono text-[10px] sm:hidden">
@@ -1781,7 +1783,7 @@ export const ProductPreviewSection: React.FC = () => {
                               </div>
                               <div className="flex items-center justify-between gap-2 py-1.5">
                                 <div className="min-w-0 flex-1 pr-2">
-                                  <p className="text-foreground font-medium truncate">
+                                  <p className="text-foreground truncate font-medium">
                                     Multi-Tenant Scoped Workspace Governance
                                   </p>
                                   <p className="font-mono text-[10px] font-semibold text-emerald-600 sm:hidden dark:text-emerald-400">
@@ -1818,7 +1820,7 @@ export const ProductPreviewSection: React.FC = () => {
                               <button
                                 type="button"
                                 onClick={() => setInvoiceSettled((prev) => !prev)}
-                                className={`focus-visible:ring-primary relative inline-flex w-full sm:w-auto justify-center cursor-pointer items-center gap-2.5 rounded-xl px-5 py-2.5 text-xs font-bold shadow-md transition-all hover:scale-[1.02] focus-visible:ring-2 focus-visible:outline-hidden active:scale-[0.98] ${
+                                className={`focus-visible:ring-primary relative inline-flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-xl px-5 py-2.5 text-xs font-bold shadow-md transition-all hover:scale-[1.02] focus-visible:ring-2 focus-visible:outline-hidden active:scale-[0.98] sm:w-auto ${
                                   invoiceSettled
                                     ? "bg-emerald-600 text-white shadow-[0_0_20px_rgba(16,185,129,0.35)] ring-1 ring-emerald-400"
                                     : "ring-primary/30 bg-neutral-900 text-white ring-1 hover:bg-neutral-800 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-100"
@@ -1839,15 +1841,15 @@ export const ProductPreviewSection: React.FC = () => {
                                 initial={{ scale: 1.15, opacity: 0, rotate: -6 }}
                                 animate={{ scale: 1, opacity: 1, rotate: -2 }}
                                 transition={{ type: "spring", stiffness: 450, damping: 25 }}
-                                className="pointer-events-none absolute top-4 right-3 sm:top-1/3 sm:right-8 rounded-2xl border-2 border-emerald-500/60 bg-emerald-500/20 px-3 py-1.5 sm:px-5 sm:py-2.5 shadow-[0_0_25px_rgba(16,185,129,0.25)] backdrop-blur-md"
+                                className="pointer-events-none absolute top-4 right-3 rounded-2xl border-2 border-emerald-500/60 bg-emerald-500/20 px-3 py-1.5 shadow-[0_0_25px_rgba(16,185,129,0.25)] backdrop-blur-md sm:top-1/3 sm:right-8 sm:px-5 sm:py-2.5"
                               >
                                 <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
-                                  <Check className="h-5 w-5 sm:h-6 sm:w-6 stroke-[3]" />
+                                  <Check className="h-5 w-5 stroke-[3] sm:h-6 sm:w-6" />
                                   <div>
-                                    <p className="font-mono text-[10px] sm:text-xs font-black tracking-widest uppercase">
+                                    <p className="font-mono text-[10px] font-black tracking-widest uppercase sm:text-xs">
                                       PAID &amp; RECONCILED
                                     </p>
-                                    <p className="font-mono text-[9px] sm:text-[10px] font-bold text-emerald-600/90 dark:text-emerald-400/90">
+                                    <p className="font-mono text-[9px] font-bold text-emerald-600/90 sm:text-[10px] dark:text-emerald-400/90">
                                       STRIPE CONNECT #TX-892401
                                     </p>
                                   </div>
@@ -1860,8 +1862,8 @@ export const ProductPreviewSection: React.FC = () => {
                         /* INVOICING CHAOS VIEW */
                         <div className="space-y-4">
                           {/* Disconnected Tool Strip */}
-                          <div className="flex w-full max-w-full items-center gap-2 overflow-x-auto rounded-xl border border-rose-500/30 bg-rose-500/[0.04] p-1.5 backdrop-blur-md scrollbar-none">
-                            <div className="flex items-center gap-1.5 text-xs font-semibold shrink-0">
+                          <div className="flex w-full max-w-full scrollbar-none items-center gap-2 overflow-x-auto rounded-xl border border-rose-500/30 bg-rose-500/[0.04] p-1.5 backdrop-blur-md">
+                            <div className="flex shrink-0 items-center gap-1.5 text-xs font-semibold">
                               <div className="flex items-center gap-1.5 rounded-lg border border-rose-500/50 bg-white/95 px-3 py-1.5 text-xs font-bold text-rose-600 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:bg-neutral-900 dark:text-rose-400">
                                 <AlertCircle className="h-3.5 w-3.5 animate-pulse text-rose-500" />
                                 <span>Unpaid PDF #089 (42d Overdue)</span>
@@ -1878,7 +1880,7 @@ export const ProductPreviewSection: React.FC = () => {
                           </div>
 
                           {/* Failure Alert Card */}
-                          <div className="group relative overflow-hidden rounded-2xl border border-rose-500/50 bg-gradient-to-br from-white via-rose-50/40 to-neutral-100/70 p-3.5 sm:p-4.5 shadow-[0_4px_25px_rgba(244,63,94,0.1),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.008] hover:border-rose-500/70 hover:shadow-[0_20px_45px_rgba(244,63,94,0.22)] dark:border-rose-500/40 dark:from-neutral-900/90 dark:via-rose-950/30 dark:to-neutral-950/90 dark:shadow-[0_4px_30px_rgba(244,63,94,0.15),inset_0_1px_0_rgba(255,255,255,0.08)]">
+                          <div className="group relative overflow-hidden rounded-2xl border border-rose-500/50 bg-gradient-to-br from-white via-rose-50/40 to-neutral-100/70 p-3.5 shadow-[0_4px_25px_rgba(244,63,94,0.1),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.008] hover:border-rose-500/70 hover:shadow-[0_20px_45px_rgba(244,63,94,0.22)] sm:p-4.5 dark:border-rose-500/40 dark:from-neutral-900/90 dark:via-rose-950/30 dark:to-neutral-950/90 dark:shadow-[0_4px_30px_rgba(244,63,94,0.15),inset_0_1px_0_rgba(255,255,255,0.08)]">
                             <div className="pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-rose-500 to-transparent" />
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                               <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-3.5">
@@ -1887,14 +1889,14 @@ export const ProductPreviewSection: React.FC = () => {
                                 </div>
                                 <div className="min-w-0 flex-1">
                                   <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                                    <h4 className="text-sm font-extrabold text-neutral-900 sm:text-base dark:text-white truncate">
+                                    <h4 className="truncate text-sm font-extrabold text-neutral-900 sm:text-base dark:text-white">
                                       Cash Velocity Collapse: 42.8 Days DSO
                                     </h4>
                                     <span className="shrink-0 rounded-md border border-rose-500/30 bg-rose-500/15 px-2 py-0.5 font-mono text-[10px] font-bold text-rose-600 dark:text-rose-400">
                                       Uncollected
                                     </span>
                                   </div>
-                                  <p className="mt-1 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
+                                  <p className="mt-1 text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
                                     Invoices sent manually via PDF attachments languish in client
                                     inboxes. Zero automated card-on-file or payment links mean
                                     endless follow-up cycles.
@@ -1911,23 +1913,23 @@ export const ProductPreviewSection: React.FC = () => {
                           </div>
 
                           {/* Overdue Invoice Card */}
-                          <div className="group relative overflow-hidden rounded-2xl border border-rose-500/35 bg-gradient-to-br from-white via-neutral-50/90 to-rose-50/30 p-3.5 sm:p-4.5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.008] hover:border-rose-500/60 hover:shadow-[0_16px_40px_rgba(244,63,94,0.18)] dark:border-rose-500/30 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)]">
+                          <div className="group relative overflow-hidden rounded-2xl border border-rose-500/35 bg-gradient-to-br from-white via-neutral-50/90 to-rose-50/30 p-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.008] hover:border-rose-500/60 hover:shadow-[0_16px_40px_rgba(244,63,94,0.18)] sm:p-4.5 dark:border-rose-500/30 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)]">
                             <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-rose-500/40 to-transparent" />
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                               <div className="flex min-w-0 flex-1 items-center gap-3 sm:gap-3.5">
-                                <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-600 shadow-2xs dark:text-rose-400">
+                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-600 shadow-2xs sm:h-11 sm:w-11 dark:text-rose-400">
                                   <FileSpreadsheet className="h-5 w-5" />
                                 </div>
                                 <div className="min-w-0 flex-1">
                                   <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                                    <span className="font-mono text-sm font-bold text-neutral-900 dark:text-white truncate">
+                                    <span className="truncate font-mono text-sm font-bold text-neutral-900 dark:text-white">
                                       Invoice #INV-2024-089
                                     </span>
                                     <span className="shrink-0 rounded-full border border-rose-500/40 bg-rose-500/15 px-2.5 py-0.5 font-mono text-[10px] font-bold text-rose-600 dark:text-rose-400">
                                       42 DAYS OVERDUE
                                     </span>
                                   </div>
-                                  <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400 truncate">
+                                  <p className="mt-1 truncate text-xs text-neutral-500 dark:text-neutral-400">
                                     Billed to: Acme Horizon Corp &bull; Due: September 30, 2024
                                   </p>
                                 </div>
@@ -1935,7 +1937,7 @@ export const ProductPreviewSection: React.FC = () => {
 
                               <div className="flex shrink-0 flex-wrap items-center gap-3 self-start sm:self-center">
                                 <div className="text-left sm:text-right">
-                                  <span className="font-mono text-base sm:text-lg font-extrabold text-rose-600 dark:text-rose-400">
+                                  <span className="font-mono text-base font-extrabold text-rose-600 sm:text-lg dark:text-rose-400">
                                     $4,250.00 USD
                                   </span>
                                   <p className="font-mono text-[10px] text-neutral-500">
@@ -1948,7 +1950,9 @@ export const ProductPreviewSection: React.FC = () => {
                             <div className="mt-4 flex flex-col justify-between gap-2 border-t border-rose-500/20 pt-3 text-xs sm:flex-row sm:items-center">
                               <div className="flex min-w-0 flex-1 items-center gap-2 text-neutral-600 dark:text-neutral-400">
                                 <Mail className="h-3.5 w-3.5 shrink-0 text-rose-500" />
-                                <span className="truncate">Subject: 4th Follow-up on Overdue Retainer</span>
+                                <span className="truncate">
+                                  Subject: 4th Follow-up on Overdue Retainer
+                                </span>
                               </div>
                               <span className="shrink-0 self-start rounded-md border border-rose-500/30 bg-rose-500/10 px-2.5 py-0.5 font-mono text-[10px] font-bold text-rose-600 sm:self-auto dark:text-rose-400">
                                 Unanswered for 14 Days
@@ -1994,7 +1998,7 @@ export const ProductPreviewSection: React.FC = () => {
                               type="button"
                               onClick={handleTriggerBreach}
                               disabled={isSimulatingBreach}
-                              className={`focus-visible:ring-primary inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl border px-4 py-2 text-xs font-bold shadow-xs transition-all hover:scale-[1.02] focus-visible:ring-2 focus-visible:outline-hidden active:scale-[0.98] ${
+                              className={`focus-visible:ring-primary inline-flex w-full items-center justify-center gap-2 rounded-xl border px-4 py-2 text-xs font-bold shadow-xs transition-all hover:scale-[1.02] focus-visible:ring-2 focus-visible:outline-hidden active:scale-[0.98] sm:w-auto ${
                                 isSimulatingBreach
                                   ? "animate-pulse border-amber-500/60 bg-amber-500/15 text-amber-600"
                                   : breachTested
@@ -2014,35 +2018,35 @@ export const ProductPreviewSection: React.FC = () => {
                           </div>
 
                           {/* Node Topology */}
-                          <div className="group relative overflow-hidden rounded-2xl border border-neutral-200/90 bg-gradient-to-br from-white via-neutral-50/90 to-neutral-100/60 p-4 sm:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.008] hover:border-purple-500/40 hover:shadow-[0_16px_40px_rgba(168,85,247,0.12)] dark:border-white/10 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] dark:hover:border-purple-500/40">
+                          <div className="group relative overflow-hidden rounded-2xl border border-neutral-200/90 bg-gradient-to-br from-white via-neutral-50/90 to-neutral-100/60 p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.008] hover:border-purple-500/40 hover:shadow-[0_16px_40px_rgba(168,85,247,0.12)] sm:p-5 dark:border-white/10 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] dark:hover:border-purple-500/40">
                             {/* Specular Top Rim */}
                             <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-purple-500/40 to-transparent" />
 
                             {/* Core */}
                             <div className="flex flex-col items-center text-center">
-                              <div className="relative flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-2xl border border-white/10 bg-neutral-950 text-white shadow-md dark:bg-white dark:text-neutral-950">
+                              <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-neutral-950 text-white shadow-md sm:h-12 sm:w-12 dark:bg-white dark:text-neutral-950">
                                 <Lock className="h-5 w-5" />
                                 <span className="ring-background absolute -top-1 -right-1 h-3 w-3 animate-pulse rounded-full bg-emerald-500 ring-2" />
                               </div>
                               <h4 className="mt-2 text-sm font-bold tracking-tight">
                                 FlowPilot Multi-Tenant Architecture
                               </h4>
-                              <p className="text-muted-foreground font-mono text-[10px] sm:text-[11px] leading-relaxed">
+                              <p className="text-muted-foreground font-mono text-[10px] leading-relaxed sm:text-[11px]">
                                 Organization Scoping &bull; Role-Based Access &bull; Strict Tenant
                                 Filtering
                               </p>
                             </div>
 
                             {/* Nodes */}
-                            <div className="mt-4 sm:mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
-                              <div className="rounded-xl border border-emerald-500/40 bg-gradient-to-b from-emerald-500/15 via-emerald-500/10 to-transparent p-3 sm:p-3.5 text-center shadow-[0_0_20px_rgba(16,185,129,0.18)] transition-all duration-200 hover:scale-[1.02]">
+                            <div className="mt-4 grid grid-cols-1 gap-3 sm:mt-5 sm:grid-cols-3">
+                              <div className="rounded-xl border border-emerald-500/40 bg-gradient-to-b from-emerald-500/15 via-emerald-500/10 to-transparent p-3 text-center shadow-[0_0_20px_rgba(16,185,129,0.18)] transition-all duration-200 hover:scale-[1.02] sm:p-3.5">
                                 <div className="mb-1 flex justify-center text-emerald-600 dark:text-emerald-400">
                                   <Building2 className="h-4 w-4" />
                                 </div>
-                                <p className="text-foreground text-xs font-bold truncate">
+                                <p className="text-foreground truncate text-xs font-bold">
                                   Acme Agency Workspace
                                 </p>
-                                <p className="text-muted-foreground mt-0.5 font-mono text-[10px] truncate">
+                                <p className="text-muted-foreground mt-0.5 truncate font-mono text-[10px]">
                                   org_id: acme_01 (Active)
                                 </p>
                                 <span className="mt-1.5 inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/20 px-2.5 py-0.5 text-[9.5px] font-bold text-emerald-600 dark:text-emerald-400">
@@ -2051,14 +2055,14 @@ export const ProductPreviewSection: React.FC = () => {
                                 </span>
                               </div>
 
-                              <div className="border-border/80 bg-muted/40 rounded-xl border p-3 sm:p-3.5 text-center transition-all duration-200 hover:scale-[1.02] hover:border-neutral-400">
+                              <div className="border-border/80 bg-muted/40 rounded-xl border p-3 text-center transition-all duration-200 hover:scale-[1.02] hover:border-neutral-400 sm:p-3.5">
                                 <div className="text-muted-foreground mb-1 flex justify-center">
                                   <Building2 className="h-4 w-4" />
                                 </div>
-                                <p className="text-foreground text-xs font-semibold truncate">
+                                <p className="text-foreground truncate text-xs font-semibold">
                                   Horizon Media Workspace
                                 </p>
-                                <p className="text-muted-foreground mt-0.5 font-mono text-[10px] truncate">
+                                <p className="text-muted-foreground mt-0.5 truncate font-mono text-[10px]">
                                   org_id: horizon_02
                                 </p>
                                 <span className="bg-muted border-border/80 text-muted-foreground mt-1.5 inline-block rounded-full border px-2.5 py-0.5 text-[9.5px] font-semibold">
@@ -2066,14 +2070,14 @@ export const ProductPreviewSection: React.FC = () => {
                                 </span>
                               </div>
 
-                              <div className="border-border/80 bg-muted/40 rounded-xl border p-3 sm:p-3.5 text-center transition-all duration-200 hover:scale-[1.02] hover:border-neutral-400">
+                              <div className="border-border/80 bg-muted/40 rounded-xl border p-3 text-center transition-all duration-200 hover:scale-[1.02] hover:border-neutral-400 sm:p-3.5">
                                 <div className="text-muted-foreground mb-1 flex justify-center">
                                   <Building2 className="h-4 w-4" />
                                 </div>
-                                <p className="text-foreground text-xs font-semibold truncate">
+                                <p className="text-foreground truncate text-xs font-semibold">
                                   Meridian Health Workspace
                                 </p>
-                                <p className="text-muted-foreground mt-0.5 font-mono text-[10px] truncate">
+                                <p className="text-muted-foreground mt-0.5 truncate font-mono text-[10px]">
                                   org_id: meridian_03
                                 </p>
                                 <span className="bg-muted border-border/80 text-muted-foreground mt-1.5 inline-block rounded-full border px-2.5 py-0.5 text-[9.5px] font-semibold">
@@ -2087,20 +2091,20 @@ export const ProductPreviewSection: React.FC = () => {
                               <motion.div
                                 initial={{ opacity: 0, y: 8 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className="mt-4 rounded-xl border border-emerald-500/40 bg-neutral-950 p-3 sm:p-3.5 font-mono text-xs text-emerald-400 shadow-xl overflow-x-auto max-w-full"
+                                className="mt-4 max-w-full overflow-x-auto rounded-xl border border-emerald-500/40 bg-neutral-950 p-3 font-mono text-xs text-emerald-400 shadow-xl sm:p-3.5"
                               >
                                 <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-800 pb-2">
-                                  <div className="flex items-center gap-2 min-w-0">
+                                  <div className="flex min-w-0 items-center gap-2">
                                     <Terminal className="h-3.5 w-3.5 shrink-0 text-neutral-400" />
-                                    <span className="text-[10px] sm:text-[11px] text-neutral-300 truncate">
+                                    <span className="truncate text-[10px] text-neutral-300 sm:text-[11px]">
                                       simulated_tenant_guard.log
                                     </span>
                                   </div>
-                                  <span className="shrink-0 rounded-md border border-rose-500/30 bg-rose-500/20 px-2 py-0.5 text-[9.5px] sm:text-[10px] font-bold text-rose-400">
+                                  <span className="shrink-0 rounded-md border border-rose-500/30 bg-rose-500/20 px-2 py-0.5 text-[9.5px] font-bold text-rose-400 sm:text-[10px]">
                                     HTTP 403 FORBIDDEN
                                   </span>
                                 </div>
-                                <div className="mt-2.5 space-y-1.5 text-[10px] sm:text-[11px] break-words">
+                                <div className="mt-2.5 space-y-1.5 text-[10px] break-words sm:text-[11px]">
                                   <p className="text-neutral-400">
                                     &gt; REQUEST: GET /api/v1/invoices?organizationId=meridian_03
                                   </p>
@@ -2120,7 +2124,7 @@ export const ProductPreviewSection: React.FC = () => {
                         /* SECURITY CHAOS VIEW */
                         <div className="space-y-4">
                           {/* Disconnected Tool Strip */}
-                          <div className="flex max-w-full items-center gap-2 overflow-x-auto rounded-xl border border-rose-500/30 bg-rose-500/[0.04] p-1.5 backdrop-blur-md scrollbar-none">
+                          <div className="flex max-w-full scrollbar-none items-center gap-2 overflow-x-auto rounded-xl border border-rose-500/30 bg-rose-500/[0.04] p-1.5 backdrop-blur-md">
                             <div className="flex items-center gap-1.5 text-xs font-semibold">
                               <div className="flex shrink-0 items-center gap-1.5 rounded-lg border border-rose-500/50 bg-white/95 px-3 py-1.5 text-xs font-bold text-rose-600 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:bg-neutral-900 dark:text-rose-400">
                                 <ShieldAlert className="h-3.5 w-3.5 shrink-0 animate-pulse text-rose-500" />
@@ -2138,23 +2142,23 @@ export const ProductPreviewSection: React.FC = () => {
                           </div>
 
                           {/* Failure Alert Card */}
-                          <div className="group relative overflow-hidden rounded-2xl border border-rose-500/50 bg-gradient-to-br from-white via-rose-50/40 to-neutral-100/70 p-3.5 sm:p-4.5 shadow-[0_4px_25px_rgba(244,63,94,0.1),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.008] hover:border-rose-500/70 hover:shadow-[0_20px_45px_rgba(244,63,94,0.22)] dark:border-rose-500/40 dark:from-neutral-900/90 dark:via-rose-950/30 dark:to-neutral-950/90 dark:shadow-[0_4px_30px_rgba(244,63,94,0.15),inset_0_1px_0_rgba(255,255,255,0.08)]">
+                          <div className="group relative overflow-hidden rounded-2xl border border-rose-500/50 bg-gradient-to-br from-white via-rose-50/40 to-neutral-100/70 p-3.5 shadow-[0_4px_25px_rgba(244,63,94,0.1),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.008] hover:border-rose-500/70 hover:shadow-[0_20px_45px_rgba(244,63,94,0.22)] sm:p-4.5 dark:border-rose-500/40 dark:from-neutral-900/90 dark:via-rose-950/30 dark:to-neutral-950/90 dark:shadow-[0_4px_30px_rgba(244,63,94,0.15),inset_0_1px_0_rgba(255,255,255,0.08)]">
                             <div className="pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-rose-500 to-transparent" />
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                              <div className="flex items-start gap-3 sm:gap-3.5 min-w-0 flex-1">
-                                <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl border border-rose-500/40 bg-rose-500/15 text-rose-600 shadow-[0_0_15px_rgba(244,63,94,0.25)] dark:text-rose-400">
-                                  <ShieldAlert className="h-4 w-4 sm:h-5 sm:w-5 animate-bounce" />
+                              <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-3.5">
+                                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-rose-500/40 bg-rose-500/15 text-rose-600 shadow-[0_0_15px_rgba(244,63,94,0.25)] sm:h-10 sm:w-10 dark:text-rose-400">
+                                  <ShieldAlert className="h-4 w-4 animate-bounce sm:h-5 sm:w-5" />
                                 </div>
                                 <div className="min-w-0 flex-1">
                                   <div className="flex flex-wrap items-center gap-2">
-                                    <h4 className="text-sm font-extrabold text-neutral-900 sm:text-base dark:text-white leading-snug">
+                                    <h4 className="text-sm leading-snug font-extrabold text-neutral-900 sm:text-base dark:text-white">
                                       Cross-Tenant Exposure Incident: Zero Workspace Isolation
                                     </h4>
                                     <span className="shrink-0 rounded-md border border-rose-500/30 bg-rose-500/15 px-2 py-0.5 font-mono text-[10px] font-bold text-rose-600 dark:text-rose-400">
                                       Breach Threat
                                     </span>
                                   </div>
-                                  <p className="mt-1 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
+                                  <p className="mt-1 text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
                                     Without strict organization scoping, external contractors and
                                     clients can access confidential files, margins, and proprietary
                                     deliverables belonging to other clients.
@@ -2162,7 +2166,7 @@ export const ProductPreviewSection: React.FC = () => {
                                 </div>
                               </div>
                               <div className="shrink-0 self-start sm:self-center">
-                                <span className="inline-flex items-center gap-1.5 rounded-lg border border-rose-500/40 bg-rose-500/10 px-2.5 py-1 sm:px-3 font-mono text-[11px] sm:text-xs font-bold text-rose-600 dark:text-rose-400">
+                                <span className="inline-flex items-center gap-1.5 rounded-lg border border-rose-500/40 bg-rose-500/10 px-2.5 py-1 font-mono text-[11px] font-bold text-rose-600 sm:px-3 sm:text-xs dark:text-rose-400">
                                   <ShieldAlert className="h-3.5 w-3.5 shrink-0" />
                                   Unrestricted Link
                                 </span>
@@ -2172,11 +2176,11 @@ export const ProductPreviewSection: React.FC = () => {
 
                           {/* 2 Diagnostic Risk Cards */}
                           <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
-                            <div className="group relative overflow-hidden rounded-2xl border border-rose-500/35 bg-gradient-to-br from-white via-neutral-50/90 to-rose-50/30 p-3.5 sm:p-4.5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1.5 hover:scale-[1.015] hover:border-rose-500/60 hover:shadow-[0_16px_40px_rgba(244,63,94,0.18)] dark:border-rose-500/30 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)]">
+                            <div className="group relative overflow-hidden rounded-2xl border border-rose-500/35 bg-gradient-to-br from-white via-neutral-50/90 to-rose-50/30 p-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1.5 hover:scale-[1.015] hover:border-rose-500/60 hover:shadow-[0_16px_40px_rgba(244,63,94,0.18)] sm:p-4.5 dark:border-rose-500/30 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)]">
                               <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-rose-500/40 to-transparent" />
                               <div className="flex flex-wrap items-center justify-between gap-1.5 text-xs">
-                                <div className="flex items-center gap-2 min-w-0">
-                                  <span className="font-bold text-neutral-900 truncate dark:text-white">
+                                <div className="flex min-w-0 items-center gap-2">
+                                  <span className="truncate font-bold text-neutral-900 dark:text-white">
                                     Client Margin Leakage
                                   </span>
                                   <span className="shrink-0 rounded-full border border-rose-500/40 bg-rose-500/15 px-2 py-0.5 font-mono text-[10px] font-bold text-rose-600 dark:text-rose-400">
@@ -2187,7 +2191,7 @@ export const ProductPreviewSection: React.FC = () => {
                                   Exposed
                                 </span>
                               </div>
-                              <p className="mt-2 text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                              <p className="mt-2 text-xs leading-relaxed text-neutral-600 dark:text-neutral-400">
                                 Contractor accidentally shared the master pricing model with an
                                 external client via an unrestricted Google Sheets view link.
                               </p>
@@ -2199,11 +2203,11 @@ export const ProductPreviewSection: React.FC = () => {
                               </div>
                             </div>
 
-                            <div className="group relative overflow-hidden rounded-2xl border border-rose-500/35 bg-gradient-to-br from-white via-neutral-50/90 to-rose-50/30 p-3.5 sm:p-4.5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1.5 hover:scale-[1.015] hover:border-rose-500/60 hover:shadow-[0_16px_40px_rgba(244,63,94,0.18)] dark:border-rose-500/30 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)]">
+                            <div className="group relative overflow-hidden rounded-2xl border border-rose-500/35 bg-gradient-to-br from-white via-neutral-50/90 to-rose-50/30 p-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1.5 hover:scale-[1.015] hover:border-rose-500/60 hover:shadow-[0_16px_40px_rgba(244,63,94,0.18)] sm:p-4.5 dark:border-rose-500/30 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_4px_25px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)]">
                               <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-amber-500/40 to-transparent" />
                               <div className="flex flex-wrap items-center justify-between gap-1.5 text-xs">
-                                <div className="flex items-center gap-2 min-w-0">
-                                  <span className="font-bold text-neutral-900 truncate dark:text-white">
+                                <div className="flex min-w-0 items-center gap-2">
+                                  <span className="truncate font-bold text-neutral-900 dark:text-white">
                                     Accidental Record Deletion
                                   </span>
                                   <span className="shrink-0 rounded-full border border-amber-500/40 bg-amber-500/15 px-2 py-0.5 font-mono text-[10px] font-bold text-amber-600 dark:text-amber-400">
@@ -2214,7 +2218,7 @@ export const ProductPreviewSection: React.FC = () => {
                                   Irreversible
                                 </span>
                               </div>
-                              <p className="mt-2 text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                              <p className="mt-2 text-xs leading-relaxed text-neutral-600 dark:text-neutral-400">
                                 An external freelancer mistakenly wiped 3 months of completed
                                 deliverables in a shared Notion workspace with no tenant access
                                 boundary.
@@ -2240,24 +2244,24 @@ export const ProductPreviewSection: React.FC = () => {
         </div>
 
         {/* 4. LIVE PRODUCTION COCKPIT GATEWAY (EXPERT MODERN CLASSIC) */}
-        <div className="relative mx-auto mt-8 sm:mt-12 w-full max-w-5xl 2xl:max-w-6xl">
+        <div className="relative mx-auto mt-8 w-full max-w-5xl sm:mt-12 2xl:max-w-6xl">
           {/* Ambient Corner Mesh Glow */}
           <div
             className="pointer-events-none absolute -inset-1 rounded-[32px] bg-gradient-to-r from-emerald-500/15 via-cyan-500/10 to-teal-500/15 opacity-60 blur-xl"
             aria-hidden="true"
           />
 
-          <div className="relative overflow-hidden rounded-3xl border border-neutral-300/80 bg-gradient-to-b from-white via-neutral-50/95 to-neutral-100/90 p-4.5 sm:p-6 md:p-8 shadow-2xl backdrop-blur-2xl transition-all dark:border-white/10 dark:from-[#0d1527]/95 dark:via-[#090f1d]/95 dark:to-[#060a14]/95 dark:shadow-[0_25px_80px_-15px_rgba(0,0,0,0.85)]">
+          <div className="relative overflow-hidden rounded-3xl border border-neutral-300/80 bg-gradient-to-b from-white via-neutral-50/95 to-neutral-100/90 p-4.5 shadow-2xl backdrop-blur-2xl transition-all sm:p-6 md:p-8 dark:border-white/10 dark:from-[#0d1527]/95 dark:via-[#090f1d]/95 dark:to-[#060a14]/95 dark:shadow-[0_25px_80px_-15px_rgba(0,0,0,0.85)]">
             {/* Top Specular Laser Shimmer */}
             <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent dark:via-emerald-400/40" />
 
             {/* Main Content Row */}
             <div className="flex flex-col items-start justify-between gap-5 sm:gap-6 lg:flex-row lg:items-center">
               {/* Left Column: Glass Icon Pod + Messaging */}
-              <div className="flex items-start gap-3.5 sm:gap-5 min-w-0">
+              <div className="flex min-w-0 items-start gap-3.5 sm:gap-5">
                 {/* 3D Glass Hardware Vessel with Live Indicator */}
-                <div className="relative flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-cyan-500/15 shadow-[0_8px_24px_rgba(16,185,129,0.18)] backdrop-blur-md dark:border-emerald-400/30 dark:bg-emerald-500/10 dark:shadow-[0_8px_30px_rgba(16,185,129,0.25)]">
-                  <Laptop className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-600 dark:text-emerald-400" />
+                <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-cyan-500/15 shadow-[0_8px_24px_rgba(16,185,129,0.18)] backdrop-blur-md sm:h-14 sm:w-14 dark:border-emerald-400/30 dark:bg-emerald-500/10 dark:shadow-[0_8px_30px_rgba(16,185,129,0.25)]">
+                  <Laptop className="h-6 w-6 text-emerald-600 sm:h-7 sm:w-7 dark:text-emerald-400" />
                   {/* Floating Live Status Badge */}
                   <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
@@ -2271,12 +2275,12 @@ export const ProductPreviewSection: React.FC = () => {
                       <Sparkles className="h-3 w-3 shrink-0" />
                       Production Shift Ready
                     </span>
-                    <span className="font-mono text-[11px] sm:text-xs text-neutral-400 dark:text-neutral-500 truncate">
+                    <span className="truncate font-mono text-[11px] text-neutral-400 sm:text-xs dark:text-neutral-500">
                       • Instant Tenant Provisioning
                     </span>
                   </div>
 
-                  <h3 className="text-base font-black tracking-tight text-neutral-950 sm:text-xl dark:text-white leading-snug">
+                  <h3 className="text-base leading-snug font-black tracking-tight text-neutral-950 sm:text-xl dark:text-white">
                     Shift from sandbox simulation to your live business cockpit
                   </h3>
 
@@ -2292,7 +2296,7 @@ export const ProductPreviewSection: React.FC = () => {
               <div className="flex w-full shrink-0 flex-col gap-2.5 sm:w-auto sm:items-end">
                 <Button
                   size="lg"
-                  className="group relative h-11 sm:h-12 w-full sm:w-auto justify-center overflow-hidden rounded-2xl bg-neutral-950 px-6 sm:px-7 text-xs sm:text-sm font-bold text-white shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-all duration-200 hover:scale-[1.02] hover:bg-neutral-900 active:scale-[0.98] dark:bg-white dark:text-neutral-950 dark:shadow-[0_10px_35px_rgba(255,255,255,0.2)] dark:hover:bg-neutral-100"
+                  className="group relative h-11 w-full justify-center overflow-hidden rounded-2xl bg-neutral-950 px-6 text-xs font-bold text-white shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-all duration-200 hover:scale-[1.02] hover:bg-neutral-900 active:scale-[0.98] sm:h-12 sm:w-auto sm:px-7 sm:text-sm dark:bg-white dark:text-neutral-950 dark:shadow-[0_10px_35px_rgba(255,255,255,0.2)] dark:hover:bg-neutral-100"
                   asChild
                 >
                   <Link href="/dashboard" className="flex items-center justify-center gap-2.5">
@@ -2303,7 +2307,7 @@ export const ProductPreviewSection: React.FC = () => {
                   </Link>
                 </Button>
 
-                <div className="flex flex-wrap items-center justify-center sm:justify-end gap-1.5 text-[10.5px] sm:text-[11px] text-neutral-500 dark:text-neutral-400">
+                <div className="flex flex-wrap items-center justify-center gap-1.5 text-[10.5px] text-neutral-500 sm:justify-end sm:text-[11px] dark:text-neutral-400">
                   <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
                   <span>Free Sandbox Access • No Credit Card Required</span>
                 </div>
@@ -2311,7 +2315,7 @@ export const ProductPreviewSection: React.FC = () => {
             </div>
 
             {/* Bottom Enterprise Architecture Telemetry Strip */}
-            <div className="mt-5 sm:mt-6 border-t border-neutral-200/80 pt-4 sm:pt-5 dark:border-white/10">
+            <div className="mt-5 border-t border-neutral-200/80 pt-4 sm:mt-6 sm:pt-5 dark:border-white/10">
               <div className="grid grid-cols-1 gap-2.5 min-[440px]:grid-cols-2 lg:grid-cols-4">
                 <div className="flex items-center gap-2.5 rounded-xl border border-neutral-200/70 bg-white/70 px-3.5 py-2 text-xs shadow-2xs transition-all duration-200 hover:-translate-y-1 hover:scale-[1.02] hover:border-emerald-500/40 hover:shadow-md dark:border-white/5 dark:bg-white/[0.04] dark:hover:border-emerald-500/30">
                   <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-500" />

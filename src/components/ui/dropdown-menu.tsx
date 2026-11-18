@@ -21,7 +21,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
   <DropdownMenuPrimitive.SubTrigger
     ref={ref}
     className={cn(
-      "focus:bg-accent/60 focus:text-accent-foreground flex cursor-pointer items-center rounded-lg px-2.5 py-1.5 text-xs sm:text-sm font-medium outline-none select-none",
+      "focus:bg-accent/60 focus:text-accent-foreground flex cursor-pointer items-center rounded-lg px-2.5 py-1.5 text-xs font-medium outline-none select-none sm:text-sm",
       inset && "pl-8",
       className
     )}
@@ -75,7 +75,7 @@ const DropdownMenuItem = React.forwardRef<
   <DropdownMenuPrimitive.Item
     ref={ref}
     className={cn(
-      "focus:bg-accent/60 focus:text-accent-foreground relative flex cursor-pointer items-center rounded-lg px-2.5 py-1.5 text-xs sm:text-sm font-medium transition-colors outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "focus:bg-accent/60 focus:text-accent-foreground relative flex cursor-pointer items-center rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 sm:text-sm",
       inset && "pl-8",
       className
     )}
@@ -91,7 +91,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
   <DropdownMenuPrimitive.CheckboxItem
     ref={ref}
     className={cn(
-      "focus:bg-accent/60 focus:text-accent-foreground relative flex cursor-pointer items-center rounded-lg py-1.5 pr-2.5 pl-8 text-xs sm:text-sm transition-colors outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "focus:bg-accent/60 focus:text-accent-foreground relative flex cursor-pointer items-center rounded-lg py-1.5 pr-2.5 pl-8 text-xs transition-colors outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 sm:text-sm",
       className
     )}
     checked={checked}
@@ -114,7 +114,7 @@ const DropdownMenuRadioItem = React.forwardRef<
   <DropdownMenuPrimitive.RadioItem
     ref={ref}
     className={cn(
-      "focus:bg-accent/60 focus:text-accent-foreground relative flex cursor-pointer items-center rounded-lg py-1.5 pr-2.5 pl-8 text-xs sm:text-sm transition-colors outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "focus:bg-accent/60 focus:text-accent-foreground relative flex cursor-pointer items-center rounded-lg py-1.5 pr-2.5 pl-8 text-xs transition-colors outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 sm:text-sm",
       className
     )}
     {...props}

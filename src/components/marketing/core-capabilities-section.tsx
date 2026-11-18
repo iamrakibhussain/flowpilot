@@ -1,7 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { motion, AnimatePresence, useReducedMotion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useReducedMotion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import {
   Users,
   Calendar,
@@ -122,85 +129,85 @@ const BentoCard: React.FC<BentoCardProps> = ({
           rotateY: shouldReduceMotion ? 0 : rotateY,
           transformStyle: "preserve-3d",
         }}
-        className="group/bento relative flex h-full min-h-[500px] sm:min-h-[560px] w-full flex-col justify-between overflow-hidden rounded-2xl border transition-shadow duration-300 border-neutral-200/90 bg-white/95 p-3.5 shadow-[0_10px_35px_-8px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.9)] hover:border-neutral-300 hover:shadow-[0_20px_45px_-10px_rgba(0,0,0,0.12)] sm:p-5 md:p-6 xl:p-7 dark:border-white/10 dark:bg-gradient-to-b dark:from-[#0b1222]/95 dark:to-[#050811]/98 dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85),inset_0_1px_0_rgba(255,255,255,0.12)] dark:hover:border-white/20"
+        className="group/bento relative flex h-full min-h-[500px] w-full flex-col justify-between overflow-hidden rounded-2xl border border-neutral-200/90 bg-white/95 p-3.5 shadow-[0_10px_35px_-8px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.9)] transition-shadow duration-300 hover:border-neutral-300 hover:shadow-[0_20px_45px_-10px_rgba(0,0,0,0.12)] sm:min-h-[560px] sm:p-5 md:p-6 xl:p-7 dark:border-white/10 dark:bg-gradient-to-b dark:from-[#0b1222]/95 dark:to-[#050811]/98 dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85),inset_0_1px_0_rgba(255,255,255,0.12)] dark:hover:border-white/20"
       >
-      {/* Background Ambient Flare */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-60 transition-opacity duration-500 group-hover/bento:opacity-100"
-        style={{ background: accentAmbientGlow[themeAccent] }}
-        aria-hidden="true"
-      />
-
-      {/* Engineering Blueprint Dot Matrix Mask */}
-      <div
-        className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_65%,transparent_100%)] opacity-20 dark:opacity-15"
-        style={{
-          backgroundImage: "radial-gradient(rgba(148, 163, 184, 0.4) 1px, transparent 1px)",
-          backgroundSize: "18px 18px",
-        }}
-        aria-hidden="true"
-      />
-
-      {/* Dynamic Cursor Spotlight (Hardware CSS Variable Follower) */}
-      {!shouldReduceMotion && (
+        {/* Background Ambient Flare */}
         <div
-          className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-300 group-hover/bento:opacity-100"
+          className="pointer-events-none absolute inset-0 opacity-60 transition-opacity duration-500 group-hover/bento:opacity-100"
+          style={{ background: accentAmbientGlow[themeAccent] }}
+          aria-hidden="true"
+        />
+
+        {/* Engineering Blueprint Dot Matrix Mask */}
+        <div
+          className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_65%,transparent_100%)] opacity-20 dark:opacity-15"
           style={{
-            background: accentSpotlights[themeAccent],
+            backgroundImage: "radial-gradient(rgba(148, 163, 184, 0.4) 1px, transparent 1px)",
+            backgroundSize: "18px 18px",
           }}
           aria-hidden="true"
         />
-      )}
 
-      {/* Specular Top Rim Light */}
-      <div
-        className="via-primary/35 pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent to-transparent dark:via-white/25"
-        aria-hidden="true"
-      />
+        {/* Dynamic Cursor Spotlight (Hardware CSS Variable Follower) */}
+        {!shouldReduceMotion && (
+          <div
+            className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-300 group-hover/bento:opacity-100"
+            style={{
+              background: accentSpotlights[themeAccent],
+            }}
+            aria-hidden="true"
+          />
+        )}
 
-      {/* ===================================================================== */}
-      {/* AEROSPACE HARDWARE COCKPIT TERMINAL BAR                               */}
-      {/* ===================================================================== */}
-      <div
-        style={{ transform: shouldReduceMotion ? "none" : "translateZ(26px)" }}
-        className="-mx-1 -mt-1 mb-4 flex items-center justify-between gap-2 rounded-xl border border-neutral-200/80 bg-neutral-100/70 px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs backdrop-blur-md dark:border-white/10 dark:bg-neutral-900/80"
-      >
-        {/* Mac Gloss Traffic Dots & Terminal Monospace Identifier */}
-        <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
-          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0" aria-hidden="true">
-            <div className="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-[#ff5f56] shadow-[0_0_6px_rgba(255,95,86,0.6),inset_0_0.5px_0.5px_rgba(255,255,255,0.6)]" />
-            <div className="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-[#ffbd2e] shadow-[0_0_6px_rgba(255,189,46,0.6),inset_0_0.5px_0.5px_rgba(255,255,255,0.6)]" />
-            <div className="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-[#27c93f] shadow-[0_0_6px_rgba(39,201,63,0.6),inset_0_0.5px_0.5px_rgba(255,255,255,0.6)]" />
+        {/* Specular Top Rim Light */}
+        <div
+          className="via-primary/35 pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent to-transparent dark:via-white/25"
+          aria-hidden="true"
+        />
+
+        {/* ===================================================================== */}
+        {/* AEROSPACE HARDWARE COCKPIT TERMINAL BAR                               */}
+        {/* ===================================================================== */}
+        <div
+          style={{ transform: shouldReduceMotion ? "none" : "translateZ(26px)" }}
+          className="-mx-1 -mt-1 mb-4 flex items-center justify-between gap-2 rounded-xl border border-neutral-200/80 bg-neutral-100/70 px-2.5 py-1.5 text-xs backdrop-blur-md sm:px-3 sm:py-2 dark:border-white/10 dark:bg-neutral-900/80"
+        >
+          {/* Mac Gloss Traffic Dots & Terminal Monospace Identifier */}
+          <div className="flex min-w-0 items-center gap-1.5 sm:gap-2.5">
+            <div className="flex shrink-0 items-center gap-1 sm:gap-1.5" aria-hidden="true">
+              <div className="h-2 w-2 rounded-full bg-[#ff5f56] shadow-[0_0_6px_rgba(255,95,86,0.6),inset_0_0.5px_0.5px_rgba(255,255,255,0.6)] sm:h-2.5 sm:w-2.5" />
+              <div className="h-2 w-2 rounded-full bg-[#ffbd2e] shadow-[0_0_6px_rgba(255,189,46,0.6),inset_0_0.5px_0.5px_rgba(255,255,255,0.6)] sm:h-2.5 sm:w-2.5" />
+              <div className="h-2 w-2 rounded-full bg-[#27c93f] shadow-[0_0_6px_rgba(39,201,63,0.6),inset_0_0.5px_0.5px_rgba(255,255,255,0.6)] sm:h-2.5 sm:w-2.5" />
+            </div>
+            <span className="shrink-0 text-neutral-400 dark:text-neutral-600">|</span>
+            <span className="flex min-w-0 items-center gap-1 font-mono text-[9.5px] font-semibold tracking-wider text-neutral-700 uppercase sm:gap-1.5 sm:text-[10.5px] dark:text-neutral-300">
+              <Terminal className="text-primary h-3 w-3 shrink-0" />
+              <span className="truncate">{moduleId}</span>
+            </span>
           </div>
-          <span className="text-neutral-400 dark:text-neutral-600 shrink-0">|</span>
-          <span className="flex items-center gap-1 sm:gap-1.5 font-mono text-[9.5px] sm:text-[10.5px] font-semibold tracking-wider text-neutral-700 uppercase dark:text-neutral-300 min-w-0">
-            <Terminal className="text-primary h-3 w-3 shrink-0" />
-            <span className="truncate">{moduleId}</span>
-          </span>
+
+          {/* Live Engine Status Telemetry Beacon */}
+          <div className="flex shrink-0 items-center gap-1.5 font-mono text-[9.5px] font-semibold sm:text-[10px]">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
+            </span>
+            <span className="hidden text-emerald-600 sm:inline dark:text-emerald-400">
+              {moduleStatus}
+            </span>
+            <span className="text-emerald-600 sm:hidden dark:text-emerald-400">ONLINE</span>
+          </div>
         </div>
 
-        {/* Live Engine Status Telemetry Beacon */}
-        <div className="flex items-center gap-1.5 font-mono text-[9.5px] sm:text-[10px] font-semibold shrink-0">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
-          </span>
-          <span className="hidden text-emerald-600 sm:inline dark:text-emerald-400">
-            {moduleStatus}
-          </span>
-          <span className="text-emerald-600 sm:hidden dark:text-emerald-400">ONLINE</span>
+        {/* Main Content with 3D Preservation */}
+        <div
+          className="relative z-10 flex h-full flex-col justify-between"
+          style={{ transformStyle: "preserve-3d" }}
+        >
+          {children}
         </div>
-      </div>
-
-      {/* Main Content with 3D Preservation */}
-      <div
-        className="relative z-10 flex h-full flex-col justify-between"
-        style={{ transformStyle: "preserve-3d" }}
-      >
-        {children}
-      </div>
-    </motion.div>
-  </div>
+      </motion.div>
+    </div>
   );
 };
 
@@ -234,7 +241,10 @@ export const CoreCapabilitiesSection: React.FC = () => {
   const activeCurrencyConfig = currencyConfigs[currency];
 
   return (
-    <section id="features" className="relative scroll-mt-20 overflow-hidden py-16 sm:py-20 md:py-28">
+    <section
+      id="features"
+      className="relative scroll-mt-20 overflow-hidden py-16 sm:py-20 md:py-28"
+    >
       {/* Background Deep Space Radial Flare and Vignette (Contained) */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
         <div
@@ -260,7 +270,7 @@ export const CoreCapabilitiesSection: React.FC = () => {
             transition={{ duration: shouldReduceMotion ? 0 : 0.35 }}
             className="flex items-center justify-center motion-reduce:!transform-none motion-reduce:!opacity-100"
           >
-            <div className="inline-flex max-w-full flex-wrap items-center justify-center gap-1.5 sm:gap-2 rounded-full border border-neutral-200/90 bg-white/90 px-3 py-1 sm:px-4 sm:py-1.5 text-xs font-semibold text-neutral-800 shadow-[0_2px_10px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-md dark:border-white/15 dark:bg-neutral-900/90 dark:text-neutral-200 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_16px_rgba(0,0,0,0.5)]">
+            <div className="inline-flex max-w-full flex-wrap items-center justify-center gap-1.5 rounded-full border border-neutral-200/90 bg-white/90 px-3 py-1 text-xs font-semibold text-neutral-800 shadow-[0_2px_10px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-md sm:gap-2 sm:px-4 sm:py-1.5 dark:border-white/15 dark:bg-neutral-900/90 dark:text-neutral-200 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_16px_rgba(0,0,0,0.5)]">
               <span className="relative flex h-2 w-2 shrink-0">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75" />
                 <span className="bg-primary relative inline-flex h-2 w-2 rounded-full shadow-[0_0_8px_rgba(37,99,235,0.9)]" />
@@ -438,25 +448,25 @@ export const CoreCapabilitiesSection: React.FC = () => {
                 >
                   <div className="space-y-2.5">
                     {/* Meeting Block 1 */}
-                    <div className="group/slot relative flex flex-col justify-between gap-2 overflow-hidden rounded-lg border border-neutral-200/90 bg-white/95 p-2.5 sm:p-3 pl-3.5 sm:pl-4 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-cyan-500/60 hover:bg-neutral-50/90 sm:flex-row sm:items-center dark:border-white/10 dark:bg-neutral-900/90 dark:hover:bg-neutral-850/90 cursor-pointer">
+                    <div className="group/slot dark:hover:bg-neutral-850/90 relative flex cursor-pointer flex-col justify-between gap-2 overflow-hidden rounded-lg border border-neutral-200/90 bg-white/95 p-2.5 pl-3.5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-500/60 hover:bg-neutral-50/90 hover:shadow-md sm:flex-row sm:items-center sm:p-3 sm:pl-4 dark:border-white/10 dark:bg-neutral-900/90">
                       <div className="absolute top-0 bottom-0 left-0 w-1 bg-gradient-to-b from-cyan-400 to-blue-600 transition-all duration-200 group-hover/slot:w-1.5" />
 
-                      <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                      <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
                         <div className="flex h-8 w-11 shrink-0 flex-col items-center justify-center rounded-lg border border-neutral-200 bg-neutral-100 font-mono text-[10px] leading-tight font-bold text-neutral-800 dark:border-white/10 dark:bg-neutral-800 dark:text-neutral-200">
                           <span>09:00</span>
                           <span className="text-[8px] font-normal text-neutral-500">AM</span>
                         </div>
                         <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-center gap-1.5">
-                            <p className="text-xs font-semibold text-neutral-900 sm:text-sm dark:text-white truncate">
+                            <p className="truncate text-xs font-semibold text-neutral-900 sm:text-sm dark:text-white">
                               Enterprise Architecture Review
                             </p>
-                            <span className="inline-flex items-center gap-1 rounded bg-blue-500/10 px-1.5 py-0.5 text-[9px] font-semibold text-blue-600 dark:text-blue-400 shrink-0">
+                            <span className="inline-flex shrink-0 items-center gap-1 rounded bg-blue-500/10 px-1.5 py-0.5 text-[9px] font-semibold text-blue-600 dark:text-blue-400">
                               <Video className="h-2.5 w-2.5" /> Video Confirmed
                             </span>
                           </div>
                           <div className="mt-0.5 flex flex-wrap items-center gap-2 text-[11px] text-neutral-500 dark:text-neutral-400">
-                            <div className="relative flex -space-x-1.5 overflow-hidden shrink-0">
+                            <div className="relative flex shrink-0 -space-x-1.5 overflow-hidden">
                               <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-blue-500/20 text-[8px] font-bold text-blue-600 ring-1 ring-white dark:text-blue-400 dark:ring-neutral-900">
                                 SC
                               </span>
@@ -465,14 +475,14 @@ export const CoreCapabilitiesSection: React.FC = () => {
                               </span>
                             </div>
                             <span className="flex items-center gap-1 truncate">
-                              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
+                              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
                               <span className="truncate">Apex Solutions &bull; Sarah Chen</span>
                             </span>
                           </div>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
+                      <div className="flex shrink-0 items-center gap-2 self-start sm:self-center">
                         <span className="rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
                           09:00 – 10:00 AM
                         </span>
@@ -499,7 +509,7 @@ export const CoreCapabilitiesSection: React.FC = () => {
                       <motion.div
                         layout={!shouldReduceMotion}
                         transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                        className={`flex flex-col items-start justify-between gap-2 rounded-lg border px-2.5 sm:px-3 py-2 transition-all duration-200 hover:scale-[1.01] hover:shadow-xs cursor-pointer sm:flex-row sm:items-center w-full overflow-hidden ${
+                        className={`flex w-full cursor-pointer flex-col items-start justify-between gap-2 overflow-hidden rounded-lg border px-2.5 py-2 transition-all duration-200 hover:scale-[1.01] hover:shadow-xs sm:flex-row sm:items-center sm:px-3 ${
                           schedulingBuffer === 0
                             ? "border-rose-500/40 bg-rose-500/10 text-rose-700 dark:text-rose-300"
                             : schedulingBuffer === 15
@@ -507,7 +517,7 @@ export const CoreCapabilitiesSection: React.FC = () => {
                               : "border-blue-500/40 bg-blue-500/10 text-blue-700 dark:text-blue-300"
                         }`}
                       >
-                        <div className="flex items-center gap-2 text-xs font-medium min-w-0 flex-1 w-full overflow-hidden">
+                        <div className="flex w-full min-w-0 flex-1 items-center gap-2 overflow-hidden text-xs font-medium">
                           {schedulingBuffer === 0 ? (
                             <AlertCircle className="h-4 w-4 shrink-0 text-rose-500" />
                           ) : schedulingBuffer === 15 ? (
@@ -516,27 +526,33 @@ export const CoreCapabilitiesSection: React.FC = () => {
                             <Sparkles className="h-4 w-4 shrink-0 text-blue-500" />
                           )}
                           <div className="min-w-0 flex-1">
-                            <span className="text-[11px] font-medium sm:text-xs truncate block">
+                            <span className="block truncate text-[11px] font-medium sm:text-xs">
                               {schedulingBuffer === 0 ? (
                                 <>
-                                  <span className="hidden sm:inline">High Schedule Density: 0m Buffer (Back-to-back risk)</span>
+                                  <span className="hidden sm:inline">
+                                    High Schedule Density: 0m Buffer (Back-to-back risk)
+                                  </span>
                                   <span className="sm:hidden">0m Buffer: Collision Risk</span>
                                 </>
                               ) : schedulingBuffer === 15 ? (
                                 <>
-                                  <span className="hidden sm:inline">Protected Buffer: +15m Transition &amp; Focus Gap</span>
+                                  <span className="hidden sm:inline">
+                                    Protected Buffer: +15m Transition &amp; Focus Gap
+                                  </span>
                                   <span className="sm:hidden">Protected Buffer: +15m Gap</span>
                                 </>
                               ) : (
                                 <>
-                                  <span className="hidden sm:inline">Extended Buffer: +30m Strategy Debrief &amp; Sync</span>
+                                  <span className="hidden sm:inline">
+                                    Extended Buffer: +30m Strategy Debrief &amp; Sync
+                                  </span>
                                   <span className="sm:hidden">Extended Buffer: +30m Gap</span>
                                 </>
                               )}
                             </span>
                           </div>
                         </div>
-                        <span className="self-start sm:self-center shrink-0 rounded-md border border-neutral-200 bg-white/95 px-2 py-0.5 font-mono text-[10px] font-semibold text-neutral-800 shadow-2xs dark:border-white/10 dark:bg-neutral-900 dark:text-neutral-200">
+                        <span className="shrink-0 self-start rounded-md border border-neutral-200 bg-white/95 px-2 py-0.5 font-mono text-[10px] font-semibold text-neutral-800 shadow-2xs sm:self-center dark:border-white/10 dark:bg-neutral-900 dark:text-neutral-200">
                           {schedulingBuffer === 0
                             ? "0m Gap"
                             : `10:00 – 10:${schedulingBuffer.toString().padStart(2, "0")} AM`}
@@ -548,11 +564,11 @@ export const CoreCapabilitiesSection: React.FC = () => {
                     <motion.div
                       layout={!shouldReduceMotion}
                       transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                      className="group/slot relative flex flex-col justify-between gap-2 overflow-hidden rounded-lg border border-neutral-200/90 bg-white/95 p-2.5 sm:p-3 pl-3.5 sm:pl-4 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-violet-500/60 hover:bg-neutral-50/90 sm:flex-row sm:items-center dark:border-white/10 dark:bg-neutral-900/90 dark:hover:bg-neutral-850/90 cursor-pointer"
+                      className="group/slot dark:hover:bg-neutral-850/90 relative flex cursor-pointer flex-col justify-between gap-2 overflow-hidden rounded-lg border border-neutral-200/90 bg-white/95 p-2.5 pl-3.5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:border-violet-500/60 hover:bg-neutral-50/90 hover:shadow-md sm:flex-row sm:items-center sm:p-3 sm:pl-4 dark:border-white/10 dark:bg-neutral-900/90"
                     >
                       <div className="absolute top-0 bottom-0 left-0 w-1 bg-gradient-to-b from-violet-400 to-purple-600 transition-all duration-200 group-hover/slot:w-1.5" />
 
-                      <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                      <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
                         <div className="flex h-8 w-11 shrink-0 flex-col items-center justify-center rounded-lg border border-neutral-200 bg-neutral-100 font-mono text-[10px] leading-tight font-bold text-neutral-800 dark:border-white/10 dark:bg-neutral-800 dark:text-neutral-200">
                           <span>
                             {schedulingBuffer === 0
@@ -565,10 +581,10 @@ export const CoreCapabilitiesSection: React.FC = () => {
                         </div>
                         <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-center gap-1.5">
-                            <p className="text-xs font-semibold text-neutral-900 sm:text-sm dark:text-white truncate">
+                            <p className="truncate text-xs font-semibold text-neutral-900 sm:text-sm dark:text-white">
                               Q3 Product Velocity Strategy
                             </p>
-                            <span className="inline-flex items-center gap-1 rounded bg-violet-500/10 px-1.5 py-0.5 text-[9px] font-semibold text-violet-600 dark:text-violet-400 shrink-0">
+                            <span className="inline-flex shrink-0 items-center gap-1 rounded bg-violet-500/10 px-1.5 py-0.5 text-[9px] font-semibold text-violet-600 dark:text-violet-400">
                               <Video className="h-2.5 w-2.5" /> Confirmed
                             </span>
                           </div>
@@ -577,13 +593,17 @@ export const CoreCapabilitiesSection: React.FC = () => {
                               MV
                             </span>
                             <span className="truncate">
-                              <span className="hidden sm:inline">Meridian Health &bull; Lead: Marcus Vance (45m)</span>
-                              <span className="sm:hidden">Meridian Health &bull; M. Vance (45m)</span>
+                              <span className="hidden sm:inline">
+                                Meridian Health &bull; Lead: Marcus Vance (45m)
+                              </span>
+                              <span className="sm:hidden">
+                                Meridian Health &bull; M. Vance (45m)
+                              </span>
                             </span>
                           </div>
                         </div>
                       </div>
-                      <span className="self-start rounded-md border border-neutral-200 bg-neutral-100 px-2 py-0.5 font-mono text-[10px] font-semibold text-neutral-600 sm:self-center shrink-0 dark:border-white/10 dark:bg-neutral-800 dark:text-neutral-400">
+                      <span className="shrink-0 self-start rounded-md border border-neutral-200 bg-neutral-100 px-2 py-0.5 font-mono text-[10px] font-semibold text-neutral-600 sm:self-center dark:border-white/10 dark:bg-neutral-800 dark:text-neutral-400">
                         {schedulingBuffer === 0 && "10:00 – 10:45 AM"}
                         {schedulingBuffer === 15 && "10:15 – 11:00 AM"}
                         {schedulingBuffer === 30 && "10:30 – 11:15 AM"}
@@ -596,16 +616,16 @@ export const CoreCapabilitiesSection: React.FC = () => {
               {/* Bottom Telemetry Feature Chips */}
               <div
                 style={{ transform: shouldReduceMotion ? "none" : "translateZ(14px)" }}
-                className="mt-5 flex flex-wrap items-center gap-1.5 sm:gap-2 border-t border-neutral-200/80 pt-3 text-[11px] sm:text-xs font-medium dark:border-white/10"
+                className="mt-5 flex flex-wrap items-center gap-1.5 border-t border-neutral-200/80 pt-3 text-[11px] font-medium sm:gap-2 sm:text-xs dark:border-white/10"
               >
-                <span className="inline-flex items-center gap-1.5 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 sm:px-2.5 py-1 text-emerald-600 dark:text-emerald-400">
+                <span className="inline-flex items-center gap-1.5 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 py-1 text-emerald-600 sm:px-2.5 dark:text-emerald-400">
                   <Check className="h-3.5 w-3.5 shrink-0" /> Automatic Buffer Intervals
                 </span>
-                <span className="inline-flex items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-100/80 px-2 sm:px-2.5 py-1 text-neutral-600 dark:border-white/10 dark:bg-neutral-800/80 dark:text-neutral-300">
+                <span className="inline-flex items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-100/80 px-2 py-1 text-neutral-600 sm:px-2.5 dark:border-white/10 dark:bg-neutral-800/80 dark:text-neutral-300">
                   <Check className="h-3.5 w-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" />{" "}
                   Multi-Calendar 2-Way Sync
                 </span>
-                <span className="inline-flex items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-100/80 px-2 sm:px-2.5 py-1 text-neutral-600 dark:border-white/10 dark:bg-neutral-800/80 dark:text-neutral-300">
+                <span className="inline-flex items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-100/80 px-2 py-1 text-neutral-600 sm:px-2.5 dark:border-white/10 dark:bg-neutral-800/80 dark:text-neutral-300">
                   <Check className="h-3.5 w-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" />{" "}
                   Auto-Timezone Normalization
                 </span>
@@ -702,39 +722,39 @@ export const CoreCapabilitiesSection: React.FC = () => {
                   <div className="space-y-2.5">
                     {/* Database Scope Telemetry Header */}
                     <div className="flex items-center justify-between gap-2 border-b border-neutral-200/80 pb-2 font-mono text-[10px] dark:border-white/10">
-                      <span className="flex items-center gap-1.5 text-neutral-600 dark:text-neutral-400 min-w-0">
-                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)] shrink-0" />
+                      <span className="flex min-w-0 items-center gap-1.5 text-neutral-600 dark:text-neutral-400">
+                        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
                         <span className="truncate">Workspace: org_flowpilot_demo</span>
                       </span>
-                      <span className="font-semibold text-emerald-600 dark:text-emerald-400 shrink-0">
+                      <span className="shrink-0 font-semibold text-emerald-600 dark:text-emerald-400">
                         RLS Enforced
                       </span>
                     </div>
 
                     {/* Scope Item 1: Public CRM Scope */}
-                    <div className="flex items-center justify-between gap-2 rounded-lg border border-neutral-200/90 bg-white/95 p-2.5 text-xs shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-violet-500/50 hover:bg-neutral-50/90 dark:border-white/10 dark:bg-neutral-900/90 dark:hover:bg-neutral-850/90 cursor-pointer">
-                      <div className="flex items-center gap-2.5 min-w-0">
-                        <div className="flex h-6 w-6 items-center justify-center rounded-md border border-neutral-200 bg-neutral-100 text-emerald-600 shrink-0 dark:border-white/10 dark:bg-neutral-800 dark:text-emerald-400">
+                    <div className="dark:hover:bg-neutral-850/90 flex cursor-pointer items-center justify-between gap-2 rounded-lg border border-neutral-200/90 bg-white/95 p-2.5 text-xs shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:border-violet-500/50 hover:bg-neutral-50/90 hover:shadow-md dark:border-white/10 dark:bg-neutral-900/90">
+                      <div className="flex min-w-0 items-center gap-2.5">
+                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-neutral-200 bg-neutral-100 text-emerald-600 dark:border-white/10 dark:bg-neutral-800 dark:text-emerald-400">
                           <Unlock className="h-3.5 w-3.5" />
                         </div>
                         <div className="min-w-0">
-                          <span className="block text-[11px] font-semibold text-neutral-900 sm:text-xs dark:text-white truncate">
+                          <span className="block truncate text-[11px] font-semibold text-neutral-900 sm:text-xs dark:text-white">
                             Client Dossiers &amp; Schedules
                           </span>
-                          <span className="block text-[10px] text-neutral-500 dark:text-neutral-400 truncate">
+                          <span className="block truncate text-[10px] text-neutral-500 dark:text-neutral-400">
                             14 Active Clients &bull; 6 Team Schedules
                           </span>
                         </div>
                       </div>
-                      <span className="rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 shrink-0">
+                      <span className="shrink-0 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
                         Full Access
                       </span>
                     </div>
 
                     {/* Scope Item 2: Confidential Financial Scope with Dynamic Blur Shield */}
-                    <div className="relative overflow-hidden rounded-lg border border-neutral-200/90 bg-white/95 p-2.5 text-xs shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-violet-500/50 hover:bg-neutral-50/90 dark:border-white/10 dark:bg-neutral-900/90 dark:hover:bg-neutral-850/90 cursor-pointer">
+                    <div className="dark:hover:bg-neutral-850/90 relative cursor-pointer overflow-hidden rounded-lg border border-neutral-200/90 bg-white/95 p-2.5 text-xs shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:border-violet-500/50 hover:bg-neutral-50/90 hover:shadow-md dark:border-white/10 dark:bg-neutral-900/90">
                       <div className="flex items-center justify-between gap-2">
-                        <div className="flex items-center gap-2.5 min-w-0">
+                        <div className="flex min-w-0 items-center gap-2.5">
                           <div
                             className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md border ${
                               activeRole === "owner" || activeRole === "lead"
@@ -749,25 +769,25 @@ export const CoreCapabilitiesSection: React.FC = () => {
                             )}
                           </div>
                           <div className="min-w-0">
-                            <span className="block text-[11px] font-semibold text-neutral-900 sm:text-xs dark:text-white truncate">
+                            <span className="block truncate text-[11px] font-semibold text-neutral-900 sm:text-xs dark:text-white">
                               Financial Margins &amp; Invoicing
                             </span>
-                            <span className="block text-[10px] text-neutral-500 dark:text-neutral-400 truncate">
+                            <span className="block truncate text-[10px] text-neutral-500 dark:text-neutral-400">
                               Revenue Reports &bull; Contractor Rates
                             </span>
                           </div>
                         </div>
 
                         {activeRole === "owner" ? (
-                          <span className="rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 shrink-0">
+                          <span className="shrink-0 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
                             $48,250 MTD <span className="hidden sm:inline">(38.4% Net)</span>
                           </span>
                         ) : activeRole === "lead" ? (
-                          <span className="rounded-md border border-blue-500/20 bg-blue-500/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-blue-600 dark:text-blue-400 shrink-0">
+                          <span className="shrink-0 rounded-md border border-blue-500/20 bg-blue-500/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-blue-600 dark:text-blue-400">
                             Ops Approved
                           </span>
                         ) : (
-                          <span className="rounded-md border border-neutral-200 bg-neutral-100 px-2 py-0.5 font-mono text-[10px] font-semibold text-neutral-500 dark:border-white/10 dark:bg-neutral-800 dark:text-neutral-400 shrink-0">
+                          <span className="shrink-0 rounded-md border border-neutral-200 bg-neutral-100 px-2 py-0.5 font-mono text-[10px] font-semibold text-neutral-500 dark:border-white/10 dark:bg-neutral-800 dark:text-neutral-400">
                             Restricted
                           </span>
                         )}
@@ -783,9 +803,11 @@ export const CoreCapabilitiesSection: React.FC = () => {
                             transition={{ duration: shouldReduceMotion ? 0 : 0.18 }}
                             className="absolute inset-0 flex items-center justify-center border border-neutral-200/90 bg-white/95 px-2 font-mono text-[10.5px] font-semibold backdrop-blur-md dark:border-white/10 dark:bg-neutral-950/95"
                           >
-                            <div className="flex items-center gap-1.5 text-neutral-600 dark:text-neutral-300 text-center">
-                              <Lock className="h-3.5 w-3.5 text-amber-500 shrink-0" />
-                              <span className="hidden sm:inline">Restricted • Administrator Permission Required</span>
+                            <div className="flex items-center gap-1.5 text-center text-neutral-600 dark:text-neutral-300">
+                              <Lock className="h-3.5 w-3.5 shrink-0 text-amber-500" />
+                              <span className="hidden sm:inline">
+                                Restricted • Administrator Permission Required
+                              </span>
                               <span className="sm:hidden">Restricted • Admin Required</span>
                             </div>
                           </motion.div>
@@ -800,24 +822,24 @@ export const CoreCapabilitiesSection: React.FC = () => {
                       <span>SCOPE</span>
                       <span>OWNER | LEAD | STAFF</span>
                     </div>
-                    <div className="flex items-center justify-between text-neutral-600 dark:text-neutral-400 rounded-sm px-1 py-0.5 transition-colors duration-150 hover:bg-neutral-200/60 dark:hover:bg-white/5 cursor-pointer">
+                    <div className="flex cursor-pointer items-center justify-between rounded-sm px-1 py-0.5 text-neutral-600 transition-colors duration-150 hover:bg-neutral-200/60 dark:text-neutral-400 dark:hover:bg-white/5">
                       <span className="truncate pr-1">Client CRM Comms</span>
-                      <span className="flex items-center gap-1 font-mono font-semibold text-emerald-600 dark:text-emerald-400 shrink-0">
-                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
+                      <span className="flex shrink-0 items-center gap-1 font-mono font-semibold text-emerald-600 dark:text-emerald-400">
+                        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
                         <span>AUTH &bull; AUTH &bull; AUTH</span>
                       </span>
                     </div>
-                    <div className="flex items-center justify-between text-neutral-600 dark:text-neutral-400 rounded-sm px-1 py-0.5 transition-colors duration-150 hover:bg-neutral-200/60 dark:hover:bg-white/5 cursor-pointer">
+                    <div className="flex cursor-pointer items-center justify-between rounded-sm px-1 py-0.5 text-neutral-600 transition-colors duration-150 hover:bg-neutral-200/60 dark:text-neutral-400 dark:hover:bg-white/5">
                       <span className="truncate pr-1">Financial Margins</span>
-                      <span className="font-mono font-semibold shrink-0">
+                      <span className="shrink-0 font-mono font-semibold">
                         <span className="text-emerald-600 dark:text-emerald-400">● FULL</span>{" "}
                         &bull; <span className="text-blue-600 dark:text-blue-400">▲ AGGR</span>{" "}
                         &bull; <span className="text-neutral-400">■ HIDDEN</span>
                       </span>
                     </div>
-                    <div className="flex items-center justify-between text-neutral-600 dark:text-neutral-400 rounded-sm px-1 py-0.5 transition-colors duration-150 hover:bg-neutral-200/60 dark:hover:bg-white/5 cursor-pointer">
+                    <div className="flex cursor-pointer items-center justify-between rounded-sm px-1 py-0.5 text-neutral-600 transition-colors duration-150 hover:bg-neutral-200/60 dark:text-neutral-400 dark:hover:bg-white/5">
                       <span className="truncate pr-1">Payout Reconcile</span>
-                      <span className="font-mono font-semibold shrink-0">
+                      <span className="shrink-0 font-mono font-semibold">
                         <span className="text-emerald-600 dark:text-emerald-400">● EXEC</span>{" "}
                         &bull; <span className="text-neutral-400">■ LOCK</span> &bull;{" "}
                         <span className="text-neutral-400">■ LOCK</span>
@@ -830,13 +852,13 @@ export const CoreCapabilitiesSection: React.FC = () => {
               {/* Bottom Telemetry Feature Chips */}
               <div
                 style={{ transform: shouldReduceMotion ? "none" : "translateZ(14px)" }}
-                className="mt-5 flex flex-wrap items-center gap-1.5 sm:gap-2 border-t border-neutral-200/80 pt-3 text-[11px] sm:text-xs font-medium dark:border-white/10"
+                className="mt-5 flex flex-wrap items-center gap-1.5 border-t border-neutral-200/80 pt-3 text-[11px] font-medium sm:gap-2 sm:text-xs dark:border-white/10"
               >
-                <span className="inline-flex items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-100/80 px-2 sm:px-2.5 py-1 text-neutral-800 dark:border-white/10 dark:bg-neutral-800/80 dark:text-neutral-200">
-                  <Check className="h-3.5 w-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" /> Owner,
-                  Admin &amp; Staff Tiers
+                <span className="inline-flex items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-100/80 px-2 py-1 text-neutral-800 sm:px-2.5 dark:border-white/10 dark:bg-neutral-800/80 dark:text-neutral-200">
+                  <Check className="h-3.5 w-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" />{" "}
+                  Owner, Admin &amp; Staff Tiers
                 </span>
-                <span className="inline-flex items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-100/80 px-2 sm:px-2.5 py-1 text-neutral-600 dark:border-white/10 dark:bg-neutral-800/80 dark:text-neutral-300">
+                <span className="inline-flex items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-100/80 px-2 py-1 text-neutral-600 sm:px-2.5 dark:border-white/10 dark:bg-neutral-800/80 dark:text-neutral-300">
                   <Check className="h-3.5 w-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" />{" "}
                   Multi-Tenant Scoping
                 </span>
@@ -952,7 +974,7 @@ export const CoreCapabilitiesSection: React.FC = () => {
                     <div
                       role="tablist"
                       aria-label="Client dossier perspectives"
-                      className="flex items-center rounded-lg border border-neutral-200/90 bg-neutral-100/80 p-0.5 sm:p-1 text-xs dark:border-white/10 dark:bg-neutral-800/80"
+                      className="flex items-center rounded-lg border border-neutral-200/90 bg-neutral-100/80 p-0.5 text-xs sm:p-1 dark:border-white/10 dark:bg-neutral-800/80"
                     >
                       {(
                         [
@@ -969,7 +991,7 @@ export const CoreCapabilitiesSection: React.FC = () => {
                             role="tab"
                             aria-selected={isTabActive}
                             onClick={() => setActiveCrmTab(tab.id)}
-                            className="focus-visible:ring-primary relative flex-1 cursor-pointer rounded-md px-1.5 sm:px-2 py-1 text-center text-[10.5px] sm:text-[11px] font-semibold transition-colors focus-visible:ring-2 focus-visible:outline-hidden"
+                            className="focus-visible:ring-primary relative flex-1 cursor-pointer rounded-md px-1.5 py-1 text-center text-[10.5px] font-semibold transition-colors focus-visible:ring-2 focus-visible:outline-hidden sm:px-2 sm:text-[11px]"
                           >
                             {isTabActive && (
                               <motion.span
@@ -979,7 +1001,7 @@ export const CoreCapabilitiesSection: React.FC = () => {
                               />
                             )}
                             <span
-                              className={`relative z-10 transition-colors truncate ${
+                              className={`relative z-10 truncate transition-colors ${
                                 isTabActive
                                   ? "font-bold text-neutral-900 dark:text-white"
                                   : "text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white"
@@ -1003,17 +1025,17 @@ export const CoreCapabilitiesSection: React.FC = () => {
                       >
                         {/* Header Strip with Client Avatar */}
                         <div className="flex items-center justify-between gap-2 pb-2">
-                          <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                          <div className="flex min-w-0 items-center gap-2 sm:gap-2.5">
                             <div className="border-primary/20 bg-primary/10 text-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border font-mono text-xs font-bold shadow-2xs">
                               {selectedClient === "apex" ? "AS" : "MH"}
                             </div>
                             <div className="min-w-0 flex-1">
-                              <p className="text-xs leading-tight font-semibold text-neutral-900 sm:text-sm dark:text-white truncate">
+                              <p className="truncate text-xs leading-tight font-semibold text-neutral-900 sm:text-sm dark:text-white">
                                 {selectedClient === "apex"
                                   ? "Apex Solutions Inc."
                                   : "Meridian Health Group"}
                               </p>
-                              <p className="text-[10px] text-neutral-500 dark:text-neutral-400 truncate">
+                              <p className="truncate text-[10px] text-neutral-500 dark:text-neutral-400">
                                 Lead:{" "}
                                 {selectedClient === "apex"
                                   ? "Sarah Chen (VP Ops)"
@@ -1021,14 +1043,14 @@ export const CoreCapabilitiesSection: React.FC = () => {
                               </p>
                             </div>
                           </div>
-                          <span className="rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[9.5px] font-semibold text-emerald-600 dark:text-emerald-400 shrink-0">
+                          <span className="shrink-0 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[9.5px] font-semibold text-emerald-600 dark:text-emerald-400">
                             {selectedClient === "apex" ? "Enterprise" : "VIP Tier"}
                           </span>
                         </div>
 
                         {/* Tab 1: Health Radar View */}
                         {activeCrmTab === "health" && (
-                          <div className="rounded-lg border border-neutral-200/90 bg-white/95 p-2.5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-cyan-500/50 hover:bg-neutral-50/90 dark:border-white/10 dark:bg-neutral-900/90 dark:hover:bg-neutral-850/90 cursor-pointer">
+                          <div className="dark:hover:bg-neutral-850/90 cursor-pointer rounded-lg border border-neutral-200/90 bg-white/95 p-2.5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-500/50 hover:bg-neutral-50/90 hover:shadow-md dark:border-white/10 dark:bg-neutral-900/90">
                             <div className="flex items-center justify-between gap-3">
                               {/* Health Score Ring */}
                               <div className="relative flex h-14 w-14 shrink-0 items-center justify-center">
@@ -1093,7 +1115,7 @@ export const CoreCapabilitiesSection: React.FC = () => {
 
                         {/* Tab 2: Revenue & LTV View */}
                         {activeCrmTab === "revenue" && (
-                          <div className="space-y-1.5 rounded-lg border border-neutral-200/90 bg-white/95 p-2.5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-cyan-500/50 hover:bg-neutral-50/90 dark:border-white/10 dark:bg-neutral-900/90 dark:hover:bg-neutral-850/90 cursor-pointer">
+                          <div className="dark:hover:bg-neutral-850/90 cursor-pointer space-y-1.5 rounded-lg border border-neutral-200/90 bg-white/95 p-2.5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-500/50 hover:bg-neutral-50/90 hover:shadow-md dark:border-white/10 dark:bg-neutral-900/90">
                             <div className="flex items-center justify-between">
                               <div>
                                 <span className="block text-[9px] text-neutral-500 dark:text-neutral-400">
@@ -1154,7 +1176,7 @@ export const CoreCapabilitiesSection: React.FC = () => {
 
                         {/* Tab 3: Real-Time Activity Stream */}
                         {activeCrmTab === "activity" && (
-                          <div className="space-y-1.5 rounded-lg border border-neutral-200/90 bg-white/95 p-2 text-[10.5px] shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-cyan-500/50 hover:bg-neutral-50/90 dark:border-white/10 dark:bg-neutral-900/90 dark:hover:bg-neutral-850/90 cursor-pointer">
+                          <div className="dark:hover:bg-neutral-850/90 cursor-pointer space-y-1.5 rounded-lg border border-neutral-200/90 bg-white/95 p-2 text-[10.5px] shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-500/50 hover:bg-neutral-50/90 hover:shadow-md dark:border-white/10 dark:bg-neutral-900/90">
                             <div className="flex items-start gap-2 border-b border-neutral-200/60 pb-1 dark:border-white/10">
                               <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-emerald-500" />
                               <div>
@@ -1185,7 +1207,7 @@ export const CoreCapabilitiesSection: React.FC = () => {
 
                   <div className="mt-2.5 flex flex-wrap items-center justify-between gap-1 border-t border-neutral-200/60 pt-1.5 text-[9.5px] text-neutral-500 dark:border-white/10 dark:text-neutral-400">
                     <span className="truncate">5 active communication threads</span>
-                    <span className="font-semibold text-emerald-600 dark:text-emerald-400 shrink-0">
+                    <span className="shrink-0 font-semibold text-emerald-600 dark:text-emerald-400">
                       &bull; Unified Dossier
                     </span>
                   </div>
@@ -1195,15 +1217,15 @@ export const CoreCapabilitiesSection: React.FC = () => {
               {/* Bottom Telemetry Feature Chips */}
               <div
                 style={{ transform: shouldReduceMotion ? "none" : "translateZ(14px)" }}
-                className="mt-5 flex flex-wrap items-center gap-1.5 sm:gap-2 border-t border-neutral-200/80 pt-3 text-[11px] sm:text-xs font-medium dark:border-white/10"
+                className="mt-5 flex flex-wrap items-center gap-1.5 border-t border-neutral-200/80 pt-3 text-[11px] font-medium sm:gap-2 sm:text-xs dark:border-white/10"
               >
-                <span className="inline-flex items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-100/80 px-2 sm:px-2.5 py-1 text-neutral-800 dark:border-white/10 dark:bg-neutral-800/80 dark:text-neutral-200">
+                <span className="inline-flex items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-100/80 px-2 py-1 text-neutral-800 sm:px-2.5 dark:border-white/10 dark:bg-neutral-800/80 dark:text-neutral-200">
                   <Check className="h-3.5 w-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" />{" "}
                   Tenant-Isolated Records
                 </span>
-                <span className="inline-flex items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-100/80 px-2 sm:px-2.5 py-1 text-neutral-600 dark:border-white/10 dark:bg-neutral-800/80 dark:text-neutral-300">
-                  <Check className="h-3.5 w-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" /> Direct
-                  Booking Conversion
+                <span className="inline-flex items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-100/80 px-2 py-1 text-neutral-600 sm:px-2.5 dark:border-white/10 dark:bg-neutral-800/80 dark:text-neutral-300">
+                  <Check className="h-3.5 w-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" />{" "}
+                  Direct Booking Conversion
                 </span>
               </div>
             </div>
@@ -1299,24 +1321,24 @@ export const CoreCapabilitiesSection: React.FC = () => {
                 >
                   <div>
                     {/* 4-Step Lifecycle Pipeline Track */}
-                    <div className="grid grid-cols-2 gap-2 border-b border-neutral-200/80 pb-3 text-[11px] sm:text-xs sm:grid-cols-4 dark:border-white/10">
-                      <div className="flex items-center gap-1.5 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 sm:px-2.5 py-1.5 font-semibold text-emerald-600 transition-all duration-200 hover:scale-[1.03] hover:shadow-xs cursor-default dark:text-emerald-400 min-w-0">
+                    <div className="grid grid-cols-2 gap-2 border-b border-neutral-200/80 pb-3 text-[11px] sm:grid-cols-4 sm:text-xs dark:border-white/10">
+                      <div className="flex min-w-0 cursor-default items-center gap-1.5 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 py-1.5 font-semibold text-emerald-600 transition-all duration-200 hover:scale-[1.03] hover:shadow-xs sm:px-2.5 dark:text-emerald-400">
                         <CheckCircle2 className="h-3.5 w-3.5 shrink-0" />
                         <span className="truncate">1. Delivered</span>
                       </div>
 
-                      <div className="flex items-center gap-1.5 rounded-md border border-blue-500/20 bg-blue-500/10 px-2 sm:px-2.5 py-1.5 font-semibold text-blue-600 transition-all duration-200 hover:scale-[1.03] hover:shadow-xs cursor-default dark:text-blue-400 min-w-0">
+                      <div className="flex min-w-0 cursor-default items-center gap-1.5 rounded-md border border-blue-500/20 bg-blue-500/10 px-2 py-1.5 font-semibold text-blue-600 transition-all duration-200 hover:scale-[1.03] hover:shadow-xs sm:px-2.5 dark:text-blue-400">
                         <Clock className="h-3.5 w-3.5 shrink-0" />
                         <span className="truncate">2. 20h Logged</span>
                       </div>
 
-                      <div className="bg-primary/10 border-primary/20 text-primary flex items-center gap-1.5 rounded-md border px-2 sm:px-2.5 py-1.5 font-semibold transition-all duration-200 hover:scale-[1.03] hover:shadow-xs cursor-default min-w-0">
+                      <div className="bg-primary/10 border-primary/20 text-primary flex min-w-0 cursor-default items-center gap-1.5 rounded-md border px-2 py-1.5 font-semibold transition-all duration-200 hover:scale-[1.03] hover:shadow-xs sm:px-2.5">
                         <FileText className="h-3.5 w-3.5 shrink-0" />
                         <span className="truncate">3. #FP-10892</span>
                       </div>
 
                       <div
-                        className={`flex items-center gap-1.5 rounded-md px-2 sm:px-2.5 py-1.5 font-semibold transition-all duration-200 hover:scale-[1.03] hover:shadow-xs cursor-default min-w-0 ${
+                        className={`flex min-w-0 cursor-default items-center gap-1.5 rounded-md px-2 py-1.5 font-semibold transition-all duration-200 hover:scale-[1.03] hover:shadow-xs sm:px-2.5 ${
                           isSettled
                             ? "border border-emerald-500/30 bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
                             : "border-neutral-200 bg-neutral-100 text-neutral-500 dark:border-white/10 dark:bg-neutral-800 dark:text-neutral-400"
@@ -1339,7 +1361,7 @@ export const CoreCapabilitiesSection: React.FC = () => {
                     {/* Line Item Card with High Financial Fidelity */}
                     <motion.div
                       layout={!shouldReduceMotion}
-                      className={`mt-3 flex flex-col justify-between gap-2 rounded-lg border p-2.5 sm:p-3 text-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-emerald-500/50 hover:bg-neutral-50/90 dark:hover:bg-neutral-850/90 cursor-pointer sm:flex-row sm:items-center ${
+                      className={`dark:hover:bg-neutral-850/90 mt-3 flex cursor-pointer flex-col justify-between gap-2 rounded-lg border p-2.5 text-xs transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-500/50 hover:bg-neutral-50/90 hover:shadow-md sm:flex-row sm:items-center sm:p-3 ${
                         isSettled
                           ? "border-emerald-500/40 bg-emerald-500/10 dark:border-emerald-500/40 dark:bg-emerald-500/15"
                           : "border-neutral-200/90 bg-white/95 shadow-xs dark:border-white/10 dark:bg-neutral-900/90"
@@ -1347,20 +1369,20 @@ export const CoreCapabilitiesSection: React.FC = () => {
                     >
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                          <p className="font-semibold text-neutral-900 dark:text-white truncate">
+                          <p className="truncate font-semibold text-neutral-900 dark:text-white">
                             Monthly Strategic Advisory Retainer
                           </p>
                           {isSettled ? (
-                            <span className="rounded-md border border-emerald-500/30 bg-emerald-500/20 px-2 py-0.5 text-[9.5px] font-semibold text-emerald-600 dark:text-emerald-400 shrink-0">
+                            <span className="shrink-0 rounded-md border border-emerald-500/30 bg-emerald-500/20 px-2 py-0.5 text-[9.5px] font-semibold text-emerald-600 dark:text-emerald-400">
                               Reconciled
                             </span>
                           ) : (
-                            <span className="rounded border border-neutral-200 bg-neutral-100 px-1.5 py-0.5 font-mono text-[9px] text-neutral-600 dark:border-white/10 dark:bg-neutral-800 dark:text-neutral-400 shrink-0">
+                            <span className="shrink-0 rounded border border-neutral-200 bg-neutral-100 px-1.5 py-0.5 font-mono text-[9px] text-neutral-600 dark:border-white/10 dark:bg-neutral-800 dark:text-neutral-400">
                               DRAFT
                             </span>
                           )}
                         </div>
-                        <p className="mt-0.5 text-[10px] text-neutral-500 dark:text-neutral-400 truncate">
+                        <p className="mt-0.5 truncate text-[10px] text-neutral-500 dark:text-neutral-400">
                           20 verified hours @ {activeCurrencyConfig.symbol}
                           {activeCurrencyConfig.hourly.toLocaleString()}/hr &bull; Apex Solutions
                         </p>
@@ -1377,7 +1399,7 @@ export const CoreCapabilitiesSection: React.FC = () => {
                   </div>
 
                   {/* Interactive Instant Settlement Button */}
-                  <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-t border-neutral-200/80 pt-2 dark:border-white/10">
+                  <div className="mt-3 flex flex-col justify-between gap-2.5 border-t border-neutral-200/80 pt-2 sm:flex-row sm:items-center dark:border-white/10">
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-medium text-neutral-600 dark:text-neutral-400">
                         One-Click Cash Flow:
@@ -1396,7 +1418,7 @@ export const CoreCapabilitiesSection: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setIsSettled((prev) => !prev)}
-                      className={`focus-visible:ring-primary relative inline-flex w-full sm:w-auto justify-center cursor-pointer items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-semibold shadow-xs transition-all duration-150 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden active:scale-[0.98] ${
+                      className={`focus-visible:ring-primary relative inline-flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg px-4 py-2 text-xs font-semibold shadow-xs transition-all duration-150 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden active:scale-[0.98] sm:w-auto ${
                         isSettled
                           ? "bg-emerald-600 text-white shadow-emerald-500/20 hover:bg-emerald-700"
                           : "bg-primary hover:bg-primary-hover shadow-primary/25 text-white"
@@ -1424,11 +1446,11 @@ export const CoreCapabilitiesSection: React.FC = () => {
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.95, opacity: 0 }}
                         transition={{ duration: shouldReduceMotion ? 0 : 0.2 }}
-                        className="pointer-events-none absolute top-3 right-3 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-2 sm:px-3 py-1 sm:py-1.5 shadow-sm backdrop-blur-md motion-reduce:!transform-none motion-reduce:!opacity-100"
+                        className="pointer-events-none absolute top-3 right-3 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-2 py-1 shadow-sm backdrop-blur-md motion-reduce:!transform-none motion-reduce:!opacity-100 sm:px-3 sm:py-1.5"
                       >
                         <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
-                          <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4 stroke-[2.5]" />
-                          <span className="font-mono text-[10px] sm:text-xs font-bold tracking-wider uppercase">
+                          <Check className="h-3.5 w-3.5 stroke-[2.5] sm:h-4 sm:w-4" />
+                          <span className="font-mono text-[10px] font-bold tracking-wider uppercase sm:text-xs">
                             PAID &amp; RECONCILED
                           </span>
                         </div>
@@ -1441,17 +1463,17 @@ export const CoreCapabilitiesSection: React.FC = () => {
               {/* Bottom Telemetry Feature Chips */}
               <div
                 style={{ transform: shouldReduceMotion ? "none" : "translateZ(14px)" }}
-                className="mt-5 flex flex-wrap items-center gap-1.5 sm:gap-2 border-t border-neutral-200/80 pt-3 text-[11px] sm:text-xs font-medium dark:border-white/10"
+                className="mt-5 flex flex-wrap items-center gap-1.5 border-t border-neutral-200/80 pt-3 text-[11px] font-medium sm:gap-2 sm:text-xs dark:border-white/10"
               >
-                <span className="inline-flex items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-100/80 px-2 sm:px-2.5 py-1 text-neutral-800 dark:border-white/10 dark:bg-neutral-800/80 dark:text-neutral-200">
-                  <Check className="h-3.5 w-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" /> 1-Click
-                  Appointment-to-Invoice
+                <span className="inline-flex items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-100/80 px-2 py-1 text-neutral-800 sm:px-2.5 dark:border-white/10 dark:bg-neutral-800/80 dark:text-neutral-200">
+                  <Check className="h-3.5 w-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" />{" "}
+                  1-Click Appointment-to-Invoice
                 </span>
-                <span className="inline-flex items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-100/80 px-2 sm:px-2.5 py-1 text-neutral-600 dark:border-white/10 dark:bg-neutral-800/80 dark:text-neutral-300">
-                  <Check className="h-3.5 w-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" /> Itemized
-                  Taxes &amp; Line Items
+                <span className="inline-flex items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-100/80 px-2 py-1 text-neutral-600 sm:px-2.5 dark:border-white/10 dark:bg-neutral-800/80 dark:text-neutral-300">
+                  <Check className="h-3.5 w-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" />{" "}
+                  Itemized Taxes &amp; Line Items
                 </span>
-                <span className="inline-flex items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-100/80 px-2 sm:px-2.5 py-1 text-neutral-600 dark:border-white/10 dark:bg-neutral-800/80 dark:text-neutral-300">
+                <span className="inline-flex items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-100/80 px-2 py-1 text-neutral-600 sm:px-2.5 dark:border-white/10 dark:bg-neutral-800/80 dark:text-neutral-300">
                   <Check className="h-3.5 w-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" />{" "}
                   Multi-Currency Settlement
                 </span>

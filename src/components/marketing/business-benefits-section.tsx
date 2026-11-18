@@ -198,9 +198,7 @@ const BentoCard: React.FC<BentoCardProps> = ({ children, className = "", glowCol
           aria-hidden="true"
         />
 
-        <div className="relative z-10 flex h-full flex-col justify-between">
-          {children}
-        </div>
+        <div className="relative z-10 flex h-full flex-col justify-between">{children}</div>
       </motion.div>
     </div>
   );
@@ -215,7 +213,9 @@ export const BusinessBenefitsSection: React.FC = () => {
   // Card 2: Team Capacity Optimizer & Day Schedule Inspector
   const [selectedStaff, setSelectedStaff] = React.useState<"sarah" | "marcus" | "elena">("sarah");
   const [capacityMode, setCapacityMode] = React.useState<"unprotected" | "optimal">("optimal");
-  const [selectedDay, setSelectedDay] = React.useState<"Mon" | "Tue" | "Wed" | "Thu" | "Fri">("Wed");
+  const [selectedDay, setSelectedDay] = React.useState<"Mon" | "Tue" | "Wed" | "Thu" | "Fri">(
+    "Wed"
+  );
 
   // Card 3: Days Sales Outstanding (DSO) Model
   const [dsoModel, setDsoModel] = React.useState<"traditional" | "flowpilot">("flowpilot");
@@ -261,7 +261,7 @@ export const BusinessBenefitsSection: React.FC = () => {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
             </span>
-            <span className="font-mono text-[10.5px] sm:text-[11px] font-bold tracking-wider text-neutral-600 uppercase dark:text-neutral-400">
+            <span className="font-mono text-[10.5px] font-bold tracking-wider text-neutral-600 uppercase sm:text-[11px] dark:text-neutral-400">
               Quantitative Proof &bull; Operational Clarity
             </span>
           </motion.div>
@@ -271,7 +271,7 @@ export const BusinessBenefitsSection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.35, delay: 0.05 }}
-            className="mt-4 text-2xl min-[360px]:text-3xl font-extrabold tracking-tight text-neutral-900 sm:text-4xl md:text-5xl dark:text-white leading-tight"
+            className="mt-4 text-2xl leading-tight font-extrabold tracking-tight text-neutral-900 min-[360px]:text-3xl sm:text-4xl md:text-5xl dark:text-white"
           >
             Measurable Clarity for Owners{" "}
             <span className="bg-gradient-to-r from-neutral-950 via-neutral-700 to-neutral-950 bg-clip-text text-transparent dark:from-white dark:via-neutral-300 dark:to-neutral-500">
@@ -284,7 +284,7 @@ export const BusinessBenefitsSection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.35, delay: 0.1 }}
-            className="text-muted-foreground mt-3 sm:mt-4 text-sm sm:text-base leading-relaxed sm:text-lg"
+            className="text-muted-foreground mt-3 text-sm leading-relaxed sm:mt-4 sm:text-base sm:text-lg"
           >
             Translating unified platform capabilities into day-to-day operational and financial
             advantages. Explore how FlowPilot reduces administrative drag across your team.
@@ -294,7 +294,7 @@ export const BusinessBenefitsSection: React.FC = () => {
         {/* ========================================================================= */}
         {/* QUANTITATIVE PROOF BENTO GRID */}
         {/* ========================================================================= */}
-        <div className="mt-8 sm:mt-12 grid grid-cols-1 gap-5 sm:gap-6 lg:grid-cols-12 lg:gap-6 xl:gap-8">
+        <div className="mt-8 grid grid-cols-1 gap-5 sm:mt-12 sm:gap-6 lg:grid-cols-12 lg:gap-6 xl:gap-8">
           {/* ======================================================================= */}
           {/* CARD 1: SINGLE OPERATIONAL SOURCE OF TRUTH (HERO 7 COLS) */}
           {/* ======================================================================= */}
@@ -303,14 +303,14 @@ export const BusinessBenefitsSection: React.FC = () => {
               {/* Card Meta & Header */}
               <div className="flex flex-wrap items-center justify-between gap-3 pb-3 sm:pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-blue-500/30 bg-blue-500/10 text-blue-600 shadow-2xs dark:text-blue-400">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-blue-500/30 bg-blue-500/10 text-blue-600 shadow-2xs sm:h-11 sm:w-11 dark:text-blue-400">
                     <Eye className="h-5 w-5" />
                   </div>
                   <div>
                     <span className="text-xs font-bold tracking-tight text-neutral-900 dark:text-white">
                       Operational Visibility
                     </span>
-                    <p className="font-mono text-[10px] sm:text-[11px] text-neutral-500 dark:text-neutral-400">
+                    <p className="font-mono text-[10px] text-neutral-500 sm:text-[11px] dark:text-neutral-400">
                       Centralized Workspace Hub
                     </p>
                   </div>
@@ -382,19 +382,19 @@ export const BusinessBenefitsSection: React.FC = () => {
 
               {/* Bold Metric Header */}
               <div className="mb-2 flex flex-wrap items-baseline gap-2 sm:gap-2.5">
-                <span className="font-mono text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-900 dark:text-white">
+                <span className="font-mono text-xl font-extrabold text-neutral-900 sm:text-2xl md:text-3xl dark:text-white">
                   1 Workspace vs. 14 Tools
                 </span>
-                <span className="shrink-0 rounded-full border border-blue-500/30 bg-blue-500/10 px-2.5 py-0.5 font-mono text-[10px] sm:text-[11px] font-bold text-blue-600 dark:text-blue-400">
+                <span className="shrink-0 rounded-full border border-blue-500/30 bg-blue-500/10 px-2.5 py-0.5 font-mono text-[10px] font-bold text-blue-600 sm:text-[11px] dark:text-blue-400">
                   Verified Architecture
                 </span>
               </div>
 
-              <h3 className="text-lg sm:text-xl font-bold tracking-tight text-neutral-900 sm:text-2xl dark:text-white">
+              <h3 className="text-lg font-bold tracking-tight text-neutral-900 sm:text-2xl sm:text-xl dark:text-white">
                 Single Operational Source of Truth
               </h3>
 
-              <p className="text-muted-foreground mt-2 text-xs sm:text-sm leading-relaxed">
+              <p className="text-muted-foreground mt-2 text-xs leading-relaxed sm:text-sm">
                 Eliminate the confusion of switching between fragmented spreadsheet tabs, messaging
                 apps, and disconnected calendar links. In FlowPilot, customer dossiers, booking
                 timelines, staff assignments, and invoice balances are unified in one
@@ -402,7 +402,7 @@ export const BusinessBenefitsSection: React.FC = () => {
               </p>
 
               {/* Comparison Canvas */}
-              <div className="relative mt-4 sm:mt-6 min-h-[220px] overflow-hidden rounded-2xl border border-neutral-200/80 bg-neutral-100/60 p-3.5 sm:p-4.5 shadow-inner backdrop-blur-md dark:border-white/10 dark:bg-neutral-950/60">
+              <div className="relative mt-4 min-h-[220px] overflow-hidden rounded-2xl border border-neutral-200/80 bg-neutral-100/60 p-3.5 shadow-inner backdrop-blur-md sm:mt-6 sm:p-4.5 dark:border-white/10 dark:bg-neutral-950/60">
                 <AnimatePresence initial={false} mode="wait">
                   {sourceMode === "chaos" ? (
                     <motion.div
@@ -414,71 +414,73 @@ export const BusinessBenefitsSection: React.FC = () => {
                       className="space-y-3"
                     >
                       <div className="flex flex-wrap items-center justify-between gap-1.5 border-b border-rose-500/20 pb-2 text-xs font-semibold text-rose-600">
-                        <span className="flex items-center gap-1.5 font-bold min-w-0">
+                        <span className="flex min-w-0 items-center gap-1.5 font-bold">
                           <AlertTriangle className="h-4 w-4 shrink-0 animate-bounce text-rose-500" />
-                          <span className="truncate">Status Quo: Disconnected Apps &amp; Data Drift</span>
+                          <span className="truncate">
+                            Status Quo: Disconnected Apps &amp; Data Drift
+                          </span>
                         </span>
-                        <span className="shrink-0 rounded-full border border-rose-500/30 bg-rose-500/10 px-2 py-0.5 sm:px-2.5 font-mono text-[10px] sm:text-[10.5px] font-bold text-rose-600">
+                        <span className="shrink-0 rounded-full border border-rose-500/30 bg-rose-500/10 px-2 py-0.5 font-mono text-[10px] font-bold text-rose-600 sm:px-2.5 sm:text-[10.5px]">
                           High Coordination Drag
                         </span>
                       </div>
 
                       <div className="grid grid-cols-2 gap-2 text-xs sm:grid-cols-4">
-                        <div className="group/node relative overflow-hidden rounded-xl border border-rose-500/30 bg-white/80 p-2.5 sm:p-3 text-center shadow-2xs transition-all duration-200 hover:-translate-y-1 hover:border-rose-500/50 hover:shadow-md dark:border-rose-500/20 dark:bg-neutral-900/80">
-                          <div className="mx-auto flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-lg border border-rose-500/30 bg-rose-500/10 text-rose-500">
+                        <div className="group/node relative overflow-hidden rounded-xl border border-rose-500/30 bg-white/80 p-2.5 text-center shadow-2xs transition-all duration-200 hover:-translate-y-1 hover:border-rose-500/50 hover:shadow-md sm:p-3 dark:border-rose-500/20 dark:bg-neutral-900/80">
+                          <div className="mx-auto flex h-7 w-7 items-center justify-center rounded-lg border border-rose-500/30 bg-rose-500/10 text-rose-500 sm:h-8 sm:w-8">
                             <FileSpreadsheet className="h-4 w-4 shrink-0" />
                           </div>
-                          <span className="mt-1.5 sm:mt-2 block font-semibold text-neutral-800 dark:text-neutral-200 text-[11px] sm:text-xs truncate">
+                          <span className="mt-1.5 block truncate text-[11px] font-semibold text-neutral-800 sm:mt-2 sm:text-xs dark:text-neutral-200">
                             14 Sheets Tabs
                           </span>
-                          <span className="mt-0.5 inline-block rounded bg-rose-500/15 px-1 py-0.5 font-mono text-[9px] sm:text-[9.5px] font-bold text-rose-600 dark:text-rose-400">
+                          <span className="mt-0.5 inline-block rounded bg-rose-500/15 px-1 py-0.5 font-mono text-[9px] font-bold text-rose-600 sm:text-[9.5px] dark:text-rose-400">
                             #REF! Rate Drift
                           </span>
                         </div>
 
-                        <div className="group/node relative overflow-hidden rounded-xl border border-rose-500/30 bg-white/80 p-2.5 sm:p-3 text-center shadow-2xs transition-all duration-200 hover:-translate-y-1 hover:border-rose-500/50 hover:shadow-md dark:border-rose-500/20 dark:bg-neutral-900/80">
-                          <div className="mx-auto flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-lg border border-rose-500/30 bg-rose-500/10 text-rose-500">
+                        <div className="group/node relative overflow-hidden rounded-xl border border-rose-500/30 bg-white/80 p-2.5 text-center shadow-2xs transition-all duration-200 hover:-translate-y-1 hover:border-rose-500/50 hover:shadow-md sm:p-3 dark:border-rose-500/20 dark:bg-neutral-900/80">
+                          <div className="mx-auto flex h-7 w-7 items-center justify-center rounded-lg border border-rose-500/30 bg-rose-500/10 text-rose-500 sm:h-8 sm:w-8">
                             <Calendar className="h-4 w-4 shrink-0" />
                           </div>
-                          <span className="mt-1.5 sm:mt-2 block font-semibold text-neutral-800 dark:text-neutral-200 text-[11px] sm:text-xs truncate">
+                          <span className="mt-1.5 block truncate text-[11px] font-semibold text-neutral-800 sm:mt-2 sm:text-xs dark:text-neutral-200">
                             Calendly Link
                           </span>
-                          <span className="mt-0.5 inline-block rounded bg-amber-500/15 px-1 py-0.5 font-mono text-[9px] sm:text-[9.5px] font-bold text-amber-600 dark:text-amber-400">
+                          <span className="mt-0.5 inline-block rounded bg-amber-500/15 px-1 py-0.5 font-mono text-[9px] font-bold text-amber-600 sm:text-[9.5px] dark:text-amber-400">
                             0m Overlap Risk
                           </span>
                         </div>
 
-                        <div className="group/node relative overflow-hidden rounded-xl border border-rose-500/30 bg-white/80 p-2.5 sm:p-3 text-center shadow-2xs transition-all duration-200 hover:-translate-y-1 hover:border-rose-500/50 hover:shadow-md dark:border-rose-500/20 dark:bg-neutral-900/80">
-                          <div className="mx-auto flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-lg border border-rose-500/30 bg-rose-500/10 text-rose-500">
+                        <div className="group/node relative overflow-hidden rounded-xl border border-rose-500/30 bg-white/80 p-2.5 text-center shadow-2xs transition-all duration-200 hover:-translate-y-1 hover:border-rose-500/50 hover:shadow-md sm:p-3 dark:border-rose-500/20 dark:bg-neutral-900/80">
+                          <div className="mx-auto flex h-7 w-7 items-center justify-center rounded-lg border border-rose-500/30 bg-rose-500/10 text-rose-500 sm:h-8 sm:w-8">
                             <MessageSquare className="h-4 w-4 shrink-0" />
                           </div>
-                          <span className="mt-1.5 sm:mt-2 block font-semibold text-neutral-800 dark:text-neutral-200 text-[11px] sm:text-xs truncate">
+                          <span className="mt-1.5 block truncate text-[11px] font-semibold text-neutral-800 sm:mt-2 sm:text-xs dark:text-neutral-200">
                             Slack DMs
                           </span>
-                          <span className="mt-0.5 inline-block rounded bg-rose-500/15 px-1 py-0.5 font-mono text-[9px] sm:text-[9.5px] font-bold text-rose-600 dark:text-rose-400">
+                          <span className="mt-0.5 inline-block rounded bg-rose-500/15 px-1 py-0.5 font-mono text-[9px] font-bold text-rose-600 sm:text-[9.5px] dark:text-rose-400">
                             Lost Scope Notes
                           </span>
                         </div>
 
-                        <div className="group/node relative overflow-hidden rounded-xl border border-rose-500/30 bg-white/80 p-2.5 sm:p-3 text-center shadow-2xs transition-all duration-200 hover:-translate-y-1 hover:border-rose-500/50 hover:shadow-md dark:border-rose-500/20 dark:bg-neutral-900/80">
-                          <div className="mx-auto flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-lg border border-rose-500/30 bg-rose-500/10 text-rose-500">
+                        <div className="group/node relative overflow-hidden rounded-xl border border-rose-500/30 bg-white/80 p-2.5 text-center shadow-2xs transition-all duration-200 hover:-translate-y-1 hover:border-rose-500/50 hover:shadow-md sm:p-3 dark:border-rose-500/20 dark:bg-neutral-900/80">
+                          <div className="mx-auto flex h-7 w-7 items-center justify-center rounded-lg border border-rose-500/30 bg-rose-500/10 text-rose-500 sm:h-8 sm:w-8">
                             <Mail className="h-4 w-4 shrink-0" />
                           </div>
-                          <span className="mt-1.5 sm:mt-2 block font-semibold text-neutral-800 dark:text-neutral-200 text-[11px] sm:text-xs truncate">
+                          <span className="mt-1.5 block truncate text-[11px] font-semibold text-neutral-800 sm:mt-2 sm:text-xs dark:text-neutral-200">
                             PDF Invoices
                           </span>
-                          <span className="mt-0.5 inline-block rounded bg-rose-500/15 px-1 py-0.5 font-mono text-[9px] sm:text-[9.5px] font-bold text-rose-600 dark:text-rose-400">
+                          <span className="mt-0.5 inline-block rounded bg-rose-500/15 px-1 py-0.5 font-mono text-[9px] font-bold text-rose-600 sm:text-[9.5px] dark:text-rose-400">
                             42d Unsettled
                           </span>
                         </div>
                       </div>
 
                       <div className="flex flex-col justify-between gap-1.5 rounded-xl border border-rose-500/30 bg-rose-500/10 px-3.5 py-2 text-xs font-medium text-rose-700 sm:flex-row sm:items-center dark:text-rose-300">
-                        <span className="flex items-center gap-1.5 min-w-0 flex-1 leading-snug">
+                        <span className="flex min-w-0 flex-1 items-center gap-1.5 leading-snug">
                           <ShieldAlert className="h-3.5 w-3.5 shrink-0 text-rose-500" />
                           <span>42% of customer context is lost during contractor handoffs</span>
                         </span>
-                        <span className="self-start font-mono text-[10px] font-bold uppercase sm:self-auto shrink-0">
+                        <span className="shrink-0 self-start font-mono text-[10px] font-bold uppercase sm:self-auto">
                           14 Open Tabs
                         </span>
                       </div>
@@ -494,14 +496,14 @@ export const BusinessBenefitsSection: React.FC = () => {
                     >
                       {/* Telemetry Header */}
                       <div className="flex flex-wrap items-center justify-between gap-1.5 border-b border-emerald-500/20 pb-2 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-                        <span className="flex items-center gap-2 font-bold min-w-0">
+                        <span className="flex min-w-0 items-center gap-2 font-bold">
                           <span className="relative flex h-2 w-2 shrink-0">
                             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                             <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
                           </span>
                           <span className="truncate">FLOWPILOT CENTRAL HUB: 0ms SYNC LATENCY</span>
                         </span>
-                        <span className="shrink-0 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 sm:px-2.5 font-mono text-[10px] sm:text-[10.5px] font-bold text-emerald-600 dark:text-emerald-400">
+                        <span className="shrink-0 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] font-bold text-emerald-600 sm:px-2.5 sm:text-[10.5px] dark:text-emerald-400">
                           3 OF 3 NODES SYNCED
                         </span>
                       </div>
@@ -517,10 +519,10 @@ export const BusinessBenefitsSection: React.FC = () => {
                               Instant Sync
                             </span>
                           </div>
-                          <span className="mt-2 block text-xs font-bold text-neutral-900 truncate dark:text-white">
+                          <span className="mt-2 block truncate text-xs font-bold text-neutral-900 dark:text-white">
                             Client 360° Dossier
                           </span>
-                          <span className="text-muted-foreground mt-0.5 block text-[10.5px] truncate">
+                          <span className="text-muted-foreground mt-0.5 block truncate text-[10.5px]">
                             Acme Corp Scope &amp; Notes
                           </span>
                         </div>
@@ -534,10 +536,10 @@ export const BusinessBenefitsSection: React.FC = () => {
                               +15m Guard
                             </span>
                           </div>
-                          <span className="mt-2 block text-xs font-bold text-neutral-900 truncate dark:text-white">
+                          <span className="mt-2 block truncate text-xs font-bold text-neutral-900 dark:text-white">
                             Service Calendar
                           </span>
-                          <span className="text-muted-foreground mt-0.5 block text-[10.5px] truncate">
+                          <span className="text-muted-foreground mt-0.5 block truncate text-[10.5px]">
                             10:00 - 11:15 AM Paced
                           </span>
                         </div>
@@ -551,22 +553,22 @@ export const BusinessBenefitsSection: React.FC = () => {
                               Autopay 2.4d
                             </span>
                           </div>
-                          <span className="mt-2 block text-xs font-bold text-neutral-900 truncate dark:text-white">
+                          <span className="mt-2 block truncate text-xs font-bold text-neutral-900 dark:text-white">
                             Stripe Connect v2
                           </span>
-                          <span className="text-muted-foreground mt-0.5 block text-[10.5px] truncate">
+                          <span className="text-muted-foreground mt-0.5 block truncate text-[10.5px]">
                             $375.00 Instant Draft
                           </span>
                         </div>
                       </div>
 
                       {/* Central Animated Core Pulse Chip */}
-                      <div className="flex flex-wrap sm:flex-nowrap items-center justify-center text-center sm:text-left gap-1.5 rounded-xl border border-emerald-500/30 bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-blue-500/10 px-3 py-2 text-xs font-medium text-emerald-800 dark:text-emerald-300">
-                        <div className="flex items-center gap-1.5 shrink-0">
+                      <div className="flex flex-wrap items-center justify-center gap-1.5 rounded-xl border border-emerald-500/30 bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-blue-500/10 px-3 py-2 text-center text-xs font-medium text-emerald-800 sm:flex-nowrap sm:text-left dark:text-emerald-300">
+                        <div className="flex shrink-0 items-center gap-1.5">
                           <Cpu className="h-4 w-4 shrink-0 animate-pulse text-emerald-500" />
                           <span className="font-semibold">FlowPilot Core:</span>
                         </div>
-                        <span className="font-mono text-[10.5px] sm:text-[11px] text-neutral-600 dark:text-neutral-400">
+                        <span className="font-mono text-[10.5px] text-neutral-600 sm:text-[11px] dark:text-neutral-400">
                           Single source of truth with 0ms sync drift
                         </span>
                       </div>
@@ -577,15 +579,16 @@ export const BusinessBenefitsSection: React.FC = () => {
             </div>
 
             {/* Benefit Highlights */}
-            <div className="mt-4 sm:mt-5 flex flex-wrap items-center gap-1.5 sm:gap-2 border-t border-neutral-200/80 pt-3 sm:pt-3.5 text-xs font-medium dark:border-white/10">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200/80 bg-white/70 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs shadow-2xs dark:border-white/10 dark:bg-neutral-800/60">
+            <div className="mt-4 flex flex-wrap items-center gap-1.5 border-t border-neutral-200/80 pt-3 text-xs font-medium sm:mt-5 sm:gap-2 sm:pt-3.5 dark:border-white/10">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200/80 bg-white/70 px-2.5 py-0.5 text-[11px] shadow-2xs sm:px-3 sm:py-1 sm:text-xs dark:border-white/10 dark:bg-neutral-800/60">
                 <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500" /> Zero lost client context
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200/80 bg-white/70 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs shadow-2xs dark:border-white/10 dark:bg-neutral-800/60">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200/80 bg-white/70 px-2.5 py-0.5 text-[11px] shadow-2xs sm:px-3 sm:py-1 sm:text-xs dark:border-white/10 dark:bg-neutral-800/60">
                 <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500" /> Unified customer records
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200/80 bg-white/70 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs shadow-2xs dark:border-white/10 dark:bg-neutral-800/60">
-                <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500" /> Centralized activity history
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200/80 bg-white/70 px-2.5 py-0.5 text-[11px] shadow-2xs sm:px-3 sm:py-1 sm:text-xs dark:border-white/10 dark:bg-neutral-800/60">
+                <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500" /> Centralized activity
+                history
               </span>
             </div>
           </BentoCard>
@@ -598,14 +601,14 @@ export const BusinessBenefitsSection: React.FC = () => {
               {/* Card Meta & Header */}
               <div className="flex flex-wrap items-center justify-between gap-3 pb-3 sm:pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 shadow-2xs dark:text-emerald-400">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 shadow-2xs sm:h-11 sm:w-11 dark:text-emerald-400">
                     <Clock className="h-5 w-5" />
                   </div>
                   <div>
                     <span className="text-xs font-bold tracking-tight text-neutral-900 dark:text-white">
                       Capacity Balance
                     </span>
-                    <p className="font-mono text-[10px] sm:text-[11px] text-neutral-500 dark:text-neutral-400">
+                    <p className="font-mono text-[10px] text-neutral-500 sm:text-[11px] dark:text-neutral-400">
                       Burnout Prevention
                     </p>
                   </div>
@@ -615,13 +618,13 @@ export const BusinessBenefitsSection: React.FC = () => {
                 <div
                   role="group"
                   aria-label="Capacity Mode Selection"
-                  className="border-border/80 bg-background/90 flex w-full min-[360px]:w-auto items-center justify-center gap-1 rounded-2xl border p-1 shadow-2xs backdrop-blur-md"
+                  className="border-border/80 bg-background/90 flex w-full items-center justify-center gap-1 rounded-2xl border p-1 shadow-2xs backdrop-blur-md min-[360px]:w-auto"
                 >
                   <button
                     type="button"
                     aria-pressed={capacityMode === "unprotected"}
                     onClick={() => setCapacityMode("unprotected")}
-                    className={`relative flex-1 min-[360px]:flex-initial text-center rounded-xl px-2.5 py-1 text-xs font-bold transition-colors duration-200 focus-visible:outline-hidden ${
+                    className={`relative flex-1 rounded-xl px-2.5 py-1 text-center text-xs font-bold transition-colors duration-200 focus-visible:outline-hidden min-[360px]:flex-initial ${
                       capacityMode === "unprotected"
                         ? "text-white"
                         : "text-muted-foreground hover:text-foreground"
@@ -641,7 +644,7 @@ export const BusinessBenefitsSection: React.FC = () => {
                     type="button"
                     aria-pressed={capacityMode === "optimal"}
                     onClick={() => setCapacityMode("optimal")}
-                    className={`relative flex-1 min-[360px]:flex-initial text-center rounded-xl px-2.5 py-1 text-xs font-bold transition-colors duration-200 focus-visible:outline-hidden ${
+                    className={`relative flex-1 rounded-xl px-2.5 py-1 text-center text-xs font-bold transition-colors duration-200 focus-visible:outline-hidden min-[360px]:flex-initial ${
                       capacityMode === "optimal"
                         ? "text-white dark:text-neutral-950"
                         : "text-muted-foreground hover:text-foreground"
@@ -661,29 +664,29 @@ export const BusinessBenefitsSection: React.FC = () => {
 
               {/* Bold Metric Header */}
               <div className="mb-2 flex flex-wrap items-baseline gap-2 sm:gap-2.5">
-                <span className="font-mono text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-900 dark:text-white">
+                <span className="font-mono text-xl font-extrabold text-neutral-900 sm:text-2xl md:text-3xl dark:text-white">
                   +15m Protected Buffer
                 </span>
-                <span className="shrink-0 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 font-mono text-[10px] sm:text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
+                <span className="shrink-0 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 font-mono text-[10px] font-bold text-emerald-600 sm:text-[11px] dark:text-emerald-400">
                   Zero Overlaps
                 </span>
               </div>
 
-              <h3 className="text-lg sm:text-xl font-bold tracking-tight text-neutral-900 sm:text-2xl dark:text-white">
+              <h3 className="text-lg font-bold tracking-tight text-neutral-900 sm:text-2xl sm:text-xl dark:text-white">
                 Synchronized Team Capacity
               </h3>
 
-              <p className="text-muted-foreground mt-2 text-xs sm:text-sm leading-relaxed">
+              <p className="text-muted-foreground mt-2 text-xs leading-relaxed sm:text-sm">
                 Clear visibility into team availability and appointment durations prevents
                 accidental double-booking. Built-in buffer intervals protect team recovery time and
                 ensure high-quality client deliverables.
               </p>
 
               {/* Weekly Schedule Strip */}
-              <div className="relative mt-4 sm:mt-6 overflow-hidden rounded-2xl border border-neutral-200/80 bg-neutral-100/60 p-3.5 sm:p-4.5 shadow-inner backdrop-blur-md dark:border-white/10 dark:bg-neutral-950/60">
+              <div className="relative mt-4 overflow-hidden rounded-2xl border border-neutral-200/80 bg-neutral-100/60 p-3.5 shadow-inner backdrop-blur-md sm:mt-6 sm:p-4.5 dark:border-white/10 dark:bg-neutral-950/60">
                 {/* Consultant Selector */}
                 <div className="flex flex-wrap items-center justify-between gap-1.5 border-b border-neutral-200/80 pb-2.5 text-xs dark:border-white/10">
-                  <span className="font-semibold text-neutral-800 dark:text-neutral-200 text-[11px] sm:text-xs">
+                  <span className="text-[11px] font-semibold text-neutral-800 sm:text-xs dark:text-neutral-200">
                     Consultant Workload:
                   </span>
                   <div className="inline-flex rounded-xl border border-neutral-200/80 bg-white/80 p-0.5 shadow-2xs dark:border-white/10 dark:bg-neutral-900">
@@ -692,7 +695,7 @@ export const BusinessBenefitsSection: React.FC = () => {
                         key={member}
                         type="button"
                         onClick={() => setSelectedStaff(member)}
-                        className={`rounded-lg px-2 sm:px-2.5 py-1 text-[9.5px] sm:text-[10px] font-bold capitalize transition-all duration-150 focus-visible:outline-hidden ${
+                        className={`rounded-lg px-2 py-1 text-[9.5px] font-bold capitalize transition-all duration-150 focus-visible:outline-hidden sm:px-2.5 sm:text-[10px] ${
                           selectedStaff === member
                             ? "bg-neutral-950 text-white shadow-xs dark:bg-white dark:text-neutral-950"
                             : "text-muted-foreground hover:text-foreground"
@@ -705,7 +708,7 @@ export const BusinessBenefitsSection: React.FC = () => {
                 </div>
 
                 {/* 5-Day Visual Schedule Heatmap with Clickable Day Inspector */}
-                <div className="mt-3.5 grid grid-cols-5 gap-1 sm:gap-1.5 text-center text-[10px] font-medium">
+                <div className="mt-3.5 grid grid-cols-5 gap-1 text-center text-[10px] font-medium sm:gap-1.5">
                   {(["Mon", "Tue", "Wed", "Thu", "Fri"] as const).map((day, idx) => {
                     const isProblemDay = idx === 2 || idx === 3;
                     const isSelected = selectedDay === day;
@@ -714,8 +717,8 @@ export const BusinessBenefitsSection: React.FC = () => {
                         key={day}
                         type="button"
                         onClick={() => setSelectedDay(day)}
-                        className={`rounded-lg sm:rounded-xl border p-1 sm:p-2 transition-all cursor-pointer focus-visible:outline-hidden ${
-                          isSelected ? "ring-2 ring-emerald-500/60 shadow-xs" : ""
+                        className={`cursor-pointer rounded-lg border p-1 transition-all focus-visible:outline-hidden sm:rounded-xl sm:p-2 ${
+                          isSelected ? "shadow-xs ring-2 ring-emerald-500/60" : ""
                         } ${
                           capacityMode === "optimal"
                             ? isProblemDay
@@ -726,8 +729,8 @@ export const BusinessBenefitsSection: React.FC = () => {
                               : "border-neutral-200/80 bg-white/70 text-neutral-800 dark:border-white/5 dark:bg-neutral-900/60 dark:text-neutral-200"
                         }`}
                       >
-                        <span className="block font-bold text-[9px] sm:text-[10px]">{day}</span>
-                        <span className="mt-0.5 sm:mt-1 block font-mono text-[8px] sm:text-[9.5px]">
+                        <span className="block text-[9px] font-bold sm:text-[10px]">{day}</span>
+                        <span className="mt-0.5 block font-mono text-[8px] sm:mt-1 sm:text-[9.5px]">
                           {capacityMode === "optimal"
                             ? isProblemDay
                               ? "3 Paced"
@@ -738,17 +741,17 @@ export const BusinessBenefitsSection: React.FC = () => {
                         </span>
                         <div className="mt-1 flex items-center justify-center">
                           {capacityMode === "optimal" ? (
-                            <span className="rounded bg-emerald-500/20 px-0.5 sm:px-1 py-0.5 text-[7.5px] sm:text-[8.5px] font-bold text-emerald-600 dark:text-emerald-400">
+                            <span className="rounded bg-emerald-500/20 px-0.5 py-0.5 text-[7.5px] font-bold text-emerald-600 sm:px-1 sm:text-[8.5px] dark:text-emerald-400">
                               <span className="sm:hidden">+15m</span>
                               <span className="hidden sm:inline">+15m Buffer</span>
                             </span>
                           ) : isProblemDay ? (
-                            <span className="animate-pulse rounded bg-rose-500/20 px-0.5 sm:px-1 py-0.5 text-[7.5px] sm:text-[8.5px] font-bold text-rose-600 dark:text-rose-400">
+                            <span className="animate-pulse rounded bg-rose-500/20 px-0.5 py-0.5 text-[7.5px] font-bold text-rose-600 sm:px-1 sm:text-[8.5px] dark:text-rose-400">
                               <span className="sm:hidden">Overlap</span>
                               <span className="hidden sm:inline">0m Overlap</span>
                             </span>
                           ) : (
-                            <span className="text-[7.5px] sm:text-[8.5px] text-neutral-400">
+                            <span className="text-[7.5px] text-neutral-400 sm:text-[8.5px]">
                               <span className="sm:hidden">0m</span>
                               <span className="hidden sm:inline">0m Buffer</span>
                             </span>
@@ -760,48 +763,56 @@ export const BusinessBenefitsSection: React.FC = () => {
                 </div>
 
                 {/* Interactive Day Schedule Timeline Strip */}
-                <div className="mt-3 rounded-xl border border-neutral-200/80 bg-white/80 p-2 sm:p-2.5 text-xs dark:border-white/10 dark:bg-neutral-900/80">
-                  <div className="flex flex-wrap items-center justify-between gap-1 border-b border-neutral-200/60 pb-1.5 text-[10.5px] sm:text-[11px] font-semibold dark:border-white/5">
+                <div className="mt-3 rounded-xl border border-neutral-200/80 bg-white/80 p-2 text-xs sm:p-2.5 dark:border-white/10 dark:bg-neutral-900/80">
+                  <div className="flex flex-wrap items-center justify-between gap-1 border-b border-neutral-200/60 pb-1.5 text-[10.5px] font-semibold sm:text-[11px] dark:border-white/5">
                     <span className="flex items-center gap-1.5 text-neutral-800 dark:text-neutral-200">
                       <Clock className="h-3 w-3 shrink-0 text-emerald-500" />
                       <span>{selectedDay}&apos;s Inspection:</span>
                     </span>
-                    <span className="font-mono text-[9.5px] sm:text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                    <span className="font-mono text-[9.5px] font-bold text-emerald-600 sm:text-[10px] dark:text-emerald-400">
                       {capacityMode === "optimal" ? "Paced Timeline" : "Collision Warning"}
                     </span>
                   </div>
 
                   <div className="mt-2 flex flex-col gap-1.5 text-[10px] sm:text-[10.5px]">
                     <div className="flex items-center justify-between rounded-lg bg-neutral-100/80 px-2 py-1 dark:bg-neutral-800/60">
-                      <span className="font-medium text-neutral-700 dark:text-neutral-300 truncate">
+                      <span className="truncate font-medium text-neutral-700 dark:text-neutral-300">
                         09:30 AM Client Briefing
                       </span>
-                      <span className="shrink-0 font-mono text-[9.5px] sm:text-[10px] text-neutral-500">45 min</span>
+                      <span className="shrink-0 font-mono text-[9.5px] text-neutral-500 sm:text-[10px]">
+                        45 min
+                      </span>
                     </div>
 
                     {capacityMode === "optimal" ? (
                       <div className="flex items-center justify-between gap-1 rounded-lg border border-emerald-500/30 bg-emerald-500/15 px-2 py-1 font-semibold text-emerald-700 dark:text-emerald-300">
-                        <span className="flex items-center gap-1.5 min-w-0 flex-1">
+                        <span className="flex min-w-0 flex-1 items-center gap-1.5">
                           <ShieldCheck className="h-3 w-3 shrink-0 text-emerald-500" />
                           <span className="truncate">+15m Protected Recovery Buffer</span>
                         </span>
-                        <span className="shrink-0 font-mono text-[9px] sm:text-[9.5px]">Zero Collisions</span>
+                        <span className="shrink-0 font-mono text-[9px] sm:text-[9.5px]">
+                          Zero Collisions
+                        </span>
                       </div>
                     ) : (
                       <div className="flex items-center justify-between gap-1 rounded-lg border border-rose-500/40 bg-rose-500/20 px-2 py-1 font-semibold text-rose-600 dark:text-rose-400">
-                        <span className="flex items-center gap-1.5 min-w-0 flex-1">
-                          <AlertTriangle className="h-3 w-3 shrink-0 text-rose-500 animate-pulse" />
+                        <span className="flex min-w-0 flex-1 items-center gap-1.5">
+                          <AlertTriangle className="h-3 w-3 shrink-0 animate-pulse text-rose-500" />
                           <span className="truncate">0m Overlap: Calendly Collision</span>
                         </span>
-                        <span className="shrink-0 font-mono text-[9px] sm:text-[9.5px]">Double-Booked</span>
+                        <span className="shrink-0 font-mono text-[9px] sm:text-[9.5px]">
+                          Double-Booked
+                        </span>
                       </div>
                     )}
 
                     <div className="flex items-center justify-between rounded-lg bg-neutral-100/80 px-2 py-1 dark:bg-neutral-800/60">
-                      <span className="font-medium text-neutral-700 dark:text-neutral-300 truncate">
+                      <span className="truncate font-medium text-neutral-700 dark:text-neutral-300">
                         10:30 AM Architecture Review
                       </span>
-                      <span className="shrink-0 font-mono text-[9.5px] sm:text-[10px] text-neutral-500">60 min</span>
+                      <span className="shrink-0 font-mono text-[9.5px] text-neutral-500 sm:text-[10px]">
+                        60 min
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -809,7 +820,7 @@ export const BusinessBenefitsSection: React.FC = () => {
                 {/* Live Capacity Gauge */}
                 <div className="mt-3.5 space-y-1.5 border-t border-neutral-200/80 pt-2.5 text-xs dark:border-white/10">
                   <div className="flex flex-wrap items-center justify-between gap-1 text-[10.5px] sm:text-[11px]">
-                    <span className="font-semibold text-neutral-800 dark:text-neutral-200 truncate">
+                    <span className="truncate font-semibold text-neutral-800 dark:text-neutral-200">
                       {selectedStaff === "sarah"
                         ? "Sarah Chen (Principal Lead)"
                         : selectedStaff === "marcus"
@@ -874,7 +885,7 @@ export const BusinessBenefitsSection: React.FC = () => {
                 </div>
 
                 <div className="mt-2.5 flex flex-wrap items-center justify-between gap-1 border-t border-neutral-200/60 pt-2 text-[10px] sm:text-[10.5px] dark:border-white/5">
-                  <span className="text-neutral-500 dark:text-neutral-400 truncate">
+                  <span className="truncate text-neutral-500 dark:text-neutral-400">
                     {capacityMode === "optimal"
                       ? "✓ Dynamic Buffers Active (Zero Collisions)"
                       : "⚠️ Back-to-Back Rush: Zero Recovery Between Calls"}
@@ -887,12 +898,14 @@ export const BusinessBenefitsSection: React.FC = () => {
             </div>
 
             {/* Benefit Highlights */}
-            <div className="mt-4 sm:mt-5 flex flex-wrap items-center gap-1.5 sm:gap-2 border-t border-neutral-200/80 pt-3 sm:pt-3.5 text-xs font-medium dark:border-white/10">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200/80 bg-white/70 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs shadow-2xs dark:border-white/10 dark:bg-neutral-800/60">
-                <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500" /> Protected staff buffer gaps
+            <div className="mt-4 flex flex-wrap items-center gap-1.5 border-t border-neutral-200/80 pt-3 text-xs font-medium sm:mt-5 sm:gap-2 sm:pt-3.5 dark:border-white/10">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200/80 bg-white/70 px-2.5 py-0.5 text-[11px] shadow-2xs sm:px-3 sm:py-1 sm:text-xs dark:border-white/10 dark:bg-neutral-800/60">
+                <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500" /> Protected staff buffer
+                gaps
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200/80 bg-white/70 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs shadow-2xs dark:border-white/10 dark:bg-neutral-800/60">
-                <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500" /> Accurate appointment pacing
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200/80 bg-white/70 px-2.5 py-0.5 text-[11px] shadow-2xs sm:px-3 sm:py-1 sm:text-xs dark:border-white/10 dark:bg-neutral-800/60">
+                <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500" /> Accurate appointment
+                pacing
               </span>
             </div>
           </BentoCard>
@@ -905,14 +918,14 @@ export const BusinessBenefitsSection: React.FC = () => {
               {/* Card Meta & Header */}
               <div className="flex flex-wrap items-center justify-between gap-3 pb-3 sm:pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-amber-500/30 bg-amber-500/10 text-amber-600 shadow-2xs dark:text-amber-400">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-amber-500/30 bg-amber-500/10 text-amber-600 shadow-2xs sm:h-11 sm:w-11 dark:text-amber-400">
                     <DollarSign className="h-5 w-5" />
                   </div>
                   <div>
                     <span className="text-xs font-bold tracking-tight text-neutral-900 dark:text-white">
                       Billing Velocity
                     </span>
-                    <p className="font-mono text-[10px] sm:text-[11px] text-neutral-500 dark:text-neutral-400">
+                    <p className="font-mono text-[10px] text-neutral-500 sm:text-[11px] dark:text-neutral-400">
                       Accounts Receivable Turnover
                     </p>
                   </div>
@@ -922,13 +935,13 @@ export const BusinessBenefitsSection: React.FC = () => {
                 <div
                   role="group"
                   aria-label="Billing Velocity Selection"
-                  className="border-border/80 bg-background/90 flex w-full min-[360px]:w-auto items-center justify-center gap-1 rounded-2xl border p-1 shadow-2xs backdrop-blur-md"
+                  className="border-border/80 bg-background/90 flex w-full items-center justify-center gap-1 rounded-2xl border p-1 shadow-2xs backdrop-blur-md min-[360px]:w-auto"
                 >
                   <button
                     type="button"
                     aria-pressed={dsoModel === "traditional"}
                     onClick={() => setDsoModel("traditional")}
-                    className={`relative flex-1 min-[360px]:flex-initial text-center rounded-xl px-2.5 py-1 text-xs font-bold transition-colors duration-200 focus-visible:outline-hidden ${
+                    className={`relative flex-1 rounded-xl px-2.5 py-1 text-center text-xs font-bold transition-colors duration-200 focus-visible:outline-hidden min-[360px]:flex-initial ${
                       dsoModel === "traditional"
                         ? "text-white"
                         : "text-muted-foreground hover:text-foreground"
@@ -941,14 +954,16 @@ export const BusinessBenefitsSection: React.FC = () => {
                         className="absolute inset-0 rounded-xl bg-gradient-to-r from-amber-600 to-rose-600 shadow-sm"
                       />
                     )}
-                    <span className="relative z-10 text-[10.5px] sm:text-[11px]">Traditional (38d)</span>
+                    <span className="relative z-10 text-[10.5px] sm:text-[11px]">
+                      Traditional (38d)
+                    </span>
                   </button>
 
                   <button
                     type="button"
                     aria-pressed={dsoModel === "flowpilot"}
                     onClick={() => setDsoModel("flowpilot")}
-                    className={`relative flex-1 min-[360px]:flex-initial text-center rounded-xl px-2.5 py-1 text-xs font-bold transition-colors duration-200 focus-visible:outline-hidden ${
+                    className={`relative flex-1 rounded-xl px-2.5 py-1 text-center text-xs font-bold transition-colors duration-200 focus-visible:outline-hidden min-[360px]:flex-initial ${
                       dsoModel === "flowpilot"
                         ? "text-white dark:text-neutral-950"
                         : "text-muted-foreground hover:text-foreground"
@@ -961,47 +976,49 @@ export const BusinessBenefitsSection: React.FC = () => {
                         className="absolute inset-0 rounded-xl bg-neutral-950 shadow-sm dark:bg-white"
                       />
                     )}
-                    <span className="relative z-10 text-[10.5px] sm:text-[11px]">FlowPilot (2.4d)</span>
+                    <span className="relative z-10 text-[10.5px] sm:text-[11px]">
+                      FlowPilot (2.4d)
+                    </span>
                   </button>
                 </div>
               </div>
 
               {/* Bold Metric Header */}
               <div className="mb-2 flex flex-wrap items-baseline gap-2 sm:gap-2.5">
-                <span className="font-mono text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-900 dark:text-white">
+                <span className="font-mono text-xl font-extrabold text-neutral-900 sm:text-2xl md:text-3xl dark:text-white">
                   38 Days → 2.4 Days DSO
                 </span>
-                <span className="shrink-0 rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-0.5 font-mono text-[10px] sm:text-[11px] font-bold text-amber-600 dark:text-amber-400">
+                <span className="shrink-0 rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-0.5 font-mono text-[10px] font-bold text-amber-600 sm:text-[11px] dark:text-amber-400">
                   15.8x Cash Velocity
                 </span>
               </div>
 
-              <h3 className="text-lg sm:text-xl font-bold tracking-tight text-neutral-900 sm:text-2xl dark:text-white">
+              <h3 className="text-lg font-bold tracking-tight text-neutral-900 sm:text-2xl sm:text-xl dark:text-white">
                 Accelerated Cash Flow Cycle
               </h3>
 
-              <p className="text-muted-foreground mt-2 text-xs sm:text-sm leading-relaxed">
+              <p className="text-muted-foreground mt-2 text-xs leading-relaxed sm:text-sm">
                 When completed appointments immediately convert into structured invoices, billing
                 delays vanish. Clients receive itemized statements reflecting their actual service
                 history, significantly reducing payment inquiries.
               </p>
 
               {/* Settlement Velocity Display */}
-              <div className="relative mt-4 sm:mt-6 overflow-hidden rounded-2xl border border-neutral-200/80 bg-neutral-100/60 p-3.5 sm:p-4.5 shadow-inner backdrop-blur-md dark:border-white/10 dark:bg-neutral-950/60">
-                <div className="flex flex-wrap items-center justify-between gap-1 border-b border-neutral-200/80 pb-2 sm:pb-2.5 text-xs font-semibold dark:border-white/10">
+              <div className="relative mt-4 overflow-hidden rounded-2xl border border-neutral-200/80 bg-neutral-100/60 p-3.5 shadow-inner backdrop-blur-md sm:mt-6 sm:p-4.5 dark:border-white/10 dark:bg-neutral-950/60">
+                <div className="flex flex-wrap items-center justify-between gap-1 border-b border-neutral-200/80 pb-2 text-xs font-semibold sm:pb-2.5 dark:border-white/10">
                   <span className="text-neutral-800 dark:text-neutral-200">
                     Capital Settlement Velocity
                   </span>
-                  <span className="font-mono text-[10.5px] sm:text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
+                  <span className="font-mono text-[10.5px] font-bold text-emerald-600 sm:text-[11px] dark:text-emerald-400">
                     {dsoModel === "flowpilot" ? "⚡ Rapid 48h Turnaround" : "⏳ 38 Days Manual Lag"}
                   </span>
                 </div>
 
                 {/* Dual-Track Settlement Velocity Visualizer Runway */}
-                <div className="mt-3.5 space-y-2 rounded-xl border border-neutral-200/80 bg-white/80 p-2.5 sm:p-3 text-xs dark:border-white/10 dark:bg-neutral-900/80">
-                  <div className="flex flex-wrap items-center justify-between gap-1 text-[10.5px] sm:text-[11px] font-semibold text-neutral-800 dark:text-neutral-200">
+                <div className="mt-3.5 space-y-2 rounded-xl border border-neutral-200/80 bg-white/80 p-2.5 text-xs sm:p-3 dark:border-white/10 dark:bg-neutral-900/80">
+                  <div className="flex flex-wrap items-center justify-between gap-1 text-[10.5px] font-semibold text-neutral-800 sm:text-[11px] dark:text-neutral-200">
                     <span>Settlement Pipeline Comparison:</span>
-                    <span className="font-mono text-[9.5px] sm:text-[10px] text-neutral-500">
+                    <span className="font-mono text-[9.5px] text-neutral-500 sm:text-[10px]">
                       {dsoModel === "flowpilot" ? "Real-Time Direct" : "Net-30 Sluggish"}
                     </span>
                   </div>
@@ -1009,13 +1026,13 @@ export const BusinessBenefitsSection: React.FC = () => {
                   {/* FlowPilot Runway */}
                   <div className="relative rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-2 text-[10px]">
                     <div className="flex flex-wrap items-center justify-between gap-1 font-bold text-emerald-700 dark:text-emerald-300">
-                      <span className="flex items-center gap-1.5 min-w-0">
+                      <span className="flex min-w-0 items-center gap-1.5">
                         <Zap className="h-3 w-3 shrink-0 text-emerald-500" />
                         <span className="truncate">FlowPilot Velocity: 2.4 Days</span>
                       </span>
                       <span className="shrink-0 font-mono text-[9px] uppercase">15.8x Faster</span>
                     </div>
-                    <div className="mt-1.5 flex flex-wrap items-center gap-1 text-[8.5px] sm:text-[9px] text-neutral-600 dark:text-neutral-400">
+                    <div className="mt-1.5 flex flex-wrap items-center gap-1 text-[8.5px] text-neutral-600 sm:text-[9px] dark:text-neutral-400">
                       <span className="rounded bg-white/80 px-1.5 py-0.5 font-medium dark:bg-neutral-800">
                         1. Appointment Ends
                       </span>
@@ -1033,13 +1050,15 @@ export const BusinessBenefitsSection: React.FC = () => {
                   {/* Traditional Runway */}
                   <div className="relative rounded-lg border border-amber-500/30 bg-amber-500/10 p-2 text-[10px]">
                     <div className="flex flex-wrap items-center justify-between gap-1 font-bold text-amber-800 dark:text-amber-300">
-                      <span className="flex items-center gap-1.5 min-w-0">
+                      <span className="flex min-w-0 items-center gap-1.5">
                         <AlertTriangle className="h-3 w-3 shrink-0 text-amber-500" />
                         <span className="truncate">Traditional Net-30: 38 Days Lag</span>
                       </span>
-                      <span className="shrink-0 font-mono text-[9px] uppercase text-rose-500">Unsettled</span>
+                      <span className="shrink-0 font-mono text-[9px] text-rose-500 uppercase">
+                        Unsettled
+                      </span>
                     </div>
-                    <div className="mt-1.5 flex flex-wrap items-center gap-1 text-[8.5px] sm:text-[9px] text-neutral-600 dark:text-neutral-400">
+                    <div className="mt-1.5 flex flex-wrap items-center gap-1 text-[8.5px] text-neutral-600 sm:text-[9px] dark:text-neutral-400">
                       <span className="rounded bg-white/80 px-1.5 py-0.5 font-medium dark:bg-neutral-800">
                         Spreadsheet Lag (14d)
                       </span>
@@ -1056,12 +1075,12 @@ export const BusinessBenefitsSection: React.FC = () => {
                 </div>
 
                 <div className="mt-3.5 grid grid-cols-2 gap-2 text-center text-xs">
-                  <div className="group/stat relative overflow-hidden rounded-xl border border-neutral-200/80 bg-white/80 p-2.5 sm:p-3 shadow-2xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-white/5 dark:bg-neutral-900/80">
-                    <span className="text-muted-foreground block text-[9.5px] sm:text-[10px] font-medium tracking-wider uppercase truncate">
+                  <div className="group/stat relative overflow-hidden rounded-xl border border-neutral-200/80 bg-white/80 p-2.5 shadow-2xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md sm:p-3 dark:border-white/5 dark:bg-neutral-900/80">
+                    <span className="text-muted-foreground block truncate text-[9.5px] font-medium tracking-wider uppercase sm:text-[10px]">
                       Days to Settlement
                     </span>
                     <span
-                      className={`mt-1 block font-mono text-xl sm:text-2xl font-black ${
+                      className={`mt-1 block font-mono text-xl font-black sm:text-2xl ${
                         dsoModel === "flowpilot"
                           ? "text-emerald-600 dark:text-emerald-400"
                           : "text-amber-600 dark:text-amber-400"
@@ -1069,28 +1088,28 @@ export const BusinessBenefitsSection: React.FC = () => {
                     >
                       {dsoModel === "flowpilot" ? "2.4 Days" : "38 Days"}
                     </span>
-                    <span className="mt-0.5 block text-[9.5px] sm:text-[10px] text-neutral-500 truncate">
+                    <span className="mt-0.5 block truncate text-[9.5px] text-neutral-500 sm:text-[10px]">
                       {dsoModel === "flowpilot" ? "Direct Stripe Autopay" : "Manual Net-30 Delay"}
                     </span>
                   </div>
 
-                  <div className="group/stat relative overflow-hidden rounded-xl border border-neutral-200/80 bg-white/80 p-2.5 sm:p-3 shadow-2xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-white/5 dark:bg-neutral-900/80">
-                    <span className="text-muted-foreground block text-[9.5px] sm:text-[10px] font-medium tracking-wider uppercase truncate">
+                  <div className="group/stat relative overflow-hidden rounded-xl border border-neutral-200/80 bg-white/80 p-2.5 shadow-2xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md sm:p-3 dark:border-white/5 dark:bg-neutral-900/80">
+                    <span className="text-muted-foreground block truncate text-[9.5px] font-medium tracking-wider uppercase sm:text-[10px]">
                       Billing Inquiries
                     </span>
-                    <span className="mt-1 block font-mono text-xl sm:text-2xl font-black text-neutral-900 dark:text-white">
+                    <span className="mt-1 block font-mono text-xl font-black text-neutral-900 sm:text-2xl dark:text-white">
                       {dsoModel === "flowpilot" ? "0 Disputes" : "Frequent"}
                     </span>
-                    <span className="mt-0.5 block text-[9.5px] sm:text-[10px] text-neutral-500 truncate">
+                    <span className="mt-0.5 block truncate text-[9.5px] text-neutral-500 sm:text-[10px]">
                       {dsoModel === "flowpilot" ? "Itemized From Calendar" : "Missing Hours Proof"}
                     </span>
                   </div>
                 </div>
 
                 {/* Working Capital Indicator */}
-                <div className="mt-3.5 rounded-xl border border-amber-500/30 bg-amber-500/10 p-2.5 sm:p-3 text-xs font-medium text-amber-800 dark:text-amber-300">
-                  <span className="flex items-start sm:items-center gap-2">
-                    <Zap className="h-4 w-4 shrink-0 text-amber-500 mt-0.5 sm:mt-0" />
+                <div className="mt-3.5 rounded-xl border border-amber-500/30 bg-amber-500/10 p-2.5 text-xs font-medium text-amber-800 sm:p-3 dark:text-amber-300">
+                  <span className="flex items-start gap-2 sm:items-center">
+                    <Zap className="mt-0.5 h-4 w-4 shrink-0 text-amber-500 sm:mt-0" />
                     <span className="leading-relaxed">
                       {dsoModel === "flowpilot"
                         ? "Completed consultations automatically generate verified invoice drafts with Stripe 1-click checkout"
@@ -1102,11 +1121,12 @@ export const BusinessBenefitsSection: React.FC = () => {
             </div>
 
             {/* Benefit Highlights */}
-            <div className="mt-4 sm:mt-5 flex flex-wrap items-center gap-1.5 sm:gap-2 border-t border-neutral-200/80 pt-3 sm:pt-3.5 text-xs font-medium dark:border-white/10">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200/80 bg-white/70 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs shadow-2xs dark:border-white/10 dark:bg-neutral-800/60">
-                <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500" /> Automated invoice creation
+            <div className="mt-4 flex flex-wrap items-center gap-1.5 border-t border-neutral-200/80 pt-3 text-xs font-medium sm:mt-5 sm:gap-2 sm:pt-3.5 dark:border-white/10">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200/80 bg-white/70 px-2.5 py-0.5 text-[11px] shadow-2xs sm:px-3 sm:py-1 sm:text-xs dark:border-white/10 dark:bg-neutral-800/60">
+                <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500" /> Automated invoice
+                creation
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200/80 bg-white/70 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs shadow-2xs dark:border-white/10 dark:bg-neutral-800/60">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200/80 bg-white/70 px-2.5 py-0.5 text-[11px] shadow-2xs sm:px-3 sm:py-1 sm:text-xs dark:border-white/10 dark:bg-neutral-800/60">
                 <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500" /> Direct Stripe settlement
               </span>
             </div>
@@ -1120,14 +1140,14 @@ export const BusinessBenefitsSection: React.FC = () => {
               {/* Card Meta & Header */}
               <div className="flex flex-wrap items-center justify-between gap-3 pb-3 sm:pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-indigo-500/30 bg-indigo-500/10 text-indigo-600 shadow-2xs dark:text-indigo-400">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-indigo-500/30 bg-indigo-500/10 text-indigo-600 shadow-2xs sm:h-11 sm:w-11 dark:text-indigo-400">
                     <ShieldCheck className="h-5 w-5" />
                   </div>
                   <div>
                     <span className="text-xs font-bold tracking-tight text-neutral-900 dark:text-white">
                       Role Governance
                     </span>
-                    <p className="font-mono text-[10px] sm:text-[11px] text-neutral-500 dark:text-neutral-400">
+                    <p className="font-mono text-[10px] text-neutral-500 sm:text-[11px] dark:text-neutral-400">
                       Internal Margin Protection
                     </p>
                   </div>
@@ -1189,31 +1209,31 @@ export const BusinessBenefitsSection: React.FC = () => {
 
               {/* Bold Metric Header */}
               <div className="mb-2 flex flex-wrap items-baseline gap-2 sm:gap-2.5">
-                <span className="font-mono text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-900 dark:text-white">
+                <span className="font-mono text-xl font-extrabold text-neutral-900 sm:text-2xl md:text-3xl dark:text-white">
                   Role-Enforced Privacy &amp; Margins
                 </span>
-                <span className="shrink-0 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-2.5 py-0.5 font-mono text-[10px] sm:text-[11px] font-bold text-indigo-600 dark:text-indigo-400">
+                <span className="shrink-0 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-2.5 py-0.5 font-mono text-[10px] font-bold text-indigo-600 sm:text-[11px] dark:text-indigo-400">
                   Granular RBAC
                 </span>
               </div>
 
-              <h3 className="text-lg sm:text-xl font-bold tracking-tight text-neutral-900 sm:text-2xl dark:text-white">
+              <h3 className="text-lg font-bold tracking-tight text-neutral-900 sm:text-2xl sm:text-xl dark:text-white">
                 Granular Operational Governance
               </h3>
 
-              <p className="text-muted-foreground mt-2 text-xs sm:text-sm leading-relaxed">
+              <p className="text-muted-foreground mt-2 text-xs leading-relaxed sm:text-sm">
                 Maintain total confidence as your agency scales. Role-based permissions ensure staff
                 members only view assigned customer appointments, while owners and finance leads
                 retain exclusive control over organizational billing and rates.
               </p>
 
               {/* Rate Card & Gross Margin Simulator */}
-              <div className="relative mt-4 sm:mt-6 overflow-hidden rounded-2xl border border-neutral-200/80 bg-neutral-100/60 p-3.5 sm:p-4.5 shadow-inner backdrop-blur-md dark:border-white/10 dark:bg-neutral-950/60">
-                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-200/80 pb-2 sm:pb-2.5 text-xs font-semibold dark:border-white/10">
-                  <span className="text-neutral-800 dark:text-neutral-200 text-[11px] sm:text-xs">
+              <div className="relative mt-4 overflow-hidden rounded-2xl border border-neutral-200/80 bg-neutral-100/60 p-3.5 shadow-inner backdrop-blur-md sm:mt-6 sm:p-4.5 dark:border-white/10 dark:bg-neutral-950/60">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-200/80 pb-2 text-xs font-semibold sm:pb-2.5 dark:border-white/10">
+                  <span className="text-[11px] text-neutral-800 sm:text-xs dark:text-neutral-200">
                     Interactive Rate Card &amp; Gross Margin Simulator:
                   </span>
-                  <span className="font-mono text-[10px] sm:text-[11px] font-bold text-indigo-600 dark:text-indigo-400">
+                  <span className="font-mono text-[10px] font-bold text-indigo-600 sm:text-[11px] dark:text-indigo-400">
                     {governanceRole === "partner"
                       ? "Partner Scope (Full Visibility)"
                       : "Staff Scope (Margins Masked)"}
@@ -1224,7 +1244,7 @@ export const BusinessBenefitsSection: React.FC = () => {
                 <div className="mt-3.5">
                   <div className="flex justify-between text-xs font-medium text-neutral-600 dark:text-neutral-400">
                     <span>Adjust Billable Rate:</span>
-                    <span className="font-mono text-xs sm:text-sm font-bold text-neutral-900 dark:text-white">
+                    <span className="font-mono text-xs font-bold text-neutral-900 sm:text-sm dark:text-white">
                       {governanceRole === "partner" ? `$${billableRate}.00 / hr` : "$•••.00 / hr"}
                     </span>
                   </div>
@@ -1250,7 +1270,7 @@ export const BusinessBenefitsSection: React.FC = () => {
                           key={rate}
                           type="button"
                           onClick={() => setBillableRate(rate)}
-                          className={`rounded-md px-2 py-0.5 font-mono text-[9.5px] sm:text-[10px] font-semibold transition-all ${
+                          className={`rounded-md px-2 py-0.5 font-mono text-[9.5px] font-semibold transition-all sm:text-[10px] ${
                             billableRate === rate
                               ? "bg-neutral-950 text-white shadow-2xs dark:bg-white dark:text-neutral-950"
                               : "border border-neutral-200 bg-white/70 text-neutral-600 hover:text-neutral-900 dark:border-white/10 dark:bg-neutral-900/60 dark:text-neutral-400"
@@ -1264,29 +1284,29 @@ export const BusinessBenefitsSection: React.FC = () => {
                 </div>
 
                 <div className="relative mt-3.5 grid grid-cols-1 gap-2.5 sm:grid-cols-3">
-                  <div className="relative overflow-hidden rounded-xl border border-neutral-200/80 bg-white/80 p-2.5 sm:p-3 text-center shadow-2xs dark:border-white/5 dark:bg-neutral-900/80">
-                    <span className="text-muted-foreground block text-[9.5px] sm:text-[10px] font-medium tracking-wider uppercase truncate">
+                  <div className="relative overflow-hidden rounded-xl border border-neutral-200/80 bg-white/80 p-2.5 text-center shadow-2xs sm:p-3 dark:border-white/5 dark:bg-neutral-900/80">
+                    <span className="text-muted-foreground block truncate text-[9.5px] font-medium tracking-wider uppercase sm:text-[10px]">
                       Client Billable Rate
                     </span>
-                    <span className="mt-1 block font-mono text-sm sm:text-base font-extrabold text-neutral-900 dark:text-white">
+                    <span className="mt-1 block font-mono text-sm font-extrabold text-neutral-900 sm:text-base dark:text-white">
                       {governanceRole === "partner" ? `$${billableRate}.00 / hr` : "$•••.00 / hr"}
                     </span>
                   </div>
 
-                  <div className="relative overflow-hidden rounded-xl border border-neutral-200/80 bg-white/80 p-2.5 sm:p-3 text-center shadow-2xs dark:border-white/5 dark:bg-neutral-900/80">
-                    <span className="text-muted-foreground block text-[9.5px] sm:text-[10px] font-medium tracking-wider uppercase truncate">
+                  <div className="relative overflow-hidden rounded-xl border border-neutral-200/80 bg-white/80 p-2.5 text-center shadow-2xs sm:p-3 dark:border-white/5 dark:bg-neutral-900/80">
+                    <span className="text-muted-foreground block truncate text-[9.5px] font-medium tracking-wider uppercase sm:text-[10px]">
                       Internal Delivery Cost
                     </span>
-                    <span className="text-muted-foreground mt-1 block font-mono text-sm sm:text-base font-extrabold">
+                    <span className="text-muted-foreground mt-1 block font-mono text-sm font-extrabold sm:text-base">
                       {governanceRole === "partner" ? "$120.00 / hr" : "$•••.00 / hr"}
                     </span>
                   </div>
 
-                  <div className="relative overflow-hidden rounded-xl border border-neutral-200/80 bg-white/80 p-2.5 sm:p-3 text-center shadow-2xs dark:border-white/5 dark:bg-neutral-900/80">
-                    <span className="text-muted-foreground block text-[9.5px] sm:text-[10px] font-medium tracking-wider uppercase truncate">
+                  <div className="relative overflow-hidden rounded-xl border border-neutral-200/80 bg-white/80 p-2.5 text-center shadow-2xs sm:p-3 dark:border-white/5 dark:bg-neutral-900/80">
+                    <span className="text-muted-foreground block truncate text-[9.5px] font-medium tracking-wider uppercase sm:text-[10px]">
                       Gross Profit Margin
                     </span>
-                    <span className="mt-1 block font-mono text-sm sm:text-base font-extrabold text-emerald-600 dark:text-emerald-400">
+                    <span className="mt-1 block font-mono text-sm font-extrabold text-emerald-600 sm:text-base dark:text-emerald-400">
                       {governanceRole === "partner"
                         ? `$${grossMargin}.00 (${marginPercentage}%)`
                         : "••% Gross Margin"}
@@ -1301,15 +1321,15 @@ export const BusinessBenefitsSection: React.FC = () => {
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.98 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl border-2 border-indigo-500/40 bg-white/95 p-3 sm:p-4 text-center shadow-xl backdrop-blur-md dark:border-indigo-400/40 dark:bg-neutral-950/95"
+                        className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl border-2 border-indigo-500/40 bg-white/95 p-3 text-center shadow-xl backdrop-blur-md sm:p-4 dark:border-indigo-400/40 dark:bg-neutral-950/95"
                       >
-                        <div className="mb-1.5 sm:mb-2 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
+                        <div className="mb-1.5 flex h-8 w-8 items-center justify-center rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-600 sm:mb-2 sm:h-9 sm:w-9 dark:text-indigo-400">
                           <Lock className="h-4 w-4 animate-pulse" />
                         </div>
-                        <span className="font-mono text-[11px] sm:text-xs font-extrabold text-indigo-600 dark:text-indigo-400 leading-snug">
+                        <span className="font-mono text-[11px] leading-snug font-extrabold text-indigo-600 sm:text-xs dark:text-indigo-400">
                           CONFIDENTIAL: Internal Margins Masked
                         </span>
-                        <span className="mt-1 text-[10px] sm:text-[11px] text-neutral-500 dark:text-neutral-400 leading-tight">
+                        <span className="mt-1 text-[10px] leading-tight text-neutral-500 sm:text-[11px] dark:text-neutral-400">
                           Staff members only see assigned service deliverables. Financial models
                           remain partner-restricted.
                         </span>
@@ -1332,15 +1352,17 @@ export const BusinessBenefitsSection: React.FC = () => {
             </div>
 
             {/* Benefit Highlights */}
-            <div className="mt-4 sm:mt-5 flex flex-wrap items-center gap-1.5 sm:gap-2 border-t border-neutral-200/80 pt-3 sm:pt-3.5 text-xs font-medium dark:border-white/10">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200/80 bg-white/70 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs shadow-2xs dark:border-white/10 dark:bg-neutral-800/60">
-                <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500" /> Confidential rate structures
+            <div className="mt-4 flex flex-wrap items-center gap-1.5 border-t border-neutral-200/80 pt-3 text-xs font-medium sm:mt-5 sm:gap-2 sm:pt-3.5 dark:border-white/10">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200/80 bg-white/70 px-2.5 py-0.5 text-[11px] shadow-2xs sm:px-3 sm:py-1 sm:text-xs dark:border-white/10 dark:bg-neutral-800/60">
+                <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500" /> Confidential rate
+                structures
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200/80 bg-white/70 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs shadow-2xs dark:border-white/10 dark:bg-neutral-800/60">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200/80 bg-white/70 px-2.5 py-0.5 text-[11px] shadow-2xs sm:px-3 sm:py-1 sm:text-xs dark:border-white/10 dark:bg-neutral-800/60">
                 <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500" /> Role-scoped permissions
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200/80 bg-white/70 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs shadow-2xs dark:border-white/10 dark:bg-neutral-800/60">
-                <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500" /> Zero rate leakage across tiers
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200/80 bg-white/70 px-2.5 py-0.5 text-[11px] shadow-2xs sm:px-3 sm:py-1 sm:text-xs dark:border-white/10 dark:bg-neutral-800/60">
+                <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500" /> Zero rate leakage across
+                tiers
               </span>
             </div>
           </BentoCard>
@@ -1349,21 +1371,21 @@ export const BusinessBenefitsSection: React.FC = () => {
         {/* ========================================================================= */}
         {/* ILLUSTRATIVE CAPACITY & ADMINISTRATIVE TIME MODELER (COCKPIT) */}
         {/* ========================================================================= */}
-        <div className="relative mt-10 sm:mt-14 overflow-hidden rounded-3xl border border-neutral-200/90 bg-gradient-to-br from-white via-neutral-50/90 to-neutral-100/60 p-4.5 sm:p-6 md:p-8 lg:p-10 shadow-[0_10px_40px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.95)] dark:border-white/10 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_15px_50px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.08)]">
+        <div className="relative mt-10 overflow-hidden rounded-3xl border border-neutral-200/90 bg-gradient-to-br from-white via-neutral-50/90 to-neutral-100/60 p-4.5 shadow-[0_10px_40px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.95)] sm:mt-14 sm:p-6 md:p-8 lg:p-10 dark:border-white/10 dark:from-neutral-900/90 dark:via-neutral-900/70 dark:to-neutral-950/90 dark:shadow-[0_15px_50px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.08)]">
           {/* Specular Top Rim */}
           <div className="pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent dark:via-white/25" />
 
           {/* Top Bar with View Selector and Currency Selector */}
-          <div className="mb-6 sm:mb-8 flex flex-col gap-4 border-b border-neutral-200/80 pb-4 sm:pb-5 sm:flex-row sm:items-center sm:justify-between dark:border-white/10">
-            <div className="flex items-start sm:items-center gap-3">
+          <div className="mb-6 flex flex-col gap-4 border-b border-neutral-200/80 pb-4 sm:mb-8 sm:flex-row sm:items-center sm:justify-between sm:pb-5 dark:border-white/10">
+            <div className="flex items-start gap-3 sm:items-center">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 shadow-2xs dark:text-emerald-400">
                 <Calculator className="h-5 w-5" />
               </div>
               <div className="min-w-0">
-                <span className="font-mono text-xs font-bold tracking-wider text-neutral-900 uppercase dark:text-white block sm:inline">
+                <span className="block font-mono text-xs font-bold tracking-wider text-neutral-900 uppercase sm:inline dark:text-white">
                   Illustrative Capacity &amp; Time Modeler
                 </span>
-                <p className="text-muted-foreground text-xs mt-0.5">
+                <p className="text-muted-foreground mt-0.5 text-xs">
                   Estimate administrative hours and billable capacity recovered for your team size.
                 </p>
               </div>
@@ -1380,7 +1402,7 @@ export const BusinessBenefitsSection: React.FC = () => {
                   type="button"
                   aria-pressed={cockpitView === "metrics"}
                   onClick={() => setCockpitView("metrics")}
-                  className={`rounded-xl px-2 sm:px-2.5 py-1 text-[11px] sm:text-xs font-bold transition-all focus-visible:outline-hidden ${
+                  className={`rounded-xl px-2 py-1 text-[11px] font-bold transition-all focus-visible:outline-hidden sm:px-2.5 sm:text-xs ${
                     cockpitView === "metrics"
                       ? "bg-neutral-950 text-white shadow-xs dark:bg-white dark:text-neutral-950"
                       : "text-muted-foreground hover:text-foreground"
@@ -1392,7 +1414,7 @@ export const BusinessBenefitsSection: React.FC = () => {
                   type="button"
                   aria-pressed={cockpitView === "breakdown"}
                   onClick={() => setCockpitView("breakdown")}
-                  className={`rounded-xl px-2 sm:px-2.5 py-1 text-[11px] sm:text-xs font-bold transition-all focus-visible:outline-hidden ${
+                  className={`rounded-xl px-2 py-1 text-[11px] font-bold transition-all focus-visible:outline-hidden sm:px-2.5 sm:text-xs ${
                     cockpitView === "breakdown"
                       ? "bg-neutral-950 text-white shadow-xs dark:bg-white dark:text-neutral-950"
                       : "text-muted-foreground hover:text-foreground"
@@ -1404,14 +1426,16 @@ export const BusinessBenefitsSection: React.FC = () => {
 
               {/* Currency Selector Pills */}
               <div className="flex items-center gap-1.5">
-                <span className="font-mono text-[10.5px] sm:text-xs font-semibold text-neutral-500">Currency:</span>
+                <span className="font-mono text-[10.5px] font-semibold text-neutral-500 sm:text-xs">
+                  Currency:
+                </span>
                 <div className="inline-flex rounded-2xl border border-neutral-200/80 bg-white/90 p-1 shadow-2xs backdrop-blur-md dark:border-white/10 dark:bg-neutral-950/90">
                   {(["USD", "EUR", "GBP", "BDT"] as const).map((curr) => (
                     <button
                       key={curr}
                       type="button"
                       onClick={() => setCurrency(curr)}
-                      className={`rounded-xl px-2 sm:px-2.5 py-1 font-mono text-[11px] sm:text-xs font-bold transition-all focus-visible:outline-hidden ${
+                      className={`rounded-xl px-2 py-1 font-mono text-[11px] font-bold transition-all focus-visible:outline-hidden sm:px-2.5 sm:text-xs ${
                         currency === curr
                           ? "bg-neutral-950 text-white shadow-xs dark:bg-white dark:text-neutral-950"
                           : "text-muted-foreground hover:text-foreground"
@@ -1428,7 +1452,7 @@ export const BusinessBenefitsSection: React.FC = () => {
           <div className="flex flex-col justify-between gap-6 sm:gap-8 lg:flex-row lg:items-center">
             {/* Left Header & Slider */}
             <div className="max-w-xl">
-              <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-neutral-900 dark:text-white leading-tight">
+              <h3 className="text-xl leading-tight font-extrabold tracking-tight text-neutral-900 sm:text-2xl md:text-3xl dark:text-white">
                 Estimate Reclaimed Time Across Your Organization
               </h3>
               <p className="text-muted-foreground mt-2 text-xs leading-relaxed sm:text-sm">
@@ -1437,10 +1461,10 @@ export const BusinessBenefitsSection: React.FC = () => {
               </p>
 
               {/* Slider Controller */}
-              <div className="mt-5 sm:mt-6 space-y-3">
+              <div className="mt-5 space-y-3 sm:mt-6">
                 <div className="flex items-center justify-between text-xs font-semibold">
                   <span className="text-neutral-800 dark:text-neutral-200">Team Size:</span>
-                  <span className="font-mono text-lg sm:text-xl font-black text-neutral-900 dark:text-white">
+                  <span className="font-mono text-lg font-black text-neutral-900 sm:text-xl dark:text-white">
                     {teamSize} Consultants
                   </span>
                 </div>
@@ -1460,8 +1484,10 @@ export const BusinessBenefitsSection: React.FC = () => {
                 />
 
                 {/* Quick Presets */}
-                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 pt-1 sm:pt-2 text-xs">
-                  <span className="text-muted-foreground font-medium text-[11px] sm:text-xs">Quick Presets:</span>
+                <div className="flex flex-wrap items-center gap-1.5 pt-1 text-xs sm:gap-2 sm:pt-2">
+                  <span className="text-muted-foreground text-[11px] font-medium sm:text-xs">
+                    Quick Presets:
+                  </span>
                   {[
                     { count: 3, label: "3 Solo" },
                     { count: 6, label: "6 Growth" },
@@ -1472,7 +1498,7 @@ export const BusinessBenefitsSection: React.FC = () => {
                       key={preset.count}
                       type="button"
                       onClick={() => setTeamSize(preset.count)}
-                      className={`rounded-xl px-2.5 sm:px-3 py-1 font-mono text-[10px] sm:text-[11px] font-semibold transition-all focus-visible:outline-hidden ${
+                      className={`rounded-xl px-2.5 py-1 font-mono text-[10px] font-semibold transition-all focus-visible:outline-hidden sm:px-3 sm:text-[11px] ${
                         teamSize === preset.count
                           ? "bg-neutral-950 text-white shadow-2xs dark:bg-white dark:text-neutral-950"
                           : "border border-neutral-200/80 bg-white/70 text-neutral-600 hover:text-neutral-900 dark:border-white/10 dark:bg-neutral-800/50 dark:text-neutral-400"
@@ -1497,42 +1523,42 @@ export const BusinessBenefitsSection: React.FC = () => {
                     transition={{ duration: 0.2 }}
                     className="grid grid-cols-1 gap-2.5 sm:grid-cols-3"
                   >
-                    <div className="group/pod relative overflow-hidden rounded-2xl border border-neutral-200/90 bg-white/90 p-3.5 sm:p-4 text-center shadow-xs transition-all duration-200 hover:-translate-y-1 hover:border-blue-500/40 hover:shadow-md dark:border-white/10 dark:bg-neutral-900/90">
-                      <span className="text-muted-foreground block font-mono text-[10px] sm:text-[11px] font-bold tracking-wider uppercase truncate">
+                    <div className="group/pod relative overflow-hidden rounded-2xl border border-neutral-200/90 bg-white/90 p-3.5 text-center shadow-xs transition-all duration-200 hover:-translate-y-1 hover:border-blue-500/40 hover:shadow-md sm:p-4 dark:border-white/10 dark:bg-neutral-900/90">
+                      <span className="text-muted-foreground block truncate font-mono text-[10px] font-bold tracking-wider uppercase sm:text-[11px]">
                         Est. Hours Saved / Mo
                       </span>
-                      <span className="mt-1.5 sm:mt-2 block font-mono text-2xl sm:text-3xl lg:text-4xl font-black text-neutral-900 dark:text-white">
+                      <span className="mt-1.5 block font-mono text-2xl font-black text-neutral-900 sm:mt-2 sm:text-3xl lg:text-4xl dark:text-white">
                         {hoursSavedMonthly} hrs
                       </span>
-                      <span className="mt-0.5 sm:mt-1 block text-[10.5px] sm:text-[11px] text-neutral-500 truncate">
+                      <span className="mt-0.5 block truncate text-[10.5px] text-neutral-500 sm:mt-1 sm:text-[11px]">
                         ~18.5 hrs / consultant
                       </span>
                     </div>
 
-                    <div className="group/pod relative overflow-hidden rounded-2xl border border-neutral-200/90 bg-white/90 p-3.5 sm:p-4 text-center shadow-xs transition-all duration-200 hover:-translate-y-1 hover:border-emerald-500/40 hover:shadow-md dark:border-white/10 dark:bg-neutral-900/90">
-                      <span className="text-muted-foreground block font-mono text-[10px] sm:text-[11px] font-bold tracking-wider uppercase truncate">
+                    <div className="group/pod relative overflow-hidden rounded-2xl border border-neutral-200/90 bg-white/90 p-3.5 text-center shadow-xs transition-all duration-200 hover:-translate-y-1 hover:border-emerald-500/40 hover:shadow-md sm:p-4 dark:border-white/10 dark:bg-neutral-900/90">
+                      <span className="text-muted-foreground block truncate font-mono text-[10px] font-bold tracking-wider uppercase sm:text-[11px]">
                         Est. Capacity Value
                       </span>
-                      <span className="mt-1.5 sm:mt-2 block font-mono text-2xl sm:text-3xl lg:text-4xl font-black text-emerald-600 dark:text-emerald-400">
+                      <span className="mt-1.5 block font-mono text-2xl font-black text-emerald-600 sm:mt-2 sm:text-3xl lg:text-4xl dark:text-emerald-400">
                         <AnimatedAmount
                           amountUsd={valueRecoveredMonthly}
                           currency={currency}
                           decimals={0}
                         />
                       </span>
-                      <span className="mt-0.5 sm:mt-1 block text-[10.5px] sm:text-[11px] text-neutral-500 truncate">
+                      <span className="mt-0.5 block truncate text-[10.5px] text-neutral-500 sm:mt-1 sm:text-[11px]">
                         Reclaimed consulting
                       </span>
                     </div>
 
-                    <div className="group/pod relative overflow-hidden rounded-2xl border border-neutral-200/90 bg-white/90 p-3.5 sm:p-4 text-center shadow-xs transition-all duration-200 hover:-translate-y-1 hover:border-emerald-500/40 hover:shadow-md dark:border-white/10 dark:bg-neutral-900/90">
-                      <span className="text-muted-foreground block font-mono text-[10px] sm:text-[11px] font-bold tracking-wider uppercase truncate">
+                    <div className="group/pod relative overflow-hidden rounded-2xl border border-neutral-200/90 bg-white/90 p-3.5 text-center shadow-xs transition-all duration-200 hover:-translate-y-1 hover:border-emerald-500/40 hover:shadow-md sm:p-4 dark:border-white/10 dark:bg-neutral-900/90">
+                      <span className="text-muted-foreground block truncate font-mono text-[10px] font-bold tracking-wider uppercase sm:text-[11px]">
                         Overlap Incidents
                       </span>
-                      <span className="mt-1.5 sm:mt-2 block font-mono text-2xl sm:text-3xl lg:text-4xl font-black text-neutral-900 dark:text-white">
+                      <span className="mt-1.5 block font-mono text-2xl font-black text-neutral-900 sm:mt-2 sm:text-3xl lg:text-4xl dark:text-white">
                         0 Overlaps
                       </span>
-                      <span className="mt-0.5 sm:mt-1 block text-[10.5px] sm:text-[11px] font-bold text-emerald-600 dark:text-emerald-400 truncate">
+                      <span className="mt-0.5 block truncate text-[10.5px] font-bold text-emerald-600 sm:mt-1 sm:text-[11px] dark:text-emerald-400">
                         Protected Buffer SLA
                       </span>
                     </div>
@@ -1544,20 +1570,20 @@ export const BusinessBenefitsSection: React.FC = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.98 }}
                     transition={{ duration: 0.2 }}
-                    className="space-y-3 rounded-2xl border border-neutral-200/90 bg-white/90 p-3.5 sm:p-4.5 shadow-xs dark:border-white/10 dark:bg-neutral-900/90"
+                    className="space-y-3 rounded-2xl border border-neutral-200/90 bg-white/90 p-3.5 shadow-xs sm:p-4.5 dark:border-white/10 dark:bg-neutral-900/90"
                   >
                     <div className="flex flex-wrap items-center justify-between gap-1 border-b border-neutral-200/80 pb-2 text-xs font-semibold dark:border-white/10">
-                      <span className="text-neutral-900 dark:text-white font-bold text-[11px] sm:text-xs">
+                      <span className="text-[11px] font-bold text-neutral-900 sm:text-xs dark:text-white">
                         Monthly Drag Reduction Breakdown:
                       </span>
-                      <span className="font-mono text-[10.5px] sm:text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
+                      <span className="font-mono text-[10.5px] font-bold text-emerald-600 sm:text-[11px] dark:text-emerald-400">
                         {hoursSavedMonthly} hrs saved total
                       </span>
                     </div>
 
                     <div className="space-y-2 text-xs">
                       <div>
-                        <div className="flex justify-between text-[10.5px] sm:text-[11px] font-medium text-neutral-700 dark:text-neutral-300">
+                        <div className="flex justify-between text-[10.5px] font-medium text-neutral-700 sm:text-[11px] dark:text-neutral-300">
                           <span className="truncate">1. Automated Scheduling &amp; Buffers</span>
                           <span className="shrink-0 font-mono font-bold text-emerald-600">
                             45% ({Math.round(hoursSavedMonthly * 0.45)} hrs)
@@ -1569,7 +1595,7 @@ export const BusinessBenefitsSection: React.FC = () => {
                       </div>
 
                       <div>
-                        <div className="flex justify-between text-[10.5px] sm:text-[11px] font-medium text-neutral-700 dark:text-neutral-300">
+                        <div className="flex justify-between text-[10.5px] font-medium text-neutral-700 sm:text-[11px] dark:text-neutral-300">
                           <span className="truncate">2. Auto Invoicing &amp; Stripe</span>
                           <span className="shrink-0 font-mono font-bold text-blue-600 dark:text-blue-400">
                             35% ({Math.round(hoursSavedMonthly * 0.35)} hrs)
@@ -1581,7 +1607,7 @@ export const BusinessBenefitsSection: React.FC = () => {
                       </div>
 
                       <div>
-                        <div className="flex justify-between text-[10.5px] sm:text-[11px] font-medium text-neutral-700 dark:text-neutral-300">
+                        <div className="flex justify-between text-[10.5px] font-medium text-neutral-700 sm:text-[11px] dark:text-neutral-300">
                           <span className="truncate">3. Client 360° Dossier &amp; Notes</span>
                           <span className="shrink-0 font-mono font-bold text-indigo-600 dark:text-indigo-400">
                             20% ({Math.round(hoursSavedMonthly * 0.2)} hrs)
@@ -1599,7 +1625,7 @@ export const BusinessBenefitsSection: React.FC = () => {
           </div>
 
           {/* Operational Benchmark Strip */}
-          <div className="mt-6 sm:mt-8 rounded-2xl border border-neutral-200/80 bg-neutral-100/70 p-3.5 sm:p-4.5 dark:border-white/10 dark:bg-neutral-950/70">
+          <div className="mt-6 rounded-2xl border border-neutral-200/80 bg-neutral-100/70 p-3.5 sm:mt-8 sm:p-4.5 dark:border-white/10 dark:bg-neutral-950/70">
             <div className="flex flex-col gap-1.5 text-xs sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-2">
                 <TrendingUp className="h-4 w-4 shrink-0 text-emerald-500" />
@@ -1607,33 +1633,33 @@ export const BusinessBenefitsSection: React.FC = () => {
                   Where Operational Drag Is Reduced:
                 </span>
               </div>
-              <span className="self-start sm:self-auto rounded-md border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 font-mono text-[10px] sm:text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
+              <span className="self-start rounded-md border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 font-mono text-[10px] font-bold text-emerald-600 sm:self-auto sm:text-[11px] dark:text-emerald-400">
                 Illustrative Benchmark Model
               </span>
             </div>
 
             <div className="mt-3.5 grid grid-cols-1 gap-2.5 text-xs sm:grid-cols-3">
-              <div className="rounded-xl border border-neutral-200/80 bg-white/80 p-2.5 sm:p-3 shadow-2xs dark:border-white/5 dark:bg-neutral-900/80">
+              <div className="rounded-xl border border-neutral-200/80 bg-white/80 p-2.5 shadow-2xs sm:p-3 dark:border-white/5 dark:bg-neutral-900/80">
                 <span className="text-muted-foreground block text-[10.5px] sm:text-[11px]">
                   Eliminated Tool Subscriptions:
                 </span>
-                <span className="mt-1 block font-mono font-bold text-neutral-900 dark:text-white text-xs sm:text-sm">
+                <span className="mt-1 block font-mono text-xs font-bold text-neutral-900 sm:text-sm dark:text-white">
                   1 workspace replaces 14 point tools
                 </span>
               </div>
-              <div className="rounded-xl border border-neutral-200/80 bg-white/80 p-2.5 sm:p-3 shadow-2xs dark:border-white/5 dark:bg-neutral-900/80">
+              <div className="rounded-xl border border-neutral-200/80 bg-white/80 p-2.5 shadow-2xs sm:p-3 dark:border-white/5 dark:bg-neutral-900/80">
                 <span className="text-muted-foreground block text-[10.5px] sm:text-[11px]">
                   Paced Meeting Schedules:
                 </span>
-                <span className="mt-1 block font-mono font-bold text-emerald-600 dark:text-emerald-400 text-xs sm:text-sm">
+                <span className="mt-1 block font-mono text-xs font-bold text-emerald-600 sm:text-sm dark:text-emerald-400">
                   +15m automatic buffer intervals
                 </span>
               </div>
-              <div className="rounded-xl border border-neutral-200/80 bg-white/80 p-2.5 sm:p-3 shadow-2xs dark:border-white/5 dark:bg-neutral-900/80">
+              <div className="rounded-xl border border-neutral-200/80 bg-white/80 p-2.5 shadow-2xs sm:p-3 dark:border-white/5 dark:bg-neutral-900/80">
                 <span className="text-muted-foreground block text-[10.5px] sm:text-[11px]">
                   Accelerated Invoicing:
                 </span>
-                <span className="mt-1 block font-mono font-bold text-emerald-600 dark:text-emerald-400 text-xs sm:text-sm">
+                <span className="mt-1 block font-mono text-xs font-bold text-emerald-600 sm:text-sm dark:text-emerald-400">
                   Direct Stripe Connect settlement
                 </span>
               </div>
@@ -1641,7 +1667,7 @@ export const BusinessBenefitsSection: React.FC = () => {
           </div>
 
           {/* Transparent Operational Estimation Footnote */}
-          <p className="mt-4 border-t border-neutral-200/60 pt-3.5 text-center text-[10.5px] sm:text-[11px] text-neutral-500 dark:border-white/5 dark:text-neutral-400 leading-relaxed">
+          <p className="mt-4 border-t border-neutral-200/60 pt-3.5 text-center text-[10.5px] leading-relaxed text-neutral-500 sm:text-[11px] dark:border-white/5 dark:text-neutral-400">
             * Illustrative estimation based on ~18.5 hrs/consultant of manual scheduling, notes
             consolidation, and billing follow-up. Actual results depend on individual business
             workflows and service delivery models.

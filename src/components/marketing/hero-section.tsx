@@ -498,7 +498,7 @@ export const HeroSection: React.FC = () => {
             delay: shouldReduceMotion ? 0 : 0.24,
             ease: [0.16, 1, 0.3, 1],
           }}
-          className="mt-7 flex flex-col items-center justify-center gap-3 w-full max-w-sm sm:max-w-none motion-reduce:!transform-none motion-reduce:!opacity-100 sm:flex-row md:mt-8"
+          className="mt-7 flex w-full max-w-sm flex-col items-center justify-center gap-3 motion-reduce:!transform-none motion-reduce:!opacity-100 sm:max-w-none sm:flex-row md:mt-8"
         >
           {/* Flagship Master Obsidian CTA (Liquid Onyx Chassis with Cyan Status Beacon) */}
           <motion.div
@@ -506,11 +506,11 @@ export const HeroSection: React.FC = () => {
             onMouseMove={handleHeroCtaMouseMove}
             onMouseLeave={handleHeroCtaMouseLeave}
             style={{ x: springHeroCtaX, y: springHeroCtaY }}
-            className="relative shrink-0 w-full sm:w-auto flex justify-center"
+            className="relative flex w-full shrink-0 justify-center sm:w-auto"
           >
             <Button
               size="lg"
-              className="group relative h-12 sm:h-13 min-h-[48px] sm:min-h-[52px] w-full sm:w-auto max-w-xs sm:max-w-none overflow-hidden rounded-full border border-neutral-700/80 bg-gradient-to-b from-neutral-800 via-neutral-900 to-black px-6 sm:px-7 text-sm font-bold whitespace-nowrap text-white shadow-[0_6px_20px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.25)] ring-1 ring-white/10 transition-all duration-300 hover:scale-[1.02] hover:border-cyan-500/60 hover:shadow-[0_0_32px_rgba(6,182,212,0.4)] active:scale-[0.98] dark:from-white dark:via-neutral-100 dark:to-neutral-200 dark:text-neutral-950 dark:shadow-[0_0_28px_rgba(255,255,255,0.3)] dark:ring-white/20"
+              className="group relative h-12 min-h-[48px] w-full max-w-xs overflow-hidden rounded-full border border-neutral-700/80 bg-gradient-to-b from-neutral-800 via-neutral-900 to-black px-6 text-sm font-bold whitespace-nowrap text-white shadow-[0_6px_20px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.25)] ring-1 ring-white/10 transition-all duration-300 hover:scale-[1.02] hover:border-cyan-500/60 hover:shadow-[0_0_32px_rgba(6,182,212,0.4)] active:scale-[0.98] sm:h-13 sm:min-h-[52px] sm:w-auto sm:max-w-none sm:px-7 dark:from-white dark:via-neutral-100 dark:to-neutral-200 dark:text-neutral-950 dark:shadow-[0_0_28px_rgba(255,255,255,0.3)] dark:ring-white/20"
               asChild
             >
               <Link href="/register" className="relative flex items-center justify-center gap-3">
@@ -540,7 +540,7 @@ export const HeroSection: React.FC = () => {
           <Button
             size="lg"
             variant="outline"
-            className="text-foreground relative h-12 sm:h-13 min-h-[48px] sm:min-h-[52px] w-full sm:w-auto max-w-xs sm:max-w-none overflow-hidden rounded-full border-neutral-300/80 bg-white/85 px-5 sm:px-6 text-sm font-semibold shadow-xs backdrop-blur-xl transition-all duration-200 hover:border-neutral-400 hover:bg-neutral-100/80 active:scale-[0.98] dark:border-white/15 dark:bg-white/[0.06] dark:hover:border-white/25 dark:hover:bg-white/[0.12]"
+            className="text-foreground relative h-12 min-h-[48px] w-full max-w-xs overflow-hidden rounded-full border-neutral-300/80 bg-white/85 px-5 text-sm font-semibold shadow-xs backdrop-blur-xl transition-all duration-200 hover:border-neutral-400 hover:bg-neutral-100/80 active:scale-[0.98] sm:h-13 sm:min-h-[52px] sm:w-auto sm:max-w-none sm:px-6 dark:border-white/15 dark:bg-white/[0.06] dark:hover:border-white/25 dark:hover:bg-white/[0.12]"
             asChild
           >
             <Link href="/dashboard" className="flex items-center justify-center gap-2.5">
@@ -563,19 +563,19 @@ export const HeroSection: React.FC = () => {
             duration: shouldReduceMotion ? 0 : 0.45,
             delay: shouldReduceMotion ? 0 : 0.32,
           }}
-          className="border-border/75 bg-surface/80 relative mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2.5 rounded-2xl border px-3.5 py-2.5 text-xs shadow-2xs backdrop-blur-xl motion-reduce:!opacity-100 transition-all duration-300 hover:border-neutral-300 hover:shadow-md dark:hover:border-neutral-700 sm:gap-x-5 sm:gap-y-2.5 sm:px-6 md:mt-7"
+          className="border-border/75 bg-surface/80 relative mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2.5 rounded-2xl border px-3.5 py-2.5 text-xs shadow-2xs backdrop-blur-xl transition-all duration-300 hover:border-neutral-300 hover:shadow-md motion-reduce:!opacity-100 sm:gap-x-5 sm:gap-y-2.5 sm:px-6 md:mt-7 dark:hover:border-neutral-700"
         >
           {/* Hairline Specular Top Highlight */}
           <div className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent dark:via-cyan-400/30" />
 
           {/* Overlapping Founder Avatars with Interactive Dossier Tooltips */}
           <div className="flex items-center gap-2.5">
-            <div className="flex -space-x-1.5 sm:-space-x-2 py-0.5">
+            <div className="flex -space-x-1.5 py-0.5 sm:-space-x-2">
               {heroFounders.map((founder) => (
                 <div className="group/avatar relative" key={founder.name}>
                   <div
                     className={cn(
-                      "border-background relative h-7 w-7 sm:h-7.5 sm:w-7.5 overflow-hidden rounded-full border-2 shadow-sm transition-all duration-300 group-hover/avatar:scale-125 group-hover/avatar:z-30 group-hover/avatar:ring-2",
+                      "border-background relative h-7 w-7 overflow-hidden rounded-full border-2 shadow-sm transition-all duration-300 group-hover/avatar:z-30 group-hover/avatar:scale-125 group-hover/avatar:ring-2 sm:h-7.5 sm:w-7.5",
                       founder.accentGlow
                     )}
                   >
@@ -588,18 +588,18 @@ export const HeroSection: React.FC = () => {
                     />
                   </div>
                   {/* Tactile Founder Dossier Tooltip */}
-                  <div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2.5 hidden sm:group-hover/avatar:flex flex-col items-center opacity-0 group-hover/avatar:opacity-100 transition-all duration-200 z-50">
-                    <div className="rounded-xl border border-neutral-800 bg-neutral-950/95 px-3 py-2 text-center shadow-2xl backdrop-blur-xl whitespace-nowrap">
-                      <div className="flex items-center gap-1.5 justify-center">
-                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <div className="pointer-events-none absolute bottom-full left-1/2 z-50 mb-2.5 hidden -translate-x-1/2 flex-col items-center opacity-0 transition-all duration-200 group-hover/avatar:opacity-100 sm:group-hover/avatar:flex">
+                    <div className="rounded-xl border border-neutral-800 bg-neutral-950/95 px-3 py-2 text-center whitespace-nowrap shadow-2xl backdrop-blur-xl">
+                      <div className="flex items-center justify-center gap-1.5">
+                        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
                         <span className="text-[11px] font-bold text-white">{founder.name}</span>
                       </div>
-                      <div className="text-[10px] text-neutral-400 font-medium">{founder.role}</div>
-                      <div className="mt-1 inline-flex items-center gap-1 rounded bg-neutral-800/90 px-1.5 py-0.5 font-mono text-[9px] text-cyan-400 border border-neutral-700/60">
+                      <div className="text-[10px] font-medium text-neutral-400">{founder.role}</div>
+                      <div className="mt-1 inline-flex items-center gap-1 rounded border border-neutral-700/60 bg-neutral-800/90 px-1.5 py-0.5 font-mono text-[9px] text-cyan-400">
                         ⚡ {founder.metric}
                       </div>
                     </div>
-                    <div className="w-2 h-2 -mt-1 rotate-45 border-r border-b border-neutral-800 bg-neutral-950/95" />
+                    <div className="-mt-1 h-2 w-2 rotate-45 border-r border-b border-neutral-800 bg-neutral-950/95" />
                   </div>
                 </div>
               ))}
@@ -611,7 +611,8 @@ export const HeroSection: React.FC = () => {
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
               </span>
               <span className="text-muted-foreground text-xs font-medium">
-                Trusted by <strong className="text-foreground font-semibold">800+ Agency Founders</strong>
+                Trusted by{" "}
+                <strong className="text-foreground font-semibold">800+ Agency Founders</strong>
               </span>
             </div>
           </div>
@@ -619,27 +620,27 @@ export const HeroSection: React.FC = () => {
           <div className="text-border hidden md:inline">&bull;</div>
 
           {/* Hard Architectural Telemetry Badges with Responsive Micro-Pill Hover */}
-          <div className="text-muted-foreground flex flex-wrap items-center justify-center gap-x-1.5 sm:gap-x-2 gap-y-1.5 text-[11px] sm:text-xs font-medium">
-            <span className="group/badge inline-flex cursor-default items-center gap-1 sm:gap-1.5 rounded-lg border border-transparent px-1.5 sm:px-2 py-0.5 text-foreground transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-500/30 hover:bg-blue-500/10 hover:shadow-xs">
-              <Lock className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-blue-500 transition-transform duration-200 group-hover/badge:scale-110" />
+          <div className="text-muted-foreground flex flex-wrap items-center justify-center gap-x-1.5 gap-y-1.5 text-[11px] font-medium sm:gap-x-2 sm:text-xs">
+            <span className="group/badge text-foreground inline-flex cursor-default items-center gap-1 rounded-lg border border-transparent px-1.5 py-0.5 transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-500/30 hover:bg-blue-500/10 hover:shadow-xs sm:gap-1.5 sm:px-2">
+              <Lock className="h-3 w-3 text-blue-500 transition-transform duration-200 group-hover/badge:scale-110 sm:h-3.5 sm:w-3.5" />
               <span className="hidden sm:inline">Organization-Scoped Workspace Data</span>
               <span className="sm:hidden">Tenant Scoped Data</span>
             </span>
             <span className="text-border hidden lg:inline">&bull;</span>
-            <span className="group/badge inline-flex cursor-default items-center gap-1 sm:gap-1.5 rounded-lg border border-transparent px-1.5 sm:px-2 py-0.5 text-foreground transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-500/30 hover:bg-emerald-500/10 hover:shadow-xs">
-              <Clock className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-emerald-500 transition-transform duration-200 group-hover/badge:scale-110" />
+            <span className="group/badge text-foreground inline-flex cursor-default items-center gap-1 rounded-lg border border-transparent px-1.5 py-0.5 transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-500/30 hover:bg-emerald-500/10 hover:shadow-xs sm:gap-1.5 sm:px-2">
+              <Clock className="h-3 w-3 text-emerald-500 transition-transform duration-200 group-hover/badge:scale-110 sm:h-3.5 sm:w-3.5" />
               <span className="hidden sm:inline">Automated Buffer Logic</span>
               <span className="sm:hidden">Auto Buffer Logic</span>
             </span>
             <span className="text-border hidden lg:inline">&bull;</span>
-            <span className="group/badge inline-flex cursor-default items-center gap-1 sm:gap-1.5 rounded-lg border border-transparent px-1.5 sm:px-2 py-0.5 text-foreground transition-all duration-200 hover:-translate-y-0.5 hover:border-indigo-500/30 hover:bg-indigo-500/10 hover:shadow-xs">
-              <CheckCircle2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-indigo-500 transition-transform duration-200 group-hover/badge:scale-110" />
+            <span className="group/badge text-foreground inline-flex cursor-default items-center gap-1 rounded-lg border border-transparent px-1.5 py-0.5 transition-all duration-200 hover:-translate-y-0.5 hover:border-indigo-500/30 hover:bg-indigo-500/10 hover:shadow-xs sm:gap-1.5 sm:px-2">
+              <CheckCircle2 className="h-3 w-3 text-indigo-500 transition-transform duration-200 group-hover/badge:scale-110 sm:h-3.5 sm:w-3.5" />
               <span className="hidden sm:inline">One-Click Invoicing</span>
               <span className="sm:hidden">1-Click Invoicing</span>
             </span>
             <span className="text-border hidden sm:inline">&bull;</span>
-            <span className="group/badge inline-flex cursor-default items-center gap-1 sm:gap-1.5 rounded-lg border border-transparent px-1.5 sm:px-2 py-0.5 text-muted-foreground transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-500/30 hover:bg-emerald-500/10 hover:text-foreground hover:shadow-xs">
-              <ShieldCheck className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-emerald-600 transition-transform duration-200 group-hover/badge:scale-110" />
+            <span className="group/badge text-muted-foreground hover:text-foreground inline-flex cursor-default items-center gap-1 rounded-lg border border-transparent px-1.5 py-0.5 transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-500/30 hover:bg-emerald-500/10 hover:shadow-xs sm:gap-1.5 sm:px-2">
+              <ShieldCheck className="h-3 w-3 text-emerald-600 transition-transform duration-200 group-hover/badge:scale-110 sm:h-3.5 sm:w-3.5" />
               <span className="hidden sm:inline">Zero Credit Card Required</span>
               <span className="sm:hidden">No Card Required</span>
             </span>
@@ -1030,46 +1031,52 @@ export const HeroSection: React.FC = () => {
                     className="space-y-4"
                   >
                     {/* Top KPI Ribbon */}
-                    <div className="grid grid-cols-2 gap-2 sm:gap-3 sm:grid-cols-4">
-                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 sm:p-3 shadow-2xs backdrop-blur-md">
-                        <div className="text-muted-foreground flex items-center justify-between text-[9.5px] sm:text-[10px] font-bold tracking-wider uppercase">
+                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
+                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-2xs backdrop-blur-md sm:p-3">
+                        <div className="text-muted-foreground flex items-center justify-between text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
                           <span className="truncate">Today&apos;s Sessions</span>
                           <Calendar className="h-3.5 w-3.5 shrink-0 text-blue-500" />
                         </div>
-                        <p className="text-foreground mt-1 text-base sm:text-lg font-bold truncate">8 Appointments</p>
-                        <span className="text-[9.5px] sm:text-[10px] font-medium text-emerald-600 dark:text-emerald-400 truncate block">
+                        <p className="text-foreground mt-1 truncate text-base font-bold sm:text-lg">
+                          8 Appointments
+                        </p>
+                        <span className="block truncate text-[9.5px] font-medium text-emerald-600 sm:text-[10px] dark:text-emerald-400">
                           +15m Buffers Active
                         </span>
                       </div>
-                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 sm:p-3 shadow-2xs backdrop-blur-md">
-                        <div className="text-muted-foreground flex items-center justify-between text-[9.5px] sm:text-[10px] font-bold tracking-wider uppercase">
+                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-2xs backdrop-blur-md sm:p-3">
+                        <div className="text-muted-foreground flex items-center justify-between text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
                           <span className="truncate">Active Client CRM</span>
                           <Users className="h-3.5 w-3.5 shrink-0 text-violet-500" />
                         </div>
-                        <p className="text-foreground mt-1 text-base sm:text-lg font-bold truncate">142 Retainers</p>
-                        <span className="text-[9.5px] sm:text-[10px] font-medium text-emerald-600 dark:text-emerald-400 truncate block">
+                        <p className="text-foreground mt-1 truncate text-base font-bold sm:text-lg">
+                          142 Retainers
+                        </p>
+                        <span className="block truncate text-[9.5px] font-medium text-emerald-600 sm:text-[10px] dark:text-emerald-400">
                           98.4% Retention
                         </span>
                       </div>
-                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 sm:p-3 shadow-2xs backdrop-blur-md">
-                        <div className="text-muted-foreground flex items-center justify-between text-[9.5px] sm:text-[10px] font-bold tracking-wider uppercase">
+                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-2xs backdrop-blur-md sm:p-3">
+                        <div className="text-muted-foreground flex items-center justify-between text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
                           <span className="truncate">Billing Velocity</span>
                           <DollarSign className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
                         </div>
-                        <p className="text-foreground mt-1 text-base sm:text-lg font-bold truncate">
+                        <p className="text-foreground mt-1 truncate text-base font-bold sm:text-lg">
                           <AnimatedCounter target={48250} prefix="$" decimals={2} />
                         </p>
-                        <span className="text-[9.5px] sm:text-[10px] font-medium text-emerald-600 dark:text-emerald-400 truncate block">
+                        <span className="block truncate text-[9.5px] font-medium text-emerald-600 sm:text-[10px] dark:text-emerald-400">
                           +24% vs Prev Mo
                         </span>
                       </div>
-                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 sm:p-3 shadow-2xs backdrop-blur-md">
-                        <div className="text-muted-foreground flex items-center justify-between text-[9.5px] sm:text-[10px] font-bold tracking-wider uppercase">
+                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-2xs backdrop-blur-md sm:p-3">
+                        <div className="text-muted-foreground flex items-center justify-between text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
                           <span className="truncate">Tenant Scoping</span>
                           <Lock className="h-3.5 w-3.5 shrink-0 text-indigo-500" />
                         </div>
-                        <p className="text-foreground mt-1 text-base sm:text-lg font-bold truncate">100% Isolated</p>
-                        <span className="text-[9.5px] sm:text-[10px] font-medium text-blue-600 dark:text-blue-400 truncate block">
+                        <p className="text-foreground mt-1 truncate text-base font-bold sm:text-lg">
+                          100% Isolated
+                        </p>
+                        <span className="block truncate text-[9.5px] font-medium text-blue-600 sm:text-[10px] dark:text-blue-400">
                           Multi-Tenant Guard
                         </span>
                       </div>
@@ -1080,10 +1087,12 @@ export const HeroSection: React.FC = () => {
                       {/* Left: Interactive Schedule Timeline with Visualized Buffer Engine */}
                       <div className="border-border/70 bg-surface/90 rounded-2xl border p-4 shadow-xs backdrop-blur-md lg:col-span-7">
                         <div className="border-border/50 flex flex-wrap items-center justify-between gap-2 border-b pb-3">
-                          <div className="flex items-center gap-2 min-w-0">
+                          <div className="flex min-w-0 items-center gap-2">
                             <Clock className="text-primary h-4 w-4 shrink-0" />
-                            <h4 className="text-foreground text-xs font-bold truncate">
-                              <span className="hidden sm:inline">Live Schedule Timeline &bull; Thursday, Nov 16</span>
+                            <h4 className="text-foreground truncate text-xs font-bold">
+                              <span className="hidden sm:inline">
+                                Live Schedule Timeline &bull; Thursday, Nov 16
+                              </span>
                               <span className="sm:hidden">Schedule Timeline &bull; Nov 16</span>
                             </h4>
                           </div>
@@ -1114,13 +1123,15 @@ export const HeroSection: React.FC = () => {
                           </div>
 
                           {/* Visualized Calendar Buffer Logic Guard */}
-                          <div className="flex items-center justify-between gap-1.5 rounded-lg border border-dashed border-emerald-500/30 bg-emerald-500/[0.06] px-2 sm:px-3 py-1.5 text-[10px] text-emerald-700 dark:text-emerald-400 overflow-hidden">
-                            <div className="flex items-center gap-1.5 font-semibold min-w-0">
+                          <div className="flex items-center justify-between gap-1.5 overflow-hidden rounded-lg border border-dashed border-emerald-500/30 bg-emerald-500/[0.06] px-2 py-1.5 text-[10px] text-emerald-700 sm:px-3 dark:text-emerald-400">
+                            <div className="flex min-w-0 items-center gap-1.5 font-semibold">
                               <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
-                              <span className="hidden sm:inline truncate">+15m Protected Auto-Buffer</span>
-                              <span className="sm:hidden truncate">+15m Buffer Guard</span>
+                              <span className="hidden truncate sm:inline">
+                                +15m Protected Auto-Buffer
+                              </span>
+                              <span className="truncate sm:hidden">+15m Buffer Guard</span>
                             </div>
-                            <span className="text-muted-foreground font-mono text-[9px] shrink-0">
+                            <span className="text-muted-foreground shrink-0 font-mono text-[9px]">
                               <span className="hidden sm:inline">Prevents Collisions</span>
                               <span className="sm:hidden">Auto-Guard</span>
                             </span>
@@ -1147,13 +1158,15 @@ export const HeroSection: React.FC = () => {
                           </div>
 
                           {/* Visualized Calendar Buffer Logic Guard 2 */}
-                          <div className="flex items-center justify-between gap-1.5 rounded-lg border border-dashed border-emerald-500/30 bg-emerald-500/[0.06] px-2 sm:px-3 py-1.5 text-[10px] text-emerald-700 dark:text-emerald-400 overflow-hidden">
-                            <div className="flex items-center gap-1.5 font-semibold min-w-0">
+                          <div className="flex items-center justify-between gap-1.5 overflow-hidden rounded-lg border border-dashed border-emerald-500/30 bg-emerald-500/[0.06] px-2 py-1.5 text-[10px] text-emerald-700 sm:px-3 dark:text-emerald-400">
+                            <div className="flex min-w-0 items-center gap-1.5 font-semibold">
                               <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
-                              <span className="hidden sm:inline truncate">+15m Protected Auto-Buffer</span>
-                              <span className="sm:hidden truncate">+15m Buffer Guard</span>
+                              <span className="hidden truncate sm:inline">
+                                +15m Protected Auto-Buffer
+                              </span>
+                              <span className="truncate sm:hidden">+15m Buffer Guard</span>
                             </div>
-                            <span className="text-muted-foreground font-mono text-[9px] shrink-0">
+                            <span className="text-muted-foreground shrink-0 font-mono text-[9px]">
                               <span className="hidden sm:inline">Next Slot: 01:00 PM</span>
                               <span className="sm:hidden">Next: 01:00 PM</span>
                             </span>
@@ -1174,12 +1187,14 @@ export const HeroSection: React.FC = () => {
                             </span>
                           </div>
                           <div className="mt-2.5 flex items-center gap-2.5 sm:gap-3">
-                            <div className="flex h-8.5 w-8.5 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 text-xs font-bold text-blue-600 dark:text-blue-400">
+                            <div className="flex h-8.5 w-8.5 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 text-xs font-bold text-blue-600 sm:h-9 sm:w-9 dark:text-blue-400">
                               SJ
                             </div>
                             <div className="min-w-0 flex-1">
-                              <p className="text-foreground text-xs font-bold truncate">Sarah Jenkins</p>
-                              <p className="text-muted-foreground text-[11px] truncate">
+                              <p className="text-foreground truncate text-xs font-bold">
+                                Sarah Jenkins
+                              </p>
+                              <p className="text-muted-foreground truncate text-[11px]">
                                 Apex Dynamics &bull; Enterprise Retainer ($4.5k/mo)
                               </p>
                             </div>
@@ -1343,44 +1358,48 @@ export const HeroSection: React.FC = () => {
                     className="space-y-4"
                   >
                     {/* Top Metric Cards */}
-                    <div className="grid grid-cols-2 gap-2 sm:gap-3 sm:grid-cols-4">
-                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 sm:p-3.5 shadow-xs backdrop-blur-md">
-                        <p className="text-muted-foreground text-[9.5px] sm:text-[10px] font-bold tracking-wider uppercase truncate">
+                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
+                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-xs backdrop-blur-md sm:p-3.5">
+                        <p className="text-muted-foreground truncate text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
                           MTD Billing
                         </p>
-                        <p className="text-foreground mt-1 text-base sm:text-xl font-bold truncate">
+                        <p className="text-foreground mt-1 truncate text-base font-bold sm:text-xl">
                           <AnimatedCounter target={48250} prefix="$" decimals={2} />
                         </p>
-                        <span className="text-[9.5px] sm:text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 truncate block">
+                        <span className="block truncate text-[9.5px] font-semibold text-emerald-600 sm:text-[10px] dark:text-emerald-400">
                           +24% vs Prev Mo
                         </span>
                       </div>
-                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 sm:p-3.5 shadow-xs backdrop-blur-md">
-                        <p className="text-muted-foreground text-[9.5px] sm:text-[10px] font-bold tracking-wider uppercase truncate">
+                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-xs backdrop-blur-md sm:p-3.5">
+                        <p className="text-muted-foreground truncate text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
                           Billable Ratio
                         </p>
-                        <p className="text-foreground mt-1 text-base sm:text-xl font-bold truncate">
+                        <p className="text-foreground mt-1 truncate text-base font-bold sm:text-xl">
                           <AnimatedCounter target={92.4} suffix="%" decimals={1} />
                         </p>
-                        <span className="text-muted-foreground text-[9.5px] sm:text-[10px] font-medium truncate block">
+                        <span className="text-muted-foreground block truncate text-[9.5px] font-medium sm:text-[10px]">
                           Target: 85%
                         </span>
                       </div>
-                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 sm:p-3.5 shadow-xs backdrop-blur-md">
-                        <p className="text-muted-foreground text-[9.5px] sm:text-[10px] font-bold tracking-wider uppercase truncate">
+                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-xs backdrop-blur-md sm:p-3.5">
+                        <p className="text-muted-foreground truncate text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
                           Avg Booking Lead
                         </p>
-                        <p className="text-foreground mt-1 text-base sm:text-xl font-bold truncate">1.8 Days</p>
-                        <span className="text-[9.5px] sm:text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 truncate block">
+                        <p className="text-foreground mt-1 truncate text-base font-bold sm:text-xl">
+                          1.8 Days
+                        </p>
+                        <span className="block truncate text-[9.5px] font-semibold text-emerald-600 sm:text-[10px] dark:text-emerald-400">
                           Zero Idle Gaps
                         </span>
                       </div>
-                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 sm:p-3.5 shadow-xs backdrop-blur-md">
-                        <p className="text-muted-foreground text-[9.5px] sm:text-[10px] font-bold tracking-wider uppercase truncate">
+                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-xs backdrop-blur-md sm:p-3.5">
+                        <p className="text-muted-foreground truncate text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
                           Payout Velocity
                         </p>
-                        <p className="text-foreground mt-1 text-base sm:text-xl font-bold truncate">Instant</p>
-                        <span className="text-[9.5px] sm:text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 truncate block">
+                        <p className="text-foreground mt-1 truncate text-base font-bold sm:text-xl">
+                          Instant
+                        </p>
+                        <span className="block truncate text-[9.5px] font-semibold text-emerald-600 sm:text-[10px] dark:text-emerald-400">
                           Stripe Connected
                         </span>
                       </div>
@@ -1389,10 +1408,12 @@ export const HeroSection: React.FC = () => {
                     {/* Interactive SVG Sparkline Revenue Velocity Graph */}
                     <div className="border-border/70 bg-surface/90 rounded-2xl border p-4 shadow-xs backdrop-blur-md">
                       <div className="border-border/50 flex flex-wrap items-center justify-between gap-2 border-b pb-2.5">
-                        <div className="flex items-center gap-2 min-w-0">
+                        <div className="flex min-w-0 items-center gap-2">
                           <TrendingUp className="h-4 w-4 shrink-0 text-emerald-500" />
-                          <h4 className="text-foreground text-xs font-bold truncate">
-                            <span className="hidden sm:inline">Monthly Recurring Revenue (MRR) Velocity</span>
+                          <h4 className="text-foreground truncate text-xs font-bold">
+                            <span className="hidden sm:inline">
+                              Monthly Recurring Revenue (MRR) Velocity
+                            </span>
                             <span className="sm:hidden">MRR Revenue Velocity</span>
                           </h4>
                         </div>
@@ -1462,19 +1483,19 @@ export const HeroSection: React.FC = () => {
 
                       {/* Recent Settled Ledger Rows */}
                       <div className="border-border/50 mt-3 space-y-1.5 border-t pt-2.5 text-xs">
-                        <div className="bg-muted/40 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2 rounded-lg px-2.5 sm:px-3 py-1.5">
-                          <span className="text-foreground font-medium truncate text-[11px] sm:text-xs">
+                        <div className="bg-muted/40 flex flex-col justify-between gap-1 rounded-lg px-2.5 py-1.5 sm:flex-row sm:items-center sm:gap-2 sm:px-3">
+                          <span className="text-foreground truncate text-[11px] font-medium sm:text-xs">
                             #FP-1094 &bull; Vertex Advisory Retainer
                           </span>
-                          <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400 shrink-0 text-[11px] sm:text-xs">
+                          <span className="shrink-0 font-mono text-[11px] font-bold text-emerald-600 sm:text-xs dark:text-emerald-400">
                             +$4,500.00 (Paid)
                           </span>
                         </div>
-                        <div className="bg-muted/40 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2 rounded-lg px-2.5 sm:px-3 py-1.5">
-                          <span className="text-foreground font-medium truncate text-[11px] sm:text-xs">
+                        <div className="bg-muted/40 flex flex-col justify-between gap-1 rounded-lg px-2.5 py-1.5 sm:flex-row sm:items-center sm:gap-2 sm:px-3">
+                          <span className="text-foreground truncate text-[11px] font-medium sm:text-xs">
                             #FP-1093 &bull; Kinetic Ops Consulting
                           </span>
-                          <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400 shrink-0 text-[11px] sm:text-xs">
+                          <span className="shrink-0 font-mono text-[11px] font-bold text-emerald-600 sm:text-xs dark:text-emerald-400">
                             +$2,850.00 (Paid)
                           </span>
                         </div>
@@ -1507,24 +1528,26 @@ export const HeroSection: React.FC = () => {
           />
 
           {/* Editorial Trust Eyebrow Pill - Responsive Text Wrapping */}
-          <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-neutral-200/80 bg-white/75 px-3 py-1 text-[10px] sm:text-[11px] font-semibold text-neutral-600 shadow-2xs backdrop-blur-xl dark:border-neutral-800/80 dark:bg-neutral-900/70 dark:text-neutral-400">
+          <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-neutral-200/80 bg-white/75 px-3 py-1 text-[10px] font-semibold text-neutral-600 shadow-2xs backdrop-blur-xl sm:text-[11px] dark:border-neutral-800/80 dark:bg-neutral-900/70 dark:text-neutral-400">
             <span className="relative flex h-2 w-2 shrink-0">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-500" />
             </span>
             <span className="tracking-wider uppercase sm:tracking-widest">
-              <span className="hidden sm:inline">Engineered for high-output digital agencies, consultancies &amp; service teams</span>
+              <span className="hidden sm:inline">
+                Engineered for high-output digital agencies, consultancies &amp; service teams
+              </span>
               <span className="sm:hidden">Engineered for High-Output Agencies</span>
             </span>
           </div>
 
           {/* 3D Interactive Frosted Glass Logo Grid - Responsive 2-Col on Mobile, Balanced Flex on Desktop */}
-          <div className="mt-6 sm:mt-8 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-4 md:gap-5 w-full max-w-5xl mx-auto px-1 sm:px-0">
+          <div className="mx-auto mt-6 grid w-full max-w-5xl grid-cols-2 gap-2 px-1 sm:mt-8 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-4 sm:px-0 md:gap-5">
             {enterprisePartners.map((partner) => (
               <div
                 key={partner.name}
                 className={cn(
-                  "group/logo relative flex cursor-pointer items-center gap-2 sm:gap-2.5 rounded-xl sm:rounded-2xl border border-neutral-200/80 bg-white/70 p-2 sm:px-4 sm:py-2.5 shadow-xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:bg-white dark:border-neutral-800/80 dark:bg-neutral-900/60 dark:hover:bg-neutral-900/90",
+                  "group/logo relative flex cursor-pointer items-center gap-2 rounded-xl border border-neutral-200/80 bg-white/70 p-2 shadow-xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:bg-white sm:gap-2.5 sm:rounded-2xl sm:px-4 sm:py-2.5 dark:border-neutral-800/80 dark:bg-neutral-900/60 dark:hover:bg-neutral-900/90",
                   partner.hoverBorder
                 )}
                 aria-label={`${partner.name} ${partner.suffix}`}
@@ -1532,7 +1555,7 @@ export const HeroSection: React.FC = () => {
                 {/* Micro Brand Icon Pod with Illumination */}
                 <div
                   className={cn(
-                    "flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-lg sm:rounded-xl border border-neutral-200/70 bg-neutral-100/80 text-neutral-600 transition-all duration-300 dark:border-neutral-800 dark:bg-neutral-800/80 dark:text-neutral-300",
+                    "flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-neutral-200/70 bg-neutral-100/80 text-neutral-600 transition-all duration-300 sm:h-8 sm:w-8 sm:rounded-xl dark:border-neutral-800 dark:bg-neutral-800/80 dark:text-neutral-300",
                     partner.iconBg
                   )}
                 >
@@ -1540,15 +1563,15 @@ export const HeroSection: React.FC = () => {
                 </div>
 
                 {/* Brand Name Typography & Micro Metrics */}
-                <div className="flex flex-col text-left min-w-0">
-                  <span className="text-foreground/85 group-hover/logo:text-foreground font-sans text-[11px] sm:text-xs font-bold tracking-wider uppercase transition-colors sm:text-sm truncate">
+                <div className="flex min-w-0 flex-col text-left">
+                  <span className="text-foreground/85 group-hover/logo:text-foreground truncate font-sans text-[11px] font-bold tracking-wider uppercase transition-colors sm:text-sm sm:text-xs">
                     {partner.name}
-                    <span className="text-muted-foreground ml-1 text-[9px] sm:text-[10px] font-medium tracking-normal lowercase">
+                    <span className="text-muted-foreground ml-1 text-[9px] font-medium tracking-normal lowercase sm:text-[10px]">
                       {partner.suffix}
                     </span>
                   </span>
                   {/* Verified Sub-Metric Badge on hover */}
-                  <span className="font-mono text-[8.5px] sm:text-[9.5px] font-medium text-neutral-400 transition-colors group-hover/logo:text-cyan-600 dark:text-neutral-500 dark:group-hover/logo:text-cyan-400 truncate">
+                  <span className="truncate font-mono text-[8.5px] font-medium text-neutral-400 transition-colors group-hover/logo:text-cyan-600 sm:text-[9.5px] dark:text-neutral-500 dark:group-hover/logo:text-cyan-400">
                     {partner.metric}
                   </span>
                 </div>

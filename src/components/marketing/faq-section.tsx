@@ -73,8 +73,7 @@ const faqs: FAQItem[] = [
     accentColor: "rgba(99, 102, 241, 0.4)",
     stripeGradient: "from-indigo-500 via-purple-500 to-pink-500",
     glowColor: "rgba(99, 102, 241, 0.6)",
-    badgeStyle:
-      "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20",
+    badgeStyle: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20",
     question: "What is FlowPilot and who is it designed for?",
     answer:
       "FlowPilot is a unified business operations SaaS platform built specifically for small-to-medium service businesses, agencies, consultancies, and professional teams. It brings client dossiers and relationship management (CRM), appointment scheduling, team capacity management, and invoice tracking together into one calm, structured command center.",
@@ -96,8 +95,7 @@ const faqs: FAQItem[] = [
     accentColor: "rgba(168, 85, 247, 0.4)",
     stripeGradient: "from-purple-500 via-indigo-500 to-blue-500",
     glowColor: "rgba(168, 85, 247, 0.6)",
-    badgeStyle:
-      "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20",
+    badgeStyle: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20",
     question: "How does FlowPilot differ from generic task or project management tools?",
     answer:
       "Generic project tools focus on task checklists without understanding client service economics. FlowPilot coordinates the entire service delivery lifecycle: linking customer dossiers directly to appointment calendars, staff availability, and itemized billing statements without spreadsheet gymnastics.",
@@ -119,8 +117,7 @@ const faqs: FAQItem[] = [
     accentColor: "rgba(245, 158, 11, 0.4)",
     stripeGradient: "from-amber-400 via-orange-500 to-yellow-500",
     glowColor: "rgba(245, 158, 11, 0.6)",
-    badgeStyle:
-      "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
+    badgeStyle: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
     question: "What can I test in the Live Workspace demo today?",
     answer:
       "You can launch our interactive dashboard shell immediately via the 'Explore Live Workspace' button. This allows you to explore the multi-tenant organization switcher, navigation structure, dashboard KPI metrics, and UI state toggles (Normal, Skeleton, and Empty state feedback) firsthand.",
@@ -146,8 +143,7 @@ const faqs: FAQItem[] = [
     accentColor: "rgba(6, 182, 212, 0.4)",
     stripeGradient: "from-cyan-400 via-blue-500 to-indigo-500",
     glowColor: "rgba(6, 182, 212, 0.6)",
-    badgeStyle:
-      "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20",
+    badgeStyle: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20",
     question: "How does multi-tenant workspace isolation protect our business data?",
     answer:
       "Every organization in FlowPilot is strictly scoped by an isolated Organization ID. Server-side middleware verifies user membership on every request before querying the database, ensuring customer records, appointments, and financial data are never exposed across tenant boundaries.",
@@ -169,8 +165,7 @@ const faqs: FAQItem[] = [
     accentColor: "rgba(14, 165, 233, 0.4)",
     stripeGradient: "from-blue-500 via-indigo-600 to-cyan-400",
     glowColor: "rgba(14, 165, 233, 0.6)",
-    badgeStyle:
-      "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
+    badgeStyle: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
     question: "Can we configure different permissions for our team members?",
     answer:
       "Yes. FlowPilot incorporates Role-Based Access Control (RBAC). You can assign Owner, Admin, Member, or Billing roles, ensuring that team members have full access to their assigned appointments while safeguarding organizational settings and sensitive financial data.",
@@ -192,8 +187,7 @@ const faqs: FAQItem[] = [
     accentColor: "rgba(16, 185, 129, 0.4)",
     stripeGradient: "from-emerald-400 via-teal-500 to-cyan-500",
     glowColor: "rgba(16, 185, 129, 0.6)",
-    badgeStyle:
-      "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
+    badgeStyle: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
     question: "How do completed appointments turn into invoices?",
     answer:
       "FlowPilot bridges scheduling and finance by allowing completed appointments to convert directly into structured invoice line items with calculated rates, taxes, and transparent payment tracking (Draft, Sent, and Paid).",
@@ -216,7 +210,13 @@ const categoryPills: {
   icon: React.FC<{ className?: string }>;
   accentColor: string;
 }[] = [
-  { id: "all", label: "All Questions", shortLabel: "All", icon: Sparkles, accentColor: "from-blue-600 to-indigo-600" },
+  {
+    id: "all",
+    label: "All Questions",
+    shortLabel: "All",
+    icon: Sparkles,
+    accentColor: "from-blue-600 to-indigo-600",
+  },
   {
     id: "security",
     label: "Architecture & Security",
@@ -370,7 +370,7 @@ function SpatialCard({
           rotateY: shouldReduceMotion ? 0 : rotateY,
           transformStyle: "preserve-3d",
         }}
-        className="group relative flex h-full w-full flex-col justify-between overflow-hidden rounded-3xl border border-neutral-200/90 bg-white/85 p-3.5 min-[360px]:p-4 sm:p-6 shadow-xl backdrop-blur-2xl transition-all duration-300 hover:border-cyan-500/40 hover:shadow-2xl hover:shadow-cyan-500/10 dark:border-neutral-800/80 dark:bg-neutral-900/80 dark:hover:border-cyan-400/40"
+        className="group relative flex h-full w-full flex-col justify-between overflow-hidden rounded-3xl border border-neutral-200/90 bg-white/85 p-3.5 shadow-xl backdrop-blur-2xl transition-all duration-300 hover:border-cyan-500/40 hover:shadow-2xl hover:shadow-cyan-500/10 min-[360px]:p-4 sm:p-6 dark:border-neutral-800/80 dark:bg-neutral-900/80 dark:hover:border-cyan-400/40"
       >
         {/* Specular Ambient Glare Follower */}
         {!shouldReduceMotion && (
@@ -414,11 +414,15 @@ function SyntaxCodeBlock({ code }: { code: string }) {
   const tokenizeLine = (line: string) => {
     // Comment line
     if (line.trim().startsWith("//")) {
-      return <span className="italic text-zinc-500">{line}</span>;
+      return <span className="text-zinc-500 italic">{line}</span>;
     }
 
     // Split on word boundary preserving whitespace and symbols
-    const tokens = line.split(/(\b(?:interface|type|const|let|var|await|if|enum|async|return|function)\b|'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|\/\/.*$|[a-zA-Z0-9_$]+|[^\s\w])/g).filter(Boolean);
+    const tokens = line
+      .split(
+        /(\b(?:interface|type|const|let|var|await|if|enum|async|return|function)\b|'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|\/\/.*$|[a-zA-Z0-9_$]+|[^\s\w])/g
+      )
+      .filter(Boolean);
 
     return tokens.map((token, i) => {
       if (/^(interface|type|const|let|var|await|if|enum|async|return|function)$/.test(token)) {
@@ -437,7 +441,7 @@ function SyntaxCodeBlock({ code }: { code: string }) {
       }
       if (token.startsWith("//")) {
         return (
-          <span key={i} className="italic text-zinc-500">
+          <span key={i} className="text-zinc-500 italic">
             {token}
           </span>
         );
@@ -460,15 +464,19 @@ function SyntaxCodeBlock({ code }: { code: string }) {
           </span>
         );
       }
-      return <span key={i} className="text-slate-200">{token}</span>;
+      return (
+        <span key={i} className="text-slate-200">
+          {token}
+        </span>
+      );
     });
   };
 
   return (
-    <pre className="overflow-x-auto max-w-full font-mono text-[9.5px] min-[360px]:text-[10.5px] sm:text-[11.5px] leading-relaxed select-text scrollbar-thin">
+    <pre className="max-w-full scrollbar-thin overflow-x-auto font-mono text-[9.5px] leading-relaxed select-text min-[360px]:text-[10.5px] sm:text-[11.5px]">
       {lines.map((line, idx) => (
         <div key={idx} className="table-row">
-          <span className="table-cell pr-2 sm:pr-3 text-right font-mono text-[8.5px] min-[360px]:text-[9px] sm:text-[10px] text-zinc-600 select-none">
+          <span className="table-cell pr-2 text-right font-mono text-[8.5px] text-zinc-600 select-none min-[360px]:text-[9px] sm:pr-3 sm:text-[10px]">
             {idx + 1}
           </span>
           <span className="table-cell whitespace-pre">{tokenizeLine(line)}</span>
@@ -666,15 +674,15 @@ export const FAQSection: React.FC = () => {
   return (
     <section
       id="faq"
-      className="relative scroll-mt-24 sm:scroll-mt-28 overflow-hidden border-t border-neutral-200/80 bg-neutral-50/60 py-16 sm:py-24 md:py-28 dark:border-neutral-800/80 dark:bg-neutral-950/70"
+      className="relative scroll-mt-24 overflow-hidden border-t border-neutral-200/80 bg-neutral-50/60 py-16 sm:scroll-mt-28 sm:py-24 md:py-28 dark:border-neutral-800/80 dark:bg-neutral-950/70"
     >
       {/* Dynamic Atmospheric Multi-Stop Gradient Halos */}
       <div
-        className="pointer-events-none absolute -top-40 left-1/2 -z-10 h-[450px] w-[800px] sm:h-[550px] sm:w-[1000px] xl:h-[700px] xl:w-[1300px] 2xl:h-[850px] 2xl:w-[1600px] -translate-x-1/2 rounded-full bg-gradient-to-tr from-blue-500/15 via-indigo-500/10 to-cyan-400/15 blur-[120px] dark:from-blue-600/20 dark:via-indigo-600/15 dark:to-cyan-500/20"
+        className="pointer-events-none absolute -top-40 left-1/2 -z-10 h-[450px] w-[800px] -translate-x-1/2 rounded-full bg-gradient-to-tr from-blue-500/15 via-indigo-500/10 to-cyan-400/15 blur-[120px] sm:h-[550px] sm:w-[1000px] xl:h-[700px] xl:w-[1300px] 2xl:h-[850px] 2xl:w-[1600px] dark:from-blue-600/20 dark:via-indigo-600/15 dark:to-cyan-500/20"
         aria-hidden="true"
       />
       <div
-        className="pointer-events-none absolute top-1/2 -right-40 -z-10 h-[350px] w-[450px] xl:h-[500px] xl:w-[650px] 2xl:h-[650px] 2xl:w-[850px] rounded-full bg-gradient-to-b from-purple-500/10 via-pink-500/5 to-transparent blur-[100px]"
+        className="pointer-events-none absolute top-1/2 -right-40 -z-10 h-[350px] w-[450px] rounded-full bg-gradient-to-b from-purple-500/10 via-pink-500/5 to-transparent blur-[100px] xl:h-[500px] xl:w-[650px] 2xl:h-[650px] 2xl:w-[850px]"
         aria-hidden="true"
       />
 
@@ -686,27 +694,29 @@ export const FAQSection: React.FC = () => {
 
       <Container size="lg">
         {/* Section Header */}
-        <div className="mx-auto max-w-3xl xl:max-w-4xl text-center">
+        <div className="mx-auto max-w-3xl text-center xl:max-w-4xl">
           {/* Iridescent Gradient Pill Badge */}
-          <div className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full p-[1px] shadow-lg shadow-blue-500/10 transition-transform duration-300 hover:scale-105 max-w-full">
-            <span className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-500 animate-gradient-x" />
-            <div className="relative flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/90 px-3 sm:px-4 py-1 sm:py-1.5 text-[10px] min-[360px]:text-xs font-semibold text-neutral-800 backdrop-blur-xl dark:bg-neutral-900/90 dark:text-neutral-200 max-w-full">
+          <div className="group relative inline-flex max-w-full items-center gap-2 overflow-hidden rounded-full p-[1px] shadow-lg shadow-blue-500/10 transition-transform duration-300 hover:scale-105">
+            <span className="animate-gradient-x absolute inset-0 bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-500" />
+            <div className="relative flex max-w-full items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 text-[10px] font-semibold text-neutral-800 backdrop-blur-xl min-[360px]:text-xs sm:gap-2 sm:px-4 sm:py-1.5 dark:bg-neutral-900/90 dark:text-neutral-200">
               <span className="relative flex h-2 w-2 shrink-0">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
               </span>
-              <span className="tracking-normal sm:tracking-wide truncate">VERIFIED KNOWLEDGE BASE &bull; SPECIFICATIONS v2.4</span>
+              <span className="truncate tracking-normal sm:tracking-wide">
+                VERIFIED KNOWLEDGE BASE &bull; SPECIFICATIONS v2.4
+              </span>
             </div>
           </div>
 
-          <h2 className="mt-4 sm:mt-5 text-2xl min-[360px]:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-neutral-900 dark:text-white leading-tight">
+          <h2 className="mt-4 text-2xl leading-tight font-black tracking-tight text-neutral-900 min-[360px]:text-3xl sm:mt-5 sm:text-4xl md:text-5xl lg:text-6xl dark:text-white">
             Everything You Need to Know About{" "}
             <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 bg-clip-text text-transparent dark:from-blue-400 dark:via-indigo-300 dark:to-cyan-300">
               FlowPilot
             </span>
           </h2>
 
-          <p className="mt-3.5 sm:mt-5 text-sm sm:text-base md:text-lg leading-relaxed text-neutral-600 dark:text-neutral-400">
+          <p className="mt-3.5 text-sm leading-relaxed text-neutral-600 sm:mt-5 sm:text-base md:text-lg dark:text-neutral-400">
             Direct, verifiable answers regarding our operational architecture, tenant isolation,
             financial automation, and sandbox access.
           </p>
@@ -724,14 +734,14 @@ export const FAQSection: React.FC = () => {
             />
 
             {/* Inner Console Card */}
-            <div className="relative overflow-hidden rounded-3xl border border-neutral-200/80 bg-white/95 p-3.5 sm:p-5 shadow-xl backdrop-blur-2xl transition-all dark:border-neutral-800 dark:bg-neutral-950/90">
+            <div className="relative overflow-hidden rounded-3xl border border-neutral-200/80 bg-white/95 p-3.5 shadow-xl backdrop-blur-2xl transition-all sm:p-5 dark:border-neutral-800 dark:bg-neutral-950/90">
               {/* Telemetry Status Bar */}
-              <div className="flex flex-wrap items-center justify-between gap-1.5 border-b border-neutral-200/70 pb-2.5 sm:pb-3 text-[10px] sm:text-[11px] dark:border-neutral-800">
-                <div className="flex min-w-0 items-center gap-1.5 sm:gap-2 font-mono font-semibold">
-                  <span className="flex h-2 w-2 items-center justify-center shrink-0">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <div className="flex flex-wrap items-center justify-between gap-1.5 border-b border-neutral-200/70 pb-2.5 text-[10px] sm:pb-3 sm:text-[11px] dark:border-neutral-800">
+                <div className="flex min-w-0 items-center gap-1.5 font-mono font-semibold sm:gap-2">
+                  <span className="flex h-2 w-2 shrink-0 items-center justify-center">
+                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
                   </span>
-                  <span className="text-neutral-900 dark:text-neutral-100 truncate">
+                  <span className="truncate text-neutral-900 dark:text-neutral-100">
                     KNOWLEDGE BASE KERNEL
                   </span>
                   <span className="hidden text-neutral-400 sm:inline">&bull;</span>
@@ -741,7 +751,7 @@ export const FAQSection: React.FC = () => {
                 </div>
 
                 <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
-                  <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2 sm:px-2.5 py-0.5 font-mono text-[9px] sm:text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                  <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2 py-0.5 font-mono text-[9px] font-semibold text-emerald-600 sm:px-2.5 sm:text-[10px] dark:text-emerald-400">
                     ⚡ &lt;12ms Indexing
                   </span>
                   <span className="hidden rounded-full border border-neutral-200 bg-neutral-100 px-2 py-0.5 font-mono text-[10px] text-neutral-600 sm:inline dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-400">
@@ -751,11 +761,11 @@ export const FAQSection: React.FC = () => {
               </div>
 
               {/* Main Input Row */}
-              <div className="mt-3 sm:mt-3.5 flex items-center gap-2 sm:gap-3">
+              <div className="mt-3 flex items-center gap-2 sm:mt-3.5 sm:gap-3">
                 <label htmlFor="faq-search-input" className="sr-only">
                   Search frequently asked questions
                 </label>
-                <div className="flex h-9 w-9 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-500 text-white shadow-lg shadow-blue-500/25">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-500 text-white shadow-lg shadow-blue-500/25 sm:h-11 sm:w-11 sm:rounded-2xl">
                   <Search className="h-3.5 w-3.5 sm:h-5 sm:w-5" />
                 </div>
                 <input
@@ -766,7 +776,7 @@ export const FAQSection: React.FC = () => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search architecture, RBAC, or billing..."
                   aria-label="Search frequently asked questions"
-                  className="w-full bg-transparent text-xs sm:text-sm md:text-base font-semibold text-neutral-900 placeholder:font-normal placeholder:text-neutral-400 focus:outline-hidden dark:text-neutral-100 dark:placeholder:text-neutral-500"
+                  className="w-full bg-transparent text-xs font-semibold text-neutral-900 placeholder:font-normal placeholder:text-neutral-400 focus:outline-hidden sm:text-sm md:text-base dark:text-neutral-100 dark:placeholder:text-neutral-500"
                 />
 
                 {searchQuery && (
@@ -794,9 +804,9 @@ export const FAQSection: React.FC = () => {
               </div>
 
               {/* Categorized Cyber Prompt Chips */}
-              <div className="mt-3.5 sm:mt-4 flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1.5 scrollbar-none flex-nowrap sm:flex-wrap border-t border-neutral-200/70 pt-2.5 sm:pt-3 text-xs dark:border-neutral-800">
+              <div className="mt-3.5 flex scrollbar-none flex-nowrap items-center gap-1.5 overflow-x-auto border-t border-neutral-200/70 pt-2.5 pb-1.5 text-xs sm:mt-4 sm:flex-wrap sm:gap-2 sm:pt-3 dark:border-neutral-800">
                 <span className="flex shrink-0 items-center gap-1 font-mono text-[11px] font-bold text-neutral-500 uppercase dark:text-neutral-400">
-                  <Activity className="h-3 w-3 text-blue-500 animate-pulse" />
+                  <Activity className="h-3 w-3 animate-pulse text-blue-500" />
                   <span>Popular:</span>
                 </span>
                 {quickQueries.map((item) => {
@@ -831,13 +841,13 @@ export const FAQSection: React.FC = () => {
         {/* ========================================================================= */}
         {/* FLUID CATEGORY PILL NAVIGATION & DUAL VIEW CONTROLS */}
         {/* ========================================================================= */}
-        <div className="mx-auto mt-10 flex w-full max-w-6xl xl:max-w-7xl 2xl:max-w-[1400px] flex-col items-center justify-between gap-4 sm:mt-12 xl:flex-row">
+        <div className="mx-auto mt-10 flex w-full max-w-6xl flex-col items-center justify-between gap-4 sm:mt-12 xl:max-w-7xl xl:flex-row 2xl:max-w-[1400px]">
           {/* Framer Motion Sliding Pill Navigation Bar - Smooth horizontal swipe on mobile, centered/inline on desktop */}
-          <div className="relative w-full xl:w-auto overflow-hidden rounded-2xl p-0.5">
+          <div className="relative w-full overflow-hidden rounded-2xl p-0.5 xl:w-auto">
             <div
               role="tablist"
               aria-label="FAQ category filters"
-              className="relative flex w-full xl:w-auto items-center justify-start sm:justify-center gap-1 sm:gap-1.5 overflow-x-auto scrollbar-none rounded-2xl border border-neutral-200/80 bg-neutral-200/50 p-1.5 shadow-inner backdrop-blur-xl dark:border-neutral-800 dark:bg-neutral-900/60"
+              className="relative flex w-full scrollbar-none items-center justify-start gap-1 overflow-x-auto rounded-2xl border border-neutral-200/80 bg-neutral-200/50 p-1.5 shadow-inner backdrop-blur-xl sm:justify-center sm:gap-1.5 xl:w-auto dark:border-neutral-800 dark:bg-neutral-900/60"
             >
               {categoryPills.map((tab, idx) => {
                 const Icon = tab.icon;
@@ -883,7 +893,7 @@ export const FAQSection: React.FC = () => {
                       <span className="sm:hidden">{tab.shortLabel}</span>
                       <span
                         className={cn(
-                          "rounded-full px-1.5 py-0.2 font-mono text-[10px] transition-colors sm:px-2 sm:py-0.5",
+                          "py-0.2 rounded-full px-1.5 font-mono text-[10px] transition-colors sm:px-2 sm:py-0.5",
                           isSelected
                             ? "bg-white/20 font-black text-white"
                             : "bg-neutral-300/70 font-semibold text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
@@ -899,13 +909,13 @@ export const FAQSection: React.FC = () => {
           </div>
 
           {/* Dual Expand/Collapse Capsule Controls */}
-          <div className="flex w-full sm:w-auto items-center justify-center gap-1.5 rounded-2xl border border-neutral-200/80 bg-neutral-200/50 p-1 sm:p-1.5 shadow-inner backdrop-blur-xl dark:border-neutral-800 dark:bg-neutral-900/60">
+          <div className="flex w-full items-center justify-center gap-1.5 rounded-2xl border border-neutral-200/80 bg-neutral-200/50 p-1 shadow-inner backdrop-blur-xl sm:w-auto sm:p-1.5 dark:border-neutral-800 dark:bg-neutral-900/60">
             <button
               type="button"
               onClick={handleExpandAll}
               aria-label="Expand all FAQ items"
               className={cn(
-                "group flex flex-1 sm:flex-initial justify-center cursor-pointer items-center gap-1.5 rounded-xl px-2.5 sm:px-3 py-1.5 text-xs font-bold transition-all duration-150 active:scale-95",
+                "group flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs font-bold transition-all duration-150 active:scale-95 sm:flex-initial sm:px-3",
                 openIndices.size === filteredFaqs.length && filteredFaqs.length > 0
                   ? "bg-blue-600 text-white shadow-md shadow-blue-500/25"
                   : "bg-white text-neutral-800 shadow-xs hover:-translate-y-0.5 hover:shadow-md dark:bg-neutral-800 dark:text-neutral-200"
@@ -919,7 +929,7 @@ export const FAQSection: React.FC = () => {
               onClick={handleCollapseAll}
               aria-label="Collapse all FAQ items"
               className={cn(
-                "group flex flex-1 sm:flex-initial justify-center cursor-pointer items-center gap-1.5 rounded-xl px-2.5 sm:px-3 py-1.5 text-xs font-bold transition-all duration-150 active:scale-95",
+                "group flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs font-bold transition-all duration-150 active:scale-95 sm:flex-initial sm:px-3",
                 openIndices.size === 0
                   ? "bg-blue-600 text-white shadow-md shadow-blue-500/25"
                   : "bg-white text-neutral-800 shadow-xs hover:-translate-y-0.5 hover:shadow-md dark:bg-neutral-800 dark:text-neutral-200"
@@ -934,10 +944,10 @@ export const FAQSection: React.FC = () => {
         {/* ========================================================================= */}
         {/* MAIN COCKPIT: LEFT 3D SENTINEL & RIGHT SPATIAL ACCORDION SPEC CARDS */}
         {/* ========================================================================= */}
-        <div className="mx-auto mt-10 grid w-full max-w-6xl xl:max-w-7xl 2xl:max-w-[1400px] grid-cols-1 items-start gap-8 sm:mt-12 lg:grid-cols-12 xl:gap-8 2xl:gap-10">
+        <div className="mx-auto mt-10 grid w-full max-w-6xl grid-cols-1 items-start gap-8 sm:mt-12 lg:grid-cols-12 xl:max-w-7xl xl:gap-8 2xl:max-w-[1400px] 2xl:gap-10">
           {/* Left Column: Holographic Systems Sentinel & Live Architect Terminal */}
           {/* order-2 on mobile so FAQs appear first for mobile readers, order-1 on desktop with sticky positioning */}
-          <div className="order-2 space-y-6 lg:order-1 lg:col-span-5 xl:col-span-4 lg:sticky lg:top-28">
+          <div className="order-2 space-y-6 lg:sticky lg:top-28 lg:order-1 lg:col-span-5 xl:col-span-4">
             {/* Ambient Behind Glow for Sentinel */}
             <div className="relative">
               <div
@@ -949,23 +959,23 @@ export const FAQSection: React.FC = () => {
                 <div>
                   {/* Top Online Beacon HUD */}
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex items-center gap-2 min-w-0">
+                    <div className="flex min-w-0 items-center gap-2">
                       <span className="relative flex h-2.5 w-2.5 shrink-0">
                         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                         <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
                       </span>
-                      <span className="font-mono text-[11px] sm:text-xs font-extrabold tracking-wider text-neutral-900 uppercase dark:text-white truncate">
+                      <span className="truncate font-mono text-[11px] font-extrabold tracking-wider text-neutral-900 uppercase sm:text-xs dark:text-white">
                         Core System Sentinel
                       </span>
                     </div>
-                    <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 sm:px-2.5 py-0.5 font-mono text-[9px] sm:text-[10px] font-bold text-emerald-600 dark:text-emerald-400 shrink-0">
+                    <span className="shrink-0 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 font-mono text-[9px] font-bold text-emerald-600 sm:px-2.5 sm:text-[10px] dark:text-emerald-400">
                       HIGH AVAILABILITY
                     </span>
                   </div>
 
                   {/* Lead Architect Persona Badge */}
-                  <div className="relative mt-4 sm:mt-5 flex items-center gap-3 sm:gap-3.5 overflow-hidden rounded-2xl border border-neutral-200/80 bg-gradient-to-r from-neutral-100/90 to-neutral-50/50 p-2.5 sm:p-3.5 shadow-inner dark:border-neutral-800 dark:from-neutral-900/90 dark:to-neutral-900/50">
-                    <div className="relative h-10 w-10 sm:h-12 sm:w-12 shrink-0 overflow-hidden rounded-full border-2 border-cyan-500 shadow-md">
+                  <div className="relative mt-4 flex items-center gap-3 overflow-hidden rounded-2xl border border-neutral-200/80 bg-gradient-to-r from-neutral-100/90 to-neutral-50/50 p-2.5 shadow-inner sm:mt-5 sm:gap-3.5 sm:p-3.5 dark:border-neutral-800 dark:from-neutral-900/90 dark:to-neutral-900/50">
+                    <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border-2 border-cyan-500 shadow-md sm:h-12 sm:w-12">
                       <Image
                         src="/images/homepage/architect-lead.jpg"
                         alt="David Sterling, Lead Systems Architect"
@@ -973,19 +983,19 @@ export const FAQSection: React.FC = () => {
                         height={48}
                         className="h-full w-full object-cover"
                       />
-                      <span className="absolute right-0 bottom-0 h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full border-2 border-white bg-emerald-500 dark:border-neutral-900" />
+                      <span className="absolute right-0 bottom-0 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-500 sm:h-3 sm:w-3 dark:border-neutral-900" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h4 className="text-xs sm:text-sm font-bold text-neutral-900 dark:text-white truncate">
+                      <h4 className="truncate text-xs font-bold text-neutral-900 sm:text-sm dark:text-white">
                         David Sterling
                       </h4>
-                      <p className="font-mono text-[10px] min-[360px]:text-[11px] text-neutral-500 dark:text-neutral-400 truncate">
+                      <p className="truncate font-mono text-[10px] text-neutral-500 min-[360px]:text-[11px] dark:text-neutral-400">
                         Lead Systems Architect &bull; Multi-Tenant Core
                       </p>
                     </div>
                   </div>
 
-                  <h3 className="mt-4 sm:mt-5 text-sm sm:text-base font-extrabold text-neutral-900 dark:text-white">
+                  <h3 className="mt-4 text-sm font-extrabold text-neutral-900 sm:mt-5 sm:text-base dark:text-white">
                     Autonomous Architecture Knowledge Engine
                   </h3>
                   <p className="mt-1.5 text-xs leading-relaxed text-neutral-600 dark:text-neutral-400">
@@ -994,52 +1004,58 @@ export const FAQSection: React.FC = () => {
                   </p>
 
                   {/* Live Security & Architectural Monitors */}
-                  <div className="mt-4 sm:mt-5 space-y-2 border-t border-neutral-200/70 pt-3.5 sm:pt-4 text-xs dark:border-neutral-800">
-                    <div className="flex items-center justify-between gap-2 rounded-xl border border-neutral-200/80 bg-neutral-100/50 p-2 sm:p-2.5 transition-all duration-200 hover:border-cyan-500/40 hover:bg-neutral-100 dark:border-neutral-800/80 dark:bg-neutral-900/50 dark:hover:border-cyan-400/40">
+                  <div className="mt-4 space-y-2 border-t border-neutral-200/70 pt-3.5 text-xs sm:mt-5 sm:pt-4 dark:border-neutral-800">
+                    <div className="flex items-center justify-between gap-2 rounded-xl border border-neutral-200/80 bg-neutral-100/50 p-2 transition-all duration-200 hover:border-cyan-500/40 hover:bg-neutral-100 sm:p-2.5 dark:border-neutral-800/80 dark:bg-neutral-900/50 dark:hover:border-cyan-400/40">
                       <span className="flex min-w-0 items-center gap-2 font-medium text-neutral-900 dark:text-neutral-200">
-                        <div className="flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-600 shadow-xs dark:text-cyan-400">
+                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-600 shadow-xs sm:h-7 sm:w-7 dark:text-cyan-400">
                           <Database className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                         </div>
-                        <span className="truncate text-[11px] sm:text-xs">Server-Side Organization Scoping</span>
+                        <span className="truncate text-[11px] sm:text-xs">
+                          Server-Side Organization Scoping
+                        </span>
                       </span>
-                      <span className="shrink-0 rounded-full bg-emerald-500/10 px-2 py-0.5 font-mono text-[9px] sm:text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                      <span className="shrink-0 rounded-full bg-emerald-500/10 px-2 py-0.5 font-mono text-[9px] font-bold text-emerald-600 sm:text-[10px] dark:text-emerald-400">
                         Enforced
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between gap-2 rounded-xl border border-neutral-200/80 bg-neutral-100/50 p-2 sm:p-2.5 transition-all duration-200 hover:border-purple-500/40 hover:bg-neutral-100 dark:border-neutral-800/80 dark:bg-neutral-900/50 dark:hover:border-purple-400/40">
+                    <div className="flex items-center justify-between gap-2 rounded-xl border border-neutral-200/80 bg-neutral-100/50 p-2 transition-all duration-200 hover:border-purple-500/40 hover:bg-neutral-100 sm:p-2.5 dark:border-neutral-800/80 dark:bg-neutral-900/50 dark:hover:border-purple-400/40">
                       <span className="flex min-w-0 items-center gap-2 font-medium text-neutral-900 dark:text-neutral-200">
-                        <div className="flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-lg bg-purple-500/10 text-purple-600 shadow-xs dark:text-purple-400">
+                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-purple-500/10 text-purple-600 shadow-xs sm:h-7 sm:w-7 dark:text-purple-400">
                           <Lock className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                         </div>
-                        <span className="truncate text-[11px] sm:text-xs">RBAC Route &amp; Mutation Guard</span>
+                        <span className="truncate text-[11px] sm:text-xs">
+                          RBAC Route &amp; Mutation Guard
+                        </span>
                       </span>
-                      <span className="shrink-0 rounded-full bg-emerald-500/10 px-2 py-0.5 font-mono text-[9px] sm:text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                      <span className="shrink-0 rounded-full bg-emerald-500/10 px-2 py-0.5 font-mono text-[9px] font-bold text-emerald-600 sm:text-[10px] dark:text-emerald-400">
                         Enforced
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between gap-2 rounded-xl border border-neutral-200/80 bg-neutral-100/50 p-2 sm:p-2.5 transition-all duration-200 hover:border-blue-500/40 hover:bg-neutral-100 dark:border-neutral-800/80 dark:bg-neutral-900/50 dark:hover:border-blue-400/40">
+                    <div className="flex items-center justify-between gap-2 rounded-xl border border-neutral-200/80 bg-neutral-100/50 p-2 transition-all duration-200 hover:border-blue-500/40 hover:bg-neutral-100 sm:p-2.5 dark:border-neutral-800/80 dark:bg-neutral-900/50 dark:hover:border-blue-400/40">
                       <span className="flex min-w-0 items-center gap-2 font-medium text-neutral-900 dark:text-neutral-200">
-                        <div className="flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-lg bg-blue-500/10 text-blue-600 shadow-xs dark:text-blue-400">
+                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-blue-500/10 text-blue-600 shadow-xs sm:h-7 sm:w-7 dark:text-blue-400">
                           <ShieldCheck className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                         </div>
-                        <span className="truncate text-[11px] sm:text-xs">Runtime Zod Contract Validation</span>
+                        <span className="truncate text-[11px] sm:text-xs">
+                          Runtime Zod Contract Validation
+                        </span>
                       </span>
-                      <span className="shrink-0 rounded-full bg-emerald-500/10 px-2 py-0.5 font-mono text-[9px] sm:text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                      <span className="shrink-0 rounded-full bg-emerald-500/10 px-2 py-0.5 font-mono text-[9px] font-bold text-emerald-600 sm:text-[10px] dark:text-emerald-400">
                         Enforced
                       </span>
                     </div>
                   </div>
 
                   {/* Interactive Instant Architect Inquiries Terminal */}
-                  <div className="mt-5 sm:mt-6 border-t border-neutral-200/70 pt-4 sm:pt-5 dark:border-neutral-800">
+                  <div className="mt-5 border-t border-neutral-200/70 pt-4 sm:mt-6 sm:pt-5 dark:border-neutral-800">
                     <div className="flex flex-wrap items-center justify-between gap-1.5">
                       <span className="flex items-center gap-1.5 text-xs font-extrabold text-neutral-900 dark:text-white">
-                        <Terminal className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-cyan-500 shrink-0" />
+                        <Terminal className="h-3.5 w-3.5 shrink-0 text-cyan-500 sm:h-4 sm:w-4" />
                         <span>Instant Architecture Inquiries:</span>
                       </span>
-                      <span className="font-mono text-[9.5px] sm:text-[10px] font-semibold text-cyan-600 dark:text-cyan-400">
+                      <span className="font-mono text-[9.5px] font-semibold text-cyan-600 sm:text-[10px] dark:text-cyan-400">
                         Click to query
                       </span>
                     </div>
@@ -1050,10 +1066,10 @@ export const FAQSection: React.FC = () => {
                           key={idx}
                           type="button"
                           onClick={() => handleTriggerArchitect(prompt)}
-                          className="group w-full cursor-pointer rounded-xl border border-neutral-200/80 bg-white/70 p-2 sm:p-2.5 text-left text-[11.5px] sm:text-xs font-semibold text-neutral-800 shadow-xs transition-all duration-150 hover:-translate-x-1 hover:border-cyan-500/40 hover:bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900/60 dark:text-neutral-200 dark:hover:bg-neutral-800/80"
+                          className="group w-full cursor-pointer rounded-xl border border-neutral-200/80 bg-white/70 p-2 text-left text-[11.5px] font-semibold text-neutral-800 shadow-xs transition-all duration-150 hover:-translate-x-1 hover:border-cyan-500/40 hover:bg-neutral-50 sm:p-2.5 sm:text-xs dark:border-neutral-800 dark:bg-neutral-900/60 dark:text-neutral-200 dark:hover:bg-neutral-800/80"
                         >
                           <div className="flex items-start gap-1.5">
-                            <span className="text-cyan-500 transition-transform group-hover:scale-125 shrink-0 mt-0.5">
+                            <span className="mt-0.5 shrink-0 text-cyan-500 transition-transform group-hover:scale-125">
                               ⚡
                             </span>
                             <span className="leading-snug">{prompt.q}</span>
@@ -1064,7 +1080,7 @@ export const FAQSection: React.FC = () => {
 
                     {/* Typing simulation console */}
                     {isTypingArchitect && (
-                      <div className="mt-3 animate-pulse rounded-xl border border-cyan-500/30 bg-cyan-500/10 p-2.5 sm:p-3 font-mono text-[11px] sm:text-xs text-cyan-700 dark:text-cyan-300">
+                      <div className="mt-3 animate-pulse rounded-xl border border-cyan-500/30 bg-cyan-500/10 p-2.5 font-mono text-[11px] text-cyan-700 sm:p-3 sm:text-xs dark:text-cyan-300">
                         &gt; [KERNEL_SOCKET] Fetching cryptographic architecture RFC spec...
                       </div>
                     )}
@@ -1073,18 +1089,18 @@ export const FAQSection: React.FC = () => {
                       <motion.div
                         initial={shouldReduceMotion ? false : { opacity: 0, y: 6 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="relative mt-3 overflow-hidden rounded-2xl border border-cyan-500/40 bg-neutral-950 p-3 sm:p-3.5 font-mono text-xs text-neutral-200 shadow-2xl"
+                        className="relative mt-3 overflow-hidden rounded-2xl border border-cyan-500/40 bg-neutral-950 p-3 font-mono text-xs text-neutral-200 shadow-2xl sm:p-3.5"
                       >
                         <div className="flex flex-wrap items-center justify-between gap-1.5 border-b border-neutral-800 pb-2 text-[10px]">
-                          <span className="flex items-center gap-1 font-bold text-emerald-400 shrink-0">
+                          <span className="flex shrink-0 items-center gap-1 font-bold text-emerald-400">
                             <CheckCircle2 className="h-3.5 w-3.5" />
                             <span>Verified Specification</span>
                           </span>
-                          <span className="text-neutral-500 font-mono text-[9px] sm:text-[10px] truncate max-w-full">
+                          <span className="max-w-full truncate font-mono text-[9px] text-neutral-500 sm:text-[10px]">
                             {activeArchitectAnswer.hash}
                           </span>
                         </div>
-                        <div className="mt-2 text-[10.5px] sm:text-[11px] leading-relaxed text-slate-300 break-words">
+                        <div className="mt-2 text-[10.5px] leading-relaxed break-words text-slate-300 sm:text-[11px]">
                           {activeArchitectAnswer.a}
                         </div>
                       </motion.div>
@@ -1093,22 +1109,22 @@ export const FAQSection: React.FC = () => {
                 </div>
 
                 {/* 1-Click Action Buttons */}
-                <div className="mt-5 sm:mt-6 flex flex-col gap-2.5 border-t border-neutral-200/70 pt-4 dark:border-neutral-800">
+                <div className="mt-5 flex flex-col gap-2.5 border-t border-neutral-200/70 pt-4 sm:mt-6 dark:border-neutral-800">
                   <Button
                     type="button"
                     onClick={handleCopySpec}
                     variant="outline"
                     size="sm"
-                    className="w-full cursor-pointer gap-2 border-neutral-300 bg-neutral-100 text-[11.5px] sm:text-xs font-bold text-neutral-800 shadow-xs transition-all hover:bg-neutral-200 active:scale-95 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700 py-2 sm:py-2.5"
+                    className="w-full cursor-pointer gap-2 border-neutral-300 bg-neutral-100 py-2 text-[11.5px] font-bold text-neutral-800 shadow-xs transition-all hover:bg-neutral-200 active:scale-95 sm:py-2.5 sm:text-xs dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700"
                   >
                     {copiedSpec ? (
                       <>
-                        <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-600 dark:text-emerald-400" />
+                        <Check className="h-3.5 w-3.5 text-emerald-600 sm:h-4 sm:w-4 dark:text-emerald-400" />
                         <span className="truncate">Copied RFC Spec to Clipboard!</span>
                       </>
                     ) : (
                       <>
-                        <Copy className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-neutral-500" />
+                        <Copy className="h-3.5 w-3.5 text-neutral-500 sm:h-4 sm:w-4" />
                         <span className="truncate">Copy Architectural RFC-089</span>
                       </>
                     )}
@@ -1116,9 +1132,9 @@ export const FAQSection: React.FC = () => {
 
                   <Link
                     href="/dashboard"
-                    className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 px-3 sm:px-4 py-2 sm:py-2.5 text-[11.5px] sm:text-xs font-bold text-white shadow-lg shadow-blue-500/25 transition-all hover:from-blue-500 hover:to-cyan-400 hover:shadow-xl active:scale-95 text-center"
+                    className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 px-3 py-2 text-center text-[11.5px] font-bold text-white shadow-lg shadow-blue-500/25 transition-all hover:from-blue-500 hover:to-cyan-400 hover:shadow-xl active:scale-95 sm:px-4 sm:py-2.5 sm:text-xs"
                   >
-                    <Laptop className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
+                    <Laptop className="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" />
                     <span className="truncate">Launch Live Interactive Sandbox</span>
                     <ArrowRight className="h-3.5 w-3.5 shrink-0" />
                   </Link>
@@ -1129,9 +1145,12 @@ export const FAQSection: React.FC = () => {
 
           {/* Right Column: Spatial Accordion Question Cards */}
           {/* order-1 on mobile so questions appear first */}
-          <div id="faq-accordion-list" className="order-1 space-y-4 lg:order-2 lg:col-span-7 xl:col-span-8">
+          <div
+            id="faq-accordion-list"
+            className="order-1 space-y-4 lg:order-2 lg:col-span-7 xl:col-span-8"
+          >
             {filteredFaqs.length === 0 ? (
-              <div className="rounded-3xl border border-dashed border-neutral-300 bg-white/50 p-6 sm:p-10 text-center backdrop-blur-xl dark:border-neutral-700 dark:bg-neutral-900/50">
+              <div className="rounded-3xl border border-dashed border-neutral-300 bg-white/50 p-6 text-center backdrop-blur-xl sm:p-10 dark:border-neutral-700 dark:bg-neutral-900/50">
                 <HelpCircle className="mx-auto h-12 w-12 text-neutral-400" />
                 <h4 className="mt-4 text-base font-bold text-neutral-900 dark:text-white">
                   No Direct Specifications Found
@@ -1179,7 +1198,9 @@ export const FAQSection: React.FC = () => {
                       className={cn(
                         "absolute top-0 bottom-0 left-0 w-[4px] rounded-l-2xl bg-gradient-to-b transition-all duration-300",
                         faq.stripeGradient,
-                        isOpen ? "opacity-100 shadow-[0_0_12px_rgba(59,130,246,0.6)]" : "opacity-40 group-hover:opacity-100"
+                        isOpen
+                          ? "opacity-100 shadow-[0_0_12px_rgba(59,130,246,0.6)]"
+                          : "opacity-40 group-hover:opacity-100"
                       )}
                       aria-hidden="true"
                     />
@@ -1199,25 +1220,25 @@ export const FAQSection: React.FC = () => {
                       onClick={() => toggleItem(index)}
                       className="group focus-visible:ring-foreground/20 flex w-full cursor-pointer items-start justify-between gap-2.5 p-3.5 text-left focus-visible:ring-2 focus-visible:outline-hidden sm:gap-4 sm:p-5 md:p-6"
                     >
-                      <div className="min-w-0 flex-1 space-y-2 sm:space-y-2.5 pr-1 pl-1 sm:pr-2 sm:pl-2">
+                      <div className="min-w-0 flex-1 space-y-2 pr-1 pl-1 sm:space-y-2.5 sm:pr-2 sm:pl-2">
                         <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                           <span
                             className={cn(
-                              "inline-flex items-center gap-1 sm:gap-1.5 rounded-lg border px-2 sm:px-2.5 py-0.5 text-[9.5px] sm:text-[10px] font-bold tracking-wider uppercase shadow-2xs",
+                              "inline-flex items-center gap-1 rounded-lg border px-2 py-0.5 text-[9.5px] font-bold tracking-wider uppercase shadow-2xs sm:gap-1.5 sm:px-2.5 sm:text-[10px]",
                               faq.badgeStyle
                             )}
                           >
                             <TopicIcon className="h-3 w-3 shrink-0" />
                             <span className="truncate">{faq.categoryLabel}</span>
                           </span>
-                          <span className="rounded-md border border-neutral-200 bg-neutral-100 px-1.5 sm:px-2 py-0.5 font-mono text-[9.5px] sm:text-[10px] font-semibold text-neutral-600 dark:border-neutral-800 dark:bg-neutral-800/60 dark:text-neutral-400 shrink-0">
+                          <span className="shrink-0 rounded-md border border-neutral-200 bg-neutral-100 px-1.5 py-0.5 font-mono text-[9.5px] font-semibold text-neutral-600 sm:px-2 sm:text-[10px] dark:border-neutral-800 dark:bg-neutral-800/60 dark:text-neutral-400">
                             SPEC-0{index + 1}
                           </span>
                         </div>
 
                         <h3
                           className={cn(
-                            "text-sm min-[360px]:text-[15px] sm:text-lg leading-snug font-extrabold transition-colors break-words",
+                            "text-sm leading-snug font-extrabold break-words transition-colors min-[360px]:text-[15px] sm:text-lg",
                             isOpen
                               ? "text-blue-600 dark:text-blue-400"
                               : "text-neutral-900 group-hover:text-blue-600 dark:text-neutral-100 dark:group-hover:text-blue-400"
@@ -1230,7 +1251,7 @@ export const FAQSection: React.FC = () => {
                       {/* 3D Action Chevron Button */}
                       <div
                         className={cn(
-                          "flex h-7 w-7 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-xl border transition-all duration-300 mt-0.5",
+                          "mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border transition-all duration-300 sm:h-9 sm:w-9",
                           isOpen
                             ? "border-blue-500 bg-blue-600 text-white shadow-lg shadow-blue-500/30"
                             : "border-neutral-200 bg-neutral-100 text-neutral-500 group-hover:border-neutral-300 group-hover:bg-neutral-200 group-hover:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-800 dark:text-neutral-400 dark:group-hover:bg-neutral-700 dark:group-hover:text-white"
@@ -1238,7 +1259,7 @@ export const FAQSection: React.FC = () => {
                       >
                         <ChevronDown
                           className={cn(
-                            "h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-300",
+                            "h-3.5 w-3.5 transition-transform duration-300 sm:h-4 sm:w-4",
                             isOpen && "rotate-180",
                             shouldReduceMotion && "transition-none"
                           )}
@@ -1254,49 +1275,58 @@ export const FAQSection: React.FC = () => {
                           role="region"
                           aria-labelledby={headingId}
                           initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
-                          animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, height: "auto" }}
+                          animate={
+                            shouldReduceMotion ? { opacity: 1 } : { opacity: 1, height: "auto" }
+                          }
                           exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
                           transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
                         >
-                          <div className="border-t border-neutral-200/80 px-3.5 pt-3 pb-4.5 pl-4 sm:px-6 sm:pl-8 sm:pt-4 sm:pb-6 dark:border-neutral-800">
+                          <div className="border-t border-neutral-200/80 px-3.5 pt-3 pb-4.5 pl-4 sm:px-6 sm:pt-4 sm:pb-6 sm:pl-8 dark:border-neutral-800">
                             {/* Answer Body */}
-                            <p className="text-xs min-[360px]:text-sm sm:text-base leading-relaxed text-neutral-700 dark:text-neutral-300 break-words">
+                            <p className="text-xs leading-relaxed break-words text-neutral-700 min-[360px]:text-sm sm:text-base dark:text-neutral-300">
                               <HighlightedText text={faq.answer} query={searchQuery} />
                             </p>
 
                             {/* Verified Architectural Rule Callout Window (macOS Terminal Style) */}
-                            <div className="relative mt-3.5 sm:mt-5 overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-950 p-3 sm:p-4.5 text-neutral-200 shadow-2xl">
+                            <div className="relative mt-3.5 overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-950 p-3 text-neutral-200 shadow-2xl sm:mt-5 sm:p-4.5">
                               {/* macOS Window Top Bar */}
                               <div className="flex items-center justify-between gap-2 border-b border-neutral-800 pb-2 sm:pb-3">
-                                <div className="flex min-w-0 items-center gap-1.5 sm:gap-2" aria-hidden="true">
-                                  <span className="h-2 w-2 sm:h-3 sm:w-3 rounded-full bg-[#ff5f56] shadow-xs shrink-0" />
-                                  <span className="h-2 w-2 sm:h-3 sm:w-3 rounded-full bg-[#ffbd2e] shadow-xs shrink-0" />
-                                  <span className="h-2 w-2 sm:h-3 sm:w-3 rounded-full bg-[#27c93f] shadow-xs shrink-0" />
-                                  <span className="ml-1 sm:ml-2 font-mono text-[9px] sm:text-[10px] font-bold text-neutral-400 truncate">
-                                    <span className="hidden sm:inline">RULE BLUEPRINT &bull; {faq.proofBadge}</span>
+                                <div
+                                  className="flex min-w-0 items-center gap-1.5 sm:gap-2"
+                                  aria-hidden="true"
+                                >
+                                  <span className="h-2 w-2 shrink-0 rounded-full bg-[#ff5f56] shadow-xs sm:h-3 sm:w-3" />
+                                  <span className="h-2 w-2 shrink-0 rounded-full bg-[#ffbd2e] shadow-xs sm:h-3 sm:w-3" />
+                                  <span className="h-2 w-2 shrink-0 rounded-full bg-[#27c93f] shadow-xs sm:h-3 sm:w-3" />
+                                  <span className="ml-1 truncate font-mono text-[9px] font-bold text-neutral-400 sm:ml-2 sm:text-[10px]">
+                                    <span className="hidden sm:inline">
+                                      RULE BLUEPRINT &bull; {faq.proofBadge}
+                                    </span>
                                     <span className="sm:hidden">{faq.proofBadge}</span>
                                   </span>
                                 </div>
-                                <span className="flex shrink-0 items-center gap-1 font-mono text-[9.5px] sm:text-[11px] font-bold text-emerald-400">
+                                <span className="flex shrink-0 items-center gap-1 font-mono text-[9.5px] font-bold text-emerald-400 sm:text-[11px]">
                                   <Check className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                                   <span className="hidden sm:inline">VERIFIED SPEC</span>
                                   <span className="sm:hidden">VERIFIED</span>
                                 </span>
                               </div>
 
-                              <div className="mt-2.5 sm:mt-3.5 text-[11.5px] sm:text-xs font-bold text-white">
+                              <div className="mt-2.5 text-[11.5px] font-bold text-white sm:mt-3.5 sm:text-xs">
                                 {faq.proofTitle}
                               </div>
-                              <div className="mt-1 text-[11px] sm:text-xs leading-relaxed text-neutral-400 break-words">
+                              <div className="mt-1 text-[11px] leading-relaxed break-words text-neutral-400 sm:text-xs">
                                 {faq.proofDetail}
                               </div>
 
                               {/* Code Snippet Box with Syntax Highlighting & Simulation Trigger */}
                               {faq.codeSnippet && (
-                                <div className="relative mt-3 sm:mt-3.5 overflow-hidden rounded-xl border border-neutral-800/90 bg-neutral-900/90 p-2.5 sm:p-3.5">
+                                <div className="relative mt-3 overflow-hidden rounded-xl border border-neutral-800/90 bg-neutral-900/90 p-2.5 sm:mt-3.5 sm:p-3.5">
                                   <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-800 pb-2">
-                                    <span className="min-w-0 font-mono text-[9px] sm:text-[10px] font-bold tracking-wider text-cyan-400 uppercase truncate">
-                                      <span className="hidden min-[420px]:inline">SERVER-SIDE CONSTRAINT (TS/PRISMA):</span>
+                                    <span className="min-w-0 truncate font-mono text-[9px] font-bold tracking-wider text-cyan-400 uppercase sm:text-[10px]">
+                                      <span className="hidden min-[420px]:inline">
+                                        SERVER-SIDE CONSTRAINT (TS/PRISMA):
+                                      </span>
                                       <span className="min-[420px]:hidden">CONSTRAINT (TS):</span>
                                     </span>
                                     <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
@@ -1309,9 +1339,9 @@ export const FAQSection: React.FC = () => {
                                               ? "Hide architecture simulation"
                                               : "Run architecture simulation"
                                           }
-                                          className="flex cursor-pointer items-center gap-1 sm:gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-2 sm:px-2.5 py-1 font-mono text-[9.5px] sm:text-[10px] font-bold text-emerald-400 transition-all hover:bg-emerald-500/20 active:scale-95"
+                                          className="flex cursor-pointer items-center gap-1 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-2 py-1 font-mono text-[9.5px] font-bold text-emerald-400 transition-all hover:bg-emerald-500/20 active:scale-95 sm:gap-1.5 sm:px-2.5 sm:text-[10px]"
                                         >
-                                          <Play className="h-2.5 w-2.5 sm:h-3 sm:w-3 fill-current" />
+                                          <Play className="h-2.5 w-2.5 fill-current sm:h-3 sm:w-3" />
                                           <span>{isSimulating ? "Hide Test" : "Run Test"}</span>
                                         </button>
                                       )}
@@ -1329,7 +1359,7 @@ export const FAQSection: React.FC = () => {
                                         title="Copy code snippet"
                                       >
                                         {copiedSnippetId === faq.id ? (
-                                          <Check className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-emerald-400" />
+                                          <Check className="h-3 w-3 text-emerald-400 sm:h-3.5 sm:w-3.5" />
                                         ) : (
                                           <Copy className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                                         )}
@@ -1337,7 +1367,7 @@ export const FAQSection: React.FC = () => {
                                     </div>
                                   </div>
 
-                                  <div className="pt-2 sm:pt-2.5 overflow-x-auto max-w-full">
+                                  <div className="max-w-full overflow-x-auto pt-2 sm:pt-2.5">
                                     <SyntaxCodeBlock code={faq.codeSnippet} />
                                   </div>
 
@@ -1345,19 +1375,21 @@ export const FAQSection: React.FC = () => {
                                   <AnimatePresence>
                                     {isSimulating && faq.simulationOutput && (
                                       <motion.div
-                                        initial={shouldReduceMotion ? false : { opacity: 0, height: 0 }}
+                                        initial={
+                                          shouldReduceMotion ? false : { opacity: 0, height: 0 }
+                                        }
                                         animate={{ opacity: 1, height: "auto" }}
                                         exit={{ opacity: 0, height: 0 }}
                                         transition={{ duration: 0.2 }}
-                                        className="mt-3 overflow-hidden rounded-xl border border-emerald-500/40 bg-emerald-950/40 p-2.5 sm:p-3 font-mono text-[9.5px] sm:text-[10px] text-emerald-400 shadow-inner"
+                                        className="mt-3 overflow-hidden rounded-xl border border-emerald-500/40 bg-emerald-950/40 p-2.5 font-mono text-[9.5px] text-emerald-400 shadow-inner sm:p-3 sm:text-[10px]"
                                       >
-                                        <div className="mb-1.5 flex flex-wrap items-center justify-between gap-1.5 border-b border-emerald-500/30 pb-1 text-[8.5px] sm:text-[9px] font-bold tracking-wider uppercase text-emerald-300">
+                                        <div className="mb-1.5 flex flex-wrap items-center justify-between gap-1.5 border-b border-emerald-500/30 pb-1 text-[8.5px] font-bold tracking-wider text-emerald-300 uppercase sm:text-[9px]">
                                           <span className="truncate">KERNEL SIMULATION</span>
-                                          <span className="rounded-full bg-emerald-500/20 px-2 py-0.5 text-emerald-300 shrink-0">
+                                          <span className="shrink-0 rounded-full bg-emerald-500/20 px-2 py-0.5 text-emerald-300">
                                             HTTP 200 OK (0.8ms)
                                           </span>
                                         </div>
-                                        <pre className="whitespace-pre-wrap sm:whitespace-pre overflow-x-auto max-w-full break-words font-mono text-[9.5px] sm:text-[10px] leading-relaxed">
+                                        <pre className="max-w-full overflow-x-auto font-mono text-[9.5px] leading-relaxed break-words whitespace-pre-wrap sm:text-[10px] sm:whitespace-pre">
                                           {faq.simulationOutput}
                                         </pre>
                                       </motion.div>
@@ -1368,10 +1400,10 @@ export const FAQSection: React.FC = () => {
 
                               {/* Action Link if applicable */}
                               {faq.actionLink && (
-                                <div className="mt-3.5 sm:mt-4 border-t border-neutral-800 pt-2.5 sm:pt-3">
+                                <div className="mt-3.5 border-t border-neutral-800 pt-2.5 sm:mt-4 sm:pt-3">
                                   <Link
                                     href={faq.actionLink.href}
-                                    className="inline-flex items-center gap-1.5 text-[11.5px] sm:text-xs font-bold text-cyan-400 hover:text-cyan-300 hover:underline"
+                                    className="inline-flex items-center gap-1.5 text-[11.5px] font-bold text-cyan-400 hover:text-cyan-300 hover:underline sm:text-xs"
                                   >
                                     <span>{faq.actionLink.label}</span>
                                     <ArrowRight className="h-3.5 w-3.5" />
@@ -1381,8 +1413,8 @@ export const FAQSection: React.FC = () => {
                             </div>
 
                             {/* Footer Action Bar: Helpful Counter & Feedback */}
-                            <div className="mt-4 sm:mt-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 sm:gap-3 border-t border-neutral-200/80 pt-3.5 sm:pt-4 text-xs dark:border-neutral-800">
-                              <span className="text-[11.5px] sm:text-xs font-medium text-neutral-500 dark:text-neutral-400">
+                            <div className="mt-4 flex flex-col items-start justify-between gap-2.5 border-t border-neutral-200/80 pt-3.5 text-xs sm:mt-5 sm:flex-row sm:items-center sm:gap-3 sm:pt-4 dark:border-neutral-800">
+                              <span className="text-[11.5px] font-medium text-neutral-500 sm:text-xs dark:text-neutral-400">
                                 Was this engineering explanation clear?
                               </span>
                               <button
@@ -1395,7 +1427,7 @@ export const FAQSection: React.FC = () => {
                                     : "Mark explanation as helpful"
                                 }
                                 className={cn(
-                                  "flex w-full sm:w-auto justify-center shrink-0 cursor-pointer items-center gap-1.5 rounded-xl border px-3 sm:px-3.5 py-1.5 text-xs font-bold transition-all duration-150 active:scale-95",
+                                  "flex w-full shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-bold transition-all duration-150 active:scale-95 sm:w-auto sm:px-3.5",
                                   isVoted
                                     ? "border-emerald-500/60 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
                                     : "border-neutral-300 bg-neutral-100/80 text-neutral-700 hover:border-neutral-400 hover:bg-neutral-200/70 dark:border-neutral-700 dark:bg-neutral-800/80 dark:text-neutral-300 dark:hover:bg-neutral-700"

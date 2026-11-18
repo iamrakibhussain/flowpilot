@@ -120,7 +120,7 @@ const StageCard: React.FC<StageCardProps> = ({
         transformStyle: "preserve-3d",
         transition: "transform 0.16s cubic-bezier(0.16, 1, 0.3, 1)",
       }}
-      className={`group focus-visible:ring-primary relative z-10 w-full cursor-pointer overflow-hidden rounded-2xl border p-3.5 sm:p-4.5 text-left select-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden ${
+      className={`group focus-visible:ring-primary relative z-10 w-full cursor-pointer overflow-hidden rounded-2xl border p-3.5 text-left select-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden sm:p-4.5 ${
         isActive
           ? `ring-primary/25 bg-white shadow-[0_12px_32px_-8px_rgba(0,0,0,0.12),inset_0_1px_0_rgba(255,255,255,0.9)] ring-1 dark:bg-gradient-to-b dark:from-[#0d172e] dark:to-[#070d1a] dark:shadow-[0_18px_40px_-10px_rgba(0,0,0,0.85),inset_0_1px_0_rgba(255,255,255,0.15)] ${currentAccent.border}`
           : "border-neutral-200/80 bg-white/70 hover:border-neutral-300 hover:bg-white/95 dark:border-white/10 dark:bg-neutral-900/60 dark:hover:border-white/20 dark:hover:bg-neutral-900/90"
@@ -530,7 +530,7 @@ export const WorkflowSection: React.FC = () => {
         <div className="mx-auto max-w-3xl text-center">
           {/* Aerospace Hardware-Grade Eyebrow Badge */}
           <div className="flex items-center justify-center">
-            <div className="inline-flex max-w-full flex-wrap items-center justify-center gap-1.5 sm:gap-2 rounded-full border border-neutral-200/90 bg-white/90 px-3 py-1 sm:px-4 sm:py-1.5 text-xs font-semibold text-neutral-800 shadow-[0_2px_10px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-md dark:border-white/15 dark:bg-neutral-900/90 dark:text-neutral-200 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_16px_rgba(0,0,0,0.5)]">
+            <div className="inline-flex max-w-full flex-wrap items-center justify-center gap-1.5 rounded-full border border-neutral-200/90 bg-white/90 px-3 py-1 text-xs font-semibold text-neutral-800 shadow-[0_2px_10px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-md sm:gap-2 sm:px-4 sm:py-1.5 dark:border-white/15 dark:bg-neutral-900/90 dark:text-neutral-200 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_16px_rgba(0,0,0,0.5)]">
               <span className="relative flex h-2 w-2 shrink-0">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75" />
                 <span className="bg-primary relative inline-flex h-2 w-2 rounded-full shadow-[0_0_8px_rgba(37,99,235,0.9)]" />
@@ -897,7 +897,9 @@ export const WorkflowSection: React.FC = () => {
                             <span className="flex items-center justify-center gap-1 font-mono text-[11px] font-black">
                               <Clock className="h-3 w-3 shrink-0" /> +15m
                             </span>
-                            <span className="block truncate text-[9px] font-bold">Protected Buffer</span>
+                            <span className="block truncate text-[9px] font-bold">
+                              Protected Buffer
+                            </span>
                           </div>
 
                           <div className="w-full rounded-xl border border-neutral-200/80 bg-white/95 p-2.5 text-center shadow-xs sm:col-span-4 dark:border-white/10 dark:bg-neutral-900/90">
@@ -960,7 +962,7 @@ export const WorkflowSection: React.FC = () => {
                       </div>
 
                       {/* Live Booking Dispatch Card */}
-                      <div className="relative overflow-hidden rounded-2xl border border-neutral-200/90 bg-neutral-50/70 p-4 sm:p-4.5 shadow-inner dark:border-white/10 dark:bg-black/40">
+                      <div className="relative overflow-hidden rounded-2xl border border-neutral-200/90 bg-neutral-50/70 p-4 shadow-inner sm:p-4.5 dark:border-white/10 dark:bg-black/40">
                         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-200/80 pb-3 dark:border-white/10">
                           <div className="flex min-w-0 flex-1 items-center gap-3">
                             <div className="flex h-9.5 w-9.5 shrink-0 items-center justify-center rounded-xl border border-amber-500/25 bg-amber-500/10 font-mono text-xs font-bold text-amber-600 shadow-2xs">
@@ -995,7 +997,9 @@ export const WorkflowSection: React.FC = () => {
                         <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-neutral-200/60 pt-2.5 text-[10px] text-neutral-500 dark:border-white/10 dark:text-neutral-400">
                           <span className="flex min-w-0 flex-1 items-center gap-1.5">
                             <Lock className="h-3 w-3 shrink-0 text-amber-500" />
-                            <span className="truncate">Billing scope masked for non-finance team members</span>
+                            <span className="truncate">
+                              Billing scope masked for non-finance team members
+                            </span>
                           </span>
                           <span className="shrink-0 font-semibold text-emerald-600 dark:text-emerald-400">
                             RBAC Verified
@@ -1037,7 +1041,7 @@ export const WorkflowSection: React.FC = () => {
                       </div>
 
                       {/* Invoice Summary Card */}
-                      <div className="relative overflow-hidden rounded-2xl border border-neutral-200/90 bg-neutral-50/70 p-4 sm:p-4.5 shadow-inner dark:border-white/10 dark:bg-black/40">
+                      <div className="relative overflow-hidden rounded-2xl border border-neutral-200/90 bg-neutral-50/70 p-4 shadow-inner sm:p-4.5 dark:border-white/10 dark:bg-black/40">
                         {/* Header */}
                         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-200/80 pb-3 text-xs dark:border-white/10">
                           <div className="min-w-0">
@@ -1105,7 +1109,7 @@ export const WorkflowSection: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => setIsSettledStage4((prev) => !prev)}
-                            className={`focus-visible:ring-primary relative inline-flex w-full sm:w-auto justify-center cursor-pointer items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-semibold shadow-xs transition-all duration-150 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden active:scale-[0.98] ${
+                            className={`focus-visible:ring-primary relative inline-flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg px-4 py-2 text-xs font-semibold shadow-xs transition-all duration-150 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden active:scale-[0.98] sm:w-auto ${
                               isSettledStage4
                                 ? "bg-emerald-600 text-white shadow-emerald-500/20 hover:bg-emerald-700"
                                 : "bg-primary hover:bg-primary-hover shadow-primary/25 text-white"
@@ -1133,11 +1137,11 @@ export const WorkflowSection: React.FC = () => {
                               animate={{ scale: 1, opacity: 1 }}
                               exit={{ scale: 0.95, opacity: 0 }}
                               transition={{ duration: shouldReduceMotion ? 0 : 0.12 }}
-                              className="pointer-events-none absolute top-2 right-2 sm:top-3 sm:right-3 rounded-lg border border-emerald-500/40 bg-emerald-500/15 px-2 py-0.5 sm:px-3 sm:py-1 shadow-sm backdrop-blur-md motion-reduce:!transform-none motion-reduce:!opacity-100"
+                              className="pointer-events-none absolute top-2 right-2 rounded-lg border border-emerald-500/40 bg-emerald-500/15 px-2 py-0.5 shadow-sm backdrop-blur-md motion-reduce:!transform-none motion-reduce:!opacity-100 sm:top-3 sm:right-3 sm:px-3 sm:py-1"
                             >
                               <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
                                 <CheckCheck className="h-3.5 w-3.5 stroke-[2.5]" />
-                                <span className="font-mono text-[10px] sm:text-xs font-bold tracking-wider uppercase">
+                                <span className="font-mono text-[10px] font-bold tracking-wider uppercase sm:text-xs">
                                   FUNDS DISBURSED
                                 </span>
                               </div>
@@ -1153,7 +1157,7 @@ export const WorkflowSection: React.FC = () => {
               {/* Bottom Quick Feature Tag Strip */}
               <div
                 style={{ transform: shouldReduceMotion ? "none" : "translateZ(14px)" }}
-                className="flex flex-wrap items-center justify-between gap-2 sm:gap-3 border-t border-neutral-200/80 bg-neutral-100/60 px-3.5 py-2.5 sm:px-5 sm:py-3 text-xs font-medium dark:border-white/10 dark:bg-neutral-900/60"
+                className="flex flex-wrap items-center justify-between gap-2 border-t border-neutral-200/80 bg-neutral-100/60 px-3.5 py-2.5 text-xs font-medium sm:gap-3 sm:px-5 sm:py-3 dark:border-white/10 dark:bg-neutral-900/60"
               >
                 <span className="flex min-w-0 flex-1 items-center gap-1.5 text-neutral-600 dark:text-neutral-400">
                   <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
@@ -1207,10 +1211,12 @@ export const WorkflowSection: React.FC = () => {
               {/* Top Specular Glint */}
               <div className="via-primary/25 pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent to-transparent dark:via-white/20" />
 
-              <span className={`block font-mono text-xl font-extrabold sm:text-2xl md:text-3xl ${item.color}`}>
+              <span
+                className={`block font-mono text-xl font-extrabold sm:text-2xl md:text-3xl ${item.color}`}
+              >
                 {item.metric}
               </span>
-              <span className="mt-1 block text-[11px] font-medium leading-tight text-neutral-600 sm:text-xs dark:text-neutral-400">
+              <span className="mt-1 block text-[11px] leading-tight font-medium text-neutral-600 sm:text-xs dark:text-neutral-400">
                 {item.label}
               </span>
               <div className="mt-2.5 flex items-center justify-center">

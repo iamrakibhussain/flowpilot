@@ -70,7 +70,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             id="main-content"
             className="flex-1 overflow-x-hidden overflow-y-auto scroll-smooth p-3.5 sm:p-6 lg:p-8"
           >
-            <div className="mx-auto w-full max-w-7xl 2xl:max-w-[1520px] min-w-0">{children}</div>
+            <div className="mx-auto w-full max-w-7xl min-w-0 2xl:max-w-[1520px]">{children}</div>
           </main>
         </div>
 

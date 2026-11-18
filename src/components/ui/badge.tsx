@@ -9,8 +9,7 @@ const badgeVariants = cva(
       variant: {
         default:
           "border-transparent bg-primary text-primary-foreground shadow-2xs hover:bg-primary-hover",
-        secondary:
-          "border-border/60 bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        secondary: "border-border/60 bg-secondary text-secondary-foreground hover:bg-secondary/80",
         outline: "border-border/80 bg-background text-foreground/80",
         success:
           "border-emerald-500/25 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 dark:border-emerald-500/30",
@@ -27,8 +26,7 @@ const badgeVariants = cva(
 );
 
 export interface BadgeProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {
+  extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof badgeVariants> {
   hasDot?: boolean;
 }
 
@@ -36,10 +34,7 @@ function Badge({ className, variant, hasDot = false, children, ...props }: Badge
   return (
     <div className={cn(badgeVariants({ variant }), className)} {...props}>
       {hasDot && (
-        <span
-          className="mr-1.5 h-1.5 w-1.5 rounded-full bg-current shrink-0"
-          aria-hidden="true"
-        />
+        <span className="mr-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-current" aria-hidden="true" />
       )}
       {children}
     </div>

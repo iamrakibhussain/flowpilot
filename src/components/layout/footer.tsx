@@ -135,7 +135,7 @@ export const Footer: React.FC = () => {
             onMouseMove={handleCardMouseMove}
             onMouseEnter={() => setIsCardHovered(true)}
             onMouseLeave={() => setIsCardHovered(false)}
-            className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/[0.1] bg-gradient-to-b from-neutral-900/95 via-neutral-950/98 to-black p-4 min-[360px]:p-5 sm:p-8 md:p-10 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.85),0_0_70px_rgba(37,99,235,0.12)] backdrop-blur-2xl transition-all duration-300"
+            className="relative overflow-hidden rounded-2xl border border-white/[0.1] bg-gradient-to-b from-neutral-900/95 via-neutral-950/98 to-black p-4 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.85),0_0_70px_rgba(37,99,235,0.12)] backdrop-blur-2xl transition-all duration-300 min-[360px]:p-5 sm:rounded-3xl sm:p-8 md:p-10"
           >
             {/* Aerospace Corner Reticles (Hidden on mobile to preserve clean padding) */}
             <div
@@ -175,7 +175,7 @@ export const Footer: React.FC = () => {
             <div className="relative z-10 grid gap-6 sm:gap-8 lg:grid-cols-12 lg:items-center">
               {/* Left Column: Heading & Technical Value Proposition */}
               <div className="lg:col-span-7">
-                <div className="inline-flex max-w-full flex-wrap items-center gap-1.5 sm:gap-2 rounded-full border border-neutral-700/70 bg-neutral-900/90 px-3 sm:px-3.5 py-1 sm:py-1.5 text-[10.5px] min-[360px]:text-xs font-medium text-neutral-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-md">
+                <div className="inline-flex max-w-full flex-wrap items-center gap-1.5 rounded-full border border-neutral-700/70 bg-neutral-900/90 px-3 py-1 text-[10.5px] font-medium text-neutral-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-md min-[360px]:text-xs sm:gap-2 sm:px-3.5 sm:py-1.5">
                   <span className="relative flex h-2 w-2 shrink-0">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
                     <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-500 shadow-[0_0_6px_rgba(6,182,212,0.8)]" />
@@ -184,20 +184,22 @@ export const Footer: React.FC = () => {
                     ENGINEERING DISPATCH
                   </span>
                   <span className="text-neutral-600">•</span>
-                  <span className="font-mono text-[10.5px] sm:text-[11px] text-cyan-400">v2.4 LTS</span>
+                  <span className="font-mono text-[10.5px] text-cyan-400 sm:text-[11px]">
+                    v2.4 LTS
+                  </span>
                   <span className="hidden text-neutral-600 sm:inline">•</span>
                   <span className="hidden font-mono text-[10px] text-neutral-400 sm:inline">
                     Quarterly Releases
                   </span>
                 </div>
 
-                <h3 className="mt-3 sm:mt-4 text-lg min-[360px]:text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-white leading-tight">
+                <h3 className="mt-3 text-lg leading-tight font-extrabold tracking-tight text-white min-[360px]:text-xl sm:mt-4 sm:text-2xl md:text-3xl">
                   <span className="bg-gradient-to-b from-white via-neutral-100 to-neutral-300 bg-clip-text text-transparent">
                     Stay Ahead with Operational Architectural Insights
                   </span>
                 </h3>
 
-                <p className="mt-2 sm:mt-2.5 max-w-xl text-xs sm:text-sm leading-relaxed text-neutral-300">
+                <p className="mt-2 max-w-xl text-xs leading-relaxed text-neutral-300 sm:mt-2.5 sm:text-sm">
                   Quarterly release notes, server-side organization scoping patterns, and
                   architectural advice for running high-margin agencies and consultancies.
                 </p>
@@ -209,7 +211,7 @@ export const Footer: React.FC = () => {
                   onSubmit={handleSubscribe}
                   className="relative flex flex-col gap-2.5 sm:flex-row sm:items-center"
                 >
-                  <div className="relative flex h-11 sm:h-12 min-w-0 flex-1 items-center gap-2.5 rounded-xl sm:rounded-2xl border border-neutral-700/80 bg-neutral-950/95 px-3.5 sm:px-4 text-xs shadow-[inset_0_1px_2px_rgba(0,0,0,0.6)] transition-all duration-200 focus-within:border-cyan-500/60 focus-within:shadow-[0_0_25px_rgba(6,182,212,0.25)] focus-within:ring-1 focus-within:ring-cyan-500/40">
+                  <div className="relative flex h-11 min-w-0 flex-1 items-center gap-2.5 rounded-xl border border-neutral-700/80 bg-neutral-950/95 px-3.5 text-xs shadow-[inset_0_1px_2px_rgba(0,0,0,0.6)] transition-all duration-200 focus-within:border-cyan-500/60 focus-within:shadow-[0_0_25px_rgba(6,182,212,0.25)] focus-within:ring-1 focus-within:ring-cyan-500/40 sm:h-12 sm:rounded-2xl sm:px-4">
                     <Mail className="h-4 w-4 shrink-0 text-neutral-400" />
                     <input
                       type="email"
@@ -225,9 +227,9 @@ export const Footer: React.FC = () => {
                   {/* Master Dispatch Submit Button (Linear / Stripe Quality) */}
                   <button
                     type="submit"
-                    className="group focus-visible:ring-primary relative inline-flex h-11 sm:h-12 w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-r from-blue-500 via-cyan-400 to-indigo-500 p-[1.5px] shadow-[0_0_25px_rgba(59,130,246,0.35),0_8px_20px_rgba(0,0,0,0.5)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_35px_rgba(59,130,246,0.55)] focus-visible:ring-2 focus-visible:outline-none active:scale-[0.98] sm:w-auto"
+                    className="group focus-visible:ring-primary relative inline-flex h-11 w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-blue-500 via-cyan-400 to-indigo-500 p-[1.5px] shadow-[0_0_25px_rgba(59,130,246,0.35),0_8px_20px_rgba(0,0,0,0.5)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_35px_rgba(59,130,246,0.55)] focus-visible:ring-2 focus-visible:outline-none active:scale-[0.98] sm:h-12 sm:w-auto sm:rounded-2xl"
                   >
-                    <div className="relative flex h-full w-full items-center justify-center gap-2 sm:gap-2.5 rounded-[9.5px] sm:rounded-[14.5px] bg-white px-5 sm:px-6 py-2.5 text-xs font-bold text-neutral-950 shadow-[inset_0_1px_1px_rgba(255,255,255,1),inset_0_-2px_4px_rgba(0,0,0,0.12)] transition-colors group-hover:bg-neutral-50">
+                    <div className="relative flex h-full w-full items-center justify-center gap-2 rounded-[9.5px] bg-white px-5 py-2.5 text-xs font-bold text-neutral-950 shadow-[inset_0_1px_1px_rgba(255,255,255,1),inset_0_-2px_4px_rgba(0,0,0,0.12)] transition-colors group-hover:bg-neutral-50 sm:gap-2.5 sm:rounded-[14.5px] sm:px-6">
                       {/* Live Blue Status Pulse Diamond */}
                       <span className="relative flex h-2 w-2 shrink-0 items-center justify-center">
                         <span className="absolute h-full w-full animate-ping rounded-full bg-blue-500 opacity-75" />
@@ -237,7 +239,7 @@ export const Footer: React.FC = () => {
                       <span className="whitespace-nowrap">Subscribe</span>
 
                       {/* Signature Dark Arrow Capsule */}
-                      <span className="flex h-5 w-5 sm:h-6 sm:w-6 shrink-0 items-center justify-center rounded-lg bg-neutral-950 text-white shadow-xs transition-all duration-300 group-hover:scale-105 group-hover:bg-blue-600">
+                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-lg bg-neutral-950 text-white shadow-xs transition-all duration-300 group-hover:scale-105 group-hover:bg-blue-600 sm:h-6 sm:w-6">
                         <ArrowRight className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
                       </span>
                     </div>
@@ -255,13 +257,15 @@ export const Footer: React.FC = () => {
                     view Architecture documentation for current updates.
                   </div>
                 ) : (
-                  <div className="mt-2.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[10.5px] sm:text-[11px] text-neutral-400">
-                    <span className="flex items-center gap-1 text-emerald-400 shrink-0">
+                  <div className="mt-2.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[10.5px] text-neutral-400 sm:text-[11px]">
+                    <span className="flex shrink-0 items-center gap-1 text-emerald-400">
                       <CheckCircle2 className="h-3.5 w-3.5 shrink-0" />
                       <span>Zero spam policy</span>
                     </span>
-                    <span className="text-neutral-600 hidden min-[360px]:inline">&bull;</span>
-                    <span className="text-neutral-400 shrink-0">Direct engineering release notes</span>
+                    <span className="hidden text-neutral-600 min-[360px]:inline">&bull;</span>
+                    <span className="shrink-0 text-neutral-400">
+                      Direct engineering release notes
+                    </span>
                   </div>
                 )}
               </div>
@@ -708,9 +712,9 @@ export const Footer: React.FC = () => {
       </nav>
 
       {/* 5. Mission Control Telemetry Status Bar */}
-      <div className="relative border-t border-neutral-800/80 bg-neutral-950/80 py-3.5 sm:py-4 text-xs backdrop-blur-xl">
+      <div className="relative border-t border-neutral-800/80 bg-neutral-950/80 py-3.5 text-xs backdrop-blur-xl sm:py-4">
         <Container>
-          <div className="flex flex-wrap items-center justify-between gap-3 font-mono text-[10.5px] sm:text-[11px] text-neutral-400">
+          <div className="flex flex-wrap items-center justify-between gap-3 font-mono text-[10.5px] text-neutral-400 sm:text-[11px]">
             {/* Operational Signal (Hoverable & Touch-Clickable for Architectural Telemetry Details) */}
             <div
               role="button"
@@ -729,20 +733,20 @@ export const Footer: React.FC = () => {
               onMouseEnter={() => setIsTelemetryHovered(true)}
               onMouseLeave={() => setIsTelemetryHovered(false)}
             >
-              <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+              <div className="flex min-w-0 items-center gap-2 sm:gap-2.5">
                 <span className="relative flex h-2 w-2 shrink-0">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.9)]" />
                 </span>
-                <span className="font-semibold text-white whitespace-nowrap">
+                <span className="font-semibold whitespace-nowrap text-white">
                   <span className="hidden min-[360px]:inline">Operational Status: Active</span>
                   <span className="min-[360px]:hidden">Status: Active</span>
                 </span>
-                <span className="text-neutral-600 hidden min-[480px]:inline">&bull;</span>
-                <span className="text-neutral-300 hidden min-[480px]:inline whitespace-nowrap">
+                <span className="hidden text-neutral-600 min-[480px]:inline">&bull;</span>
+                <span className="hidden whitespace-nowrap text-neutral-300 min-[480px]:inline">
                   Calm Enterprise Architecture
                 </span>
-                <Info className="h-3.5 w-3.5 shrink-0 text-neutral-500 transition-colors group-hover/telemetry:text-neutral-300 ml-0.5" />
+                <Info className="ml-0.5 h-3.5 w-3.5 shrink-0 text-neutral-500 transition-colors group-hover/telemetry:text-neutral-300" />
               </div>
 
               {/* Hoverable Telemetry Blueprint Popover */}
@@ -750,7 +754,7 @@ export const Footer: React.FC = () => {
                 <div
                   role="region"
                   aria-label="Infrastructure Specifications"
-                  className="absolute bottom-full left-0 z-50 mb-3 w-[calc(100vw-32px)] max-w-xs rounded-2xl border border-neutral-700/80 bg-neutral-900/98 p-3.5 sm:p-4 shadow-[0_20px_50px_rgba(0,0,0,0.7),0_0_30px_rgba(16,185,129,0.1)] backdrop-blur-2xl sm:w-80"
+                  className="absolute bottom-full left-0 z-50 mb-3 w-[calc(100vw-32px)] max-w-xs rounded-2xl border border-neutral-700/80 bg-neutral-900/98 p-3.5 shadow-[0_20px_50px_rgba(0,0,0,0.7),0_0_30px_rgba(16,185,129,0.1)] backdrop-blur-2xl sm:w-80 sm:p-4"
                 >
                   {/* Top Specular Edge */}
                   <div
@@ -802,10 +806,10 @@ export const Footer: React.FC = () => {
       </div>
 
       {/* 6. Lower Copyright, Compliance & Tactile Back-To-Top Bar */}
-      <div className="relative border-t border-neutral-800/80 bg-black/60 py-6 sm:py-8 text-xs">
+      <div className="relative border-t border-neutral-800/80 bg-black/60 py-6 text-xs sm:py-8">
         <Container className="flex flex-col items-center justify-between gap-5 sm:gap-6 lg:flex-row">
           {/* Left Block: Dynamic Copyright & Legal Links */}
-          <div className="flex flex-col items-center gap-2.5 sm:gap-3 text-center sm:flex-row sm:text-left">
+          <div className="flex flex-col items-center gap-2.5 text-center sm:flex-row sm:gap-3 sm:text-left">
             <p className="text-xs text-neutral-400">
               &copy; {currentYear} FlowPilot Inc. All rights reserved. Engineered for service teams.
             </p>
@@ -833,10 +837,10 @@ export const Footer: React.FC = () => {
           </div>
 
           {/* Right Block: Verified Architecture Jewel Badge & Tactile Back-To-Top */}
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
+          <div className="flex w-full flex-wrap items-center justify-center gap-3 sm:w-auto sm:gap-4">
             {/* Verified Architecture Jewel Badge */}
-            <span className="inline-flex items-center gap-1.5 sm:gap-2 rounded-xl border border-emerald-500/40 bg-gradient-to-b from-emerald-500/15 to-emerald-500/5 px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-semibold text-emerald-400 shadow-[0_0_16px_rgba(16,185,129,0.25),inset_0_1px_0_rgba(255,255,255,0.1)]">
-              <ShieldCheck className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-400 shrink-0" />
+            <span className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-500/40 bg-gradient-to-b from-emerald-500/15 to-emerald-500/5 px-2.5 py-1.5 text-[11px] font-semibold text-emerald-400 shadow-[0_0_16px_rgba(16,185,129,0.25),inset_0_1px_0_rgba(255,255,255,0.1)] sm:gap-2 sm:px-3 sm:text-xs">
+              <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-emerald-400 sm:h-4 sm:w-4" />
               <span>Verified Architecture</span>
             </span>
 
@@ -844,7 +848,7 @@ export const Footer: React.FC = () => {
             <button
               type="button"
               onClick={scrollToTop}
-              className="group focus-visible:ring-primary relative inline-flex h-9 cursor-pointer items-center justify-center gap-1.5 sm:gap-2 rounded-xl border border-neutral-700/90 bg-gradient-to-b from-neutral-800 to-neutral-900 px-3.5 sm:px-4 py-2 text-[11px] sm:text-xs font-bold text-neutral-200 shadow-[inset_0_1px_1px_rgba(255,255,255,0.18),0_4px_12px_rgba(0,0,0,0.5)] transition-all duration-200 hover:scale-105 hover:border-cyan-400/60 hover:text-white hover:shadow-[0_0_20px_rgba(6,182,212,0.35)] focus-visible:ring-2 focus-visible:outline-none active:scale-95"
+              className="group focus-visible:ring-primary relative inline-flex h-9 cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-neutral-700/90 bg-gradient-to-b from-neutral-800 to-neutral-900 px-3.5 py-2 text-[11px] font-bold text-neutral-200 shadow-[inset_0_1px_1px_rgba(255,255,255,0.18),0_4px_12px_rgba(0,0,0,0.5)] transition-all duration-200 hover:scale-105 hover:border-cyan-400/60 hover:text-white hover:shadow-[0_0_20px_rgba(6,182,212,0.35)] focus-visible:ring-2 focus-visible:outline-none active:scale-95 sm:gap-2 sm:px-4 sm:text-xs"
               aria-label="Scroll back to top of page"
             >
               <span>Back to top</span>
