@@ -1576,18 +1576,19 @@ function CalendarContent() {
                 exit={{ opacity: 0, y: -8, scale: 0.995 }}
                 transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
               >
-                <Card className="border-border/80 from-card to-card/90 rounded-2xl border bg-gradient-to-b p-5 shadow-2xs backdrop-blur-xl">
-                  <div className="border-border/60 text-muted-foreground grid grid-cols-7 border-b pb-3 text-center text-xs font-extrabold tracking-wider uppercase">
-                    <span>Mon</span>
-                    <span>Tue</span>
-                    <span>Wed</span>
-                    <span>Thu</span>
-                    <span>Fri</span>
-                    <span>Sat</span>
-                    <span>Sun</span>
-                  </div>
+                <Card className="border-border/80 from-card to-card/90 overflow-x-auto rounded-2xl border bg-gradient-to-b p-5 shadow-2xs backdrop-blur-xl">
+                  <div className="min-w-[620px]">
+                    <div className="border-border/60 text-muted-foreground grid grid-cols-7 border-b pb-3 text-center text-xs font-extrabold tracking-wider uppercase">
+                      <span>Mon</span>
+                      <span>Tue</span>
+                      <span>Wed</span>
+                      <span>Thu</span>
+                      <span>Fri</span>
+                      <span>Sat</span>
+                      <span>Sun</span>
+                    </div>
 
-                  <div className="divide-border/40 border-border/40 grid min-h-[420px] grid-cols-7 divide-x divide-y border-r border-b sm:min-h-[520px]">
+                    <div className="divide-border/40 border-border/40 grid min-h-[420px] grid-cols-7 divide-x divide-y border-r border-b sm:min-h-[520px]">
                     {Array.from({ length: 35 }).map((_, idx) => {
                       const firstDayOfMonth = new Date(
                         currentDate.getFullYear(),
@@ -1662,6 +1663,7 @@ function CalendarContent() {
                         </div>
                       );
                     })}
+                  </div>
                   </div>
                 </Card>
               </motion.div>

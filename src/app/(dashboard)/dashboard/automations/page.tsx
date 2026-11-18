@@ -90,7 +90,7 @@ export default function AutomationsPage() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-7xl min-w-0 space-y-6 overflow-x-hidden p-4 sm:p-6 lg:p-8">
+    <div className="w-full min-w-0 space-y-6">
       {/* Executive Page Header */}
       <div className="border-border/40 flex flex-col gap-4 border-b pb-4 sm:flex-row sm:items-center sm:justify-between">
         <div>

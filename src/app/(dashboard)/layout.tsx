@@ -11,6 +11,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [isMobileOpen, setIsMobileOpen] = React.useState(false);
   const [isCommandOpen, setIsCommandOpen] = React.useState(false);
 
+  // Auto-adapt sidebar collapse for small laptop displays (< 1280px, e.g. 1366x768 screens)
+  React.useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth < 1280 && window.innerWidth >= 1024) {
+      setIsCollapsed(true);
+    }
+  }, []);
+
   // Global Keyboard Shortcut: Cmd+K / Ctrl+K
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -54,7 +61,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             id="main-content"
             className="flex-1 overflow-x-hidden overflow-y-auto scroll-smooth p-3.5 sm:p-6 lg:p-8"
           >
-            <div className="mx-auto w-full max-w-7xl min-w-0">{children}</div>
+            <div className="mx-auto w-full max-w-7xl 2xl:max-w-[1520px] min-w-0">{children}</div>
           </main>
         </div>
 

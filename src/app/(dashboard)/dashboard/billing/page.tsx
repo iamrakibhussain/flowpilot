@@ -756,7 +756,7 @@ export default function BillingPage() {
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm">
+                <table className="w-full min-w-[580px] text-left text-sm">
                   <thead className="bg-muted/50 text-muted-foreground border-border/80 border-b text-xs uppercase">
                     <tr>
                       <th className="px-4 py-3">Date</th>

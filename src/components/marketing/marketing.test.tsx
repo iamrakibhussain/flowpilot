@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { HeroSection } from "./hero-section";
 import { CoreCapabilitiesSection } from "./core-capabilities-section";
+import { ProductPreviewSection } from "./product-preview-section";
 import { WorkflowSection } from "./workflow-section";
 import { BusinessBenefitsSection } from "./business-benefits-section";
 import { ArchitectureTrustSection } from "./architecture-trust-section";
@@ -43,6 +44,33 @@ describe("Marketing Components Suite", () => {
     expect(screen.getByText(/Invoicing & Billing/i)).toBeInTheDocument();
   });
 
+  it("renders ProductPreviewSection with headline and interactive sandbox controls", () => {
+    render(<ProductPreviewSection />);
+    expect(
+      screen.getByRole("heading", { name: /Experience the Calm Operational Shift/i })
+    ).toBeInTheDocument();
+
+    const schedulingTab = screen.getByRole("tab", { name: /Schedule & Buffers/i });
+    const crmTab = screen.getByRole("tab", { name: /Client 360° Dossier/i });
+    const invoicingTab = screen.getByRole("tab", { name: /Treasury & Invoices/i });
+    const securityTab = screen.getByRole("tab", { name: /Tenant Boundary/i });
+
+    expect(schedulingTab).toHaveAttribute("aria-selected", "true");
+    expect(crmTab).toHaveAttribute("aria-selected", "false");
+    expect(invoicingTab).toHaveAttribute("aria-selected", "false");
+    expect(securityTab).toHaveAttribute("aria-selected", "false");
+
+    // Switch tab
+    fireEvent.click(crmTab);
+    expect(crmTab).toHaveAttribute("aria-selected", "true");
+    expect(schedulingTab).toHaveAttribute("aria-selected", "false");
+
+    // Toggle reality mode to Chaos
+    const chaosBtn = screen.getByRole("button", { name: /Fragmented Chaos/i });
+    fireEvent.click(chaosBtn);
+    expect(chaosBtn).toHaveAttribute("aria-pressed", "true");
+  });
+
   it("renders WorkflowSection with 4 progressive operational stages", () => {
     render(<WorkflowSection />);
     expect(
@@ -67,7 +95,7 @@ describe("Marketing Components Suite", () => {
     expect(screen.getByText(/Granular Operational Governance/i)).toBeInTheDocument();
   });
 
-  it("renders ArchitectureTrustSection with true architectural facts", () => {
+  it("renders ArchitectureTrustSection with true architectural facts and interactive pillars", () => {
     render(<ArchitectureTrustSection />);
     expect(
       screen.getByRole("heading", { name: /Built with Engineering Discipline from Day One/i })
@@ -76,6 +104,28 @@ describe("Marketing Components Suite", () => {
     expect(screen.getByText(/Strict Multi-Tenant Isolation/i)).toBeInTheDocument();
     expect(screen.getByText(/Role-Based Access Control \(RBAC\)/i)).toBeInTheDocument();
     expect(screen.getByText(/Decoupled API Boundary & Type Safety/i)).toBeInTheDocument();
+    expect(screen.getByText(/Data Sovereignty & Privacy Standards/i)).toBeInTheDocument();
+
+    // Verify verified status strip (no fake RLS)
+    expect(screen.getByText(/Organization-Scoped Queries/i)).toBeInTheDocument();
+    expect(screen.getByText(/Server-Side Membership Checks/i)).toBeInTheDocument();
+
+    // Test tenant switcher
+    const meridianTenantBtn = screen.getByRole("button", { name: /Meridian Corp/i });
+    fireEvent.click(meridianTenantBtn);
+    expect(meridianTenantBtn).toHaveAttribute("aria-pressed", "true");
+
+    // Test RBAC role switcher
+    const memberRoleBtn = screen.getByRole("button", { name: /^member$/i });
+    fireEvent.click(memberRoleBtn);
+    expect(memberRoleBtn).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByText(/RESTRICTED: Admin & Owner Only/i)).toBeInTheDocument();
+
+    // Test API contract mode switcher
+    const malformedPayloadBtn = screen.getByRole("button", { name: /Malformed Payload/i });
+    fireEvent.click(malformedPayloadBtn);
+    expect(malformedPayloadBtn).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByText(/422 Unprocessable Entity/i)).toBeInTheDocument();
   });
 
   it("renders FAQSection and toggles accordion items on click", () => {
@@ -90,14 +140,23 @@ describe("Marketing Components Suite", () => {
     expect(questionButton).toHaveAttribute("aria-expanded", "true");
   });
 
-  it("renders FinalCTASection with conversion actions", () => {
+  it("renders FinalCTASection with conversion actions and workspace provisioning", () => {
     render(<FinalCTASection />);
     expect(
       screen.getByRole("heading", { name: /Ready to Bring Operational Calm to Your Business\?/i })
     ).toBeInTheDocument();
 
-    const getStartedLink = screen.getByRole("link", { name: /Get Started Free/i });
-    expect(getStartedLink).toHaveAttribute("href", "/register");
+    const claimLink = screen.getByRole("link", { name: /Claim Your Workspace/i });
+    expect(claimLink).toHaveAttribute("href", "/register?workspace=meridianagency");
+
+    // Test preset chip selection
+    const apexChip = screen.getByRole("button", { name: /Apex Studio/i });
+    fireEvent.click(apexChip);
+    expect(claimLink).toHaveAttribute("href", "/register?workspace=apexstudio");
+
+    // Test secondary action
+    const exploreDemoLink = screen.getByRole("link", { name: /Explore Live Workspace Demo/i });
+    expect(exploreDemoLink).toHaveAttribute("href", "/dashboard");
   });
 
   it("renders Footer with navigation landmarks and verified architecture badge", () => {

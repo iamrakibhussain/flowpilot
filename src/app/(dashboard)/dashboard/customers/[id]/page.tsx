@@ -645,7 +645,7 @@ export default function CustomerProfileDetailPage() {
       </Card>
 
       {/* 5x Executive Financial & Engagement Telemetry KPI Cards */}
-      <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-5">
+      <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-5">
         {/* KPI 1: Lifetime Value (Gross Invoiced) */}
         <Card className="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white/90 p-5 shadow-2xs backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md">
           <div className="flex items-center justify-between">

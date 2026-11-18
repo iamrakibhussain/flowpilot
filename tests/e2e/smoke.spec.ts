@@ -11,7 +11,7 @@ test.describe("Frontend Foundation & Marketing Smoke Suite", () => {
 
     // Hero headline
     const heroHeading = page.getByRole("heading", {
-      name: /Run Your Client Operations, Scheduling, and Billing from One Calm Command Center/i,
+      name: /Run Your Client Operations, Scheduling, and Billing with Absolute Precision/i,
     });
     await expect(heroHeading).toBeVisible();
 
@@ -27,7 +27,9 @@ test.describe("Frontend Foundation & Marketing Smoke Suite", () => {
     await page.goto("/");
 
     // Product Preview
-    await expect(page.getByText(/Product Experience Preview/i)).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: /Experience the Calm Operational Shift/i })
+    ).toBeVisible();
 
     // Core Capabilities
     await expect(

@@ -62,7 +62,7 @@ export function ArchiveCustomerDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && !isPending && onClose()}>
-      <DialogContent className="rounded-3xl border border-slate-200/80 bg-white/95 p-6 shadow-2xl backdrop-blur-2xl sm:max-w-md">
+      <DialogContent className="max-h-[90vh] w-[95vw] overflow-y-auto rounded-3xl border border-slate-200/80 bg-white/95 p-6 shadow-2xl backdrop-blur-2xl sm:max-w-md">
         <DialogHeader className="border-b border-slate-100 pb-4">
           <div className="flex items-center gap-3.5">
             <div

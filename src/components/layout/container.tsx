@@ -8,7 +8,7 @@ export interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
 const sizeClasses = {
   sm: "max-w-4xl",
   default: "max-w-7xl",
-  lg: "max-w-(--breakpoint-2xl)",
+  lg: "max-w-7xl 2xl:max-w-[1400px]",
   fluid: "max-w-full",
 };
 

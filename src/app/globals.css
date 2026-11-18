@@ -28,7 +28,7 @@
     --success-foreground: #ffffff;
     --warning: #d97706;
     --warning-foreground: #ffffff;
-    --radius: 0.625rem;
+    --radius: 0.5rem;
   }
 
   .dark {
@@ -126,12 +126,40 @@ body {
   }
 }
 
+@keyframes border-beam {
+  0% {
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 100%;
+  }
+}
+
+@keyframes aurora-pulse {
+  0%, 100% {
+    opacity: 0.15;
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    opacity: 0.28;
+    transform: scale(1.08) translateY(-10px);
+  }
+}
+
 @layer utilities {
   .glass-card {
     background-color: color-mix(in srgb, var(--card) 85%, transparent);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
+  }
+
+  .glass-panel {
+    background-color: color-mix(in srgb, var(--card) 90%, transparent);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.08), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
   }
 
   .glass-header {
@@ -142,19 +170,211 @@ body {
   }
 
   .glow-primary {
-    box-shadow: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+    box-shadow: 0 4px 20px -4px rgba(37, 99, 235, 0.12);
   }
 
   .glow-success {
-    box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.25);
+    box-shadow: 0 4px 20px -4px rgba(16, 185, 129, 0.12);
   }
 
   .glow-amber {
-    box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.25);
+    box-shadow: 0 4px 20px -4px rgba(245, 158, 11, 0.12);
   }
 
   .inner-glow {
     box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .quantum-laser-border {
+    position: absolute;
+    inset: -1px;
+    border-radius: 9999px;
+    padding: 1.5px;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .glass-visionos {
+    background: radial-gradient(
+      120% 120% at 50% 0%,
+      rgba(255, 255, 255, 0.94) 0%,
+      rgba(248, 250, 252, 0.88) 55%,
+      rgba(241, 245, 249, 0.8) 100%
+    );
+    box-shadow: 
+      0 14px 40px -10px rgba(15, 23, 42, 0.08),
+      0 2px 6px 0 rgba(15, 23, 42, 0.03),
+      inset 0 1px 1px 0 rgba(255, 255, 255, 0.95),
+      inset 0 -1px 1px 0 rgba(148, 163, 184, 0.15);
+  }
+
+  .dark .glass-visionos {
+    background: radial-gradient(
+      120% 120% at 50% 0%,
+      rgba(13, 18, 32, 0.92) 0%,
+      rgba(7, 10, 20, 0.88) 60%,
+      rgba(4, 6, 14, 0.84) 100%
+    );
+    box-shadow: 
+      0 20px 50px -12px rgba(0, 0, 0, 0.8),
+      0 0 28px -4px rgba(37, 99, 235, 0.08),
+      inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.22),
+      inset 0 -1px 1px 0 rgba(0, 0, 0, 0.6);
+  }
+
+  .animate-aurora {
+    animation: aurora-pulse 9s ease-in-out infinite;
+  }
+
+  .quantum-laser-border-window {
+    position: absolute;
+    inset: -1px;
+    border-radius: 1rem;
+    padding: 1.5px;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .quantum-laser-border-card {
+    position: absolute;
+    inset: -1px;
+    border-radius: 1rem;
+    padding: 1px;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .animate-horizon-glide {
+    animation: horizon-glide 4s linear infinite;
+  }
+
+  @keyframes horizon-glide {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 0 40px;
+    }
+  }
+
+  .text-shimmer {
+    background: linear-gradient(
+      110deg,
+      #2563eb 0%,
+      #4f46e5 35%,
+      #60a5fa 50%,
+      #4f46e5 65%,
+      #2563eb 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: text-shimmer-sweep 5s ease-in-out infinite;
+  }
+
+  .dark .text-shimmer {
+    background: linear-gradient(
+      110deg,
+      #ffffff 0%,
+      #93c5fd 35%,
+      #ffffff 50%,
+      #60a5fa 65%,
+      #ffffff 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: text-shimmer-sweep 5s ease-in-out infinite;
+  }
+
+  @keyframes text-shimmer-sweep {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .perspective-1400 {
+    perspective: 1400px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+
+  .bg-dot-grid {
+    background-image: radial-gradient(rgba(148, 163, 184, 0.15) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  .text-gradient-metallic {
+    background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 60%, #94a3b8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-chrome {
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 60%, #475569 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .dark .text-gradient-chrome {
+    background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 55%, #94a3b8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .shimmer-badge {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shimmer-badge::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.25),
+      transparent
+    );
+    animation: shimmer-swipe 4.5s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  @keyframes shimmer-swipe {
+    0% {
+      left: -100%;
+    }
+    30% {
+      left: 200%;
+    }
+    100% {
+      left: 200%;
+    }
   }
 }
 
