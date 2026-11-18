@@ -689,7 +689,7 @@ export default function PaymentsDashboardPage() {
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
+                <table className="w-full min-w-[680px] text-left text-xs">
                   <thead>
                     <tr className="border-border/60 text-muted-foreground border-b text-[10px] uppercase">
                       <th className="pb-3 font-semibold">Invoice #</th>
@@ -789,7 +789,7 @@ export default function PaymentsDashboardPage() {
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
+                <table className="w-full min-w-[680px] text-left text-xs">
                   <thead>
                     <tr className="border-border/60 text-muted-foreground border-b text-[10px] uppercase">
                       <th className="pb-3 font-semibold">Invoice #</th>

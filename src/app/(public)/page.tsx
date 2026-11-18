@@ -1,4 +1,5 @@
 import * as React from "react";
+import type { Metadata } from "next";
 import { HeroSection } from "@/components/marketing/hero-section";
 import { ProductPreviewSection } from "@/components/marketing/product-preview-section";
 import { CoreCapabilitiesSection } from "@/components/marketing/core-capabilities-section";
@@ -9,10 +10,23 @@ import { FAQSection } from "@/components/marketing/faq-section";
 import { FinalCTASection } from "@/components/marketing/final-cta-section";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "FlowPilot — The Calm Business Operations Platform",
   description:
     "Unify client CRM, appointment scheduling, team capacity, and business invoicing into one structured platform for agencies, consultancies, and service teams.",
+  openGraph: {
+    title: "FlowPilot — The Calm Business Operations Platform",
+    description:
+      "Unify client CRM, appointment scheduling, team capacity, and business invoicing into one structured platform for agencies, consultancies, and service teams.",
+    type: "website",
+    siteName: "FlowPilot",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "FlowPilot — The Calm Business Operations Platform",
+    description:
+      "Unify client CRM, appointment scheduling, team capacity, and business invoicing into one structured platform for agencies, consultancies, and service teams.",
+  },
 };
 
 export default function HomePage() {

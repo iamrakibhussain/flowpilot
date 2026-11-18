@@ -252,7 +252,7 @@ export default function InvoicesDashboardPage() {
         aria-hidden="true"
       />
 
-      <div className="relative z-10 mx-auto max-w-7xl space-y-6">
+      <div className="relative z-10 w-full min-w-0 space-y-6">
         {/* Executive Header Banner */}
         <div className="border-border/80 bg-card/70 flex flex-col gap-4 rounded-2xl border p-5 shadow-2xs backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between sm:p-6">
           <div className="space-y-1">

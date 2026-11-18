@@ -35,7 +35,7 @@ const envSchema = z.object({
   NEXT_PUBLIC_API_TIMEOUT_MS: z.coerce
     .number()
     .positive("Timeout must be a positive integer")
-    .default(15000),
+    .default(60000),
   NEXT_PUBLIC_ENABLE_MOCKS: z
     .string()
     .optional()

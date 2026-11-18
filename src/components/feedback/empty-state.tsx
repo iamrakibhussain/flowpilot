@@ -20,7 +20,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   return (
     <div
       className={cn(
-        "border-border/80 bg-card/60 flex min-h-[280px] flex-col items-center justify-center rounded-2xl border border-dashed p-8 text-center sm:p-12",
+        "border-border/80 bg-card flex min-h-[280px] flex-col items-center justify-center rounded-xl border border-dashed p-8 text-center shadow-xs sm:p-12",
         className
       )}
     >

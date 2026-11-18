@@ -974,7 +974,7 @@ export default function AnalyticsDashboardPage() {
 
                 {/* Cashflow Summary Table */}
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs">
+                  <table className="w-full min-w-[650px] text-left text-xs">
                     <thead className="border-border/80 bg-muted/30 text-muted-foreground border-b font-semibold">
                       <tr>
                         <th className="px-4 py-3">Date</th>
@@ -1037,7 +1037,7 @@ export default function AnalyticsDashboardPage() {
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
+                <table className="w-full min-w-[650px] text-left text-xs">
                   <thead className="border-border/80 bg-muted/30 text-muted-foreground border-b font-semibold">
                     <tr>
                       <th className="px-4 py-3">Service Offering</th>

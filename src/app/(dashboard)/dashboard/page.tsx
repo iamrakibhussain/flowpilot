@@ -605,7 +605,7 @@ export default function DashboardOverviewPage() {
       )}
 
       {/* 4x High-Impact Reactive KPI Metric Cards */}
-      <div className="grid w-full max-w-full min-w-0 grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+      <div className="grid w-full max-w-full min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-2 xl:grid-cols-4">
         {/* KPI 1: Total Revenue */}
         <Card className="border-border/80 from-card to-card/90 hover:border-primary/40 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-3.5 shadow-2xs transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xs sm:p-5">
           <div className="pointer-events-none absolute top-0 right-0 h-24 w-24 rounded-full bg-blue-500/[0.04] blur-xl" />

@@ -182,7 +182,7 @@ export default function StaffOperationsPage() {
   const utilizationRate = metrics?.utilizationRate ?? 100;
 
   return (
-    <div className="max-w-7xl space-y-7 pb-16">
+    <div className="w-full min-w-0 space-y-7 pb-16">
       {/* Header Section */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -781,7 +781,7 @@ export default function StaffOperationsPage() {
             <Card className="border-border/80 bg-card overflow-hidden rounded-2xl border shadow-2xs">
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs">
+                  <table className="w-full min-w-[750px] text-left text-xs">
                     <thead>
                       <tr className="border-border/70 bg-muted/30 text-muted-foreground border-b text-[10px] font-bold tracking-wider uppercase">
                         <th className="py-3.5 pl-6">Specialist</th>

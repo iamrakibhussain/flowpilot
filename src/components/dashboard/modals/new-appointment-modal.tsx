@@ -113,7 +113,7 @@ export function NewAppointmentModal({ isOpen, onClose }: NewAppointmentModalProp
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-      <DialogContent className="max-w-lg rounded-2xl border-slate-200/90 bg-white p-6 shadow-2xl">
+      <DialogContent className="max-h-[90vh] w-[95vw] overflow-y-auto rounded-3xl border border-slate-200/90 bg-white p-6 shadow-2xl sm:max-w-lg">
         <DialogHeader className="space-y-1">
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600">

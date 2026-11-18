@@ -612,7 +612,7 @@ export default function ServicesPage() {
         /* TABLE VIEW */
         <Card className="border-border/80 bg-card overflow-hidden shadow-xs">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="w-full min-w-[780px] text-left text-xs">
               <thead className="border-border/80 bg-muted/40 text-muted-foreground border-b font-semibold">
                 <tr>
                   <th className="px-4 py-3.5">Service Offering</th>

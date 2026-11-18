@@ -739,7 +739,7 @@ export default function CustomersDirectoryPage() {
       {!isActuallyLoading && customers.length > 0 && viewMode === "table" && (
         <div className="border-border/80 bg-card/90 overflow-hidden rounded-2xl border shadow-2xs backdrop-blur-md">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="w-full min-w-[850px] text-left text-xs">
               <thead className="border-border/60 bg-muted/30 text-muted-foreground border-b text-[11px] font-bold tracking-wider uppercase">
                 <tr>
                   <th className="w-10 px-3.5 py-3.5 text-center">

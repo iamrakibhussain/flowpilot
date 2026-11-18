@@ -560,7 +560,7 @@ export default function QuotesPage() {
 
             {/* Desktop Table View (Shown on >= md) */}
             <div className="hidden overflow-x-auto md:block">
-              <table className="w-full text-left text-xs">
+              <table className="w-full min-w-[700px] text-left text-xs">
                 <thead className="bg-muted/40 border-border text-muted-foreground border-b text-[11px] font-semibold tracking-wider uppercase">
                   <tr>
                     <th className="px-4 py-3">Estimate #</th>

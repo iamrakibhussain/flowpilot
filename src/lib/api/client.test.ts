@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { ApiClient } from "./client";
-import { AuthenticationError, NotFoundError, ValidationError } from "./errors";
+import { AuthenticationError, NotFoundError, TimeoutError, ValidationError } from "./errors";
 
 describe("ApiClient HTTP boundary", () => {
   const baseUrl = "https://api.flowpilot.test/api/v1";
@@ -197,5 +197,56 @@ describe("ApiClient HTTP boundary", () => {
       "https://flowpilot-saas-app.vercel.app/api/v1/auth/login",
       expect.anything()
     );
+  });
+
+  it("aborts request and throws TimeoutError when request duration exceeds timeoutMs", async () => {
+    const fastClient = new ApiClient({
+      baseUrl,
+      defaultTimeoutMs: 50,
+    });
+
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockImplementation(
+        (_url, options?: { signal?: AbortSignal }) =>
+          new Promise((_, reject) => {
+            options?.signal?.addEventListener("abort", () => {
+              const abortErr = new Error("This operation was aborted");
+              abortErr.name = "AbortError";
+              reject(abortErr);
+            });
+          })
+      )
+    );
+
+    await expect(fastClient.get("/slow-endpoint")).rejects.toThrowError(TimeoutError);
+  });
+
+  it("respects per-request timeoutMs override for cold-start resilience", async () => {
+    const defaultClient = new ApiClient({
+      baseUrl,
+      defaultTimeoutMs: 15000,
+    });
+
+    const mockData = { status: "ready" };
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        headers: {
+          get: (name: string) =>
+            name.toLowerCase() === "content-type" ? "application/json" : null,
+        },
+        json: async () => ({ success: true, data: mockData }),
+      })
+    );
+
+    const result = await defaultClient.get<{ status: string }>("/health", {
+      timeoutMs: 60000,
+    });
+
+    expect(result.success).toBe(true);
+    expect(result.data).toEqual(mockData);
   });
 });

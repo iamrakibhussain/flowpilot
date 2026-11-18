@@ -1576,92 +1576,94 @@ function CalendarContent() {
                 exit={{ opacity: 0, y: -8, scale: 0.995 }}
                 transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
               >
-                <Card className="border-border/80 from-card to-card/90 rounded-2xl border bg-gradient-to-b p-5 shadow-2xs backdrop-blur-xl">
-                  <div className="border-border/60 text-muted-foreground grid grid-cols-7 border-b pb-3 text-center text-xs font-extrabold tracking-wider uppercase">
-                    <span>Mon</span>
-                    <span>Tue</span>
-                    <span>Wed</span>
-                    <span>Thu</span>
-                    <span>Fri</span>
-                    <span>Sat</span>
-                    <span>Sun</span>
-                  </div>
+                <Card className="border-border/80 from-card to-card/90 overflow-x-auto rounded-2xl border bg-gradient-to-b p-5 shadow-2xs backdrop-blur-xl">
+                  <div className="min-w-[620px]">
+                    <div className="border-border/60 text-muted-foreground grid grid-cols-7 border-b pb-3 text-center text-xs font-extrabold tracking-wider uppercase">
+                      <span>Mon</span>
+                      <span>Tue</span>
+                      <span>Wed</span>
+                      <span>Thu</span>
+                      <span>Fri</span>
+                      <span>Sat</span>
+                      <span>Sun</span>
+                    </div>
 
-                  <div className="divide-border/40 border-border/40 grid min-h-[420px] grid-cols-7 divide-x divide-y border-r border-b sm:min-h-[520px]">
-                    {Array.from({ length: 35 }).map((_, idx) => {
-                      const firstDayOfMonth = new Date(
-                        currentDate.getFullYear(),
-                        currentDate.getMonth(),
-                        1
-                      );
-                      const startOffset = (firstDayOfMonth.getDay() + 6) % 7; // Monday index
-                      const dayNum = idx - startOffset + 1;
-                      const cellDate = new Date(
-                        currentDate.getFullYear(),
-                        currentDate.getMonth(),
-                        dayNum
-                      );
-                      const isCurrentMonth = cellDate.getMonth() === currentDate.getMonth();
-                      const isToday = cellDate.toDateString() === new Date().toDateString();
+                    <div className="divide-border/40 border-border/40 grid min-h-[420px] grid-cols-7 divide-x divide-y border-r border-b sm:min-h-[520px]">
+                      {Array.from({ length: 35 }).map((_, idx) => {
+                        const firstDayOfMonth = new Date(
+                          currentDate.getFullYear(),
+                          currentDate.getMonth(),
+                          1
+                        );
+                        const startOffset = (firstDayOfMonth.getDay() + 6) % 7; // Monday index
+                        const dayNum = idx - startOffset + 1;
+                        const cellDate = new Date(
+                          currentDate.getFullYear(),
+                          currentDate.getMonth(),
+                          dayNum
+                        );
+                        const isCurrentMonth = cellDate.getMonth() === currentDate.getMonth();
+                        const isToday = cellDate.toDateString() === new Date().toDateString();
 
-                      const dayApts = appointments.filter((a) => {
-                        const dt = new Date(a.scheduledAt);
-                        return dt.toDateString() === cellDate.toDateString();
-                      });
+                        const dayApts = appointments.filter((a) => {
+                          const dt = new Date(a.scheduledAt);
+                          return dt.toDateString() === cellDate.toDateString();
+                        });
 
-                      return (
-                        <div
-                          key={idx}
-                          onClick={() => {
-                            setCurrentDate(cellDate);
-                            setViewMode("day");
-                          }}
-                          className={`hover:bg-muted/30 min-h-[64px] cursor-pointer p-1 transition-colors sm:min-h-[100px] sm:p-2.5 ${
-                            isCurrentMonth ? "bg-card" : "bg-muted/10 opacity-40"
-                          }`}
-                        >
-                          <div className="flex items-center justify-between">
-                            <span
-                              className={`inline-flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-black sm:h-6 sm:w-6 sm:text-xs ${
-                                isToday
-                                  ? "bg-primary text-primary-foreground shadow-2xs"
-                                  : "text-foreground"
-                              }`}
-                            >
-                              {cellDate.getDate()}
-                            </span>
-                            {dayApts.length > 0 && (
-                              <>
-                                <span className="bg-primary flex h-1.5 w-1.5 rounded-full sm:hidden" />
-                                <span className="text-primary hidden text-[10px] font-extrabold sm:inline">
-                                  {dayApts.length} booked
-                                </span>
-                              </>
-                            )}
-                          </div>
-
-                          <div className="mt-1.5 space-y-1">
-                            {dayApts.slice(0, 2).map((apt) => (
-                              <div
-                                key={apt.id}
-                                className={`truncate rounded-lg border px-1.5 py-0.5 text-[10px] font-bold shadow-2xs ${
-                                  apt.status === "COMPLETED"
-                                    ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                                    : "border-blue-500/20 bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                        return (
+                          <div
+                            key={idx}
+                            onClick={() => {
+                              setCurrentDate(cellDate);
+                              setViewMode("day");
+                            }}
+                            className={`hover:bg-muted/30 min-h-[64px] cursor-pointer p-1 transition-colors sm:min-h-[100px] sm:p-2.5 ${
+                              isCurrentMonth ? "bg-card" : "bg-muted/10 opacity-40"
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <span
+                                className={`inline-flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-black sm:h-6 sm:w-6 sm:text-xs ${
+                                  isToday
+                                    ? "bg-primary text-primary-foreground shadow-2xs"
+                                    : "text-foreground"
                                 }`}
                               >
-                                {apt.customerName}
-                              </div>
-                            ))}
-                            {dayApts.length > 2 && (
-                              <p className="text-muted-foreground pl-1 text-[9px] font-extrabold">
-                                +{dayApts.length - 2} more sessions
-                              </p>
-                            )}
+                                {cellDate.getDate()}
+                              </span>
+                              {dayApts.length > 0 && (
+                                <>
+                                  <span className="bg-primary flex h-1.5 w-1.5 rounded-full sm:hidden" />
+                                  <span className="text-primary hidden text-[10px] font-extrabold sm:inline">
+                                    {dayApts.length} booked
+                                  </span>
+                                </>
+                              )}
+                            </div>
+
+                            <div className="mt-1.5 space-y-1">
+                              {dayApts.slice(0, 2).map((apt) => (
+                                <div
+                                  key={apt.id}
+                                  className={`truncate rounded-lg border px-1.5 py-0.5 text-[10px] font-bold shadow-2xs ${
+                                    apt.status === "COMPLETED"
+                                      ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                                      : "border-blue-500/20 bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                                  }`}
+                                >
+                                  {apt.customerName}
+                                </div>
+                              ))}
+                              {dayApts.length > 2 && (
+                                <p className="text-muted-foreground pl-1 text-[9px] font-extrabold">
+                                  +{dayApts.length - 2} more sessions
+                                </p>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
                   </div>
                 </Card>
               </motion.div>

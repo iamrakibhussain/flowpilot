@@ -8,7 +8,6 @@ import {
   Users,
   FileText,
   CheckCircle2,
-  Sparkles,
   ShieldCheck,
   Clock,
   Zap,
@@ -18,92 +17,317 @@ import {
   ChevronRight,
   ChevronLeft,
   Server,
-  Check,
   CheckCheck,
   Activity,
+  Terminal,
 } from "lucide-react";
 import { Container } from "@/components/layout/container";
-import { Badge } from "@/components/ui/badge";
 
 /**
- * 3D Spatial Glass Window Container with Specular Rim Light & Parallax
+ * Modern 3D Stage Card with Gyroscopic Tilt, Cursor Spotlight & Z-Depth Layering
  */
-interface SpatialCockpitWindowProps {
-  children: React.ReactNode;
-  glowColor?: string;
-  className?: string;
+interface StageCardProps {
+  id: number;
+  idx: number;
+  isActive: boolean;
+  isPlaying: boolean;
+  isConsoleHovered: boolean;
+  step: WorkflowStep;
+  onSelect: (idx: number) => void;
+  onKeyDown: (e: React.KeyboardEvent, idx: number) => void;
 }
 
-const SpatialCockpitWindow: React.FC<SpatialCockpitWindowProps> = ({
-  children,
-  glowColor = "rgba(49, 95, 232, 0.12)",
-  className = "",
+const StageCard: React.FC<StageCardProps> = ({
+  id,
+  idx,
+  isActive,
+  isPlaying,
+  isConsoleHovered,
+  step,
+  onSelect,
+  onKeyDown,
 }) => {
-  const cardRef = React.useRef<HTMLDivElement>(null);
-  const [mousePos, setMousePos] = React.useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = React.useState(false);
   const shouldReduceMotion = useReducedMotion();
+  const [mousePos, setMousePos] = React.useState<{ x: number; y: number } | null>(null);
+  const [tilt, setTilt] = React.useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const cardRef = React.useRef<HTMLButtonElement>(null);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (shouldReduceMotion || !cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
     setMousePos({ x, y });
+
+    // Restrained 3D tilt: max +/- 2.2 deg
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * -2.2;
+    const rotateY = ((x - centerX) / centerX) * 2.2;
+    setTilt({ x: rotateX, y: rotateY });
   };
 
+  const handleMouseLeave = () => {
+    setMousePos(null);
+    setTilt({ x: 0, y: 0 });
+  };
+
+  const StepIcon = step.icon;
+
+  const stageAccentColors = [
+    {
+      glow: "rgba(37, 99, 235, 0.15)",
+      border: "border-blue-500/50 dark:border-blue-400/50",
+      badge: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
+    },
+    {
+      glow: "rgba(16, 185, 129, 0.15)",
+      border: "border-emerald-500/50 dark:border-emerald-400/50",
+      badge: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
+    },
+    {
+      glow: "rgba(245, 158, 11, 0.15)",
+      border: "border-amber-500/50 dark:border-amber-400/50",
+      badge: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
+    },
+    {
+      glow: "rgba(6, 182, 212, 0.15)",
+      border: "border-cyan-500/50 dark:border-cyan-400/50",
+      badge: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20",
+    },
+  ];
+
+  const currentAccent = stageAccentColors[idx % stageAccentColors.length];
+
   return (
-    <div
+    <motion.button
       ref={cardRef}
+      id={`workflow-step-tab-${idx}`}
+      role="tab"
+      aria-selected={isActive}
+      aria-controls={`workflow-step-panel-${idx}`}
+      tabIndex={isActive ? 0 : -1}
+      onClick={() => onSelect(idx)}
+      onKeyDown={(e) => onKeyDown(e, idx)}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => {
-        setIsHovered(false);
-        setMousePos({ x: 0, y: 0 });
+      onMouseLeave={handleMouseLeave}
+      whileHover={shouldReduceMotion ? undefined : { y: -2 }}
+      transition={{ type: "spring", stiffness: 350, damping: 28 }}
+      style={{
+        transform: shouldReduceMotion
+          ? "none"
+          : `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+        transformStyle: "preserve-3d",
+        transition: "transform 0.16s cubic-bezier(0.16, 1, 0.3, 1)",
       }}
-      style={{ perspective: 1000 }}
-      className={`relative ${className}`}
+      className={`group focus-visible:ring-primary relative z-10 w-full cursor-pointer overflow-hidden rounded-2xl border p-3.5 text-left select-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden sm:p-4.5 ${
+        isActive
+          ? `ring-primary/25 bg-white shadow-[0_12px_32px_-8px_rgba(0,0,0,0.12),inset_0_1px_0_rgba(255,255,255,0.9)] ring-1 dark:bg-gradient-to-b dark:from-[#0d172e] dark:to-[#070d1a] dark:shadow-[0_18px_40px_-10px_rgba(0,0,0,0.85),inset_0_1px_0_rgba(255,255,255,0.15)] ${currentAccent.border}`
+          : "border-neutral-200/80 bg-white/70 hover:border-neutral-300 hover:bg-white/95 dark:border-white/10 dark:bg-neutral-900/60 dark:hover:border-white/20 dark:hover:bg-neutral-900/90"
+      }`}
     >
-      {/* Subtle Ambient Glow Mesh */}
+      {/* Dynamic Cursor Spotlight */}
+      {mousePos && !shouldReduceMotion && (
+        <div
+          className="pointer-events-none absolute -inset-px rounded-2xl opacity-100 transition-opacity duration-300"
+          style={{
+            background: `radial-gradient(320px circle at ${mousePos.x}px ${mousePos.y}px, ${currentAccent.glow}, transparent 70%)`,
+          }}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Top Specular Hairline Rim Light */}
+      <div className="via-primary/30 pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent to-transparent dark:via-white/25" />
+
       <div
-        className="pointer-events-none absolute -inset-3 -z-10 rounded-3xl blur-2xl transition-opacity duration-500"
+        className="relative z-10 flex items-start gap-3.5"
+        style={{ transformStyle: "preserve-3d" }}
+      >
+        {/* Step Numeric Node with 3D Z-Depth Layering */}
+        <div
+          className="relative shrink-0"
+          style={{ transform: shouldReduceMotion ? "none" : "translateZ(20px)" }}
+        >
+          <div
+            className={`relative flex h-10 w-10 items-center justify-center rounded-xl font-mono text-xs font-bold transition-all duration-200 ${
+              isActive
+                ? "bg-primary text-white shadow-[0_0_14px_rgba(37,99,235,0.6)]"
+                : "border border-neutral-200/80 bg-neutral-100/80 text-neutral-500 group-hover:border-neutral-300 group-hover:text-neutral-900 dark:border-white/10 dark:bg-neutral-800/80 dark:text-neutral-400 dark:group-hover:text-white"
+            }`}
+          >
+            <StepIcon className="h-4.5 w-4.5" />
+          </div>
+        </div>
+
+        <div className="min-w-0 flex-1">
+          <div
+            className="flex items-center justify-between gap-2"
+            style={{ transform: shouldReduceMotion ? "none" : "translateZ(14px)" }}
+          >
+            <span className="min-w-0 truncate font-mono text-[10px] font-semibold tracking-wider text-neutral-500 uppercase dark:text-neutral-400">
+              Stage {step.stepNumber} &bull; {step.badge}
+            </span>
+            {isActive && (
+              <span className="border-primary/30 bg-primary/10 text-primary flex shrink-0 items-center gap-1.5 rounded-full border px-2 py-0.5 text-[10px] font-semibold">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
+                </span>
+                Active
+              </span>
+            )}
+          </div>
+
+          <h3
+            style={{ transform: shouldReduceMotion ? "none" : "translateZ(16px)" }}
+            className={`mt-1 text-sm font-bold transition-colors sm:text-base ${
+              isActive
+                ? "font-extrabold text-neutral-900 dark:text-white"
+                : "text-neutral-700 group-hover:text-neutral-900 dark:text-neutral-300 dark:group-hover:text-white"
+            }`}
+          >
+            {step.title}
+          </h3>
+
+          <p
+            style={{ transform: shouldReduceMotion ? "none" : "translateZ(10px)" }}
+            className="mt-1 text-xs leading-relaxed text-neutral-500 dark:text-neutral-400"
+          >
+            {step.description}
+          </p>
+
+          <div
+            style={{ transform: shouldReduceMotion ? "none" : "translateZ(12px)" }}
+            className="mt-2.5 flex items-start gap-1.5 text-[11px] font-medium text-emerald-600 dark:text-emerald-400"
+          >
+            <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+            <span className="leading-tight">{step.highlight}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Active Step Progress Timer Bar */}
+      {isActive && isPlaying && !shouldReduceMotion && (
+        <div className="absolute right-0 bottom-0 left-0 h-1 overflow-hidden bg-neutral-200/60 dark:bg-neutral-800">
+          <motion.div
+            initial={{ width: "0%" }}
+            animate={{ width: isConsoleHovered ? undefined : "100%" }}
+            transition={{ duration: 4.5, ease: "linear" }}
+            key={`timer-${id}-${isPlaying}-${isConsoleHovered}`}
+            className="bg-primary h-full shadow-[0_0_8px_rgba(37,99,235,0.8)]"
+          />
+        </div>
+      )}
+    </motion.button>
+  );
+};
+
+/**
+ * Aerospace & Obsidian-Grade Mission Control Console with 3D Parallax & Gyroscopic Tilt
+ */
+interface PipelineConsoleProps {
+  children: React.ReactNode;
+  className?: string;
+  activeStep: number;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
+}
+
+const PipelineConsole: React.FC<PipelineConsoleProps> = ({
+  children,
+  className = "",
+  activeStep,
+  onMouseEnter,
+  onMouseLeave,
+}) => {
+  const shouldReduceMotion = useReducedMotion();
+  const [mousePos, setMousePos] = React.useState<{ x: number; y: number } | null>(null);
+  const [tilt, setTilt] = React.useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const consoleRef = React.useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (shouldReduceMotion || !consoleRef.current) return;
+    const rect = consoleRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setMousePos({ x, y });
+
+    // Restrained, luxury console tilt: max +/- 1.8deg
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * -1.8;
+    const rotateY = ((x - centerX) / centerX) * 1.8;
+    setTilt({ x: rotateX, y: rotateY });
+  };
+
+  const handleMouseLeave = () => {
+    setMousePos(null);
+    setTilt({ x: 0, y: 0 });
+  };
+
+  const stageSpotlights = [
+    "rgba(37, 99, 235, 0.12)",
+    "rgba(16, 185, 129, 0.12)",
+    "rgba(245, 158, 11, 0.12)",
+    "rgba(6, 182, 212, 0.12)",
+  ];
+
+  const currentGlow = stageSpotlights[activeStep % stageSpotlights.length];
+
+  return (
+    <motion.div
+      ref={consoleRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => {
+        handleMouseLeave();
+        onMouseLeave?.();
+      }}
+      onMouseEnter={onMouseEnter}
+      style={{
+        transform: shouldReduceMotion
+          ? "none"
+          : `perspective(1200px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+        transformStyle: "preserve-3d",
+        transition: "transform 0.18s cubic-bezier(0.16, 1, 0.3, 1)",
+      }}
+      className={`relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border transition-all duration-300 ${className} border-neutral-200/90 bg-white/95 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)] dark:border-white/12 dark:bg-gradient-to-b dark:from-[#0b1222]/98 dark:to-[#050811]/98 dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85),inset_0_1px_0_rgba(255,255,255,0.12)]`}
+    >
+      {/* Dynamic Cursor Spotlight */}
+      {mousePos && !shouldReduceMotion && (
+        <div
+          className="pointer-events-none absolute -inset-px rounded-2xl opacity-100 transition-opacity duration-300"
+          style={{
+            background: `radial-gradient(450px circle at ${mousePos.x}px ${mousePos.y}px, ${currentGlow}, transparent 70%)`,
+          }}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Blueprint Dot Matrix Mask */}
+      <div
+        className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_65%,transparent_100%)] opacity-20 dark:opacity-15"
         style={{
-          background: glowColor,
-          opacity: isHovered ? 0.45 : 0.2,
+          backgroundImage: "radial-gradient(rgba(148, 163, 184, 0.4) 1px, transparent 1px)",
+          backgroundSize: "18px 18px",
         }}
         aria-hidden="true"
       />
 
-      {/* 3D Tilting Glass Cockpit */}
+      {/* Specular Top Rim Light */}
       <div
-        style={{
-          transform:
-            shouldReduceMotion || !isHovered
-              ? "none"
-              : `rotateY(${mousePos.x * 5}deg) rotateX(${-mousePos.y * 5}deg) translateZ(8px)`,
-          transition: "transform 0.16s cubic-bezier(0.16, 1, 0.3, 1)",
-          transformStyle: "preserve-3d",
-        }}
-        className="group border-border/80 bg-surface/90 relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border shadow-lg backdrop-blur-xl transition-all duration-300"
+        className="via-primary/35 pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent to-transparent dark:via-white/25"
+        aria-hidden="true"
+      />
+
+      {/* Content with Preserved 3D */}
+      <div
+        className="relative z-10 flex h-full flex-col justify-between"
+        style={{ transformStyle: "preserve-3d" }}
       >
-        {/* Specular Rim Highlight Light Beam */}
-        <div
-          className="pointer-events-none absolute inset-x-8 top-0 z-20 h-[1.5px] bg-gradient-to-r from-transparent via-white/80 to-transparent transition-opacity duration-300 group-hover:via-white"
-          aria-hidden="true"
-        />
-
-        {/* Dynamic Cursor Spotlight Glare */}
-        <div
-          className="pointer-events-none absolute inset-0 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-          style={{
-            background: `radial-gradient(450px circle at ${(mousePos.x + 0.5) * 100}% ${(mousePos.y + 0.5) * 100}%, rgba(255, 255, 255, 0.12), transparent 60%)`,
-          }}
-          aria-hidden="true"
-        />
-
         {children}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -115,7 +339,6 @@ interface WorkflowStep {
   description: string;
   highlight: string;
   icon: React.ComponentType<{ className?: string }>;
-  accentColor: string;
 }
 
 const workflowSteps: WorkflowStep[] = [
@@ -126,9 +349,8 @@ const workflowSteps: WorkflowStep[] = [
     title: "Establish Your Business Workspace",
     description:
       "Initialize your multi-tenant organization profile with your operating currency, timezone, and business details.",
-    highlight: "Postgres Row Level Security (RLS) guarantees complete tenant isolation.",
+    highlight: "Organization-scoped access ensures complete tenant data boundary.",
     icon: Building2,
-    accentColor: "rgba(59, 130, 246, 0.28)",
   },
   {
     id: 1,
@@ -140,7 +362,6 @@ const workflowSteps: WorkflowStep[] = [
     highlight:
       "Automated buffer intervals guarantee consultants never face back-to-back collisions.",
     icon: Calendar,
-    accentColor: "rgba(16, 185, 129, 0.28)",
   },
   {
     id: 2,
@@ -151,7 +372,6 @@ const workflowSteps: WorkflowStep[] = [
       "Manage incoming bookings, synchronize team schedules, and log client interaction context directly in customer dossiers.",
     highlight: "Role-Based Access Control keeps confidential financial margins strictly locked.",
     icon: Users,
-    accentColor: "rgba(245, 158, 11, 0.28)",
   },
   {
     id: 3,
@@ -162,13 +382,54 @@ const workflowSteps: WorkflowStep[] = [
       "Convert completed client sessions directly into itemized invoices with automated tax calculations and payment tracking.",
     highlight: "Eliminates end-of-month manual reconciliation with instant Stripe Connect payouts.",
     icon: FileText,
-    accentColor: "rgba(6, 182, 212, 0.28)",
   },
 ];
+
+const currencyRates: Record<
+  "USD" | "EUR" | "GBP" | "BDT",
+  {
+    symbol: string;
+    services: [string, string, string];
+    line1: string;
+    line2: string;
+    total: string;
+  }
+> = {
+  USD: {
+    symbol: "$",
+    services: ["$250", "$400", "$150"],
+    line1: "$3,125.00",
+    line2: "$400.00",
+    total: "$3,525.00",
+  },
+  EUR: {
+    symbol: "€",
+    services: ["€230", "€368", "€138"],
+    line1: "€2,875.00",
+    line2: "€368.00",
+    total: "€3,243.00",
+  },
+  GBP: {
+    symbol: "£",
+    services: ["£195", "£315", "£120"],
+    line1: "£2,468.75",
+    line2: "£316.00",
+    total: "£2,784.75",
+  },
+  BDT: {
+    symbol: "৳",
+    services: ["৳29,875", "৳47,800", "৳17,925"],
+    line1: "৳3,73,437.50",
+    line2: "৳47,800.00",
+    total: "৳4,21,237.50",
+  },
+};
 
 export const WorkflowSection: React.FC = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [isPlaying, setIsPlaying] = React.useState(true);
+  const [isConsoleHovered, setIsConsoleHovered] = React.useState(false);
+  const [isTabVisible, setIsTabVisible] = React.useState(true);
   const [selectedCurrency, setSelectedCurrency] = React.useState<"USD" | "EUR" | "GBP" | "BDT">(
     "USD"
   );
@@ -176,215 +437,212 @@ export const WorkflowSection: React.FC = () => {
   const [isSettledStage4, setIsSettledStage4] = React.useState(false);
   const shouldReduceMotion = useReducedMotion();
 
-  // Auto-advancing orchestration timeline (6s per step)
+  const activeCurrencyConfig = currencyRates[selectedCurrency];
+
+  // Document visibility listener to pause timer when tab is hidden
   React.useEffect(() => {
-    if (!isPlaying || shouldReduceMotion) return;
+    const handleVisibilityChange = () => {
+      setIsTabVisible(document.visibilityState === "visible");
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
+  // Auto-advancing orchestration timeline (4.5s per step, reset cleanly on activeStep change)
+  React.useEffect(() => {
+    if (!isPlaying || isConsoleHovered || !isTabVisible || shouldReduceMotion) return;
 
     const timer = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % workflowSteps.length);
-    }, 6000);
+    }, 4500);
 
     return () => clearInterval(timer);
-  }, [isPlaying, shouldReduceMotion]);
+  }, [isPlaying, isConsoleHovered, isTabVisible, shouldReduceMotion, activeStep]);
 
   const currentStep = workflowSteps[activeStep];
 
   const handleNextStep = () => {
-    setIsPlaying(false);
     setActiveStep((prev) => (prev + 1) % workflowSteps.length);
   };
 
   const handlePrevStep = () => {
-    setIsPlaying(false);
     setActiveStep((prev) => (prev - 1 + workflowSteps.length) % workflowSteps.length);
+  };
+
+  const handleStepSelect = (idx: number) => {
+    setActiveStep(idx);
+  };
+
+  // Keyboard navigation for step tablist
+  const handleStepKeyDown = (e: React.KeyboardEvent, idx: number) => {
+    let nextIndex = idx;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      nextIndex = (idx + 1) % workflowSteps.length;
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      nextIndex = (idx - 1 + workflowSteps.length) % workflowSteps.length;
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      nextIndex = 0;
+    } else if (e.key === "End") {
+      e.preventDefault();
+      nextIndex = workflowSteps.length - 1;
+    } else {
+      return;
+    }
+
+    setActiveStep(nextIndex);
+    const targetTab = document.getElementById(`workflow-step-tab-${nextIndex}`);
+    targetTab?.focus();
   };
 
   return (
     <section
       id="how-it-works"
-      className="border-border/70 bg-surface/40 relative scroll-mt-20 overflow-hidden border-t py-20 md:py-28"
+      className="relative scroll-mt-20 overflow-hidden border-t border-neutral-200/70 bg-neutral-50/40 py-20 md:py-28 dark:border-white/10 dark:bg-black/30"
     >
-      {/* Background Holographic Glow Mesh & Dot Grid Matrix */}
+      {/* Background Dot Blueprint Grid with Vignette */}
       <div
-        className="from-primary/10 pointer-events-none absolute inset-x-0 top-1/4 -z-10 mx-auto h-[600px] w-full max-w-6xl rounded-full bg-gradient-to-br via-indigo-500/10 to-cyan-400/10 opacity-70 blur-3xl"
+        className="bg-dot-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-35 dark:opacity-15"
         aria-hidden="true"
       />
-      <div
-        className="pointer-events-none absolute inset-0 -z-10 [background-image:radial-gradient(#315fe8_1px,transparent_1px)] [background-size:24px_24px] opacity-20"
-        aria-hidden="true"
-      />
+
+      {/* Contained Ambient Radial Flares (No horizontal overflow) */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+        <div
+          className="absolute top-1/3 -left-48 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl dark:bg-blue-600/15"
+          aria-hidden="true"
+        />
+        <div
+          className="absolute -right-48 bottom-1/3 h-96 w-96 rounded-full bg-indigo-500/10 blur-3xl dark:bg-indigo-600/15"
+          aria-hidden="true"
+        />
+      </div>
 
       <Container>
-        {/* Section Header */}
+        {/* ========================================================================= */}
+        {/* MASTER SECTION EDITORIAL HEADER                                           */}
+        {/* ========================================================================= */}
         <div className="mx-auto max-w-3xl text-center">
-          <Badge
-            variant="outline"
-            className="border-primary/30 bg-primary/10 text-primary px-4 py-1 text-xs font-semibold backdrop-blur-xl"
-          >
-            <Sparkles className="mr-1.5 h-3.5 w-3.5" />
-            <span>How FlowPilot Works</span>
-          </Badge>
+          {/* Aerospace Hardware-Grade Eyebrow Badge */}
+          <div className="flex items-center justify-center">
+            <div className="inline-flex max-w-full flex-wrap items-center justify-center gap-1.5 rounded-full border border-neutral-200/90 bg-white/90 px-3 py-1 text-xs font-semibold text-neutral-800 shadow-[0_2px_10px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-md sm:gap-2 sm:px-4 sm:py-1.5 dark:border-white/15 dark:bg-neutral-900/90 dark:text-neutral-200 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_16px_rgba(0,0,0,0.5)]">
+              <span className="relative flex h-2 w-2 shrink-0">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75" />
+                <span className="bg-primary relative inline-flex h-2 w-2 rounded-full shadow-[0_0_8px_rgba(37,99,235,0.9)]" />
+              </span>
+              <span className="tracking-wide">How FlowPilot Works</span>
+              <span className="text-neutral-300 dark:text-neutral-600">•</span>
+              <span className="font-mono text-[11px] text-blue-600 dark:text-cyan-400">
+                4-Stage Pipeline
+              </span>
+              <span className="hidden text-neutral-300 sm:inline dark:text-neutral-600">•</span>
+              <span className="hidden rounded-full bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-emerald-600 sm:inline dark:text-emerald-400">
+                Automated Engine
+              </span>
+            </div>
+          </div>
 
-          <h2 className="text-foreground mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
-            A Straightforward Workflow from Setup to Scale
+          {/* Master Radiant Heading */}
+          <h2 className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl lg:text-5xl">
+            <span className="text-neutral-900 drop-shadow-xs dark:bg-gradient-to-b dark:from-white dark:via-neutral-100 dark:to-neutral-300 dark:bg-clip-text dark:text-transparent">
+              A Straightforward Workflow from
+            </span>{" "}
+            <span className="mt-1 block bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 bg-clip-text text-transparent dark:from-blue-400 dark:via-indigo-300 dark:to-cyan-300">
+              Setup to Scale
+            </span>
           </h2>
 
-          <p className="text-muted-foreground mt-4 text-base leading-relaxed sm:text-lg">
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-neutral-600 sm:text-lg dark:text-neutral-300">
             FlowPilot transforms everyday service operations into a predictable, connected sequence.
             Explore the live operational progression below.
           </p>
         </div>
 
         {/* ========================================================================= */}
-        {/* MAIN PIPELINE CONSOLE: 12-COL ASYMMETRIC GRID */}
+        {/* MAIN PIPELINE CONSOLE: 12-COL ASYMMETRIC GRID                             */}
         {/* ========================================================================= */}
-        <div className="mt-14 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-10">
+        <div className="mt-14 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-7 xl:gap-8">
           {/* ======================================================================= */}
-          {/* LEFT COLUMN: ILLUMINATED CIRCUIT STEPPER (5 COLS) */}
+          {/* LEFT COLUMN: CONNECTED PROGRESSIVE TIMELINE (5 COLS)                     */}
           {/* ======================================================================= */}
-          <div className="relative flex flex-col justify-between space-y-4 lg:col-span-5">
-            {/* Vertical Laser Circuit Line (Desktop) */}
+          <div
+            role="tablist"
+            aria-orientation="vertical"
+            aria-label="Workflow stages"
+            className="relative flex flex-col justify-between space-y-3.5 lg:col-span-5"
+          >
+            {/* Glowing Laser Circuit Spine Track (Desktop only) */}
             <div
-              className="border-border/60 bg-border/40 absolute top-7 bottom-7 left-[34px] -z-0 hidden w-[2px] lg:block"
+              className="absolute top-8 bottom-8 left-[31px] -z-0 hidden w-[2px] overflow-hidden rounded-full border-neutral-200/80 bg-neutral-200/60 lg:block dark:border-white/10 dark:bg-white/10"
               aria-hidden="true"
             >
-              <motion.div
-                className="from-primary w-full bg-gradient-to-b via-cyan-400 to-indigo-600 shadow-[0_0_12px_rgba(49,95,232,0.6)]"
-                animate={{
+              <div
+                className="bg-primary w-full shadow-[0_0_8px_rgba(37,99,235,0.7)] transition-all duration-300"
+                style={{
                   height: `${(activeStep / (workflowSteps.length - 1)) * 100}%`,
                 }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
               />
             </div>
 
-            {workflowSteps.map((step, idx) => {
-              const isActive = activeStep === idx;
-              const StepIcon = step.icon;
-
-              return (
-                <div
-                  key={step.id}
-                  onClick={() => {
-                    setActiveStep(idx);
-                    setIsPlaying(false);
-                  }}
-                  className={`group relative z-10 cursor-pointer overflow-hidden rounded-2xl border p-5 backdrop-blur-xl transition-all duration-300 ${
-                    isActive
-                      ? "border-primary/60 bg-surface shadow-[0_12px_35px_-8px_rgba(49,95,232,0.18)]"
-                      : "border-border/70 bg-surface/75 hover:border-border hover:bg-surface/95 hover:shadow-xs"
-                  }`}
-                >
-                  {/* Top Specular Rim Line */}
-                  <div
-                    className={`pointer-events-none absolute inset-x-4 top-0 h-[1px] transition-opacity duration-300 ${
-                      isActive
-                        ? "via-primary/50 bg-gradient-to-r from-transparent to-transparent"
-                        : "bg-gradient-to-r from-transparent via-white/80 to-transparent opacity-0 group-hover:opacity-100 dark:via-white/10"
-                    }`}
-                    aria-hidden="true"
-                  />
-
-                  {/* Active Indicator Spring Background Bar */}
-                  {isActive && (
-                    <motion.div
-                      layoutId="active-workflow-card-indicator"
-                      transition={{ type: "spring", stiffness: 450, damping: 35 }}
-                      className="from-primary absolute top-0 bottom-0 left-0 w-1.5 bg-gradient-to-b to-indigo-600"
-                    />
-                  )}
-
-                  <div className="flex items-start gap-4">
-                    {/* Step Numeric Node with Double-Ring Ripple */}
-                    <div className="relative shrink-0">
-                      {isActive && (
-                        <span className="bg-primary/25 absolute -inset-1 animate-ping rounded-xl" />
-                      )}
-                      <div
-                        className={`relative flex h-11 w-11 items-center justify-center rounded-xl font-mono text-sm font-black transition-all ${
-                          isActive
-                            ? "from-primary border-primary/30 bg-gradient-to-br to-indigo-600 text-white shadow-[0_0_20px_rgba(49,95,232,0.35)]"
-                            : "bg-surface/90 border-border/80 text-muted-foreground group-hover:text-foreground group-hover:border-primary/30 border shadow-2xs"
-                        }`}
-                      >
-                        <StepIcon className="h-5 w-5" />
-                      </div>
-                    </div>
-
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="text-muted-foreground font-mono text-[11px] font-bold tracking-wider uppercase">
-                          Stage {step.stepNumber} &bull; {step.badge}
-                        </span>
-                        {isActive && (
-                          <span className="bg-primary/10 text-primary border-primary/20 flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-bold">
-                            Active
-                          </span>
-                        )}
-                      </div>
-
-                      <h3
-                        className={`mt-1 text-base font-bold transition-colors ${
-                          isActive
-                            ? "text-foreground font-extrabold"
-                            : "text-foreground/85 group-hover:text-foreground"
-                        }`}
-                      >
-                        {step.title}
-                      </h3>
-
-                      <p className="text-muted-foreground mt-1.5 text-xs leading-relaxed">
-                        {step.description}
-                      </p>
-
-                      <div className="mt-2.5 flex items-center gap-1.5 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
-                        <CheckCircle2 className="h-3.5 w-3.5 shrink-0" />
-                        <span>{step.highlight}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Active Step Progress Timer Bar */}
-                  {isActive && isPlaying && !shouldReduceMotion && (
-                    <div className="bg-border/60 absolute right-0 bottom-0 left-0 h-1 overflow-hidden">
-                      <motion.div
-                        initial={{ width: "0%" }}
-                        animate={{ width: "100%" }}
-                        transition={{ duration: 6, ease: "linear" }}
-                        key={`timer-${activeStep}`}
-                        className="from-primary h-full bg-gradient-to-r to-indigo-500"
-                      />
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+            {workflowSteps.map((step, idx) => (
+              <StageCard
+                key={step.id}
+                id={step.id}
+                idx={idx}
+                isActive={activeStep === idx}
+                isPlaying={isPlaying}
+                isConsoleHovered={isConsoleHovered}
+                step={step}
+                onSelect={handleStepSelect}
+                onKeyDown={handleStepKeyDown}
+              />
+            ))}
           </div>
 
           {/* ======================================================================= */}
-          {/* RIGHT COLUMN: 3D SPATIAL COCKPIT CONSOLE (7 COLS) */}
+          {/* RIGHT COLUMN: REFINED PIPELINE CONSOLE (7 COLS)                         */}
           {/* ======================================================================= */}
           <div className="lg:col-span-7">
-            <SpatialCockpitWindow glowColor={currentStep.accentColor}>
-              {/* Window Console Header Bar */}
-              <div className="border-border/70 bg-muted/40 flex items-center justify-between border-b px-5 py-3.5">
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-1.5" aria-hidden="true">
-                    <span className="h-3 w-3 rounded-full bg-rose-500/80" />
-                    <span className="h-3 w-3 rounded-full bg-amber-500/80" />
-                    <span className="h-3 w-3 rounded-full bg-emerald-500/80" />
+            <PipelineConsole
+              activeStep={activeStep}
+              onMouseEnter={() => setIsConsoleHovered(true)}
+              onMouseLeave={() => setIsConsoleHovered(false)}
+            >
+              {/* Hardware Console Window Header Bar with 3D Z-Depth */}
+              <div
+                style={{ transform: shouldReduceMotion ? "none" : "translateZ(24px)" }}
+                className="flex items-center justify-between border-b border-neutral-200/80 bg-neutral-100/70 px-3 py-2 sm:px-5 sm:py-3 dark:border-white/10 dark:bg-neutral-900/80"
+              >
+                <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+                  {/* Mac Gloss Traffic Dots */}
+                  <div className="flex shrink-0 items-center gap-1.5" aria-hidden="true">
+                    <div className="h-2.5 w-2.5 rounded-full bg-[#ff5f56] shadow-[0_0_6px_rgba(255,95,86,0.6),inset_0_0.5px_0.5px_rgba(255,255,255,0.6)]" />
+                    <div className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e] shadow-[0_0_6px_rgba(255,189,46,0.6),inset_0_0.5px_0.5px_rgba(255,255,255,0.6)]" />
+                    <div className="h-2.5 w-2.5 rounded-full bg-[#27c93f] shadow-[0_0_6px_rgba(39,201,63,0.6),inset_0_0.5px_0.5px_rgba(255,255,255,0.6)]" />
                   </div>
-                  <span className="text-muted-foreground font-mono text-[11px] font-medium">
-                    flowpilot-orchestrator // stage-0{activeStep + 1}
+                  <span className="shrink-0 text-neutral-400 dark:text-neutral-600">|</span>
+                  <span className="flex min-w-0 items-center gap-1.5 font-mono text-[11px] font-semibold text-neutral-600 dark:text-neutral-300">
+                    <Terminal className="text-primary h-3 w-3 shrink-0" />
+                    <span className="hidden truncate sm:inline">
+                      flowpilot-orchestrator // stage-0{activeStep + 1}
+                    </span>
+                    <span className="truncate sm:hidden">stage-0{activeStep + 1}</span>
                   </span>
                 </div>
 
                 {/* Stage Controls: Prev / Next / Play-Pause */}
-                <div className="flex items-center gap-1.5">
+                <div className="flex shrink-0 items-center gap-1.5">
                   <button
                     type="button"
                     onClick={handlePrevStep}
+                    aria-label="Previous Stage"
                     title="Previous Stage"
-                    className="border-border/70 hover:bg-background/90 text-muted-foreground hover:text-foreground flex h-7 w-7 items-center justify-center rounded-lg border transition-colors"
+                    className="focus-visible:ring-primary flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg border border-neutral-200/80 bg-white/80 text-neutral-600 transition-colors hover:bg-white hover:text-neutral-900 focus-visible:ring-2 focus-visible:outline-hidden active:scale-95 dark:border-white/10 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:text-white"
                   >
                     <ChevronLeft className="h-3.5 w-3.5" />
                   </button>
@@ -392,8 +650,9 @@ export const WorkflowSection: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleNextStep}
+                    aria-label="Next Stage"
                     title="Next Stage"
-                    className="border-border/70 hover:bg-background/90 text-muted-foreground hover:text-foreground flex h-7 w-7 items-center justify-center rounded-lg border transition-colors"
+                    className="focus-visible:ring-primary flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg border border-neutral-200/80 bg-white/80 text-neutral-600 transition-colors hover:bg-white hover:text-neutral-900 focus-visible:ring-2 focus-visible:outline-hidden active:scale-95 dark:border-white/10 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:text-white"
                   >
                     <ChevronRight className="h-3.5 w-3.5" />
                   </button>
@@ -401,8 +660,11 @@ export const WorkflowSection: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setIsPlaying((p) => !p)}
+                    aria-label={
+                      isPlaying ? "Pause automated workflow" : "Resume automated workflow"
+                    }
                     title={isPlaying ? "Pause automated workflow" : "Resume automated workflow"}
-                    className="border-border/70 hover:bg-background/90 text-muted-foreground hover:text-foreground flex h-7 w-7 items-center justify-center rounded-lg border transition-colors"
+                    className="focus-visible:ring-primary flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg border border-neutral-200/80 bg-white/80 text-neutral-600 transition-colors hover:bg-white hover:text-neutral-900 focus-visible:ring-2 focus-visible:outline-hidden active:scale-95 dark:border-white/10 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:text-white"
                   >
                     {isPlaying ? (
                       <Pause className="h-3.5 w-3.5" />
@@ -411,68 +673,80 @@ export const WorkflowSection: React.FC = () => {
                     )}
                   </button>
 
-                  <span className="hidden items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-bold text-emerald-600 sm:inline-flex">
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
-                    LIVE PIPELINE
+                  <span className="hidden items-center gap-1.5 rounded-md border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-600 sm:inline-flex dark:text-emerald-400">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
+                    Live Pipeline
                   </span>
                 </div>
               </div>
 
-              {/* Holographic Stage Viewport */}
-              <div className="relative min-h-[400px] p-4 sm:p-8">
+              {/* Stage Viewport with 3D Depth */}
+              <div
+                role="tabpanel"
+                id={`workflow-step-panel-${activeStep}`}
+                aria-labelledby={`workflow-step-tab-${activeStep}`}
+                style={{ transform: shouldReduceMotion ? "none" : "translateZ(16px)" }}
+                className="relative min-h-[400px] p-4 sm:p-6 md:p-7"
+              >
                 <AnimatePresence mode="wait">
                   {/* =============================================================== */}
-                  {/* SCREEN 01: WORKSPACE & TENANT SHARD ARCHITECTURE */}
+                  {/* SCREEN 01: WORKSPACE & TENANT BOUNDARY                          */}
                   {/* =============================================================== */}
                   {activeStep === 0 && (
                     <motion.div
                       key="step-0"
-                      initial={{ opacity: 0, y: 12 }}
+                      initial={false}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -12 }}
-                      transition={{ duration: 0.28 }}
-                      className="space-y-4"
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.15, ease: "easeOut" }}
+                      className="space-y-4 motion-reduce:!transform-none motion-reduce:!opacity-100"
                     >
-                      <div className="flex items-center justify-between border-b pb-3">
-                        <div className="flex items-center gap-3">
-                          <div className="from-primary flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br to-indigo-600 text-white shadow-xs">
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-200/80 pb-3 dark:border-white/10">
+                        <div className="flex min-w-0 flex-1 items-center gap-3">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-blue-500/25 bg-blue-500/15 text-blue-600 shadow-xs dark:text-blue-400">
                             <Server className="h-5 w-5" />
                           </div>
-                          <div>
-                            <h4 className="text-foreground text-sm font-extrabold">
-                              Isolated Multi-Tenant Shard
+                          <div className="min-w-0 flex-1">
+                            <h4 className="truncate text-sm font-extrabold text-neutral-900 dark:text-white">
+                              Isolated Multi-Tenant Workspace
                             </h4>
-                            <p className="text-muted-foreground text-[11px]">
-                              Postgres Row-Level Security partition (tenant_org_apx92)
+                            <p className="truncate text-[11px] text-neutral-500 dark:text-neutral-400">
+                              Scoped organization boundary (org_demo_apex)
                             </p>
                           </div>
                         </div>
-                        <span className="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3 py-1 font-mono text-[11px] font-bold text-emerald-600">
-                          Shard Active
+                        <span className="shrink-0 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3 py-1 font-mono text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
+                          Workspace Active
                         </span>
                       </div>
 
-                      {/* Interactive Currency Selector */}
-                      <div className="border-border/70 bg-background/95 rounded-2xl border p-4 shadow-sm">
+                      {/* Interactive Ledger Currency Selector */}
+                      <div className="rounded-2xl border border-neutral-200/90 bg-neutral-50/70 p-4 shadow-inner dark:border-white/10 dark:bg-black/40">
                         <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
                           <div>
-                            <span className="text-foreground font-bold">
+                            <span className="font-bold text-neutral-900 dark:text-white">
                               Operating Ledger Currency:
                             </span>
-                            <p className="text-muted-foreground text-[10px]">
+                            <p className="text-[10px] text-neutral-500 dark:text-neutral-400">
                               All invoicing, payout ledgers, and reporting normalize here
                             </p>
                           </div>
-                          <div className="border-border/70 bg-surface flex items-center rounded-lg border p-1">
+                          <div
+                            role="radiogroup"
+                            aria-label="Operating ledger currency"
+                            className="flex items-center rounded-lg border border-neutral-200/90 bg-neutral-100/80 p-1 dark:border-white/10 dark:bg-neutral-800/80"
+                          >
                             {(["USD", "EUR", "GBP", "BDT"] as const).map((curr) => (
                               <button
                                 key={curr}
                                 type="button"
+                                role="radio"
+                                aria-checked={selectedCurrency === curr}
                                 onClick={() => setSelectedCurrency(curr)}
-                                className={`rounded-md px-2.5 py-0.5 font-mono text-xs font-bold transition-all ${
+                                className={`focus-visible:ring-primary cursor-pointer rounded-md px-2.5 py-0.5 font-mono text-xs font-bold transition-all focus-visible:ring-2 focus-visible:outline-hidden ${
                                   selectedCurrency === curr
-                                    ? "bg-primary text-primary-foreground shadow-xs"
-                                    : "text-muted-foreground hover:text-foreground"
+                                    ? "bg-primary text-white shadow-xs"
+                                    : "text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white"
                                 }`}
                               >
                                 {curr}
@@ -482,85 +756,75 @@ export const WorkflowSection: React.FC = () => {
                         </div>
                       </div>
 
-                      {/* Live Shard Telemetry Metrics */}
+                      {/* Live Telemetry Metrics */}
                       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                        <div className="border-border/80 bg-background/95 relative overflow-hidden rounded-xl border p-3 shadow-2xs">
-                          <div
-                            className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
-                            aria-hidden="true"
-                          />
-                          <span className="text-muted-foreground block text-[10px] font-medium">
+                        <div className="relative overflow-hidden rounded-xl border border-neutral-200/90 bg-white/95 p-3 shadow-xs dark:border-white/10 dark:bg-neutral-900/90">
+                          <span className="block text-[10px] font-medium text-neutral-500 dark:text-neutral-400">
                             Tenant Isolation
                           </span>
-                          <span className="mt-1 flex items-center gap-1 font-mono text-xs font-black text-emerald-600">
-                            <ShieldCheck className="h-3.5 w-3.5" /> 100% RLS Isolated
+                          <span className="mt-1 flex items-center gap-1 font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                            <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
+                            <span className="hidden truncate sm:inline">Organization Scoped</span>
+                            <span className="truncate sm:hidden">Org Scoped</span>
                           </span>
                         </div>
-                        <div className="border-border/80 bg-background/95 relative overflow-hidden rounded-xl border p-3 shadow-2xs">
-                          <div
-                            className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
-                            aria-hidden="true"
-                          />
-                          <span className="text-muted-foreground block text-[10px] font-medium">
-                            Cluster Latency
+                        <div className="relative overflow-hidden rounded-xl border border-neutral-200/90 bg-white/95 p-3 shadow-xs dark:border-white/10 dark:bg-neutral-900/90">
+                          <span className="block text-[10px] font-medium text-neutral-500 dark:text-neutral-400">
+                            Workspace Routing
                           </span>
-                          <span className="text-foreground mt-1 flex items-center gap-1 font-mono text-xs font-black">
-                            <Activity className="h-3.5 w-3.5 text-blue-500" /> 12ms Region US-E
+                          <span className="mt-1 flex items-center gap-1 font-mono text-xs font-bold text-neutral-900 dark:text-white">
+                            <Activity className="h-3.5 w-3.5 shrink-0 text-blue-500" /> Operational
                           </span>
                         </div>
-                        <div className="border-border/80 bg-background/95 relative col-span-2 overflow-hidden rounded-xl border p-3 shadow-2xs sm:col-span-1">
-                          <div
-                            className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
-                            aria-hidden="true"
-                          />
-                          <span className="text-muted-foreground block text-[10px] font-medium">
-                            Data Leak Test
+                        <div className="relative col-span-2 overflow-hidden rounded-xl border border-neutral-200/90 bg-white/95 p-3 shadow-xs sm:col-span-1 dark:border-white/10 dark:bg-neutral-900/90">
+                          <span className="block text-[10px] font-medium text-neutral-500 dark:text-neutral-400">
+                            Data Boundary
                           </span>
-                          <span className="mt-1 block font-mono text-xs font-black text-emerald-600">
-                            ✓ 0 Leaks Detected
+                          <span className="mt-1 block font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                            Strict Boundary
                           </span>
                         </div>
                       </div>
 
-                      <div className="border-border/60 flex items-center justify-between rounded-xl border bg-emerald-500/10 p-3 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
-                        <div className="flex items-center gap-2">
+                      <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
+                        <div className="flex min-w-0 flex-1 items-center gap-2">
                           <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
-                          <span>
-                            Tenant space online. Ready for automated scheduling & billing hand-off.
+                          <span className="leading-snug">
+                            Workspace online. Ready for automated scheduling &amp; billing hand-off.
                           </span>
                         </div>
-                        <span className="font-mono text-[10px]">Zero Config</span>
+                        <span className="shrink-0 font-mono text-[10px]">Zero Config</span>
                       </div>
                     </motion.div>
                   )}
 
                   {/* =============================================================== */}
-                  {/* SCREEN 02: SERVICES & CAPACITY COLLISION ENGINE */}
+                  {/* SCREEN 02: SERVICES & CAPACITY COLLISION ENGINE                 */}
                   {/* =============================================================== */}
                   {activeStep === 1 && (
                     <motion.div
                       key="step-1"
-                      initial={{ opacity: 0, y: 12 }}
+                      initial={false}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -12 }}
-                      transition={{ duration: 0.28 }}
-                      className="space-y-4"
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.15, ease: "easeOut" }}
+                      className="space-y-4 motion-reduce:!transform-none motion-reduce:!opacity-100"
                     >
-                      <div className="flex items-center justify-between border-b pb-3">
-                        <div className="flex items-center gap-3">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-600 shadow-xs">
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-200/80 pb-3 dark:border-white/10">
+                        <div className="flex min-w-0 flex-1 items-center gap-3">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-emerald-500/25 bg-emerald-500/15 text-emerald-600 shadow-xs dark:text-emerald-400">
                             <Calendar className="h-5 w-5" />
                           </div>
-                          <div>
-                            <h4 className="text-foreground text-sm font-extrabold">
-                              Service Matrix & Smart Rest Buffers
+                          <div className="min-w-0 flex-1">
+                            <h4 className="truncate text-sm font-extrabold text-neutral-900 dark:text-white">
+                              Service Matrix &amp; Buffer Control
                             </h4>
-                            <p className="text-muted-foreground text-[11px]">
+                            <p className="truncate text-[11px] text-neutral-500 dark:text-neutral-400">
                               Zero scheduling collision engine with automated rest gaps
                             </p>
                           </div>
                         </div>
-                        <span className="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3 py-1 font-mono text-[11px] font-bold text-emerald-600">
+                        <span className="shrink-0 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3 py-1 font-mono text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
                           Buffer: +15m Auto
                         </span>
                       </div>
@@ -568,27 +832,39 @@ export const WorkflowSection: React.FC = () => {
                       {/* Interactive Service Chips */}
                       <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
                         {[
-                          { title: "Strategy Call", duration: "60 mins", price: "$250" },
-                          { title: "Arch Review", duration: "90 mins", price: "$400" },
-                          { title: "Advisory Sprint", duration: "30 mins", price: "$150" },
+                          {
+                            title: "Strategy Call",
+                            duration: "60 mins",
+                            price: activeCurrencyConfig.services[0],
+                          },
+                          {
+                            title: "Arch Review",
+                            duration: "90 mins",
+                            price: activeCurrencyConfig.services[1],
+                          },
+                          {
+                            title: "Advisory Sprint",
+                            duration: "30 mins",
+                            price: activeCurrencyConfig.services[2],
+                          },
                         ].map((srv, i) => (
                           <button
                             key={srv.title}
                             type="button"
                             onClick={() => setActiveServiceChip(i)}
-                            className={`rounded-xl border p-3 text-left transition-all ${
+                            className={`focus-visible:ring-primary cursor-pointer rounded-xl border p-3 text-left transition-all focus-visible:ring-2 focus-visible:outline-hidden ${
                               activeServiceChip === i
                                 ? "border-emerald-500/70 bg-emerald-500/10 shadow-xs"
-                                : "border-border/70 bg-background/85 hover:border-border"
+                                : "border-neutral-200/80 bg-white/80 hover:border-neutral-300 dark:border-white/10 dark:bg-neutral-900/80"
                             }`}
                           >
-                            <span className="text-foreground block text-xs font-bold">
+                            <span className="block text-xs font-bold text-neutral-900 dark:text-white">
                               {srv.title}
                             </span>
-                            <span className="text-muted-foreground block text-[10px]">
+                            <span className="block text-[10px] text-neutral-500 dark:text-neutral-400">
                               {srv.duration}
                             </span>
-                            <span className="font-mono text-xs font-extrabold text-emerald-600">
+                            <span className="font-mono text-xs font-extrabold text-emerald-600 dark:text-emerald-400">
                               {srv.price}
                             </span>
                           </button>
@@ -596,53 +872,57 @@ export const WorkflowSection: React.FC = () => {
                       </div>
 
                       {/* Visual Timeline Buffer Shield Demonstration */}
-                      <div className="border-border/70 bg-background/95 rounded-2xl border p-4 shadow-sm">
-                        <div className="flex items-center justify-between text-xs font-bold">
-                          <span className="text-foreground">
+                      <div className="rounded-2xl border border-neutral-200/90 bg-neutral-50/70 p-4 shadow-inner dark:border-white/10 dark:bg-black/40">
+                        <div className="flex flex-wrap items-center justify-between gap-1.5 text-xs font-bold">
+                          <span className="text-neutral-900 dark:text-white">
                             Live Timeline Protection Demonstration
                           </span>
-                          <span className="font-mono text-[10px] text-emerald-600">
+                          <span className="shrink-0 font-mono text-[10px] text-emerald-600 dark:text-emerald-400">
                             Active Collision Guard
                           </span>
                         </div>
 
                         {/* Meeting Slot ➔ Buffer Wall ➔ Next Available Slot */}
-                        <div className="mt-3 grid grid-cols-12 items-center gap-2 text-xs">
-                          <div className="bg-surface border-border/80 col-span-5 rounded-xl border p-2.5 text-center">
-                            <span className="text-foreground block font-bold">
+                        <div className="mt-3 flex flex-col items-center gap-2 text-xs sm:grid sm:grid-cols-12">
+                          <div className="w-full rounded-xl border border-neutral-200/80 bg-white/95 p-2.5 text-center shadow-xs sm:col-span-5 dark:border-white/10 dark:bg-neutral-900/90">
+                            <span className="block font-bold text-neutral-900 dark:text-white">
                               09:00 - 10:00 AM
                             </span>
-                            <span className="text-muted-foreground block text-[10px]">
+                            <span className="block text-[10px] text-neutral-500 dark:text-neutral-400">
                               Client Strategy Call
                             </span>
                           </div>
 
-                          <div className="col-span-3 rounded-xl border border-dashed border-emerald-500/50 bg-emerald-500/15 p-2 text-center text-emerald-700 dark:text-emerald-300">
+                          <div className="w-full rounded-xl border border-dashed border-emerald-500/50 bg-emerald-500/15 p-2 text-center text-emerald-700 sm:col-span-3 dark:text-emerald-300">
                             <span className="flex items-center justify-center gap-1 font-mono text-[11px] font-black">
-                              <Clock className="h-3 w-3" /> +15m
+                              <Clock className="h-3 w-3 shrink-0" /> +15m
                             </span>
-                            <span className="block text-[9px] font-bold">Protected Buffer</span>
+                            <span className="block truncate text-[9px] font-bold">
+                              Protected Buffer
+                            </span>
                           </div>
 
-                          <div className="bg-surface border-border/80 col-span-4 rounded-xl border p-2.5 text-center">
-                            <span className="text-foreground block font-bold">10:15 AM</span>
-                            <span className="text-muted-foreground block text-[10px]">
+                          <div className="w-full rounded-xl border border-neutral-200/80 bg-white/95 p-2.5 text-center shadow-xs sm:col-span-4 dark:border-white/10 dark:bg-neutral-900/90">
+                            <span className="block font-bold text-neutral-900 dark:text-white">
+                              10:15 AM
+                            </span>
+                            <span className="block text-[10px] text-neutral-500 dark:text-neutral-400">
                               Next Open Slot
                             </span>
                           </div>
                         </div>
 
                         {/* Capacity Load Monitor */}
-                        <div className="mt-3.5 space-y-2 border-t pt-2.5 text-[11px]">
+                        <div className="mt-3.5 space-y-2 border-t border-neutral-200/60 pt-2.5 text-[11px] dark:border-white/10">
                           <div className="flex justify-between">
-                            <span className="text-muted-foreground">
+                            <span className="text-neutral-500 dark:text-neutral-400">
                               Sarah Chen (Principal Lead)
                             </span>
-                            <span className="text-foreground font-mono font-bold">
+                            <span className="font-mono font-bold text-neutral-900 dark:text-white">
                               75% Capacity [Balanced]
                             </span>
                           </div>
-                          <div className="bg-muted h-1.5 w-full overflow-hidden rounded-full">
+                          <div className="h-1.5 w-full overflow-hidden rounded-full bg-neutral-200/80 dark:bg-neutral-800">
                             <div className="h-full w-3/4 rounded-full bg-emerald-500" />
                           </div>
                         </div>
@@ -651,177 +931,177 @@ export const WorkflowSection: React.FC = () => {
                   )}
 
                   {/* =============================================================== */}
-                  {/* SCREEN 03: COORDINATE APPOINTMENTS & CLIENT DELIVERY */}
+                  {/* SCREEN 03: COORDINATE APPOINTMENTS & CLIENT DELIVERY            */}
                   {/* =============================================================== */}
                   {activeStep === 2 && (
                     <motion.div
                       key="step-2"
-                      initial={{ opacity: 0, y: 12 }}
+                      initial={false}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -12 }}
-                      transition={{ duration: 0.28 }}
-                      className="space-y-4"
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.15, ease: "easeOut" }}
+                      className="space-y-4 motion-reduce:!transform-none motion-reduce:!opacity-100"
                     >
-                      <div className="flex items-center justify-between border-b pb-3">
-                        <div className="flex items-center gap-3">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/15 text-amber-600 shadow-xs">
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-200/80 pb-3 dark:border-white/10">
+                        <div className="flex min-w-0 flex-1 items-center gap-3">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-amber-500/25 bg-amber-500/15 text-amber-600 shadow-xs dark:text-amber-400">
                             <Users className="h-5 w-5" />
                           </div>
-                          <div>
-                            <h4 className="text-foreground text-sm font-extrabold">
-                              Live Client Delivery & Context Sync
+                          <div className="min-w-0 flex-1">
+                            <h4 className="truncate text-sm font-extrabold text-neutral-900 dark:text-white">
+                              Live Client Delivery &amp; Context Sync
                             </h4>
-                            <p className="text-muted-foreground text-[11px]">
-                              Booking automatically merged into customer history & RBAC scope
+                            <p className="truncate text-[11px] text-neutral-500 dark:text-neutral-400">
+                              Booking automatically merged into customer history &amp; RBAC scope
                             </p>
                           </div>
                         </div>
-                        <span className="rounded-full border border-amber-500/40 bg-amber-500/10 px-3 py-1 font-mono text-[11px] font-bold text-amber-600">
+                        <span className="shrink-0 rounded-full border border-amber-500/40 bg-amber-500/10 px-3 py-1 font-mono text-[11px] font-bold text-amber-600 dark:text-amber-400">
                           Stream Synced
                         </span>
                       </div>
 
                       {/* Live Booking Dispatch Card */}
-                      <div className="border-border/80 bg-background/95 relative overflow-hidden rounded-2xl border p-4.5 shadow-sm backdrop-blur-xl">
-                        {/* Specular Top Rim */}
-                        <div
-                          className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
-                          aria-hidden="true"
-                        />
-                        <div className="border-border/60 flex items-center justify-between border-b pb-3">
-                          <div className="flex items-center gap-3">
-                            <div className="flex h-9.5 w-9.5 items-center justify-center rounded-xl border border-amber-500/25 bg-gradient-to-br from-amber-500/15 to-amber-500/5 font-mono text-xs font-bold text-amber-600 shadow-2xs">
+                      <div className="relative overflow-hidden rounded-2xl border border-neutral-200/90 bg-neutral-50/70 p-4 shadow-inner sm:p-4.5 dark:border-white/10 dark:bg-black/40">
+                        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-200/80 pb-3 dark:border-white/10">
+                          <div className="flex min-w-0 flex-1 items-center gap-3">
+                            <div className="flex h-9.5 w-9.5 shrink-0 items-center justify-center rounded-xl border border-amber-500/25 bg-amber-500/10 font-mono text-xs font-bold text-amber-600 shadow-2xs">
                               02:00
                             </div>
-                            <div>
-                              <p className="text-foreground text-xs font-bold">
+                            <div className="min-w-0 flex-1">
+                              <p className="truncate text-xs font-bold text-neutral-900 dark:text-white">
                                 Enterprise Infrastructure Review
                               </p>
-                              <p className="text-muted-foreground text-[11px]">
+                              <p className="truncate text-[11px] text-neutral-500 dark:text-neutral-400">
                                 Apex Solutions &bull; Sarah Chen &bull; Marcus Vance
                               </p>
                             </div>
                           </div>
-                          <span className="rounded-full bg-blue-500/10 px-2.5 py-0.5 font-mono text-[10px] font-bold text-blue-600">
-                            60m Zoom Synced
+                          <span className="shrink-0 rounded-full bg-blue-500/10 px-2.5 py-0.5 font-mono text-[10px] font-bold text-blue-600 dark:text-blue-400">
+                            60m Video Synced
                           </span>
                         </div>
 
                         {/* Automatic Briefing Memo */}
-                        <div className="bg-surface/90 border-border/80 relative mt-3 overflow-hidden rounded-xl border p-3 text-xs shadow-2xs">
-                          <div
-                            className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
-                            aria-hidden="true"
-                          />
-                          <span className="text-muted-foreground block text-[10px] font-bold tracking-wider uppercase">
+                        <div className="relative mt-3 overflow-hidden rounded-xl border border-neutral-200/80 bg-white/95 p-3 text-xs shadow-xs dark:border-white/10 dark:bg-neutral-900/90">
+                          <span className="block text-[10px] font-bold tracking-wider text-neutral-500 uppercase dark:text-neutral-400">
                             Auto-Attached Context Memo:
                           </span>
-                          <p className="text-foreground/90 mt-1 text-[11px] leading-relaxed">
+                          <p className="mt-1 text-[11px] leading-relaxed text-neutral-700 dark:text-neutral-300">
                             &quot;Client requested architectural assessment of multi-tenant database
-                            migration. All NDA covenants validated under tenant org_apx92.&quot;
+                            migration under organization org_demo_apex.&quot;
                           </p>
                         </div>
 
                         {/* RBAC Boundary Security Pill */}
-                        <div className="border-border/50 text-muted-foreground mt-3 flex items-center justify-between border-t pt-2.5 text-[10px]">
-                          <span className="flex items-center gap-1.5">
-                            <Lock className="h-3 w-3 text-amber-500" />
-                            <span>Billing scope masked for non-finance team members</span>
+                        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-neutral-200/60 pt-2.5 text-[10px] text-neutral-500 dark:border-white/10 dark:text-neutral-400">
+                          <span className="flex min-w-0 flex-1 items-center gap-1.5">
+                            <Lock className="h-3 w-3 shrink-0 text-amber-500" />
+                            <span className="truncate">
+                              Billing scope masked for non-finance team members
+                            </span>
                           </span>
-                          <span className="font-semibold text-emerald-600">RBAC Verified</span>
+                          <span className="shrink-0 font-semibold text-emerald-600 dark:text-emerald-400">
+                            RBAC Verified
+                          </span>
                         </div>
                       </div>
                     </motion.div>
                   )}
 
                   {/* =============================================================== */}
-                  {/* SCREEN 04: ISSUE INVOICES & RECONCILE CASH FLOW */}
+                  {/* SCREEN 04: ISSUE INVOICES & RECONCILE CASH FLOW                 */}
                   {/* =============================================================== */}
                   {activeStep === 3 && (
                     <motion.div
                       key="step-3"
-                      initial={{ opacity: 0, y: 12 }}
+                      initial={false}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -12 }}
-                      transition={{ duration: 0.28 }}
-                      className="space-y-4"
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.15, ease: "easeOut" }}
+                      className="space-y-4 motion-reduce:!transform-none motion-reduce:!opacity-100"
                     >
-                      <div className="flex items-center justify-between border-b pb-3">
-                        <div className="flex items-center gap-3">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-500/15 text-cyan-600 shadow-xs">
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-200/80 pb-3 dark:border-white/10">
+                        <div className="flex min-w-0 flex-1 items-center gap-3">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-cyan-500/25 bg-cyan-500/15 text-cyan-600 shadow-xs dark:text-cyan-400">
                             <FileText className="h-5 w-5" />
                           </div>
-                          <div>
-                            <h4 className="text-foreground text-sm font-extrabold">
-                              One-Click Invoice & Stripe Settlement
+                          <div className="min-w-0 flex-1">
+                            <h4 className="truncate text-sm font-extrabold text-neutral-900 dark:text-white">
+                              One-Click Invoice &amp; Stripe Settlement
                             </h4>
-                            <p className="text-muted-foreground text-[11px]">
+                            <p className="truncate text-[11px] text-neutral-500 dark:text-neutral-400">
                               Delivered appointment hours converted into instant payouts
                             </p>
                           </div>
                         </div>
-                        <span className="rounded-full border border-cyan-500/40 bg-cyan-500/10 px-3 py-1 font-mono text-[11px] font-bold text-cyan-600">
+                        <span className="shrink-0 rounded-full border border-cyan-500/40 bg-cyan-500/10 px-3 py-1 font-mono text-[11px] font-bold text-cyan-600 dark:text-cyan-400">
                           Stripe Connected
                         </span>
                       </div>
 
                       {/* Invoice Summary Card */}
-                      <div className="border-border/80 bg-background/95 relative overflow-hidden rounded-2xl border p-4.5 shadow-sm backdrop-blur-xl">
-                        {/* Specular Top Rim */}
-                        <div
-                          className="pointer-events-none absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/80 to-transparent dark:via-white/20"
-                          aria-hidden="true"
-                        />
-                        <div className="flex items-center justify-between border-b pb-3 text-xs">
-                          <div>
-                            <span className="font-mono text-xs font-black text-cyan-600">
+                      <div className="relative overflow-hidden rounded-2xl border border-neutral-200/90 bg-neutral-50/70 p-4 shadow-inner sm:p-4.5 dark:border-white/10 dark:bg-black/40">
+                        {/* Header */}
+                        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-200/80 pb-3 text-xs dark:border-white/10">
+                          <div className="min-w-0">
+                            <span className="font-mono text-xs font-bold text-cyan-600 dark:text-cyan-400">
                               #INV-2026-904
                             </span>
-                            <p className="text-muted-foreground text-[10px]">
+                            <p className="truncate text-[10px] text-neutral-500 dark:text-neutral-400">
                               Client: Apex Solutions Inc.
                             </p>
                           </div>
-                          <span className="rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-[10px] font-bold text-emerald-600">
-                            ✓ Auto-Reconciled
-                          </span>
+
+                          <div className="flex shrink-0 items-center gap-2">
+                            <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
+                            <span className="rounded-full border border-emerald-500/25 bg-emerald-500/15 px-2.5 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                              Auto-Reconciled
+                            </span>
+                          </div>
                         </div>
 
-                        <div className="bg-surface/90 border-border/80 relative mt-3 space-y-2 overflow-hidden rounded-xl border p-3.5 text-xs shadow-2xs">
-                          <div
-                            className="pointer-events-none absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20"
-                            aria-hidden="true"
-                          />
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground text-[11px]">
+                        {/* Line Item Breakdown */}
+                        <div className="relative mt-3 space-y-2 overflow-hidden rounded-xl border border-neutral-200/80 bg-white/95 p-3.5 text-xs shadow-xs dark:border-white/10 dark:bg-neutral-900/90">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="min-w-0 flex-1 truncate text-[11px] text-neutral-500 dark:text-neutral-400">
                               Strategic Advisory (12.5 hrs)
                             </span>
-                            <span className="text-foreground font-mono font-bold">$3,125.00</span>
+                            <span className="shrink-0 font-mono font-bold text-neutral-900 dark:text-white">
+                              {activeCurrencyConfig.line1}
+                            </span>
                           </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground text-[11px]">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="min-w-0 flex-1 truncate text-[11px] text-neutral-500 dark:text-neutral-400">
                               Architecture Review (1 Session)
                             </span>
-                            <span className="text-foreground font-mono font-bold">$400.00</span>
+                            <span className="shrink-0 font-mono font-bold text-neutral-900 dark:text-white">
+                              {activeCurrencyConfig.line2}
+                            </span>
                           </div>
-                          <div className="border-border/60 flex justify-between border-t pt-2 font-bold">
-                            <span className="text-foreground">Total Disbursed:</span>
-                            <span className="font-mono text-emerald-600">$3,525.00</span>
+                          <div className="flex items-center justify-between gap-2 border-t border-neutral-200/80 pt-2 font-bold dark:border-white/10">
+                            <span className="min-w-0 flex-1 truncate text-neutral-900 dark:text-white">
+                              Total Disbursed:
+                            </span>
+                            <span className="shrink-0 font-mono text-emerald-600 dark:text-emerald-400">
+                              {activeCurrencyConfig.total}
+                            </span>
                           </div>
                         </div>
 
                         {/* Interactive Instant Settlement Action */}
                         <div className="mt-3 flex flex-wrap items-center justify-between gap-2 pt-1">
                           <div className="flex items-center gap-2">
-                            <span className="text-muted-foreground text-[11px] font-semibold">
+                            <span className="text-[11px] font-semibold text-neutral-600 dark:text-neutral-400">
                               Direct Bank Payout:
                             </span>
                             {isSettledStage4 && (
                               <button
                                 type="button"
                                 onClick={() => setIsSettledStage4(false)}
-                                className="text-muted-foreground hover:text-foreground text-[10px] font-semibold underline underline-offset-2"
+                                className="focus-visible:ring-primary cursor-pointer text-[10px] font-semibold text-neutral-500 underline underline-offset-2 transition-colors hover:text-neutral-900 focus-visible:ring-2 focus-visible:outline-hidden dark:text-neutral-400 dark:hover:text-white"
                               >
-                                Reset
+                                Reset Simulation
                               </button>
                             )}
                           </div>
@@ -829,16 +1109,16 @@ export const WorkflowSection: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => setIsSettledStage4((prev) => !prev)}
-                            className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-extrabold shadow-sm transition-all ${
+                            className={`focus-visible:ring-primary relative inline-flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg px-4 py-2 text-xs font-semibold shadow-xs transition-all duration-150 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden active:scale-[0.98] sm:w-auto ${
                               isSettledStage4
-                                ? "bg-emerald-600 text-white"
-                                : "from-primary bg-gradient-to-r to-indigo-600 text-white hover:scale-105"
+                                ? "bg-emerald-600 text-white shadow-emerald-500/20 hover:bg-emerald-700"
+                                : "bg-primary hover:bg-primary-hover shadow-primary/25 text-white"
                             }`}
                           >
                             {isSettledStage4 ? (
                               <>
-                                <Check className="h-3.5 w-3.5 stroke-[3]" />
-                                <span>✓ Disbursed via Stripe</span>
+                                <CheckCheck className="h-3.5 w-3.5 stroke-[2.5]" />
+                                <span>Reconciled via Stripe</span>
                               </>
                             ) : (
                               <>
@@ -849,19 +1129,19 @@ export const WorkflowSection: React.FC = () => {
                           </button>
                         </div>
 
-                        {/* Holographic Disbursed Stamp Overlay */}
+                        {/* Disbursed Badge Overlay */}
                         <AnimatePresence>
                           {isSettledStage4 && (
                             <motion.div
-                              initial={{ scale: 2, opacity: 0, rotate: -20 }}
-                              animate={{ scale: 1, opacity: 1, rotate: -6 }}
-                              exit={{ scale: 0.8, opacity: 0 }}
-                              transition={{ type: "spring", stiffness: 350, damping: 25 }}
-                              className="pointer-events-none absolute top-3 right-3 rounded-xl border-2 border-emerald-500 bg-emerald-500/15 px-3 py-1 shadow-md backdrop-blur-md"
+                              initial={shouldReduceMotion ? false : { scale: 0.95, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                              exit={{ scale: 0.95, opacity: 0 }}
+                              transition={{ duration: shouldReduceMotion ? 0 : 0.12 }}
+                              className="pointer-events-none absolute top-2 right-2 rounded-lg border border-emerald-500/40 bg-emerald-500/15 px-2 py-0.5 shadow-sm backdrop-blur-md motion-reduce:!transform-none motion-reduce:!opacity-100 sm:top-3 sm:right-3 sm:px-3 sm:py-1"
                             >
-                              <div className="flex items-center gap-1.5 text-emerald-600">
-                                <CheckCheck className="h-4 w-4 stroke-[3]" />
-                                <span className="font-mono text-[11px] font-black tracking-wider uppercase">
+                              <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
+                                <CheckCheck className="h-3.5 w-3.5 stroke-[2.5]" />
+                                <span className="font-mono text-[10px] font-bold tracking-wider uppercase sm:text-xs">
                                   FUNDS DISBURSED
                                 </span>
                               </div>
@@ -875,59 +1155,78 @@ export const WorkflowSection: React.FC = () => {
               </div>
 
               {/* Bottom Quick Feature Tag Strip */}
-              <div className="border-border/60 bg-muted/20 flex flex-wrap items-center justify-between gap-3 border-t px-6 py-4 text-xs font-semibold">
-                <span className="text-muted-foreground flex items-center gap-1.5">
-                  <CheckCircle2 className="text-primary h-3.5 w-3.5" />
-                  <span>Integrated Operations Pipeline Engine</span>
+              <div
+                style={{ transform: shouldReduceMotion ? "none" : "translateZ(14px)" }}
+                className="flex flex-wrap items-center justify-between gap-2 border-t border-neutral-200/80 bg-neutral-100/60 px-3.5 py-2.5 text-xs font-medium sm:gap-3 sm:px-5 sm:py-3 dark:border-white/10 dark:bg-neutral-900/60"
+              >
+                <span className="flex min-w-0 flex-1 items-center gap-1.5 text-neutral-600 dark:text-neutral-400">
+                  <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
+                  <span className="truncate">Integrated Operations Pipeline Engine</span>
                 </span>
-                <span className="text-primary flex items-center gap-1 font-bold">
-                  <span>Active Phase: Stage {currentStep.stepNumber}</span>
-                  <ChevronRight className="h-3.5 w-3.5" />
+                <span className="flex shrink-0 items-center gap-1 font-semibold text-neutral-900 dark:text-white">
+                  <span>Stage {currentStep.stepNumber} of 04</span>
+                  <ChevronRight className="h-3.5 w-3.5 text-neutral-400" />
                 </span>
               </div>
-            </SpatialCockpitWindow>
+            </PipelineConsole>
           </div>
         </div>
 
         {/* ========================================================================= */}
-        {/* BOTTOM INTEGRATED TELEMETRY STRIP */}
+        {/* BOTTOM INTEGRATED TELEMETRY STRIP (4 INDEPENDENT 3D FLOATING HARDWARE CARDS) */}
         {/* ========================================================================= */}
-        <div className="border-border/70 bg-surface/80 mt-12 grid grid-cols-2 gap-4 rounded-2xl border p-6 shadow-sm backdrop-blur-xl sm:grid-cols-4 sm:p-8">
-          <div className="sm:border-border/60 text-center sm:border-r sm:pr-4">
-            <span className="from-primary block bg-gradient-to-r to-indigo-600 bg-clip-text font-mono text-2xl font-black text-transparent sm:text-3xl">
-              Instant
-            </span>
-            <span className="text-muted-foreground mt-1 block text-xs font-medium">
-              Multi-Tenant Workspace Provisioning
-            </span>
-          </div>
+        <div className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4 md:gap-5">
+          {[
+            {
+              metric: "Instant",
+              label: "Multi-Tenant Workspace Provisioning",
+              color: "text-neutral-900 dark:text-white",
+              badge: "Auto Scoped",
+            },
+            {
+              metric: "0%",
+              label: "Calendar Collisions & Overlaps",
+              color: "text-emerald-600 dark:text-emerald-400",
+              badge: "Buffer Guard",
+            },
+            {
+              metric: "1-Click",
+              label: "Delivered Session to Invoice Conversion",
+              color: "text-neutral-900 dark:text-white",
+              badge: "Instant Liquidity",
+            },
+            {
+              metric: "100%",
+              label: "Multi-Tenant Scoped Isolation",
+              color: "text-neutral-900 dark:text-white",
+              badge: "Zero Cross-Leak",
+            },
+          ].map((item) => (
+            <motion.div
+              key={item.label}
+              whileHover={shouldReduceMotion ? undefined : { y: -3 }}
+              transition={{ type: "spring", stiffness: 350, damping: 28 }}
+              className="relative overflow-hidden rounded-2xl border border-neutral-200/90 bg-white/90 p-3.5 text-center shadow-xs backdrop-blur-md transition-all hover:border-neutral-300 hover:shadow-md sm:p-5 dark:border-white/10 dark:bg-[#0a0f1d]/90 dark:shadow-[0_15px_35px_rgba(0,0,0,0.6)] dark:hover:border-white/20"
+            >
+              {/* Top Specular Glint */}
+              <div className="via-primary/25 pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent to-transparent dark:via-white/20" />
 
-          <div className="sm:border-border/60 text-center sm:border-r sm:px-4">
-            <span className="block font-mono text-2xl font-black text-emerald-600 sm:text-3xl">
-              0%
-            </span>
-            <span className="text-muted-foreground mt-1 block text-xs font-medium">
-              Calendar Collisions & Booking Overlaps
-            </span>
-          </div>
-
-          <div className="sm:border-border/60 text-center sm:border-r sm:px-4">
-            <span className="from-primary block bg-gradient-to-r to-cyan-500 bg-clip-text font-mono text-2xl font-black text-transparent sm:text-3xl">
-              1-Click
-            </span>
-            <span className="text-muted-foreground mt-1 block text-xs font-medium">
-              Delivered Session to Invoice Conversion
-            </span>
-          </div>
-
-          <div className="text-center sm:pl-4">
-            <span className="block font-mono text-2xl font-black text-amber-500 sm:text-3xl">
-              100%
-            </span>
-            <span className="text-muted-foreground mt-1 block text-xs font-medium">
-              Multi-Tenant Data Shard Isolation
-            </span>
-          </div>
+              <span
+                className={`block font-mono text-xl font-extrabold sm:text-2xl md:text-3xl ${item.color}`}
+              >
+                {item.metric}
+              </span>
+              <span className="mt-1 block text-[11px] leading-tight font-medium text-neutral-600 sm:text-xs dark:text-neutral-400">
+                {item.label}
+              </span>
+              <div className="mt-2.5 flex items-center justify-center">
+                <span className="inline-flex items-center gap-1 rounded-full border border-neutral-200 bg-neutral-100/80 px-2 py-0.5 font-mono text-[9.5px] font-semibold text-neutral-500 dark:border-white/10 dark:bg-neutral-800/80 dark:text-neutral-400">
+                  <span className="h-1 w-1 rounded-full bg-emerald-500" />
+                  {item.badge}
+                </span>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </Container>
     </section>
