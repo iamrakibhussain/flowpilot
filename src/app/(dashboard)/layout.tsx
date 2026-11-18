@@ -13,9 +13,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   // Auto-adapt sidebar collapse for small laptop displays (< 1280px, e.g. 1366x768 screens)
   React.useEffect(() => {
-    if (typeof window !== "undefined" && window.innerWidth < 1280 && window.innerWidth >= 1024) {
-      setIsCollapsed(true);
-    }
+    const handleResize = () => {
+      if (typeof window !== "undefined" && window.innerWidth < 1280 && window.innerWidth >= 1024) {
+        setIsCollapsed(true);
+      }
+    };
+
+    const timer = setTimeout(handleResize, 0);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   // Global Keyboard Shortcut: Cmd+K / Ctrl+K
