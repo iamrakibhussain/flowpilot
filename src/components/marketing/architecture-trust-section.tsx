@@ -240,7 +240,8 @@ export const ArchitectureTrustSection: React.FC = () => {
               <div className="mb-0.5 flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
                 <span className="text-foreground truncate text-[11px] leading-tight font-bold sm:text-xs">
-                  Org-Scoped Queries
+                  <span className="hidden sm:inline">Organization-Scoped Queries</span>
+                  <span className="sm:hidden">Org-Scoped Queries</span>
                 </span>
               </div>
               <span className="text-muted-foreground truncate text-[9.5px] leading-tight sm:text-[10px]">
@@ -252,7 +253,8 @@ export const ArchitectureTrustSection: React.FC = () => {
               <div className="mb-0.5 flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
                 <span className="text-foreground truncate text-[11px] leading-tight font-bold sm:text-xs">
-                  Server-Side Checks
+                  <span className="hidden sm:inline">Server-Side Membership Checks</span>
+                  <span className="sm:hidden">Server-Side Checks</span>
                 </span>
               </div>
               <span className="text-muted-foreground truncate text-[9.5px] leading-tight sm:text-[10px]">
@@ -764,7 +766,9 @@ export const ArchitectureTrustSection: React.FC = () => {
                         : "text-rose-600 dark:text-rose-400"
                     }`}
                   >
-                    {apiContractMode === "valid" ? "200 OK — Validated" : "422 Unprocessable"}
+                    {apiContractMode === "valid"
+                      ? "200 OK — Validated"
+                      : "422 Unprocessable Entity"}
                   </span>
                 </div>
 

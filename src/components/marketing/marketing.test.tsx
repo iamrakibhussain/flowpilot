@@ -107,8 +107,8 @@ describe("Marketing Components Suite", () => {
     expect(screen.getByText(/Data Sovereignty & Privacy Standards/i)).toBeInTheDocument();
 
     // Verify verified status strip (no fake RLS)
-    expect(screen.getByText(/Organization-Scoped Queries/i)).toBeInTheDocument();
-    expect(screen.getByText(/Server-Side Membership Checks/i)).toBeInTheDocument();
+    expect(screen.getByText("Organization-Scoped Queries")).toBeInTheDocument();
+    expect(screen.getByText("Server-Side Membership Checks")).toBeInTheDocument();
 
     // Test tenant switcher
     const meridianTenantBtn = screen.getByRole("button", { name: /Meridian Corp/i });
