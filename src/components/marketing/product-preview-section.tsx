@@ -251,34 +251,29 @@ export const ProductPreviewSection: React.FC = () => {
   return (
     <section
       id="preview"
-      className="border-border/70 bg-surface/30 relative scroll-mt-20 overflow-hidden border-t py-16 md:py-24"
+      className="border-border/40 relative scroll-mt-20 overflow-hidden border-t bg-transparent py-16 md:py-24"
     >
       {/* Secondary anchor for features navigation */}
       <span id="features" className="absolute -top-24" aria-hidden="true" />
 
-      {/* Contained Ambient Background Glow & Micro-Dot Matrix (zero horizontal overflow guaranteed) */}
+      {/* Contained Dynamic Chaos Aura & Micro-Dot Matrix */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        <div
-          className={`absolute top-1/2 left-1/2 h-[650px] w-[850px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[140px] transition-all duration-700 ${
-            realityMode === "chaos"
-              ? "bg-rose-500/15 opacity-80"
-              : "bg-blue-500/15 opacity-80 dark:bg-blue-400/15"
-          }`}
-        />
-        <div
-          className={`absolute top-1/4 -right-24 h-[450px] w-[450px] rounded-full blur-[120px] transition-all duration-700 ${
-            realityMode === "chaos"
-              ? "bg-amber-500/10 opacity-60"
-              : "bg-emerald-500/10 opacity-60 dark:bg-emerald-400/10"
-          }`}
-        />
+        {realityMode === "chaos" && (
+          <div className="absolute top-1/2 left-1/2 h-[650px] w-[850px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-rose-500/15 opacity-70 blur-[140px] transition-all duration-700" />
+        )}
         {/* Subtle high-tech grid micro-texture */}
-        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:24px_24px] opacity-35 dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)] dark:opacity-30" />
+        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:24px_24px] opacity-25 dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)] dark:opacity-20" />
       </div>
 
       <Container>
         {/* Section Header */}
-        <div className="mx-auto max-w-3xl text-center">
+        <motion.div
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 22 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          className="mx-auto max-w-3xl text-center"
+        >
           <div>
             <div className="border-border/80 bg-background/80 text-foreground inline-flex max-w-full flex-wrap items-center justify-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold shadow-xs backdrop-blur-md sm:gap-2 sm:px-4 sm:py-1.5">
               <span className="relative flex h-2 w-2 shrink-0">
@@ -300,10 +295,16 @@ export const ProductPreviewSection: React.FC = () => {
             Compare the daily friction of 14 fragmented browser tabs against FlowPilot&apos;s
             autonomous, buffer-protected operating system in an interactive live sandbox.
           </p>
-        </div>
+        </motion.div>
 
         {/* 1. SIGNATURE CONTROL: DUAL-REALITY VISIONOS SWITCHER & COMPARISON */}
-        <div className="mt-9 flex flex-col items-center justify-center gap-4">
+        <motion.div
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.65, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-9 flex flex-col items-center justify-center gap-4"
+        >
           <div className="relative inline-flex w-full items-center justify-center sm:w-auto">
             {/* Ambient Backlight under the Switcher */}
             <div
@@ -453,7 +454,7 @@ export const ProductPreviewSection: React.FC = () => {
               Simulated Demo Data
             </Badge>
           </div>
-        </div>
+        </motion.div>
 
         {/* 2. DAY FLIGHT SCRUBBER TIMELINE */}
         <div className="relative mt-8 overflow-hidden rounded-2xl border border-neutral-200/90 bg-neutral-100/70 p-3 shadow-sm backdrop-blur-xl sm:p-4 dark:border-white/10 dark:bg-neutral-900/70">
@@ -572,10 +573,10 @@ export const ProductPreviewSection: React.FC = () => {
 
           {/* Main Studio Window Container */}
           <div
-            className={`group/studio relative overflow-hidden rounded-3xl border transition-all duration-300 hover:border-neutral-400/90 dark:hover:border-white/20 ${
+            className={`group/studio relative overflow-hidden rounded-3xl border backdrop-blur-2xl transition-all duration-300 hover:border-neutral-400/90 dark:hover:border-white/20 ${
               realityMode === "chaos"
-                ? "border-rose-500/40 bg-white/95 shadow-[0_25px_80px_-15px_rgba(244,63,94,0.15)] ring-2 ring-rose-500/30 hover:shadow-[0_35px_100px_-15px_rgba(244,63,94,0.25)] dark:border-rose-500/30 dark:bg-[#0c1220]/95 dark:shadow-[0_35px_100px_-20px_rgba(244,63,94,0.25)] dark:hover:shadow-[0_45px_120px_-20px_rgba(244,63,94,0.4)]"
-                : "border-neutral-300/80 bg-white/95 shadow-[0_25px_80px_-15px_rgba(0,0,0,0.1),0_0_0_1px_rgba(255,255,255,0.9)_inset] hover:shadow-[0_35px_100px_-15px_rgba(0,0,0,0.14),0_0_0_1px_rgba(255,255,255,1)_inset] dark:border-white/10 dark:bg-[#0c1220]/95 dark:shadow-[0_35px_100px_-20px_rgba(0,0,0,0.85),0_0_0_1px_rgba(255,255,255,0.06)_inset] dark:hover:shadow-[0_45px_120px_-20px_rgba(0,0,0,0.95),0_0_0_1px_rgba(255,255,255,0.1)_inset]"
+                ? "border-rose-500/40 bg-white/80 shadow-[0_25px_80px_-15px_rgba(244,63,94,0.15)] ring-2 ring-rose-500/30 hover:shadow-[0_35px_100px_-15px_rgba(244,63,94,0.25)] dark:border-rose-500/30 dark:bg-[#0c1220]/80 dark:shadow-[0_35px_100px_-20px_rgba(244,63,94,0.25)] dark:hover:shadow-[0_45px_120px_-20px_rgba(244,63,94,0.4)]"
+                : "border-neutral-300/80 bg-white/80 shadow-[0_25px_80px_-15px_rgba(0,0,0,0.1),0_0_0_1px_rgba(255,255,255,0.9)_inset] hover:shadow-[0_35px_100px_-15px_rgba(0,0,0,0.14),0_0_0_1px_rgba(255,255,255,1)_inset] dark:border-white/10 dark:bg-[#0c1220]/80 dark:shadow-[0_35px_100px_-20px_rgba(0,0,0,0.85),0_0_0_1px_rgba(255,255,255,0.06)_inset] dark:hover:shadow-[0_45px_120px_-20px_rgba(0,0,0,0.95),0_0_0_1px_rgba(255,255,255,0.1)_inset]"
             }`}
           >
             {/* Top Specular Rim */}
@@ -2251,7 +2252,7 @@ export const ProductPreviewSection: React.FC = () => {
             aria-hidden="true"
           />
 
-          <div className="relative overflow-hidden rounded-3xl border border-neutral-300/80 bg-gradient-to-b from-white via-neutral-50/95 to-neutral-100/90 p-4.5 shadow-2xl backdrop-blur-2xl transition-all sm:p-6 md:p-8 dark:border-white/10 dark:from-[#0d1527]/95 dark:via-[#090f1d]/95 dark:to-[#060a14]/95 dark:shadow-[0_25px_80px_-15px_rgba(0,0,0,0.85)]">
+          <div className="relative overflow-hidden rounded-3xl border border-neutral-300/80 bg-gradient-to-b from-white/82 via-neutral-50/78 to-neutral-100/70 p-4.5 shadow-2xl backdrop-blur-2xl transition-all sm:p-6 md:p-8 dark:border-white/10 dark:from-[#0d1527]/80 dark:via-[#090f1d]/80 dark:to-[#060a14]/85 dark:shadow-[0_25px_80px_-15px_rgba(0,0,0,0.85)]">
             {/* Top Specular Laser Shimmer */}
             <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent dark:via-emerald-400/40" />
 

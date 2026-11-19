@@ -10,6 +10,7 @@ import {
   useMotionValue,
   useTransform,
   useSpring,
+  useScroll,
 } from "framer-motion";
 import {
   ArrowRight,
@@ -359,8 +360,47 @@ export const HeroSection: React.FC = () => {
     heroCtaY.set(0);
   };
 
+  // Scroll-Driven Perspective Depth (Hardware-Accelerated on Both Desktop & Mobile)
+  const heroSectionRef = React.useRef<HTMLElement | null>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroSectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  const scrollCockpitScale = useTransform(
+    scrollYProgress,
+    [0, 0.85],
+    shouldReduceMotion ? [1, 1] : [1, 0.94]
+  );
+  const scrollCockpitOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.85],
+    shouldReduceMotion ? [1, 1] : [1, 0.9]
+  );
+  const scrollCockpitY = useTransform(
+    scrollYProgress,
+    [0, 0.85],
+    shouldReduceMotion ? [0, 0] : [0, 28]
+  );
+
+  const springScrollCockpitScale = useSpring(scrollCockpitScale, {
+    stiffness: 280,
+    damping: 30,
+    restDelta: 0.001,
+  });
+  const springScrollCockpitOpacity = useSpring(scrollCockpitOpacity, {
+    stiffness: 280,
+    damping: 30,
+    restDelta: 0.001,
+  });
+  const springScrollCockpitY = useSpring(scrollCockpitY, {
+    stiffness: 280,
+    damping: 30,
+    restDelta: 0.001,
+  });
+
   return (
-    <section className="relative overflow-hidden pt-8 pb-14 md:pt-14 md:pb-24">
+    <section ref={heroSectionRef} className="relative overflow-hidden pt-8 pb-14 md:pt-14 md:pb-24">
       {/* 1. Volumetric Celestial Aurora Mesh & 3D Perspective Horizon Plane */}
       <div
         className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
@@ -368,17 +408,17 @@ export const HeroSection: React.FC = () => {
       >
         {/* Deep Core Sapphire Light Pool */}
         <div
-          className={`absolute top-1/4 left-1/2 h-[480px] w-[820px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(37,99,235,0.22),transparent_70%)] blur-[95px] dark:bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.26),transparent_70%)] ${shouldReduceMotion ? "animate-none" : "animate-aurora"}`}
+          className={`absolute top-1/4 left-1/2 h-[480px] w-[820px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(37,99,235,0.11),transparent_70%)] blur-[95px] dark:bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.14),transparent_70%)] ${shouldReduceMotion ? "animate-none" : "animate-aurora"}`}
         />
 
         {/* Hyper-Violet Prismatic Ambient Glow */}
         <div
-          className={`absolute top-1/3 left-1/3 h-[380px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.16),transparent_70%)] blur-[85px] [animation-delay:2.5s] dark:bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.22),transparent_70%)] ${shouldReduceMotion ? "animate-none" : "animate-aurora"}`}
+          className={`absolute top-1/3 left-1/3 h-[380px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.09),transparent_70%)] blur-[85px] [animation-delay:2.5s] dark:bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.12),transparent_70%)] ${shouldReduceMotion ? "animate-none" : "animate-aurora"}`}
         />
 
         {/* Electric Cyan Secondary Accent Horizon Pool */}
         <div
-          className={`absolute top-1/2 left-2/3 h-[340px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.14),transparent_70%)] blur-[90px] [animation-delay:5s] dark:bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.18),transparent_70%)] ${shouldReduceMotion ? "animate-none" : "animate-aurora"}`}
+          className={`absolute top-1/2 left-2/3 h-[340px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.08),transparent_70%)] blur-[90px] [animation-delay:5s] dark:bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.11),transparent_70%)] ${shouldReduceMotion ? "animate-none" : "animate-aurora"}`}
         />
 
         {/* Precision Blueprint Dot Matrix Grid */}
@@ -751,760 +791,777 @@ export const HeroSection: React.FC = () => {
 
         {/* 8. The 3D Spatial Gyroscopic Cockpit with Balanced Floating Z-Cards */}
         <motion.div
-          ref={cockpitRef}
-          id="hero-cockpit-viewport"
-          role="region"
-          aria-labelledby={`hero-lens-tab-${cockpitView}`}
-          onMouseMove={handleCockpitMouseMove}
-          onMouseLeave={handleCockpitMouseLeave}
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: shouldReduceMotion ? 0 : 0.7,
-            delay: shouldReduceMotion ? 0 : 0.3,
-            ease: [0.16, 1, 0.3, 1],
+          style={{
+            scale: shouldReduceMotion ? 1 : springScrollCockpitScale,
+            opacity: shouldReduceMotion ? 1 : springScrollCockpitOpacity,
+            y: shouldReduceMotion ? 0 : springScrollCockpitY,
           }}
-          className="perspective-1400 relative mt-4 w-full max-w-5xl motion-reduce:!transform-none motion-reduce:!opacity-100 md:mt-6 2xl:max-w-6xl"
+          className="flex w-full justify-center"
         >
-          {/* Subtle Atmospheric Aurora Depth behind Window */}
-          <div
-            className="from-primary/15 via-primary/5 pointer-events-none absolute inset-0 -z-10 rounded-3xl bg-gradient-to-b to-transparent opacity-70 blur-3xl sm:-inset-6"
-            aria-hidden="true"
-          />
-
-          {/* 3D Isometric Viewport Container with Hardware Specular Materials */}
           <motion.div
-            style={{
-              rotateX: springCockpitRotateX,
-              rotateY: springCockpitRotateY,
-              transformStyle: "preserve-3d",
+            ref={cockpitRef}
+            id="hero-cockpit-viewport"
+            role="region"
+            aria-labelledby={`hero-lens-tab-${cockpitView}`}
+            onMouseMove={handleCockpitMouseMove}
+            onMouseLeave={handleCockpitMouseLeave}
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: shouldReduceMotion ? 0 : 0.7,
+              delay: shouldReduceMotion ? 0 : 0.3,
+              ease: [0.16, 1, 0.3, 1],
             }}
-            transition={{ type: "spring", stiffness: 260, damping: 26 }}
-            className="preserve-3d relative transition-shadow duration-500"
+            className="perspective-1400 relative mt-4 w-full max-w-5xl motion-reduce:!transform-none motion-reduce:!opacity-100 md:mt-6 2xl:max-w-6xl"
           >
-            {/* Floating Informational Card 1 (Top-Left: Adaptive Lens Metric with Z-Depth & Reactive Parallax) */}
+            {/* Subtle Atmospheric Aurora Depth behind Window */}
+            <div
+              className="from-primary/15 via-primary/5 pointer-events-none absolute inset-0 -z-10 rounded-3xl bg-gradient-to-b to-transparent opacity-70 blur-3xl sm:-inset-6"
+              aria-hidden="true"
+            />
+
+            {/* 3D Isometric Viewport Container with Hardware Specular Materials */}
             <motion.div
-              initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: shouldReduceMotion ? 0 : [0, -6, 0] }}
-              transition={{
-                opacity: { duration: 0.45, delay: shouldReduceMotion ? 0 : 0.5 },
-                y: { duration: 5, repeat: shouldReduceMotion ? 0 : Infinity, ease: "easeInOut" },
+              style={{
+                rotateX: springCockpitRotateX,
+                rotateY: springCockpitRotateY,
+                transformStyle: "preserve-3d",
               }}
-              style={{ transform: "translateZ(50px)", x: card1ParallaxX, y: card1ParallaxY }}
-              className="border-border/90 bg-surface/95 text-foreground pointer-events-none absolute top-3 left-3 z-30 hidden w-64 overflow-hidden rounded-2xl border p-4 text-left shadow-[0_25px_60px_-12px_rgba(0,0,0,0.28)] backdrop-blur-2xl sm:block md:w-72 xl:-top-6 xl:-left-6 dark:border-white/10 dark:bg-[#0c1222]/95"
+              transition={{ type: "spring", stiffness: 260, damping: 26 }}
+              className="preserve-3d relative transition-shadow duration-500"
             >
-              {/* Hairline Specular Top Edge Light */}
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20" />
+              {/* Floating Informational Card 1 (Top-Left: Adaptive Lens Metric with Z-Depth & Reactive Parallax) */}
+              <motion.div
+                initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: shouldReduceMotion ? 0 : [0, -6, 0] }}
+                transition={{
+                  opacity: { duration: 0.45, delay: shouldReduceMotion ? 0 : 0.5 },
+                  y: { duration: 5, repeat: shouldReduceMotion ? 0 : Infinity, ease: "easeInOut" },
+                }}
+                style={{ transform: "translateZ(50px)", x: card1ParallaxX, y: card1ParallaxY }}
+                className="border-border/90 bg-surface/95 text-foreground pointer-events-none absolute top-3 left-3 z-30 hidden w-64 overflow-hidden rounded-2xl border p-4 text-left shadow-[0_25px_60px_-12px_rgba(0,0,0,0.28)] backdrop-blur-2xl sm:block md:w-72 xl:-top-6 xl:-left-6 dark:border-white/10 dark:bg-[#0c1222]/95"
+              >
+                {/* Hairline Specular Top Edge Light */}
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20" />
 
-              <AnimatePresence mode="wait">
-                {cockpitView === "overview" && (
-                  <motion.div
-                    key="widget-calendar"
-                    initial={{ opacity: 0, y: 4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
-                    transition={{ duration: 0.15 }}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="flex h-7.5 w-7.5 items-center justify-center rounded-xl border border-blue-500/25 bg-blue-500/10 text-blue-600 dark:bg-blue-500/15 dark:text-blue-400">
-                          <Calendar className="h-4 w-4" />
-                        </div>
-                        <span className="text-foreground text-xs font-semibold">
-                          8 Scheduled Today
-                        </span>
-                      </div>
-                      <span className="h-2 w-2 rounded-full bg-emerald-500 ring-2 ring-emerald-500/20" />
-                    </div>
-
-                    <div className="border-border/50 mt-3 space-y-1.5 border-t pt-2.5 text-[11px]">
-                      <div className="bg-muted/60 flex items-center justify-between rounded-lg px-2.5 py-1.5">
-                        <div className="flex items-center gap-1.5">
-                          <Video className="text-primary h-3.5 w-3.5" />
-                          <span className="text-foreground font-medium">Acme Strategy Call</span>
-                        </div>
-                        <span className="text-primary font-mono font-semibold">10:30 AM</span>
-                      </div>
-                      <div className="text-muted-foreground flex items-center justify-between text-[10px]">
-                        <span>Buffer Protection</span>
-                        <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-                          +15m Locked
-                        </span>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-
-                {cockpitView === "workflow" && (
-                  <motion.div
-                    key="widget-buffer"
-                    initial={{ opacity: 0, y: 4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
-                    transition={{ duration: 0.15 }}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="flex h-7.5 w-7.5 items-center justify-center rounded-xl border border-violet-500/25 bg-violet-500/10 text-violet-600 dark:bg-violet-500/15 dark:text-violet-400">
-                          <Zap className="h-4 w-4" />
-                        </div>
-                        <span className="text-foreground text-xs font-semibold">Buffer Engine</span>
-                      </div>
-                      <span className="rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
-                        Active
-                      </span>
-                    </div>
-
-                    <div className="border-border/50 mt-3 border-t pt-2.5 text-[11px]">
+                <AnimatePresence mode="wait">
+                  {cockpitView === "overview" && (
+                    <motion.div
+                      key="widget-calendar"
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.15 }}
+                    >
                       <div className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Collision Guard</span>
-                        <span className="text-foreground font-medium">+15m between sessions</span>
-                      </div>
-                      <p className="text-muted-foreground mt-1 text-[10px]">
-                        Zero calendar overlaps across 6 consultants
-                      </p>
-                    </div>
-                  </motion.div>
-                )}
-
-                {cockpitView === "financials" && (
-                  <motion.div
-                    key="widget-mrr"
-                    initial={{ opacity: 0, y: 4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
-                    transition={{ duration: 0.15 }}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="flex h-7.5 w-7.5 items-center justify-center rounded-xl border border-emerald-500/25 bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-400">
-                          <TrendingUp className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                        <div className="flex items-center gap-2">
+                          <div className="flex h-7.5 w-7.5 items-center justify-center rounded-xl border border-blue-500/25 bg-blue-500/10 text-blue-600 dark:bg-blue-500/15 dark:text-blue-400">
+                            <Calendar className="h-4 w-4" />
+                          </div>
+                          <span className="text-foreground text-xs font-semibold">
+                            8 Scheduled Today
+                          </span>
                         </div>
-                        <div>
-                          <p className="text-muted-foreground text-[10px] font-medium tracking-wider uppercase">
-                            Monthly Retainers
+                        <span className="h-2 w-2 rounded-full bg-emerald-500 ring-2 ring-emerald-500/20" />
+                      </div>
+
+                      <div className="border-border/50 mt-3 space-y-1.5 border-t pt-2.5 text-[11px]">
+                        <div className="bg-muted/60 flex items-center justify-between rounded-lg px-2.5 py-1.5">
+                          <div className="flex items-center gap-1.5">
+                            <Video className="text-primary h-3.5 w-3.5" />
+                            <span className="text-foreground font-medium">Acme Strategy Call</span>
+                          </div>
+                          <span className="text-primary font-mono font-semibold">10:30 AM</span>
+                        </div>
+                        <div className="text-muted-foreground flex items-center justify-between text-[10px]">
+                          <span>Buffer Protection</span>
+                          <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                            +15m Locked
+                          </span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {cockpitView === "workflow" && (
+                    <motion.div
+                      key="widget-buffer"
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.15 }}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="flex h-7.5 w-7.5 items-center justify-center rounded-xl border border-violet-500/25 bg-violet-500/10 text-violet-600 dark:bg-violet-500/15 dark:text-violet-400">
+                            <Zap className="h-4 w-4" />
+                          </div>
+                          <span className="text-foreground text-xs font-semibold">
+                            Buffer Engine
+                          </span>
+                        </div>
+                        <span className="rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                          Active
+                        </span>
+                      </div>
+
+                      <div className="border-border/50 mt-3 border-t pt-2.5 text-[11px]">
+                        <div className="flex items-center justify-between">
+                          <span className="text-muted-foreground">Collision Guard</span>
+                          <span className="text-foreground font-medium">+15m between sessions</span>
+                        </div>
+                        <p className="text-muted-foreground mt-1 text-[10px]">
+                          Zero calendar overlaps across 6 consultants
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {cockpitView === "financials" && (
+                    <motion.div
+                      key="widget-mrr"
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.15 }}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="flex h-7.5 w-7.5 items-center justify-center rounded-xl border border-emerald-500/25 bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-400">
+                            <TrendingUp className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                          </div>
+                          <div>
+                            <p className="text-muted-foreground text-[10px] font-medium tracking-wider uppercase">
+                              Monthly Retainers
+                            </p>
+                            <p className="text-foreground text-sm font-bold">
+                              <AnimatedCounter target={48250} prefix="$" decimals={2} />
+                            </p>
+                          </div>
+                        </div>
+                        <span className="rounded-md border border-emerald-500/20 bg-emerald-500/10 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                          +24%
+                        </span>
+                      </div>
+
+                      <div className="border-border/50 text-muted-foreground mt-3 flex items-center justify-between border-t pt-2 text-[10px]">
+                        <span>18 Active Retainers</span>
+                        <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                          0 Overdue
+                        </span>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+
+              {/* Floating Informational Card 2 (Bottom-Right: Automated Settlement with Z-Depth & Reactive Parallax) */}
+              <motion.div
+                initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: shouldReduceMotion ? 0 : [0, 6, 0] }}
+                transition={{
+                  opacity: { duration: 0.45, delay: shouldReduceMotion ? 0 : 0.55 },
+                  y: { duration: 6, repeat: shouldReduceMotion ? 0 : Infinity, ease: "easeInOut" },
+                }}
+                style={{ transform: "translateZ(60px)", x: card2ParallaxX, y: card2ParallaxY }}
+                className="border-border/90 bg-surface/95 text-foreground pointer-events-none absolute right-3 bottom-3 z-30 hidden w-64 overflow-hidden rounded-2xl border p-4 text-left shadow-[0_25px_60px_-12px_rgba(0,0,0,0.28)] backdrop-blur-2xl sm:block md:w-74 xl:-right-6 xl:-bottom-6 dark:border-white/10 dark:bg-[#0c1222]/95"
+              >
+                {/* Hairline Specular Top Edge Light */}
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20" />
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <div className="flex h-7.5 w-7.5 items-center justify-center rounded-xl border border-emerald-500/25 bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-400">
+                      <DollarSign className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                    </div>
+                    <div>
+                      <p className="text-muted-foreground text-[10px] font-medium tracking-wider uppercase">
+                        Invoice Settled
+                      </p>
+                      <p className="text-foreground text-sm font-bold">$3,780.00 USD</p>
+                    </div>
+                  </div>
+                  <span className="rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-emerald-600 uppercase dark:text-emerald-400">
+                    Paid
+                  </span>
+                </div>
+
+                <div className="border-border/50 text-muted-foreground mt-3 flex items-center justify-between border-t pt-2 text-[10px]">
+                  <span>Horizon Media &bull; Retainer Q4</span>
+                  <span className="flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400">
+                    <Check className="h-3 w-3" /> Auto-reconciled
+                  </span>
+                </div>
+              </motion.div>
+
+              {/* Floating Informational Card 3 (Bottom-Left: Team Utilization Meter with Z-Depth & Reactive Parallax) */}
+              <motion.div
+                initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: shouldReduceMotion ? 0 : [0, -4, 0] }}
+                transition={{
+                  opacity: { duration: 0.45, delay: shouldReduceMotion ? 0 : 0.6 },
+                  y: {
+                    duration: 5.5,
+                    repeat: shouldReduceMotion ? 0 : Infinity,
+                    ease: "easeInOut",
+                  },
+                }}
+                style={{ transform: "translateZ(45px)", x: card3ParallaxX, y: card3ParallaxY }}
+                className="border-border/90 bg-surface/95 text-foreground pointer-events-none absolute -bottom-5 left-10 z-20 hidden w-64 overflow-hidden rounded-2xl border p-4 text-left shadow-[0_25px_60px_-12px_rgba(0,0,0,0.28)] backdrop-blur-2xl xl:block dark:border-white/10 dark:bg-[#0c1222]/95"
+              >
+                {/* Hairline Specular Top Edge Light */}
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20" />
+
+                <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-1.5 font-semibold">
+                    <div className="flex h-6 w-6 items-center justify-center rounded-lg border border-amber-500/25 bg-amber-500/10 text-amber-600 dark:bg-amber-500/15 dark:text-amber-400">
+                      <Users className="h-3.5 w-3.5" />
+                    </div>
+                    <span>Team Utilization</span>
+                  </div>
+                  <span className="text-foreground font-mono font-semibold">84%</span>
+                </div>
+                {/* Dynamic Progress Meter */}
+                <div className="bg-muted mt-2.5 h-1.5 w-full overflow-hidden rounded-full">
+                  <div className="h-full w-[84%] rounded-full bg-emerald-500" />
+                </div>
+                <div className="text-muted-foreground mt-2 flex items-center justify-between text-[10px]">
+                  <span>5 of 6 booked</span>
+                  <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                    1 Lead Ready
+                  </span>
+                </div>
+              </motion.div>
+
+              {/* Main macOS Hardware Frame with Calm Specular Bevel */}
+              <div className="group/window border-border/80 bg-card relative overflow-hidden rounded-3xl border shadow-[0_30px_90px_-20px_rgba(0,0,0,0.35)] transition-shadow duration-300 dark:border-neutral-800 dark:shadow-[0_30px_90px_-20px_rgba(0,0,0,0.7)]">
+                {/* Static Specular Top Horizon Rim */}
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/35" />
+                <div className="pointer-events-none absolute inset-x-12 top-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent blur-[0.5px] dark:via-cyan-400/50" />
+
+                {/* macOS Frosted Glass Window Header Bar */}
+                <div className="border-border/80 bg-muted/60 flex items-center justify-between border-b px-4.5 py-3 backdrop-blur-xl">
+                  {/* Traffic Light Glass Dots */}
+                  <div className="flex items-center gap-2">
+                    <span className="relative h-3 w-3 overflow-hidden rounded-full border border-rose-600/40 bg-rose-500/90 shadow-2xs">
+                      <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-white/40" />
+                    </span>
+                    <span className="relative h-3 w-3 overflow-hidden rounded-full border border-amber-500/40 bg-amber-400/90 shadow-2xs">
+                      <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-white/40" />
+                    </span>
+                    <span className="relative h-3 w-3 overflow-hidden rounded-full border border-emerald-600/40 bg-emerald-500/90 shadow-2xs">
+                      <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-white/40" />
+                    </span>
+                  </div>
+
+                  {/* Secure Workspace Domain Pill */}
+                  <div className="border-border/70 bg-background/95 text-muted-foreground flex max-w-[190px] items-center gap-2 rounded-lg border px-3 py-1 font-mono text-xs shadow-2xs sm:max-w-none sm:px-3.5">
+                    <Lock className="h-3 w-3 shrink-0 text-emerald-500" />
+                    <span className="text-foreground/80 truncate text-[11px] font-medium sm:text-xs">
+                      app.flowpilot.io/workspace/acme-agency
+                    </span>
+                  </div>
+
+                  {/* Live Workspace Status */}
+                  <div className="text-muted-foreground flex items-center gap-1.5 text-xs font-medium">
+                    <span className="relative flex h-2 w-2">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                    </span>
+                    <span className="text-foreground/80 hidden sm:inline">Workspace Active</span>
+                  </div>
+                </div>
+
+                {/* High-Density Native Application Cockpit Viewport */}
+                <div className="bg-background/80 relative min-h-[440px] w-full p-3.5 text-left sm:min-h-[460px] sm:p-6">
+                  {/* Lens 1: Command Center (Interactive Operations Canvas) */}
+                  {cockpitView === "overview" && (
+                    <motion.div
+                      key="cockpit-lens-overview"
+                      initial={{ opacity: 0, scale: 0.99 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.99 }}
+                      transition={{ duration: 0.25 }}
+                      className="space-y-4"
+                    >
+                      {/* Top KPI Ribbon */}
+                      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
+                        <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-2xs backdrop-blur-md sm:p-3">
+                          <div className="text-muted-foreground flex items-center justify-between text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
+                            <span className="truncate">Today&apos;s Sessions</span>
+                            <Calendar className="h-3.5 w-3.5 shrink-0 text-blue-500" />
+                          </div>
+                          <p className="text-foreground mt-1 truncate text-base font-bold sm:text-lg">
+                            8 Appointments
                           </p>
-                          <p className="text-foreground text-sm font-bold">
+                          <span className="block truncate text-[9.5px] font-medium text-emerald-600 sm:text-[10px] dark:text-emerald-400">
+                            +15m Buffers Active
+                          </span>
+                        </div>
+                        <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-2xs backdrop-blur-md sm:p-3">
+                          <div className="text-muted-foreground flex items-center justify-between text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
+                            <span className="truncate">Active Client CRM</span>
+                            <Users className="h-3.5 w-3.5 shrink-0 text-violet-500" />
+                          </div>
+                          <p className="text-foreground mt-1 truncate text-base font-bold sm:text-lg">
+                            142 Retainers
+                          </p>
+                          <span className="block truncate text-[9.5px] font-medium text-emerald-600 sm:text-[10px] dark:text-emerald-400">
+                            98.4% Retention
+                          </span>
+                        </div>
+                        <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-2xs backdrop-blur-md sm:p-3">
+                          <div className="text-muted-foreground flex items-center justify-between text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
+                            <span className="truncate">Billing Velocity</span>
+                            <DollarSign className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
+                          </div>
+                          <p className="text-foreground mt-1 truncate text-base font-bold sm:text-lg">
                             <AnimatedCounter target={48250} prefix="$" decimals={2} />
                           </p>
+                          <span className="block truncate text-[9.5px] font-medium text-emerald-600 sm:text-[10px] dark:text-emerald-400">
+                            +24% vs Prev Mo
+                          </span>
+                        </div>
+                        <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-2xs backdrop-blur-md sm:p-3">
+                          <div className="text-muted-foreground flex items-center justify-between text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
+                            <span className="truncate">Tenant Scoping</span>
+                            <Lock className="h-3.5 w-3.5 shrink-0 text-indigo-500" />
+                          </div>
+                          <p className="text-foreground mt-1 truncate text-base font-bold sm:text-lg">
+                            100% Isolated
+                          </p>
+                          <span className="block truncate text-[9.5px] font-medium text-blue-600 sm:text-[10px] dark:text-blue-400">
+                            Multi-Tenant Guard
+                          </span>
                         </div>
                       </div>
-                      <span className="rounded-md border border-emerald-500/20 bg-emerald-500/10 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
-                        +24%
-                      </span>
-                    </div>
 
-                    <div className="border-border/50 text-muted-foreground mt-3 flex items-center justify-between border-t pt-2 text-[10px]">
-                      <span>18 Active Retainers</span>
-                      <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-                        0 Overdue
-                      </span>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
+                      {/* Split Operations Workspace Grid */}
+                      <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
+                        {/* Left: Interactive Schedule Timeline with Visualized Buffer Engine */}
+                        <div className="border-border/70 bg-surface/90 rounded-2xl border p-4 shadow-xs backdrop-blur-md lg:col-span-7">
+                          <div className="border-border/50 flex flex-wrap items-center justify-between gap-2 border-b pb-3">
+                            <div className="flex min-w-0 items-center gap-2">
+                              <Clock className="text-primary h-4 w-4 shrink-0" />
+                              <h4 className="text-foreground truncate text-xs font-bold">
+                                <span className="hidden sm:inline">
+                                  Live Schedule Timeline &bull; Thursday, Nov 16
+                                </span>
+                                <span className="sm:hidden">Schedule Timeline &bull; Nov 16</span>
+                              </h4>
+                            </div>
+                            <span className="shrink-0 rounded-md border border-emerald-500/25 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                              Sync: 0 Conflicts
+                            </span>
+                          </div>
 
-            {/* Floating Informational Card 2 (Bottom-Right: Automated Settlement with Z-Depth & Reactive Parallax) */}
-            <motion.div
-              initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: shouldReduceMotion ? 0 : [0, 6, 0] }}
-              transition={{
-                opacity: { duration: 0.45, delay: shouldReduceMotion ? 0 : 0.55 },
-                y: { duration: 6, repeat: shouldReduceMotion ? 0 : Infinity, ease: "easeInOut" },
-              }}
-              style={{ transform: "translateZ(60px)", x: card2ParallaxX, y: card2ParallaxY }}
-              className="border-border/90 bg-surface/95 text-foreground pointer-events-none absolute right-3 bottom-3 z-30 hidden w-64 overflow-hidden rounded-2xl border p-4 text-left shadow-[0_25px_60px_-12px_rgba(0,0,0,0.28)] backdrop-blur-2xl sm:block md:w-74 xl:-right-6 xl:-bottom-6 dark:border-white/10 dark:bg-[#0c1222]/95"
-            >
-              {/* Hairline Specular Top Edge Light */}
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20" />
+                          {/* Timeline Session 1 */}
+                          <div className="mt-3 space-y-2">
+                            <div className="border-border/60 bg-muted/40 hover:bg-muted/70 flex flex-col justify-between gap-2 rounded-xl border p-2.5 transition-colors sm:flex-row sm:items-center sm:p-3">
+                              <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
+                                <div className="flex h-7.5 w-7.5 shrink-0 items-center justify-center rounded-lg bg-blue-500/10 font-mono text-xs font-bold text-blue-600 sm:h-8 sm:w-8 dark:text-blue-400">
+                                  09:00
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <p className="text-foreground truncate text-xs font-semibold">
+                                    Acme Corp Strategy Kickoff
+                                  </p>
+                                  <p className="text-muted-foreground truncate text-[11px]">
+                                    Sarah Jenkins &bull; 60m Executive Session
+                                  </p>
+                                </div>
+                              </div>
+                              <span className="shrink-0 self-start rounded-md bg-blue-500/10 px-2 py-0.5 text-[10px] font-semibold text-blue-600 sm:self-auto dark:text-blue-400">
+                                Zoom Confirmed
+                              </span>
+                            </div>
 
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <div className="flex h-7.5 w-7.5 items-center justify-center rounded-xl border border-emerald-500/25 bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-400">
-                    <DollarSign className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground text-[10px] font-medium tracking-wider uppercase">
-                      Invoice Settled
-                    </p>
-                    <p className="text-foreground text-sm font-bold">$3,780.00 USD</p>
-                  </div>
-                </div>
-                <span className="rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-emerald-600 uppercase dark:text-emerald-400">
-                  Paid
-                </span>
-              </div>
+                            {/* Visualized Calendar Buffer Logic Guard */}
+                            <div className="flex items-center justify-between gap-1.5 overflow-hidden rounded-lg border border-dashed border-emerald-500/30 bg-emerald-500/[0.06] px-2 py-1.5 text-[10px] text-emerald-700 sm:px-3 dark:text-emerald-400">
+                              <div className="flex min-w-0 items-center gap-1.5 font-semibold">
+                                <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
+                                <span className="hidden truncate sm:inline">
+                                  +15m Protected Auto-Buffer
+                                </span>
+                                <span className="truncate sm:hidden">+15m Buffer Guard</span>
+                              </div>
+                              <span className="text-muted-foreground shrink-0 font-mono text-[9px]">
+                                <span className="hidden sm:inline">Prevents Collisions</span>
+                                <span className="sm:hidden">Auto-Guard</span>
+                              </span>
+                            </div>
 
-              <div className="border-border/50 text-muted-foreground mt-3 flex items-center justify-between border-t pt-2 text-[10px]">
-                <span>Horizon Media &bull; Retainer Q4</span>
-                <span className="flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400">
-                  <Check className="h-3 w-3" /> Auto-reconciled
-                </span>
-              </div>
-            </motion.div>
+                            {/* Timeline Session 2 */}
+                            <div className="border-border/60 bg-muted/40 hover:bg-muted/70 flex flex-col justify-between gap-2 rounded-xl border p-2.5 transition-colors sm:flex-row sm:items-center sm:p-3">
+                              <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
+                                <div className="flex h-7.5 w-7.5 shrink-0 items-center justify-center rounded-lg bg-violet-500/10 font-mono text-xs font-bold text-violet-600 sm:h-8 sm:w-8 dark:text-violet-400">
+                                  10:30
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <p className="text-foreground truncate text-xs font-semibold">
+                                    Meridian Tech Architecture Review
+                                  </p>
+                                  <p className="text-muted-foreground truncate text-[11px]">
+                                    Marcus Vance &bull; 60m Technical Consulting
+                                  </p>
+                                </div>
+                              </div>
+                              <span className="shrink-0 self-start rounded-md bg-violet-500/10 px-2 py-0.5 text-[10px] font-semibold text-violet-600 sm:self-auto dark:text-violet-400">
+                                In-Person
+                              </span>
+                            </div>
 
-            {/* Floating Informational Card 3 (Bottom-Left: Team Utilization Meter with Z-Depth & Reactive Parallax) */}
-            <motion.div
-              initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: shouldReduceMotion ? 0 : [0, -4, 0] }}
-              transition={{
-                opacity: { duration: 0.45, delay: shouldReduceMotion ? 0 : 0.6 },
-                y: { duration: 5.5, repeat: shouldReduceMotion ? 0 : Infinity, ease: "easeInOut" },
-              }}
-              style={{ transform: "translateZ(45px)", x: card3ParallaxX, y: card3ParallaxY }}
-              className="border-border/90 bg-surface/95 text-foreground pointer-events-none absolute -bottom-5 left-10 z-20 hidden w-64 overflow-hidden rounded-2xl border p-4 text-left shadow-[0_25px_60px_-12px_rgba(0,0,0,0.28)] backdrop-blur-2xl xl:block dark:border-white/10 dark:bg-[#0c1222]/95"
-            >
-              {/* Hairline Specular Top Edge Light */}
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/20" />
-
-              <div className="flex items-center justify-between text-xs">
-                <div className="flex items-center gap-1.5 font-semibold">
-                  <div className="flex h-6 w-6 items-center justify-center rounded-lg border border-amber-500/25 bg-amber-500/10 text-amber-600 dark:bg-amber-500/15 dark:text-amber-400">
-                    <Users className="h-3.5 w-3.5" />
-                  </div>
-                  <span>Team Utilization</span>
-                </div>
-                <span className="text-foreground font-mono font-semibold">84%</span>
-              </div>
-              {/* Dynamic Progress Meter */}
-              <div className="bg-muted mt-2.5 h-1.5 w-full overflow-hidden rounded-full">
-                <div className="h-full w-[84%] rounded-full bg-emerald-500" />
-              </div>
-              <div className="text-muted-foreground mt-2 flex items-center justify-between text-[10px]">
-                <span>5 of 6 booked</span>
-                <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-                  1 Lead Ready
-                </span>
-              </div>
-            </motion.div>
-
-            {/* Main macOS Hardware Frame with Calm Specular Bevel */}
-            <div className="group/window border-border/80 bg-card relative overflow-hidden rounded-3xl border shadow-[0_30px_90px_-20px_rgba(0,0,0,0.35)] transition-shadow duration-300 dark:border-neutral-800 dark:shadow-[0_30px_90px_-20px_rgba(0,0,0,0.7)]">
-              {/* Static Specular Top Horizon Rim */}
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/35" />
-              <div className="pointer-events-none absolute inset-x-12 top-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent blur-[0.5px] dark:via-cyan-400/50" />
-
-              {/* macOS Frosted Glass Window Header Bar */}
-              <div className="border-border/80 bg-muted/60 flex items-center justify-between border-b px-4.5 py-3 backdrop-blur-xl">
-                {/* Traffic Light Glass Dots */}
-                <div className="flex items-center gap-2">
-                  <span className="relative h-3 w-3 overflow-hidden rounded-full border border-rose-600/40 bg-rose-500/90 shadow-2xs">
-                    <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-white/40" />
-                  </span>
-                  <span className="relative h-3 w-3 overflow-hidden rounded-full border border-amber-500/40 bg-amber-400/90 shadow-2xs">
-                    <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-white/40" />
-                  </span>
-                  <span className="relative h-3 w-3 overflow-hidden rounded-full border border-emerald-600/40 bg-emerald-500/90 shadow-2xs">
-                    <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-white/40" />
-                  </span>
-                </div>
-
-                {/* Secure Workspace Domain Pill */}
-                <div className="border-border/70 bg-background/95 text-muted-foreground flex max-w-[190px] items-center gap-2 rounded-lg border px-3 py-1 font-mono text-xs shadow-2xs sm:max-w-none sm:px-3.5">
-                  <Lock className="h-3 w-3 shrink-0 text-emerald-500" />
-                  <span className="text-foreground/80 truncate text-[11px] font-medium sm:text-xs">
-                    app.flowpilot.io/workspace/acme-agency
-                  </span>
-                </div>
-
-                {/* Live Workspace Status */}
-                <div className="text-muted-foreground flex items-center gap-1.5 text-xs font-medium">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-                  </span>
-                  <span className="text-foreground/80 hidden sm:inline">Workspace Active</span>
-                </div>
-              </div>
-
-              {/* High-Density Native Application Cockpit Viewport */}
-              <div className="bg-background/80 relative min-h-[440px] w-full p-3.5 text-left sm:min-h-[460px] sm:p-6">
-                {/* Lens 1: Command Center (Interactive Operations Canvas) */}
-                {cockpitView === "overview" && (
-                  <motion.div
-                    key="cockpit-lens-overview"
-                    initial={{ opacity: 0, scale: 0.99 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.99 }}
-                    transition={{ duration: 0.25 }}
-                    className="space-y-4"
-                  >
-                    {/* Top KPI Ribbon */}
-                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
-                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-2xs backdrop-blur-md sm:p-3">
-                        <div className="text-muted-foreground flex items-center justify-between text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
-                          <span className="truncate">Today&apos;s Sessions</span>
-                          <Calendar className="h-3.5 w-3.5 shrink-0 text-blue-500" />
+                            {/* Visualized Calendar Buffer Logic Guard 2 */}
+                            <div className="flex items-center justify-between gap-1.5 overflow-hidden rounded-lg border border-dashed border-emerald-500/30 bg-emerald-500/[0.06] px-2 py-1.5 text-[10px] text-emerald-700 sm:px-3 dark:text-emerald-400">
+                              <div className="flex min-w-0 items-center gap-1.5 font-semibold">
+                                <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
+                                <span className="hidden truncate sm:inline">
+                                  +15m Protected Auto-Buffer
+                                </span>
+                                <span className="truncate sm:hidden">+15m Buffer Guard</span>
+                              </div>
+                              <span className="text-muted-foreground shrink-0 font-mono text-[9px]">
+                                <span className="hidden sm:inline">Next Slot: 01:00 PM</span>
+                                <span className="sm:hidden">Next: 01:00 PM</span>
+                              </span>
+                            </div>
+                          </div>
                         </div>
-                        <p className="text-foreground mt-1 truncate text-base font-bold sm:text-lg">
-                          8 Appointments
-                        </p>
-                        <span className="block truncate text-[9.5px] font-medium text-emerald-600 sm:text-[10px] dark:text-emerald-400">
-                          +15m Buffers Active
-                        </span>
-                      </div>
-                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-2xs backdrop-blur-md sm:p-3">
-                        <div className="text-muted-foreground flex items-center justify-between text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
-                          <span className="truncate">Active Client CRM</span>
-                          <Users className="h-3.5 w-3.5 shrink-0 text-violet-500" />
-                        </div>
-                        <p className="text-foreground mt-1 truncate text-base font-bold sm:text-lg">
-                          142 Retainers
-                        </p>
-                        <span className="block truncate text-[9.5px] font-medium text-emerald-600 sm:text-[10px] dark:text-emerald-400">
-                          98.4% Retention
-                        </span>
-                      </div>
-                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-2xs backdrop-blur-md sm:p-3">
-                        <div className="text-muted-foreground flex items-center justify-between text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
-                          <span className="truncate">Billing Velocity</span>
-                          <DollarSign className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
-                        </div>
-                        <p className="text-foreground mt-1 truncate text-base font-bold sm:text-lg">
-                          <AnimatedCounter target={48250} prefix="$" decimals={2} />
-                        </p>
-                        <span className="block truncate text-[9.5px] font-medium text-emerald-600 sm:text-[10px] dark:text-emerald-400">
-                          +24% vs Prev Mo
-                        </span>
-                      </div>
-                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-2xs backdrop-blur-md sm:p-3">
-                        <div className="text-muted-foreground flex items-center justify-between text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
-                          <span className="truncate">Tenant Scoping</span>
-                          <Lock className="h-3.5 w-3.5 shrink-0 text-indigo-500" />
-                        </div>
-                        <p className="text-foreground mt-1 truncate text-base font-bold sm:text-lg">
-                          100% Isolated
-                        </p>
-                        <span className="block truncate text-[9.5px] font-medium text-blue-600 sm:text-[10px] dark:text-blue-400">
-                          Multi-Tenant Guard
-                        </span>
-                      </div>
-                    </div>
 
-                    {/* Split Operations Workspace Grid */}
-                    <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
-                      {/* Left: Interactive Schedule Timeline with Visualized Buffer Engine */}
-                      <div className="border-border/70 bg-surface/90 rounded-2xl border p-4 shadow-xs backdrop-blur-md lg:col-span-7">
+                        {/* Right: Client Dossier Spotlight & Live Audit Stream */}
+                        <div className="space-y-3 lg:col-span-5">
+                          {/* Client Dossier Card */}
+                          <div className="border-border/70 bg-surface/90 rounded-2xl border p-4 shadow-xs backdrop-blur-md">
+                            <div className="border-border/50 flex items-center justify-between border-b pb-2.5">
+                              <span className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
+                                Client CRM Dossier
+                              </span>
+                              <span className="rounded-md bg-emerald-500/10 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                                Active Tier
+                              </span>
+                            </div>
+                            <div className="mt-2.5 flex items-center gap-2.5 sm:gap-3">
+                              <div className="flex h-8.5 w-8.5 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 text-xs font-bold text-blue-600 sm:h-9 sm:w-9 dark:text-blue-400">
+                                SJ
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <p className="text-foreground truncate text-xs font-bold">
+                                  Sarah Jenkins
+                                </p>
+                                <p className="text-muted-foreground truncate text-[11px]">
+                                  Apex Dynamics &bull; Enterprise Retainer ($4.5k/mo)
+                                </p>
+                              </div>
+                            </div>
+                            <div className="border-border/40 mt-3 grid grid-cols-2 gap-2 border-t pt-2 text-[10px]">
+                              <div>
+                                <span className="text-muted-foreground">Last Invoice:</span>
+                                <p className="text-foreground font-semibold">#FP-1094 (Paid)</p>
+                              </div>
+                              <div>
+                                <span className="text-muted-foreground">Next Session:</span>
+                                <p className="text-foreground font-semibold">Tomorrow, 10:00 AM</p>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Live Audit & Telemetry Stream */}
+                          <div className="border-border/70 bg-surface/90 rounded-2xl border p-4 shadow-xs backdrop-blur-md">
+                            <div className="border-border/50 flex items-center justify-between border-b pb-2">
+                              <span className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
+                                Real-Time Activity Stream
+                              </span>
+                              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
+                            </div>
+                            <div className="mt-2.5 space-y-2 text-[11px]">
+                              <div className="flex items-start gap-2">
+                                <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-500" />
+                                <p className="text-muted-foreground leading-tight">
+                                  <strong className="text-foreground">Invoice #FP-1094</strong>{" "}
+                                  auto-reconciled via Stripe ($4,500.00).
+                                </p>
+                              </div>
+                              <div className="flex items-start gap-2">
+                                <Zap className="mt-0.5 h-3.5 w-3.5 shrink-0 text-blue-500" />
+                                <p className="text-muted-foreground leading-tight">
+                                  Calendar buffer automatically applied (+15m locked).
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* Lens 2: Workflow Engine (Visual Automation Pipeline) */}
+                  {cockpitView === "workflow" && (
+                    <motion.div
+                      key="cockpit-lens-workflow"
+                      initial={{ opacity: 0, scale: 0.99 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.99 }}
+                      transition={{ duration: 0.25 }}
+                      className="space-y-4"
+                    >
+                      <div className="border-border/70 bg-surface/90 rounded-2xl border p-5 shadow-xs backdrop-blur-md">
                         <div className="border-border/50 flex flex-wrap items-center justify-between gap-2 border-b pb-3">
+                          <div>
+                            <h4 className="text-foreground text-sm font-bold">
+                              End-to-End Operational Automation Flow
+                            </h4>
+                            <p className="text-muted-foreground mt-0.5 text-xs">
+                              From customer booking to automated invoice settlement in under 2
+                              seconds.
+                            </p>
+                          </div>
+                          <span className="rounded-lg border border-violet-500/30 bg-violet-500/10 px-2.5 py-1 text-xs font-semibold text-violet-600 dark:text-violet-400">
+                            Active &bull; 0 Conflicts
+                          </span>
+                        </div>
+
+                        {/* Visual Automation Pipeline Nodes */}
+                        <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-4">
+                          {/* Step 1 */}
+                          <div className="rounded-xl border border-blue-500/30 bg-blue-500/[0.06] p-3.5 shadow-2xs">
+                            <div className="flex items-center justify-between">
+                              <span className="rounded-md bg-blue-500/20 px-1.5 py-0.5 font-mono text-[9px] font-bold text-blue-600 dark:text-blue-400">
+                                STEP 1
+                              </span>
+                              <Calendar className="h-4 w-4 text-blue-500" />
+                            </div>
+                            <h5 className="text-foreground mt-2 text-xs font-bold">
+                              Client Booking
+                            </h5>
+                            <p className="text-muted-foreground mt-1 text-[11px] leading-tight">
+                              Client selects 60m session via self-serve link.
+                            </p>
+                          </div>
+
+                          {/* Step 2 */}
+                          <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/[0.06] p-3.5 shadow-2xs">
+                            <div className="flex items-center justify-between">
+                              <span className="rounded-md bg-emerald-500/20 px-1.5 py-0.5 font-mono text-[9px] font-bold text-emerald-600 dark:text-emerald-400">
+                                STEP 2
+                              </span>
+                              <ShieldCheck className="h-4 w-4 text-emerald-500" />
+                            </div>
+                            <h5 className="text-foreground mt-2 text-xs font-bold">
+                              Buffer Protection
+                            </h5>
+                            <p className="text-muted-foreground mt-1 text-[11px] leading-tight">
+                              Locks +15m before &amp; after to eliminate collisions.
+                            </p>
+                          </div>
+
+                          {/* Step 3 */}
+                          <div className="rounded-xl border border-violet-500/30 bg-violet-500/[0.06] p-3.5 shadow-2xs">
+                            <div className="flex items-center justify-between">
+                              <span className="rounded-md bg-violet-500/20 px-1.5 py-0.5 font-mono text-[9px] font-bold text-violet-600 dark:text-violet-400">
+                                STEP 3
+                              </span>
+                              <Users className="h-4 w-4 text-violet-500" />
+                            </div>
+                            <h5 className="text-foreground mt-2 text-xs font-bold">
+                              CRM Context Sync
+                            </h5>
+                            <p className="text-muted-foreground mt-1 text-[11px] leading-tight">
+                              Injects client dossier history &amp; service tiers.
+                            </p>
+                          </div>
+
+                          {/* Step 4 */}
+                          <div className="rounded-xl border border-amber-500/30 bg-amber-500/[0.06] p-3.5 shadow-2xs">
+                            <div className="flex items-center justify-between">
+                              <span className="rounded-md bg-amber-500/20 px-1.5 py-0.5 font-mono text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                                STEP 4
+                              </span>
+                              <DollarSign className="h-4 w-4 text-amber-500" />
+                            </div>
+                            <h5 className="text-foreground mt-2 text-xs font-bold">
+                              Instant Invoicing
+                            </h5>
+                            <p className="text-muted-foreground mt-1 text-[11px] leading-tight">
+                              Generates invoice &amp; reconciles via Stripe in 1.2s.
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Performance Bar */}
+                        <div className="border-border/50 bg-muted/40 mt-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border p-3 text-xs">
+                          <div className="flex items-center gap-2">
+                            <Zap className="h-4 w-4 shrink-0 text-emerald-500" />
+                            <span className="text-foreground font-semibold">
+                              124 Automated Pipeline Runs Completed Today
+                            </span>
+                          </div>
+                          <span className="text-muted-foreground font-mono text-[11px]">
+                            Average execution: 1.2s &bull; 0 manual interventions
+                          </span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* Lens 3: Financial Velocity (Billing & Real-Time Cash Flow) */}
+                  {cockpitView === "financials" && (
+                    <motion.div
+                      key="cockpit-lens-financials"
+                      initial={{ opacity: 0, scale: 0.99 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.99 }}
+                      transition={{ duration: 0.25 }}
+                      className="space-y-4"
+                    >
+                      {/* Top Metric Cards */}
+                      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
+                        <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-xs backdrop-blur-md sm:p-3.5">
+                          <p className="text-muted-foreground truncate text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
+                            MTD Billing
+                          </p>
+                          <p className="text-foreground mt-1 truncate text-base font-bold sm:text-xl">
+                            <AnimatedCounter target={48250} prefix="$" decimals={2} />
+                          </p>
+                          <span className="block truncate text-[9.5px] font-semibold text-emerald-600 sm:text-[10px] dark:text-emerald-400">
+                            +24% vs Prev Mo
+                          </span>
+                        </div>
+                        <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-xs backdrop-blur-md sm:p-3.5">
+                          <p className="text-muted-foreground truncate text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
+                            Billable Ratio
+                          </p>
+                          <p className="text-foreground mt-1 truncate text-base font-bold sm:text-xl">
+                            <AnimatedCounter target={92.4} suffix="%" decimals={1} />
+                          </p>
+                          <span className="text-muted-foreground block truncate text-[9.5px] font-medium sm:text-[10px]">
+                            Target: 85%
+                          </span>
+                        </div>
+                        <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-xs backdrop-blur-md sm:p-3.5">
+                          <p className="text-muted-foreground truncate text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
+                            Avg Booking Lead
+                          </p>
+                          <p className="text-foreground mt-1 truncate text-base font-bold sm:text-xl">
+                            1.8 Days
+                          </p>
+                          <span className="block truncate text-[9.5px] font-semibold text-emerald-600 sm:text-[10px] dark:text-emerald-400">
+                            Zero Idle Gaps
+                          </span>
+                        </div>
+                        <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-xs backdrop-blur-md sm:p-3.5">
+                          <p className="text-muted-foreground truncate text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
+                            Payout Velocity
+                          </p>
+                          <p className="text-foreground mt-1 truncate text-base font-bold sm:text-xl">
+                            Instant
+                          </p>
+                          <span className="block truncate text-[9.5px] font-semibold text-emerald-600 sm:text-[10px] dark:text-emerald-400">
+                            Stripe Connected
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Interactive SVG Sparkline Revenue Velocity Graph */}
+                      <div className="border-border/70 bg-surface/90 rounded-2xl border p-4 shadow-xs backdrop-blur-md">
+                        <div className="border-border/50 flex flex-wrap items-center justify-between gap-2 border-b pb-2.5">
                           <div className="flex min-w-0 items-center gap-2">
-                            <Clock className="text-primary h-4 w-4 shrink-0" />
+                            <TrendingUp className="h-4 w-4 shrink-0 text-emerald-500" />
                             <h4 className="text-foreground truncate text-xs font-bold">
                               <span className="hidden sm:inline">
-                                Live Schedule Timeline &bull; Thursday, Nov 16
+                                Monthly Recurring Revenue (MRR) Velocity
                               </span>
-                              <span className="sm:hidden">Schedule Timeline &bull; Nov 16</span>
+                              <span className="sm:hidden">MRR Revenue Velocity</span>
                             </h4>
                           </div>
                           <span className="shrink-0 rounded-md border border-emerald-500/25 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
-                            Sync: 0 Conflicts
+                            Live Ledger Synchronized
                           </span>
                         </div>
 
-                        {/* Timeline Session 1 */}
-                        <div className="mt-3 space-y-2">
-                          <div className="border-border/60 bg-muted/40 hover:bg-muted/70 flex flex-col justify-between gap-2 rounded-xl border p-2.5 transition-colors sm:flex-row sm:items-center sm:p-3">
-                            <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
-                              <div className="flex h-7.5 w-7.5 shrink-0 items-center justify-center rounded-lg bg-blue-500/10 font-mono text-xs font-bold text-blue-600 sm:h-8 sm:w-8 dark:text-blue-400">
-                                09:00
-                              </div>
-                              <div className="min-w-0 flex-1">
-                                <p className="text-foreground truncate text-xs font-semibold">
-                                  Acme Corp Strategy Kickoff
-                                </p>
-                                <p className="text-muted-foreground truncate text-[11px]">
-                                  Sarah Jenkins &bull; 60m Executive Session
-                                </p>
-                              </div>
-                            </div>
-                            <span className="shrink-0 self-start rounded-md bg-blue-500/10 px-2 py-0.5 text-[10px] font-semibold text-blue-600 sm:self-auto dark:text-blue-400">
-                              Zoom Confirmed
+                        {/* High-Fidelity SVG Curve Chart */}
+                        <div className="relative mt-3 h-28 w-full overflow-hidden">
+                          <svg
+                            className="h-full w-full"
+                            viewBox="0 0 600 100"
+                            preserveAspectRatio="none"
+                          >
+                            <defs>
+                              <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="#10b981" stopOpacity="0.35" />
+                                <stop offset="100%" stopColor="#10b981" stopOpacity="0.0" />
+                              </linearGradient>
+                            </defs>
+                            {/* Grid Lines */}
+                            <line
+                              x1="0"
+                              y1="25"
+                              x2="600"
+                              y2="25"
+                              stroke="currentColor"
+                              strokeOpacity="0.08"
+                              strokeDasharray="3 3"
+                            />
+                            <line
+                              x1="0"
+                              y1="50"
+                              x2="600"
+                              y2="50"
+                              stroke="currentColor"
+                              strokeOpacity="0.08"
+                              strokeDasharray="3 3"
+                            />
+                            <line
+                              x1="0"
+                              y1="75"
+                              x2="600"
+                              y2="75"
+                              stroke="currentColor"
+                              strokeOpacity="0.08"
+                              strokeDasharray="3 3"
+                            />
+
+                            {/* Area Fill */}
+                            <polygon
+                              points="0,95 60,82 120,75 180,68 240,54 300,58 360,42 420,38 480,24 540,18 600,8 600,100 0,100"
+                              fill="url(#revenueGradient)"
+                            />
+                            {/* Glowing Line */}
+                            <polyline
+                              points="0,95 60,82 120,75 180,68 240,54 300,58 360,42 420,38 480,24 540,18 600,8"
+                              fill="none"
+                              stroke="#10b981"
+                              strokeWidth="2.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </div>
+
+                        {/* Recent Settled Ledger Rows */}
+                        <div className="border-border/50 mt-3 space-y-1.5 border-t pt-2.5 text-xs">
+                          <div className="bg-muted/40 flex flex-col justify-between gap-1 rounded-lg px-2.5 py-1.5 sm:flex-row sm:items-center sm:gap-2 sm:px-3">
+                            <span className="text-foreground truncate text-[11px] font-medium sm:text-xs">
+                              #FP-1094 &bull; Vertex Advisory Retainer
+                            </span>
+                            <span className="shrink-0 font-mono text-[11px] font-bold text-emerald-600 sm:text-xs dark:text-emerald-400">
+                              +$4,500.00 (Paid)
                             </span>
                           </div>
-
-                          {/* Visualized Calendar Buffer Logic Guard */}
-                          <div className="flex items-center justify-between gap-1.5 overflow-hidden rounded-lg border border-dashed border-emerald-500/30 bg-emerald-500/[0.06] px-2 py-1.5 text-[10px] text-emerald-700 sm:px-3 dark:text-emerald-400">
-                            <div className="flex min-w-0 items-center gap-1.5 font-semibold">
-                              <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
-                              <span className="hidden truncate sm:inline">
-                                +15m Protected Auto-Buffer
-                              </span>
-                              <span className="truncate sm:hidden">+15m Buffer Guard</span>
-                            </div>
-                            <span className="text-muted-foreground shrink-0 font-mono text-[9px]">
-                              <span className="hidden sm:inline">Prevents Collisions</span>
-                              <span className="sm:hidden">Auto-Guard</span>
+                          <div className="bg-muted/40 flex flex-col justify-between gap-1 rounded-lg px-2.5 py-1.5 sm:flex-row sm:items-center sm:gap-2 sm:px-3">
+                            <span className="text-foreground truncate text-[11px] font-medium sm:text-xs">
+                              #FP-1093 &bull; Kinetic Ops Consulting
                             </span>
-                          </div>
-
-                          {/* Timeline Session 2 */}
-                          <div className="border-border/60 bg-muted/40 hover:bg-muted/70 flex flex-col justify-between gap-2 rounded-xl border p-2.5 transition-colors sm:flex-row sm:items-center sm:p-3">
-                            <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
-                              <div className="flex h-7.5 w-7.5 shrink-0 items-center justify-center rounded-lg bg-violet-500/10 font-mono text-xs font-bold text-violet-600 sm:h-8 sm:w-8 dark:text-violet-400">
-                                10:30
-                              </div>
-                              <div className="min-w-0 flex-1">
-                                <p className="text-foreground truncate text-xs font-semibold">
-                                  Meridian Tech Architecture Review
-                                </p>
-                                <p className="text-muted-foreground truncate text-[11px]">
-                                  Marcus Vance &bull; 60m Technical Consulting
-                                </p>
-                              </div>
-                            </div>
-                            <span className="shrink-0 self-start rounded-md bg-violet-500/10 px-2 py-0.5 text-[10px] font-semibold text-violet-600 sm:self-auto dark:text-violet-400">
-                              In-Person
-                            </span>
-                          </div>
-
-                          {/* Visualized Calendar Buffer Logic Guard 2 */}
-                          <div className="flex items-center justify-between gap-1.5 overflow-hidden rounded-lg border border-dashed border-emerald-500/30 bg-emerald-500/[0.06] px-2 py-1.5 text-[10px] text-emerald-700 sm:px-3 dark:text-emerald-400">
-                            <div className="flex min-w-0 items-center gap-1.5 font-semibold">
-                              <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
-                              <span className="hidden truncate sm:inline">
-                                +15m Protected Auto-Buffer
-                              </span>
-                              <span className="truncate sm:hidden">+15m Buffer Guard</span>
-                            </div>
-                            <span className="text-muted-foreground shrink-0 font-mono text-[9px]">
-                              <span className="hidden sm:inline">Next Slot: 01:00 PM</span>
-                              <span className="sm:hidden">Next: 01:00 PM</span>
+                            <span className="shrink-0 font-mono text-[11px] font-bold text-emerald-600 sm:text-xs dark:text-emerald-400">
+                              +$2,850.00 (Paid)
                             </span>
                           </div>
                         </div>
                       </div>
-
-                      {/* Right: Client Dossier Spotlight & Live Audit Stream */}
-                      <div className="space-y-3 lg:col-span-5">
-                        {/* Client Dossier Card */}
-                        <div className="border-border/70 bg-surface/90 rounded-2xl border p-4 shadow-xs backdrop-blur-md">
-                          <div className="border-border/50 flex items-center justify-between border-b pb-2.5">
-                            <span className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
-                              Client CRM Dossier
-                            </span>
-                            <span className="rounded-md bg-emerald-500/10 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
-                              Active Tier
-                            </span>
-                          </div>
-                          <div className="mt-2.5 flex items-center gap-2.5 sm:gap-3">
-                            <div className="flex h-8.5 w-8.5 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 text-xs font-bold text-blue-600 sm:h-9 sm:w-9 dark:text-blue-400">
-                              SJ
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <p className="text-foreground truncate text-xs font-bold">
-                                Sarah Jenkins
-                              </p>
-                              <p className="text-muted-foreground truncate text-[11px]">
-                                Apex Dynamics &bull; Enterprise Retainer ($4.5k/mo)
-                              </p>
-                            </div>
-                          </div>
-                          <div className="border-border/40 mt-3 grid grid-cols-2 gap-2 border-t pt-2 text-[10px]">
-                            <div>
-                              <span className="text-muted-foreground">Last Invoice:</span>
-                              <p className="text-foreground font-semibold">#FP-1094 (Paid)</p>
-                            </div>
-                            <div>
-                              <span className="text-muted-foreground">Next Session:</span>
-                              <p className="text-foreground font-semibold">Tomorrow, 10:00 AM</p>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Live Audit & Telemetry Stream */}
-                        <div className="border-border/70 bg-surface/90 rounded-2xl border p-4 shadow-xs backdrop-blur-md">
-                          <div className="border-border/50 flex items-center justify-between border-b pb-2">
-                            <span className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
-                              Real-Time Activity Stream
-                            </span>
-                            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
-                          </div>
-                          <div className="mt-2.5 space-y-2 text-[11px]">
-                            <div className="flex items-start gap-2">
-                              <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-500" />
-                              <p className="text-muted-foreground leading-tight">
-                                <strong className="text-foreground">Invoice #FP-1094</strong>{" "}
-                                auto-reconciled via Stripe ($4,500.00).
-                              </p>
-                            </div>
-                            <div className="flex items-start gap-2">
-                              <Zap className="mt-0.5 h-3.5 w-3.5 shrink-0 text-blue-500" />
-                              <p className="text-muted-foreground leading-tight">
-                                Calendar buffer automatically applied (+15m locked).
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Lens 2: Workflow Engine (Visual Automation Pipeline) */}
-                {cockpitView === "workflow" && (
-                  <motion.div
-                    key="cockpit-lens-workflow"
-                    initial={{ opacity: 0, scale: 0.99 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.99 }}
-                    transition={{ duration: 0.25 }}
-                    className="space-y-4"
-                  >
-                    <div className="border-border/70 bg-surface/90 rounded-2xl border p-5 shadow-xs backdrop-blur-md">
-                      <div className="border-border/50 flex flex-wrap items-center justify-between gap-2 border-b pb-3">
-                        <div>
-                          <h4 className="text-foreground text-sm font-bold">
-                            End-to-End Operational Automation Flow
-                          </h4>
-                          <p className="text-muted-foreground mt-0.5 text-xs">
-                            From customer booking to automated invoice settlement in under 2
-                            seconds.
-                          </p>
-                        </div>
-                        <span className="rounded-lg border border-violet-500/30 bg-violet-500/10 px-2.5 py-1 text-xs font-semibold text-violet-600 dark:text-violet-400">
-                          Active &bull; 0 Conflicts
-                        </span>
-                      </div>
-
-                      {/* Visual Automation Pipeline Nodes */}
-                      <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-4">
-                        {/* Step 1 */}
-                        <div className="rounded-xl border border-blue-500/30 bg-blue-500/[0.06] p-3.5 shadow-2xs">
-                          <div className="flex items-center justify-between">
-                            <span className="rounded-md bg-blue-500/20 px-1.5 py-0.5 font-mono text-[9px] font-bold text-blue-600 dark:text-blue-400">
-                              STEP 1
-                            </span>
-                            <Calendar className="h-4 w-4 text-blue-500" />
-                          </div>
-                          <h5 className="text-foreground mt-2 text-xs font-bold">Client Booking</h5>
-                          <p className="text-muted-foreground mt-1 text-[11px] leading-tight">
-                            Client selects 60m session via self-serve link.
-                          </p>
-                        </div>
-
-                        {/* Step 2 */}
-                        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/[0.06] p-3.5 shadow-2xs">
-                          <div className="flex items-center justify-between">
-                            <span className="rounded-md bg-emerald-500/20 px-1.5 py-0.5 font-mono text-[9px] font-bold text-emerald-600 dark:text-emerald-400">
-                              STEP 2
-                            </span>
-                            <ShieldCheck className="h-4 w-4 text-emerald-500" />
-                          </div>
-                          <h5 className="text-foreground mt-2 text-xs font-bold">
-                            Buffer Protection
-                          </h5>
-                          <p className="text-muted-foreground mt-1 text-[11px] leading-tight">
-                            Locks +15m before &amp; after to eliminate collisions.
-                          </p>
-                        </div>
-
-                        {/* Step 3 */}
-                        <div className="rounded-xl border border-violet-500/30 bg-violet-500/[0.06] p-3.5 shadow-2xs">
-                          <div className="flex items-center justify-between">
-                            <span className="rounded-md bg-violet-500/20 px-1.5 py-0.5 font-mono text-[9px] font-bold text-violet-600 dark:text-violet-400">
-                              STEP 3
-                            </span>
-                            <Users className="h-4 w-4 text-violet-500" />
-                          </div>
-                          <h5 className="text-foreground mt-2 text-xs font-bold">
-                            CRM Context Sync
-                          </h5>
-                          <p className="text-muted-foreground mt-1 text-[11px] leading-tight">
-                            Injects client dossier history &amp; service tiers.
-                          </p>
-                        </div>
-
-                        {/* Step 4 */}
-                        <div className="rounded-xl border border-amber-500/30 bg-amber-500/[0.06] p-3.5 shadow-2xs">
-                          <div className="flex items-center justify-between">
-                            <span className="rounded-md bg-amber-500/20 px-1.5 py-0.5 font-mono text-[9px] font-bold text-amber-600 dark:text-amber-400">
-                              STEP 4
-                            </span>
-                            <DollarSign className="h-4 w-4 text-amber-500" />
-                          </div>
-                          <h5 className="text-foreground mt-2 text-xs font-bold">
-                            Instant Invoicing
-                          </h5>
-                          <p className="text-muted-foreground mt-1 text-[11px] leading-tight">
-                            Generates invoice &amp; reconciles via Stripe in 1.2s.
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Performance Bar */}
-                      <div className="border-border/50 bg-muted/40 mt-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border p-3 text-xs">
-                        <div className="flex items-center gap-2">
-                          <Zap className="h-4 w-4 shrink-0 text-emerald-500" />
-                          <span className="text-foreground font-semibold">
-                            124 Automated Pipeline Runs Completed Today
-                          </span>
-                        </div>
-                        <span className="text-muted-foreground font-mono text-[11px]">
-                          Average execution: 1.2s &bull; 0 manual interventions
-                        </span>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Lens 3: Financial Velocity (Billing & Real-Time Cash Flow) */}
-                {cockpitView === "financials" && (
-                  <motion.div
-                    key="cockpit-lens-financials"
-                    initial={{ opacity: 0, scale: 0.99 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.99 }}
-                    transition={{ duration: 0.25 }}
-                    className="space-y-4"
-                  >
-                    {/* Top Metric Cards */}
-                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
-                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-xs backdrop-blur-md sm:p-3.5">
-                        <p className="text-muted-foreground truncate text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
-                          MTD Billing
-                        </p>
-                        <p className="text-foreground mt-1 truncate text-base font-bold sm:text-xl">
-                          <AnimatedCounter target={48250} prefix="$" decimals={2} />
-                        </p>
-                        <span className="block truncate text-[9.5px] font-semibold text-emerald-600 sm:text-[10px] dark:text-emerald-400">
-                          +24% vs Prev Mo
-                        </span>
-                      </div>
-                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-xs backdrop-blur-md sm:p-3.5">
-                        <p className="text-muted-foreground truncate text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
-                          Billable Ratio
-                        </p>
-                        <p className="text-foreground mt-1 truncate text-base font-bold sm:text-xl">
-                          <AnimatedCounter target={92.4} suffix="%" decimals={1} />
-                        </p>
-                        <span className="text-muted-foreground block truncate text-[9.5px] font-medium sm:text-[10px]">
-                          Target: 85%
-                        </span>
-                      </div>
-                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-xs backdrop-blur-md sm:p-3.5">
-                        <p className="text-muted-foreground truncate text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
-                          Avg Booking Lead
-                        </p>
-                        <p className="text-foreground mt-1 truncate text-base font-bold sm:text-xl">
-                          1.8 Days
-                        </p>
-                        <span className="block truncate text-[9.5px] font-semibold text-emerald-600 sm:text-[10px] dark:text-emerald-400">
-                          Zero Idle Gaps
-                        </span>
-                      </div>
-                      <div className="border-border/70 bg-surface/90 rounded-xl border p-2.5 shadow-xs backdrop-blur-md sm:p-3.5">
-                        <p className="text-muted-foreground truncate text-[9.5px] font-bold tracking-wider uppercase sm:text-[10px]">
-                          Payout Velocity
-                        </p>
-                        <p className="text-foreground mt-1 truncate text-base font-bold sm:text-xl">
-                          Instant
-                        </p>
-                        <span className="block truncate text-[9.5px] font-semibold text-emerald-600 sm:text-[10px] dark:text-emerald-400">
-                          Stripe Connected
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Interactive SVG Sparkline Revenue Velocity Graph */}
-                    <div className="border-border/70 bg-surface/90 rounded-2xl border p-4 shadow-xs backdrop-blur-md">
-                      <div className="border-border/50 flex flex-wrap items-center justify-between gap-2 border-b pb-2.5">
-                        <div className="flex min-w-0 items-center gap-2">
-                          <TrendingUp className="h-4 w-4 shrink-0 text-emerald-500" />
-                          <h4 className="text-foreground truncate text-xs font-bold">
-                            <span className="hidden sm:inline">
-                              Monthly Recurring Revenue (MRR) Velocity
-                            </span>
-                            <span className="sm:hidden">MRR Revenue Velocity</span>
-                          </h4>
-                        </div>
-                        <span className="shrink-0 rounded-md border border-emerald-500/25 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
-                          Live Ledger Synchronized
-                        </span>
-                      </div>
-
-                      {/* High-Fidelity SVG Curve Chart */}
-                      <div className="relative mt-3 h-28 w-full overflow-hidden">
-                        <svg
-                          className="h-full w-full"
-                          viewBox="0 0 600 100"
-                          preserveAspectRatio="none"
-                        >
-                          <defs>
-                            <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="0%" stopColor="#10b981" stopOpacity="0.35" />
-                              <stop offset="100%" stopColor="#10b981" stopOpacity="0.0" />
-                            </linearGradient>
-                          </defs>
-                          {/* Grid Lines */}
-                          <line
-                            x1="0"
-                            y1="25"
-                            x2="600"
-                            y2="25"
-                            stroke="currentColor"
-                            strokeOpacity="0.08"
-                            strokeDasharray="3 3"
-                          />
-                          <line
-                            x1="0"
-                            y1="50"
-                            x2="600"
-                            y2="50"
-                            stroke="currentColor"
-                            strokeOpacity="0.08"
-                            strokeDasharray="3 3"
-                          />
-                          <line
-                            x1="0"
-                            y1="75"
-                            x2="600"
-                            y2="75"
-                            stroke="currentColor"
-                            strokeOpacity="0.08"
-                            strokeDasharray="3 3"
-                          />
-
-                          {/* Area Fill */}
-                          <polygon
-                            points="0,95 60,82 120,75 180,68 240,54 300,58 360,42 420,38 480,24 540,18 600,8 600,100 0,100"
-                            fill="url(#revenueGradient)"
-                          />
-                          {/* Glowing Line */}
-                          <polyline
-                            points="0,95 60,82 120,75 180,68 240,54 300,58 360,42 420,38 480,24 540,18 600,8"
-                            fill="none"
-                            stroke="#10b981"
-                            strokeWidth="2.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </div>
-
-                      {/* Recent Settled Ledger Rows */}
-                      <div className="border-border/50 mt-3 space-y-1.5 border-t pt-2.5 text-xs">
-                        <div className="bg-muted/40 flex flex-col justify-between gap-1 rounded-lg px-2.5 py-1.5 sm:flex-row sm:items-center sm:gap-2 sm:px-3">
-                          <span className="text-foreground truncate text-[11px] font-medium sm:text-xs">
-                            #FP-1094 &bull; Vertex Advisory Retainer
-                          </span>
-                          <span className="shrink-0 font-mono text-[11px] font-bold text-emerald-600 sm:text-xs dark:text-emerald-400">
-                            +$4,500.00 (Paid)
-                          </span>
-                        </div>
-                        <div className="bg-muted/40 flex flex-col justify-between gap-1 rounded-lg px-2.5 py-1.5 sm:flex-row sm:items-center sm:gap-2 sm:px-3">
-                          <span className="text-foreground truncate text-[11px] font-medium sm:text-xs">
-                            #FP-1093 &bull; Kinetic Ops Consulting
-                          </span>
-                          <span className="shrink-0 font-mono text-[11px] font-bold text-emerald-600 sm:text-xs dark:text-emerald-400">
-                            +$2,850.00 (Paid)
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
+                    </motion.div>
+                  )}
+                </div>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         </motion.div>
 

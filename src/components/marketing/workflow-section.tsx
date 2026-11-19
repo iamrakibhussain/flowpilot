@@ -291,7 +291,7 @@ const PipelineConsole: React.FC<PipelineConsoleProps> = ({
         transformStyle: "preserve-3d",
         transition: "transform 0.18s cubic-bezier(0.16, 1, 0.3, 1)",
       }}
-      className={`relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border transition-all duration-300 ${className} border-neutral-200/90 bg-white/95 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)] dark:border-white/12 dark:bg-gradient-to-b dark:from-[#0b1222]/98 dark:to-[#050811]/98 dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85),inset_0_1px_0_rgba(255,255,255,0.12)]`}
+      className={`relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border transition-all duration-300 ${className} border-neutral-200/80 bg-white/80 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-2xl dark:border-white/12 dark:bg-gradient-to-b dark:from-[#0b1222]/80 dark:to-[#050811]/85 dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85),inset_0_1px_0_rgba(255,255,255,0.12)] dark:backdrop-blur-2xl`}
     >
       {/* Dynamic Cursor Spotlight */}
       {mousePos && !shouldReduceMotion && (
@@ -503,7 +503,7 @@ export const WorkflowSection: React.FC = () => {
   return (
     <section
       id="how-it-works"
-      className="relative scroll-mt-20 overflow-hidden border-t border-neutral-200/70 bg-neutral-50/40 py-20 md:py-28 dark:border-white/10 dark:bg-black/30"
+      className="border-border/40 relative scroll-mt-20 overflow-hidden border-t bg-transparent py-20 md:py-28"
     >
       {/* Background Dot Blueprint Grid with Vignette */}
       <div
@@ -511,23 +511,17 @@ export const WorkflowSection: React.FC = () => {
         aria-hidden="true"
       />
 
-      {/* Contained Ambient Radial Flares (No horizontal overflow) */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        <div
-          className="absolute top-1/3 -left-48 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl dark:bg-blue-600/15"
-          aria-hidden="true"
-        />
-        <div
-          className="absolute -right-48 bottom-1/3 h-96 w-96 rounded-full bg-indigo-500/10 blur-3xl dark:bg-indigo-600/15"
-          aria-hidden="true"
-        />
-      </div>
-
       <Container>
         {/* ========================================================================= */}
         {/* MASTER SECTION EDITORIAL HEADER                                           */}
         {/* ========================================================================= */}
-        <div className="mx-auto max-w-3xl text-center">
+        <motion.div
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 22 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          className="mx-auto max-w-3xl text-center"
+        >
           {/* Aerospace Hardware-Grade Eyebrow Badge */}
           <div className="flex items-center justify-center">
             <div className="inline-flex max-w-full flex-wrap items-center justify-center gap-1.5 rounded-full border border-neutral-200/90 bg-white/90 px-3 py-1 text-xs font-semibold text-neutral-800 shadow-[0_2px_10px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-md sm:gap-2 sm:px-4 sm:py-1.5 dark:border-white/15 dark:bg-neutral-900/90 dark:text-neutral-200 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_16px_rgba(0,0,0,0.5)]">
@@ -561,12 +555,18 @@ export const WorkflowSection: React.FC = () => {
             FlowPilot transforms everyday service operations into a predictable, connected sequence.
             Explore the live operational progression below.
           </p>
-        </div>
+        </motion.div>
 
         {/* ========================================================================= */}
         {/* MAIN PIPELINE CONSOLE: 12-COL ASYMMETRIC GRID                             */}
         {/* ========================================================================= */}
-        <div className="mt-14 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-7 xl:gap-8">
+        <motion.div
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.65, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-14 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-7 xl:gap-8"
+        >
           {/* ======================================================================= */}
           {/* LEFT COLUMN: CONNECTED PROGRESSIVE TIMELINE (5 COLS)                     */}
           {/* ======================================================================= */}
@@ -1170,7 +1170,7 @@ export const WorkflowSection: React.FC = () => {
               </div>
             </PipelineConsole>
           </div>
-        </div>
+        </motion.div>
 
         {/* ========================================================================= */}
         {/* BOTTOM INTEGRATED TELEMETRY STRIP (4 INDEPENDENT 3D FLOATING HARDWARE CARDS) */}
