@@ -87,7 +87,7 @@ export function DashboardSmoothScroll({ children }: DashboardSmoothScrollProps) 
       ref={mainRef}
       id="main-content"
       tabIndex={-1}
-      className="flex-1 overflow-x-hidden overflow-y-auto p-3.5 sm:p-6 lg:p-8 outline-none"
+      className="flex-1 overflow-x-hidden overflow-y-auto p-3.5 outline-none sm:p-6 lg:p-8"
       style={{ scrollBehavior: "auto" }}
     >
       <div ref={contentRef} className="mx-auto w-full max-w-7xl min-w-0 2xl:max-w-[1520px]">

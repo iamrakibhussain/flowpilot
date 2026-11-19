@@ -42,7 +42,7 @@ export function ScrollProgressBar() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed top-0 left-0 right-0 z-50 h-[2.5px] w-full overflow-hidden select-none"
+      className="pointer-events-none fixed top-0 right-0 left-0 z-50 h-[2.5px] w-full overflow-hidden select-none"
     >
       {/* 1. Underlying Ultra-Subtle Track Light */}
       <div className="absolute inset-0 bg-blue-500/[0.08] dark:bg-cyan-400/[0.08]" />
@@ -54,7 +54,7 @@ export function ScrollProgressBar() {
       />
 
       {/* 3. Ambient Flare Bloom behind the Bar */}
-      <div className="pointer-events-none absolute -top-1 left-0 right-0 h-2 bg-gradient-to-r from-blue-500/20 via-indigo-500/20 to-cyan-400/25 blur-[6px]" />
+      <div className="pointer-events-none absolute -top-1 right-0 left-0 h-2 bg-gradient-to-r from-blue-500/20 via-indigo-500/20 to-cyan-400/25 blur-[6px]" />
     </div>
   );
 }

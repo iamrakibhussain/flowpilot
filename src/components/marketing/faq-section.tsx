@@ -674,7 +674,7 @@ export const FAQSection: React.FC = () => {
   return (
     <section
       id="faq"
-      className="relative scroll-mt-24 overflow-hidden border-t border-border/40 bg-transparent py-16 sm:scroll-mt-28 sm:py-24 md:py-28"
+      className="border-border/40 relative scroll-mt-24 overflow-hidden border-t bg-transparent py-16 sm:scroll-mt-28 sm:py-24 md:py-28"
     >
       {/* Top Laser Accent Separator */}
       <div

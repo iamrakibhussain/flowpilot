@@ -503,7 +503,7 @@ export const WorkflowSection: React.FC = () => {
   return (
     <section
       id="how-it-works"
-      className="relative scroll-mt-20 overflow-hidden border-t border-border/40 bg-transparent py-20 md:py-28"
+      className="border-border/40 relative scroll-mt-20 overflow-hidden border-t bg-transparent py-20 md:py-28"
     >
       {/* Background Dot Blueprint Grid with Vignette */}
       <div

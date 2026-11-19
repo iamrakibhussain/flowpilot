@@ -169,7 +169,7 @@ const BentoCard: React.FC<BentoCardProps> = ({ children, className = "", glowCol
         }}
         whileHover={shouldReduceMotion ? undefined : { y: -5, scale: 1.008 }}
         transition={{ type: "spring", stiffness: 350, damping: 26 }}
-        className={`group relative flex h-full w-full flex-col justify-between overflow-hidden rounded-3xl border border-neutral-200/90 bg-gradient-to-br from-white/82 via-neutral-50/78 to-neutral-100/60 p-3.5 shadow-[0_4px_25px_rgba(0,0,0,0.04),inset_0_1px_0_rgba(255,255,255,0.95)] backdrop-blur-2xl transition-all duration-300 sm:p-6 xl:p-8 dark:border-white/10 dark:from-neutral-900/80 dark:via-neutral-900/65 dark:to-neutral-950/80 dark:backdrop-blur-2xl dark:shadow-[0_4px_30px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.08)] ${hoverBorderStyles[glowColor]}`}
+        className={`group relative flex h-full w-full flex-col justify-between overflow-hidden rounded-3xl border border-neutral-200/90 bg-gradient-to-br from-white/82 via-neutral-50/78 to-neutral-100/60 p-3.5 shadow-[0_4px_25px_rgba(0,0,0,0.04),inset_0_1px_0_rgba(255,255,255,0.95)] backdrop-blur-2xl transition-all duration-300 sm:p-6 xl:p-8 dark:border-white/10 dark:from-neutral-900/80 dark:via-neutral-900/65 dark:to-neutral-950/80 dark:shadow-[0_4px_30px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.08)] dark:backdrop-blur-2xl ${hoverBorderStyles[glowColor]}`}
       >
         {/* Subtle Engineering Dot Matrix Background */}
         <div
@@ -1365,7 +1365,7 @@ export const BusinessBenefitsSection: React.FC = () => {
         {/* ========================================================================= */}
         {/* ILLUSTRATIVE CAPACITY & ADMINISTRATIVE TIME MODELER (COCKPIT) */}
         {/* ========================================================================= */}
-        <div className="relative mt-10 overflow-hidden rounded-3xl border border-neutral-200/90 bg-gradient-to-br from-white/82 via-neutral-50/78 to-neutral-100/60 p-4.5 shadow-[0_10px_40px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.95)] backdrop-blur-2xl sm:mt-14 sm:p-6 md:p-8 lg:p-10 dark:border-white/10 dark:from-neutral-900/80 dark:via-neutral-900/65 dark:to-neutral-950/80 dark:backdrop-blur-2xl dark:shadow-[0_15px_50px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.08)]">
+        <div className="relative mt-10 overflow-hidden rounded-3xl border border-neutral-200/90 bg-gradient-to-br from-white/82 via-neutral-50/78 to-neutral-100/60 p-4.5 shadow-[0_10px_40px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.95)] backdrop-blur-2xl sm:mt-14 sm:p-6 md:p-8 lg:p-10 dark:border-white/10 dark:from-neutral-900/80 dark:via-neutral-900/65 dark:to-neutral-950/80 dark:shadow-[0_15px_50px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.08)] dark:backdrop-blur-2xl">
           {/* Specular Top Rim */}
           <div className="pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent dark:via-white/25" />
 

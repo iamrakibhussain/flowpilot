@@ -129,7 +129,7 @@ const BentoCard: React.FC<BentoCardProps> = ({
           rotateY: shouldReduceMotion ? 0 : rotateY,
           transformStyle: "preserve-3d",
         }}
-        className="group/bento relative flex h-full min-h-[500px] w-full flex-col justify-between overflow-hidden rounded-2xl border border-neutral-200/80 bg-white/80 p-3.5 shadow-[0_10px_35px_-8px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-2xl transition-shadow duration-300 hover:border-neutral-300 hover:shadow-[0_20px_45px_-10px_rgba(0,0,0,0.12)] sm:min-h-[560px] sm:p-5 md:p-6 xl:p-7 dark:border-white/10 dark:bg-gradient-to-b dark:from-[#0b1222]/80 dark:to-[#050811]/85 dark:backdrop-blur-2xl dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85),inset_0_1px_0_rgba(255,255,255,0.12)] dark:hover:border-white/20"
+        className="group/bento relative flex h-full min-h-[500px] w-full flex-col justify-between overflow-hidden rounded-2xl border border-neutral-200/80 bg-white/80 p-3.5 shadow-[0_10px_35px_-8px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-2xl transition-shadow duration-300 hover:border-neutral-300 hover:shadow-[0_20px_45px_-10px_rgba(0,0,0,0.12)] sm:min-h-[560px] sm:p-5 md:p-6 xl:p-7 dark:border-white/10 dark:bg-gradient-to-b dark:from-[#0b1222]/80 dark:to-[#050811]/85 dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85),inset_0_1px_0_rgba(255,255,255,0.12)] dark:backdrop-blur-2xl dark:hover:border-white/20"
       >
         {/* Background Ambient Flare */}
         <div
