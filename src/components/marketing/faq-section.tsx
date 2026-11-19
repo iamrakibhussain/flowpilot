@@ -674,18 +674,8 @@ export const FAQSection: React.FC = () => {
   return (
     <section
       id="faq"
-      className="relative scroll-mt-24 overflow-hidden border-t border-neutral-200/80 bg-neutral-50/60 py-16 sm:scroll-mt-28 sm:py-24 md:py-28 dark:border-neutral-800/80 dark:bg-neutral-950/70"
+      className="relative scroll-mt-24 overflow-hidden border-t border-border/40 bg-transparent py-16 sm:scroll-mt-28 sm:py-24 md:py-28"
     >
-      {/* Dynamic Atmospheric Multi-Stop Gradient Halos */}
-      <div
-        className="pointer-events-none absolute -top-40 left-1/2 -z-10 h-[450px] w-[800px] -translate-x-1/2 rounded-full bg-gradient-to-tr from-blue-500/15 via-indigo-500/10 to-cyan-400/15 blur-[120px] sm:h-[550px] sm:w-[1000px] xl:h-[700px] xl:w-[1300px] 2xl:h-[850px] 2xl:w-[1600px] dark:from-blue-600/20 dark:via-indigo-600/15 dark:to-cyan-500/20"
-        aria-hidden="true"
-      />
-      <div
-        className="pointer-events-none absolute top-1/2 -right-40 -z-10 h-[350px] w-[450px] rounded-full bg-gradient-to-b from-purple-500/10 via-pink-500/5 to-transparent blur-[100px] xl:h-[500px] xl:w-[650px] 2xl:h-[650px] 2xl:w-[850px]"
-        aria-hidden="true"
-      />
-
       {/* Top Laser Accent Separator */}
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-blue-500/60 to-transparent dark:via-blue-400/40"
@@ -734,7 +724,7 @@ export const FAQSection: React.FC = () => {
             />
 
             {/* Inner Console Card */}
-            <div className="relative overflow-hidden rounded-3xl border border-neutral-200/80 bg-white/95 p-3.5 shadow-xl backdrop-blur-2xl transition-all sm:p-5 dark:border-neutral-800 dark:bg-neutral-950/90">
+            <div className="relative overflow-hidden rounded-3xl border border-neutral-200/80 bg-white/80 p-3.5 shadow-xl backdrop-blur-2xl transition-all sm:p-5 dark:border-neutral-800 dark:bg-neutral-950/80">
               {/* Telemetry Status Bar */}
               <div className="flex flex-wrap items-center justify-between gap-1.5 border-b border-neutral-200/70 pb-2.5 text-[10px] sm:pb-3 sm:text-[11px] dark:border-neutral-800">
                 <div className="flex min-w-0 items-center gap-1.5 font-mono font-semibold sm:gap-2">
@@ -1189,8 +1179,8 @@ export const FAQSection: React.FC = () => {
                     className={cn(
                       "group relative overflow-hidden rounded-2xl border transition-all duration-300",
                       isOpen
-                        ? "border-blue-500/50 bg-white shadow-2xl shadow-blue-500/10 dark:border-blue-400/50 dark:bg-neutral-900"
-                        : "border-neutral-200/90 bg-white/85 shadow-sm backdrop-blur-xl hover:-translate-y-1 hover:border-neutral-300 hover:shadow-xl hover:shadow-blue-500/5 dark:border-neutral-800/90 dark:bg-neutral-900/80 dark:hover:border-neutral-700"
+                        ? "border-blue-500/50 bg-white/90 shadow-2xl shadow-blue-500/10 backdrop-blur-2xl dark:border-blue-400/50 dark:bg-neutral-900/90"
+                        : "border-neutral-200/90 bg-white/80 shadow-sm backdrop-blur-2xl hover:-translate-y-1 hover:border-neutral-300 hover:shadow-xl hover:shadow-blue-500/5 dark:border-neutral-800/90 dark:bg-neutral-900/75 dark:hover:border-neutral-700"
                     )}
                   >
                     {/* Category-Specific Glowing Left Accent Stripe */}

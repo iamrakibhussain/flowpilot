@@ -5,6 +5,7 @@ import { DashboardSidebar } from "@/components/layout/dashboard-sidebar";
 import { DashboardHeader } from "@/components/layout/dashboard-header";
 import { DashboardCommandPalette } from "@/components/layout/dashboard-command-palette";
 import { DashboardModalProvider } from "@/components/dashboard/modals/dashboard-modal-context";
+import { DashboardSmoothScroll } from "@/components/dashboard/dashboard-smooth-scroll";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [isCollapsed, setIsCollapsed] = React.useState(false);
@@ -65,13 +66,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             onOpenCommand={() => setIsCommandOpen(true)}
           />
 
-          {/* Scrollable Page Content Viewport (Only this area scrolls, never overflows horizontally) */}
-          <main
-            id="main-content"
-            className="flex-1 overflow-x-hidden overflow-y-auto scroll-smooth p-3.5 sm:p-6 lg:p-8"
-          >
-            <div className="mx-auto w-full max-w-7xl min-w-0 2xl:max-w-[1520px]">{children}</div>
-          </main>
+          {/* Controlled Pro Inertia Smooth Scrolling Viewport (Snappy 0.85s, zero drift, modal safe) */}
+          <DashboardSmoothScroll>{children}</DashboardSmoothScroll>
         </div>
 
         {/* Dedicated Operational Command Palette */}

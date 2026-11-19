@@ -10,6 +10,7 @@ import {
   useMotionValue,
   useTransform,
   useSpring,
+  useScroll,
 } from "framer-motion";
 import {
   ArrowRight,
@@ -359,8 +360,47 @@ export const HeroSection: React.FC = () => {
     heroCtaY.set(0);
   };
 
+  // Scroll-Driven Perspective Depth (Hardware-Accelerated on Both Desktop & Mobile)
+  const heroSectionRef = React.useRef<HTMLElement | null>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroSectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  const scrollCockpitScale = useTransform(
+    scrollYProgress,
+    [0, 0.85],
+    shouldReduceMotion ? [1, 1] : [1, 0.94]
+  );
+  const scrollCockpitOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.85],
+    shouldReduceMotion ? [1, 1] : [1, 0.9]
+  );
+  const scrollCockpitY = useTransform(
+    scrollYProgress,
+    [0, 0.85],
+    shouldReduceMotion ? [0, 0] : [0, 28]
+  );
+
+  const springScrollCockpitScale = useSpring(scrollCockpitScale, {
+    stiffness: 280,
+    damping: 30,
+    restDelta: 0.001,
+  });
+  const springScrollCockpitOpacity = useSpring(scrollCockpitOpacity, {
+    stiffness: 280,
+    damping: 30,
+    restDelta: 0.001,
+  });
+  const springScrollCockpitY = useSpring(scrollCockpitY, {
+    stiffness: 280,
+    damping: 30,
+    restDelta: 0.001,
+  });
+
   return (
-    <section className="relative overflow-hidden pt-8 pb-14 md:pt-14 md:pb-24">
+    <section ref={heroSectionRef} className="relative overflow-hidden pt-8 pb-14 md:pt-14 md:pb-24">
       {/* 1. Volumetric Celestial Aurora Mesh & 3D Perspective Horizon Plane */}
       <div
         className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
@@ -368,17 +408,17 @@ export const HeroSection: React.FC = () => {
       >
         {/* Deep Core Sapphire Light Pool */}
         <div
-          className={`absolute top-1/4 left-1/2 h-[480px] w-[820px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(37,99,235,0.22),transparent_70%)] blur-[95px] dark:bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.26),transparent_70%)] ${shouldReduceMotion ? "animate-none" : "animate-aurora"}`}
+          className={`absolute top-1/4 left-1/2 h-[480px] w-[820px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(37,99,235,0.11),transparent_70%)] blur-[95px] dark:bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.14),transparent_70%)] ${shouldReduceMotion ? "animate-none" : "animate-aurora"}`}
         />
 
         {/* Hyper-Violet Prismatic Ambient Glow */}
         <div
-          className={`absolute top-1/3 left-1/3 h-[380px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.16),transparent_70%)] blur-[85px] [animation-delay:2.5s] dark:bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.22),transparent_70%)] ${shouldReduceMotion ? "animate-none" : "animate-aurora"}`}
+          className={`absolute top-1/3 left-1/3 h-[380px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.09),transparent_70%)] blur-[85px] [animation-delay:2.5s] dark:bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.12),transparent_70%)] ${shouldReduceMotion ? "animate-none" : "animate-aurora"}`}
         />
 
         {/* Electric Cyan Secondary Accent Horizon Pool */}
         <div
-          className={`absolute top-1/2 left-2/3 h-[340px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.14),transparent_70%)] blur-[90px] [animation-delay:5s] dark:bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.18),transparent_70%)] ${shouldReduceMotion ? "animate-none" : "animate-aurora"}`}
+          className={`absolute top-1/2 left-2/3 h-[340px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.08),transparent_70%)] blur-[90px] [animation-delay:5s] dark:bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.11),transparent_70%)] ${shouldReduceMotion ? "animate-none" : "animate-aurora"}`}
         />
 
         {/* Precision Blueprint Dot Matrix Grid */}
@@ -751,9 +791,17 @@ export const HeroSection: React.FC = () => {
 
         {/* 8. The 3D Spatial Gyroscopic Cockpit with Balanced Floating Z-Cards */}
         <motion.div
-          ref={cockpitRef}
-          id="hero-cockpit-viewport"
-          role="region"
+          style={{
+            scale: shouldReduceMotion ? 1 : springScrollCockpitScale,
+            opacity: shouldReduceMotion ? 1 : springScrollCockpitOpacity,
+            y: shouldReduceMotion ? 0 : springScrollCockpitY,
+          }}
+          className="flex w-full justify-center"
+        >
+          <motion.div
+            ref={cockpitRef}
+            id="hero-cockpit-viewport"
+            role="region"
           aria-labelledby={`hero-lens-tab-${cockpitView}`}
           onMouseMove={handleCockpitMouseMove}
           onMouseLeave={handleCockpitMouseLeave}
@@ -1507,6 +1555,7 @@ export const HeroSection: React.FC = () => {
             </div>
           </motion.div>
         </motion.div>
+      </motion.div>
 
         {/* 9. Enterprise Social Proof & High-Prestige Client Logo Strip (3D Frosted Glass Chassis) */}
         <motion.div

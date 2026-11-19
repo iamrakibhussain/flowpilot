@@ -84,7 +84,7 @@ const Card3D: React.FC<Card3DProps> = ({ children, className = "" }) => {
           rotateY: shouldReduceMotion ? 0 : rotateY,
           transformStyle: "preserve-3d",
         }}
-        className="group border-border/80 bg-surface/90 hover:border-border/90 relative flex h-full w-full flex-col justify-between overflow-hidden rounded-2xl border p-3.5 shadow-xs transition-shadow duration-300 hover:shadow-xl sm:p-6 xl:p-8 dark:border-neutral-800/80"
+        className="group border-border/80 bg-surface/80 hover:border-border/90 relative flex h-full w-full flex-col justify-between overflow-hidden rounded-2xl border p-3.5 shadow-xs backdrop-blur-2xl transition-shadow duration-300 hover:shadow-xl sm:p-6 xl:p-8 dark:border-neutral-800/80"
       >
         {/* Specular Radial Spotlight Follower */}
         {glarePos && !shouldReduceMotion && (
@@ -166,7 +166,7 @@ export const ArchitectureTrustSection: React.FC = () => {
   return (
     <section
       id="architecture"
-      className="border-border/70 bg-surface/40 relative scroll-mt-20 overflow-hidden border-t py-16 md:py-24"
+      className="border-border/40 relative scroll-mt-20 overflow-hidden border-t bg-transparent py-16 md:py-24"
     >
       {/* Ambient Engineering Spotlight Background */}
       <div
@@ -207,7 +207,7 @@ export const ArchitectureTrustSection: React.FC = () => {
         {/* ========================================================================= */}
         {/* TOP VERIFIED ARCHITECTURE TELEMETRY COCKPIT */}
         {/* ========================================================================= */}
-        <div className="border-border/80 bg-surface/85 relative mt-6 overflow-hidden rounded-2xl border p-3 shadow-xs backdrop-blur-xl sm:mt-8 sm:p-4.5 dark:border-neutral-800/80">
+        <div className="border-border/80 bg-surface/80 relative mt-6 overflow-hidden rounded-2xl border p-3 shadow-xs backdrop-blur-2xl sm:mt-8 sm:p-4.5 dark:border-neutral-800/80">
           {/* Specular Laser Top Rim */}
           <div
             className="pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent"

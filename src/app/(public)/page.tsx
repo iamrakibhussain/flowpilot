@@ -8,7 +8,6 @@ import { BusinessBenefitsSection } from "@/components/marketing/business-benefit
 import { ArchitectureTrustSection } from "@/components/marketing/architecture-trust-section";
 import { FAQSection } from "@/components/marketing/faq-section";
 import { FinalCTASection } from "@/components/marketing/final-cta-section";
-import { AuroraBackground } from "@/components/ui/aurora-background";
 
 export const metadata: Metadata = {
   title: "FlowPilot — The Calm Business Operations Platform",
@@ -32,9 +31,6 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <div className="relative flex flex-col overflow-x-clip">
-      {/* Subtle React Bits Light Aurora Background across the entire homepage */}
-      <AuroraBackground />
-
       {/* 1. Hero: Clear Value Proposition & Dual CTAs (Sole Primary Cockpit Visual) */}
       <HeroSection />
 

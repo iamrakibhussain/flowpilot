@@ -35,79 +35,83 @@ export const AuroraBackground: React.FC<AuroraBackgroundProps> = ({ className = 
   return (
     <div
       aria-hidden="true"
-      className={`pointer-events-none fixed inset-0 -z-10 overflow-hidden select-none ${className}`}
+      className={`pointer-events-none fixed inset-0 -z-10 h-screen w-screen overflow-hidden select-none ${className}`}
     >
-      {/* 1. Static CSS Gradient Foundation (SSR-safe, zero layout shift, seamless fallback) */}
+      {/* 1. Global Ambient Base Gradient (Rich, continuous luminous foundation) */}
       <div
         className="absolute inset-0 h-full w-full"
         style={{
           background: `
-            radial-gradient(ellipse 90% 65% at 50% -10%, rgba(49, 95, 232, 0.12) 0%, rgba(14, 165, 233, 0.08) 45%, transparent 75%),
-            radial-gradient(ellipse 80% 55% at 50% 105%, rgba(49, 95, 232, 0.10) 0%, rgba(14, 165, 233, 0.07) 50%, transparent 80%)
+            radial-gradient(ellipse 100% 75% at 50% -5%, rgba(37, 99, 235, 0.22) 0%, rgba(6, 182, 212, 0.16) 40%, rgba(99, 102, 241, 0.10) 70%, transparent 90%),
+            radial-gradient(ellipse 90% 70% at 50% 105%, rgba(37, 99, 235, 0.18) 0%, rgba(16, 185, 129, 0.12) 45%, transparent 80%)
           `,
         }}
       />
 
-      {/* 2. Living React Bits Aurora Waves (Active when mounted & motion is allowed) */}
+      {/* 2. Living React Bits Aurora Waves (Continuous organic motion) */}
       {isClient && !shouldReduceMotion && (
         <div className="relative h-full w-full overflow-hidden">
-          {/* Upper Aurora Wave (FlowPilot #315fe8 - 14% peak opacity) */}
+          {/* Main Upper Aurora Beam (Electric Sapphire to Cyan - sweeping left-to-right) */}
           <motion.div
             animate={{
-              x: ["-5%", "5%", "-5%"],
-              y: ["-3%", "4%", "-3%"],
-              scale: [1, 1.06, 1],
-            }}
-            transition={{
-              duration: 22,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-            className="from-primary/15 absolute -top-24 left-1/2 h-[520px] w-[1020px] -translate-x-1/2 transform-gpu rounded-full bg-gradient-to-r via-blue-500/12 to-cyan-400/10 blur-[110px] will-change-transform"
-          />
-
-          {/* Mid-Page Floating Cyan Ribbon (Pale Ice Cyan #38bdf8 - 13% opacity) */}
-          <motion.div
-            animate={{
-              x: ["6%", "-6%", "6%"],
-              y: ["4%", "-4%", "4%"],
-              scale: [1.05, 0.95, 1.05],
-            }}
-            transition={{
-              duration: 26,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-            className="to-primary/12 absolute top-[30%] -right-24 h-[580px] w-[880px] transform-gpu rounded-full bg-gradient-to-bl from-cyan-400/13 via-sky-400/11 blur-[120px] will-change-transform"
-          />
-
-          {/* Lower-Page Floating Ice-Blue Ribbon (Subtle depth behind Benefits & Architecture) */}
-          <motion.div
-            animate={{
-              x: ["-4%", "6%", "-4%"],
-              y: ["-3%", "3%", "-3%"],
-              scale: [0.97, 1.04, 0.97],
-            }}
-            transition={{
-              duration: 24,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-            className="from-primary/13 absolute top-[60%] -left-28 h-[560px] w-[880px] transform-gpu rounded-full bg-gradient-to-tr via-indigo-400/10 to-teal-400/10 blur-[115px] will-change-transform"
-          />
-
-          {/* Bottom Ambient Aurora Wave (Behind FAQ & Final CTA - 14% peak opacity) */}
-          <motion.div
-            animate={{
-              opacity: [0.75, 1, 0.75],
-              scale: [0.98, 1.04, 0.98],
+              x: ["-8%", "8%", "-8%"],
+              y: ["-4%", "6%", "-4%"],
+              scale: [1, 1.1, 1],
+              rotate: [0, 4, 0],
             }}
             transition={{
               duration: 18,
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="via-primary/14 absolute -bottom-24 left-1/2 h-[460px] w-[980px] -translate-x-1/2 transform-gpu rounded-full bg-gradient-to-t from-blue-400/12 to-cyan-400/9 blur-[110px] will-change-transform"
+            className="absolute -top-32 left-1/2 h-[680px] w-[1200px] -translate-x-1/2 transform-gpu rounded-full bg-gradient-to-r from-blue-600/32 via-cyan-400/28 to-indigo-500/26 blur-[110px] will-change-transform dark:from-blue-500/40 dark:via-cyan-400/34 dark:to-indigo-500/32"
+          />
+
+          {/* Right Flank Floating Aurora Ribbon (Luminous Cyan & Emerald light) */}
+          <motion.div
+            animate={{
+              x: ["8%", "-10%", "8%"],
+              y: ["-6%", "6%", "-6%"],
+              scale: [1.08, 0.94, 1.08],
+              rotate: [0, -6, 0],
+            }}
+            transition={{
+              duration: 22,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute top-[20%] -right-32 h-[720px] w-[980px] transform-gpu rounded-full bg-gradient-to-bl from-cyan-400/30 via-teal-400/24 to-blue-500/28 blur-[120px] will-change-transform dark:from-cyan-400/38 dark:via-teal-400/30 dark:to-blue-600/36"
+          />
+
+          {/* Left Flank Floating Aurora Ribbon (Royal Violet & Sapphire glow) */}
+          <motion.div
+            animate={{
+              x: ["-10%", "8%", "-10%"],
+              y: ["5%", "-5%", "5%"],
+              scale: [0.95, 1.08, 0.95],
+              rotate: [0, 5, 0],
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute top-[50%] -left-32 h-[740px] w-[980px] transform-gpu rounded-full bg-gradient-to-tr from-indigo-500/30 via-purple-500/26 to-blue-500/28 blur-[125px] will-change-transform dark:from-indigo-600/38 dark:via-purple-600/32 dark:to-blue-600/36"
+          />
+
+          {/* Lower Center Aurora Wave (Cyan & Emerald Horizon Bloom) */}
+          <motion.div
+            animate={{
+              x: ["-6%", "6%", "-6%"],
+              y: ["-4%", "4%", "-4%"],
+              scale: [1, 1.08, 1],
+            }}
+            transition={{
+              duration: 16,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -bottom-28 left-1/2 h-[640px] w-[1140px] -translate-x-1/2 transform-gpu rounded-full bg-gradient-to-t from-blue-500/30 via-cyan-400/26 to-emerald-400/20 blur-[115px] will-change-transform dark:from-blue-600/38 dark:via-cyan-400/32 dark:to-emerald-500/24"
           />
         </div>
       )}

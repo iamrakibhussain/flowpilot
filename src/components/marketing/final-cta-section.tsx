@@ -178,7 +178,7 @@ export const FinalCTASection: React.FC = () => {
           onMouseMove={handleMouseMove}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          className="relative mx-auto max-w-5xl overflow-hidden rounded-3xl border border-white/[0.09] bg-gradient-to-b from-neutral-900/95 via-neutral-950/98 to-black p-4 shadow-[0_25px_70px_-15px_rgba(0,0,0,0.9),0_0_90px_rgba(37,99,235,0.15)] backdrop-blur-2xl transition-all duration-300 min-[360px]:p-5 sm:rounded-[2.5rem] sm:p-12 md:p-16"
+          className="relative mx-auto max-w-5xl overflow-hidden rounded-3xl border border-white/[0.09] bg-gradient-to-b from-neutral-900/85 via-neutral-950/90 to-black/92 p-4 shadow-[0_25px_70px_-15px_rgba(0,0,0,0.9),0_0_90px_rgba(37,99,235,0.15)] backdrop-blur-2xl transition-all duration-300 min-[360px]:p-5 sm:rounded-[2.5rem] sm:p-12 md:p-16"
         >
           {/* Subtle Aerospace Precision Corner Reticles (Hidden on mobile to maximize viewable canvas) */}
           <div
