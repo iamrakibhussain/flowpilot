@@ -170,9 +170,8 @@ const StageCard: React.FC<StageCardProps> = ({
             </span>
             {isActive && (
               <span className="border-primary/30 bg-primary/10 text-primary flex shrink-0 items-center gap-1.5 rounded-full border px-2 py-0.5 text-[10px] font-semibold">
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
+                <span className="relative flex h-1.5 w-1.5 items-center justify-center">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] ring-2 ring-emerald-500/25" />
                 </span>
                 Active
               </span>

@@ -447,10 +447,7 @@ export const HeroSection: React.FC = () => {
             className="h-5.5 gap-1.5 border-emerald-500/30 bg-emerald-500/10 px-2.5 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400"
           >
             <span className="relative flex h-2 w-2 items-center justify-center">
-              <span
-                className={`absolute inline-flex h-full w-full rounded-full bg-emerald-400 ${shouldReduceMotion ? "opacity-0" : "animate-ping opacity-75"}`}
-              />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.9)]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)] ring-2 ring-emerald-500/25" />
             </span>
             <span>FlowPilot v2.4.8</span>
           </Badge>
@@ -560,12 +557,6 @@ export const HeroSection: React.FC = () => {
                 {/* Internal Specular Ray Sweeper */}
                 <span className="pointer-events-none absolute -inset-full w-[200%] -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 ease-in-out group-hover:translate-x-full dark:via-neutral-950/15" />
 
-                {/* Live Cyan Status Pulse Diamond */}
-                <span className="relative flex h-2 w-2 items-center justify-center">
-                  <span className="absolute h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
-                  <span className="relative h-1.5 w-1.5 rounded-full bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,0.9)]" />
-                </span>
-
                 <span>Get Started Free</span>
 
                 {/* Signature Embedded Obsidian Arrow Capsule */}
@@ -588,7 +579,7 @@ export const HeroSection: React.FC = () => {
               <Laptop className="text-muted-foreground h-4 w-4" />
               <span>Explore Live Workspace</span>
               <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 uppercase dark:text-emerald-400">
-                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                 Demo
               </span>
             </Link>
@@ -631,7 +622,7 @@ export const HeroSection: React.FC = () => {
                   <div className="pointer-events-none absolute bottom-full left-1/2 z-50 mb-2.5 hidden -translate-x-1/2 flex-col items-center opacity-0 transition-all duration-200 group-hover/avatar:opacity-100 sm:group-hover/avatar:flex">
                     <div className="rounded-xl border border-neutral-800 bg-neutral-950/95 px-3 py-2 text-center whitespace-nowrap shadow-2xl backdrop-blur-xl">
                       <div className="flex items-center justify-center gap-1.5">
-                        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
                         <span className="text-[11px] font-bold text-white">{founder.name}</span>
                       </div>
                       <div className="text-[10px] font-medium text-neutral-400">{founder.role}</div>
@@ -646,9 +637,8 @@ export const HeroSection: React.FC = () => {
             </div>
 
             <div className="flex items-center gap-1.5">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
+              <span className="relative flex h-2 w-2 items-center justify-center">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] ring-2 ring-emerald-500/20" />
               </span>
               <span className="text-muted-foreground text-xs font-medium">
                 Trusted by{" "}
@@ -1064,9 +1054,8 @@ export const HeroSection: React.FC = () => {
 
                   {/* Live Workspace Status */}
                   <div className="text-muted-foreground flex items-center gap-1.5 text-xs font-medium">
-                    <span className="relative flex h-2 w-2">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                      <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                    <span className="relative flex h-2 w-2 items-center justify-center">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 ring-2 ring-emerald-500/25" />
                     </span>
                     <span className="text-foreground/80 hidden sm:inline">Workspace Active</span>
                   </div>
@@ -1271,7 +1260,7 @@ export const HeroSection: React.FC = () => {
                               <span className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
                                 Real-Time Activity Stream
                               </span>
-                              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
+                              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                             </div>
                             <div className="mt-2.5 space-y-2 text-[11px]">
                               <div className="flex items-start gap-2">
@@ -1586,9 +1575,8 @@ export const HeroSection: React.FC = () => {
 
           {/* Editorial Trust Eyebrow Pill - Responsive Text Wrapping */}
           <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-neutral-200/80 bg-white/75 px-3 py-1 text-[10px] font-semibold text-neutral-600 shadow-2xs backdrop-blur-xl sm:text-[11px] dark:border-neutral-800/80 dark:bg-neutral-900/70 dark:text-neutral-400">
-            <span className="relative flex h-2 w-2 shrink-0">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-500" />
+            <span className="relative flex h-2 w-2 shrink-0 items-center justify-center">
+              <span className="h-1.5 w-1.5 rounded-full bg-cyan-500 ring-2 ring-cyan-500/25" />
             </span>
             <span className="tracking-wider uppercase sm:tracking-widest">
               <span className="hidden sm:inline">

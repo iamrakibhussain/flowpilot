@@ -176,9 +176,8 @@ export const Footer: React.FC = () => {
               {/* Left Column: Heading & Technical Value Proposition */}
               <div className="lg:col-span-7">
                 <div className="inline-flex max-w-full flex-wrap items-center gap-1.5 rounded-full border border-neutral-700/70 bg-neutral-900/90 px-3 py-1 text-[10.5px] font-medium text-neutral-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-md min-[360px]:text-xs sm:gap-2 sm:px-3.5 sm:py-1.5">
-                  <span className="relative flex h-2 w-2 shrink-0">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-500 shadow-[0_0_6px_rgba(6,182,212,0.8)]" />
+                  <span className="relative flex h-2 w-2 shrink-0 items-center justify-center">
+                    <span className="h-1.5 w-1.5 rounded-full bg-cyan-500 ring-2 ring-cyan-500/25" />
                   </span>
                   <span className="font-semibold tracking-wide text-white">
                     ENGINEERING DISPATCH
@@ -230,12 +229,6 @@ export const Footer: React.FC = () => {
                     className="group focus-visible:ring-primary relative inline-flex h-11 w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-blue-500 via-cyan-400 to-indigo-500 p-[1.5px] shadow-[0_0_25px_rgba(59,130,246,0.35),0_8px_20px_rgba(0,0,0,0.5)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_35px_rgba(59,130,246,0.55)] focus-visible:ring-2 focus-visible:outline-none active:scale-[0.98] sm:h-12 sm:w-auto sm:rounded-2xl"
                   >
                     <div className="relative flex h-full w-full items-center justify-center gap-2 rounded-[9.5px] bg-white px-5 py-2.5 text-xs font-bold text-neutral-950 shadow-[inset_0_1px_1px_rgba(255,255,255,1),inset_0_-2px_4px_rgba(0,0,0,0.12)] transition-colors group-hover:bg-neutral-50 sm:gap-2.5 sm:rounded-[14.5px] sm:px-6">
-                      {/* Live Blue Status Pulse Diamond */}
-                      <span className="relative flex h-2 w-2 shrink-0 items-center justify-center">
-                        <span className="absolute h-full w-full animate-ping rounded-full bg-blue-500 opacity-75" />
-                        <span className="relative h-1.5 w-1.5 rounded-full bg-blue-600 shadow-[0_0_6px_rgba(37,99,235,0.8)]" />
-                      </span>
-
                       <span className="whitespace-nowrap">Subscribe</span>
 
                       {/* Signature Dark Arrow Capsule */}
@@ -734,9 +727,8 @@ export const Footer: React.FC = () => {
               onMouseLeave={() => setIsTelemetryHovered(false)}
             >
               <div className="flex min-w-0 items-center gap-2 sm:gap-2.5">
-                <span className="relative flex h-2 w-2 shrink-0">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.9)]" />
+                <span className="relative flex h-2 w-2 shrink-0 items-center justify-center">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 ring-2 ring-emerald-500/25" />
                 </span>
                 <span className="font-semibold whitespace-nowrap text-white">
                   <span className="hidden min-[360px]:inline">Operational Status: Active</span>

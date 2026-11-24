@@ -210,10 +210,6 @@ export function DashboardSidebar({
                   Pilot
                 </span>
               </span>
-              <span className="border-primary/20 bg-primary/10 text-primary ml-2 inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase">
-                <Sparkles className="h-2 w-2" />
-                SaaS
-              </span>
             </div>
           )}
         </Link>

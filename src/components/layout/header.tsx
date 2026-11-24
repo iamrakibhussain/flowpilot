@@ -355,8 +355,7 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
                 className="group/telemetry relative flex cursor-pointer items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/[0.08] px-2.5 py-1 text-[11px] font-medium text-emerald-800 shadow-2xs backdrop-blur-xs transition-all duration-200 hover:border-emerald-500/50 hover:bg-emerald-500/[0.16] active:scale-95 dark:border-emerald-400/30 dark:bg-emerald-500/10 dark:text-emerald-300"
               >
                 <span className="relative flex h-2 w-2 items-center justify-center">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] ring-2 ring-emerald-500/25" />
                 </span>
                 <span className="font-mono text-[10px] font-semibold">Active • Verified</span>
                 <Activity className="h-3 w-3 text-emerald-500 transition-transform group-hover/telemetry:scale-110" />
@@ -379,9 +378,8 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
 
                     <div className="border-border/60 flex items-center justify-between border-b pb-2.5">
                       <div className="flex items-center gap-2">
-                        <span className="relative flex h-2 w-2">
-                          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                          <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.9)]" />
+                        <span className="relative flex h-2 w-2 items-center justify-center">
+                          <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.7)] ring-2 ring-emerald-500/25" />
                         </span>
                         <span className="text-foreground text-xs font-bold">
                           Operational Status: Active
@@ -486,7 +484,7 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
 
                       {item.badge && (
                         <span className="bg-primary/10 text-primary hidden items-center gap-1 rounded-full px-1.5 py-0.5 text-[10px] font-semibold tracking-wide uppercase 2xl:inline-flex">
-                          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
+                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                           {item.badge}
                         </span>
                       )}
@@ -680,12 +678,6 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
                   {/* Internal Specular Ray Sweeper */}
                   <span className="pointer-events-none absolute -inset-full w-[200%] -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 ease-in-out group-hover:translate-x-full dark:via-neutral-950/15" />
 
-                  {/* Live Blue Status Pulse Diamond */}
-                  <span className="relative flex h-2 w-2 items-center justify-center">
-                    <span className="absolute h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
-                    <span className="relative h-1.5 w-1.5 rounded-full bg-cyan-500 shadow-[0_0_6px_rgba(6,182,212,0.8)]" />
-                  </span>
-
                   <span>Get Started</span>
 
                   {/* Signature Obsidian Mini Arrow Capsule */}
@@ -759,7 +751,7 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
                     <span>{item.label}</span>
                     {item.badge && (
                       <span className="bg-primary/10 text-primary inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold uppercase">
-                        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                         {item.badge}
                       </span>
                     )}
@@ -788,10 +780,6 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
                     onClick={closeMobileMenu}
                     className="flex items-center justify-center gap-2"
                   >
-                    <span className="relative flex h-2 w-2 items-center justify-center">
-                      <span className="absolute h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
-                      <span className="relative h-1.5 w-1.5 rounded-full bg-cyan-500 shadow-[0_0_6px_rgba(6,182,212,0.8)]" />
-                    </span>
                     <span>Get Started</span>
                     <span className="flex h-5 w-5 items-center justify-center rounded-full bg-neutral-800 text-white shadow-xs transition-transform duration-200 group-hover:translate-x-0.5 group-hover:bg-blue-600 dark:bg-neutral-300 dark:text-neutral-950 dark:group-hover:bg-blue-600 dark:group-hover:text-white">
                       <ArrowRight className="h-3 w-3" />
