@@ -188,9 +188,8 @@ const BentoCard: React.FC<BentoCardProps> = ({
 
           {/* Live Engine Status Telemetry Beacon */}
           <div className="flex shrink-0 items-center gap-1.5 font-mono text-[9.5px] font-semibold sm:text-[10px]">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
+            <span className="relative flex h-2 w-2 items-center justify-center">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] ring-2 ring-emerald-500/25" />
             </span>
             <span className="hidden text-emerald-600 sm:inline dark:text-emerald-400">
               {moduleStatus}

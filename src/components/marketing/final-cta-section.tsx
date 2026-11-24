@@ -237,9 +237,8 @@ export const FinalCTASection: React.FC = () => {
           <div className="relative z-10 mx-auto max-w-3xl text-center">
             {/* Aerospace Hardware-Grade Eyebrow Badge */}
             <div className="inline-flex max-w-full flex-wrap items-center justify-center gap-1.5 rounded-full border border-neutral-700/60 bg-neutral-900/90 px-3 py-1 text-[10px] font-medium text-neutral-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_16px_rgba(0,0,0,0.5)] backdrop-blur-md min-[360px]:text-xs sm:gap-2 sm:px-4 sm:py-1.5">
-              <span className="relative flex h-2 w-2 shrink-0">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
+              <span className="relative flex h-2 w-2 shrink-0 items-center justify-center">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] ring-2 ring-emerald-500/25" />
               </span>
               <span className="font-semibold tracking-wide text-white">
                 FlowPilot Operations Stack
@@ -294,9 +293,8 @@ export const FinalCTASection: React.FC = () => {
 
                 {/* Live Gateway Telemetry */}
                 <div className="flex shrink-0 items-center gap-1.5 font-mono text-[9.5px] text-emerald-400 sm:text-[10.5px]">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
+                  <span className="relative flex h-2 w-2 items-center justify-center">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 ring-2 ring-emerald-500/25" />
                   </span>
                   <span>Online (14ms)</span>
                 </div>
@@ -521,12 +519,6 @@ export const FinalCTASection: React.FC = () => {
                     className="pointer-events-none absolute -inset-full top-0 bg-gradient-to-r from-transparent via-white/50 to-transparent opacity-0 transition-opacity duration-500 group-hover:animate-[shimmer_2s_infinite] group-hover:opacity-100"
                     aria-hidden="true"
                   />
-
-                  {/* Live Status Pulse Diamond */}
-                  <span className="relative flex h-2 w-2 shrink-0 items-center justify-center sm:h-2.5 sm:w-2.5">
-                    <span className="absolute h-full w-full animate-ping rounded-full bg-blue-500 opacity-75" />
-                    <span className="relative h-1.5 w-1.5 rounded-full bg-blue-600 shadow-[0_0_6px_rgba(37,99,235,0.8)] sm:h-2 sm:w-2" />
-                  </span>
 
                   {/* Primary Headline Label */}
                   <span className="text-xs font-extrabold tracking-tight whitespace-nowrap text-neutral-950 min-[360px]:text-sm sm:text-base">

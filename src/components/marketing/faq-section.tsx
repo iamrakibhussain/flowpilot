@@ -689,9 +689,8 @@ export const FAQSection: React.FC = () => {
           <div className="group relative inline-flex max-w-full items-center gap-2 overflow-hidden rounded-full p-[1px] shadow-lg shadow-blue-500/10 transition-transform duration-300 hover:scale-105">
             <span className="animate-gradient-x absolute inset-0 bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-500" />
             <div className="relative flex max-w-full items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 text-[10px] font-semibold text-neutral-800 backdrop-blur-xl min-[360px]:text-xs sm:gap-2 sm:px-4 sm:py-1.5 dark:bg-neutral-900/90 dark:text-neutral-200">
-              <span className="relative flex h-2 w-2 shrink-0">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              <span className="relative flex h-2 w-2 shrink-0 items-center justify-center">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] ring-2 ring-emerald-500/25" />
               </span>
               <span className="truncate tracking-normal sm:tracking-wide">
                 VERIFIED KNOWLEDGE BASE &bull; SPECIFICATIONS v2.4
@@ -729,7 +728,7 @@ export const FAQSection: React.FC = () => {
               <div className="flex flex-wrap items-center justify-between gap-1.5 border-b border-neutral-200/70 pb-2.5 text-[10px] sm:pb-3 sm:text-[11px] dark:border-neutral-800">
                 <div className="flex min-w-0 items-center gap-1.5 font-mono font-semibold sm:gap-2">
                   <span className="flex h-2 w-2 shrink-0 items-center justify-center">
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                   </span>
                   <span className="truncate text-neutral-900 dark:text-neutral-100">
                     KNOWLEDGE BASE KERNEL

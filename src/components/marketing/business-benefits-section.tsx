@@ -251,9 +251,8 @@ export const BusinessBenefitsSection: React.FC = () => {
             transition={{ duration: 0.3 }}
             className="border-border/80 bg-background/90 text-foreground inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold shadow-2xs backdrop-blur-md"
           >
-            <span className="relative flex h-2 w-2 shrink-0">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+            <span className="relative flex h-2 w-2 shrink-0 items-center justify-center">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] ring-2 ring-emerald-500/25" />
             </span>
             <span className="font-mono text-[10.5px] font-bold tracking-wider text-neutral-600 uppercase sm:text-[11px] dark:text-neutral-400">
               Quantitative Proof &bull; Operational Clarity

@@ -178,9 +178,8 @@ export const ArchitectureTrustSection: React.FC = () => {
         {/* Section Header */}
         <div className="mx-auto max-w-3xl text-center">
           <div className="inline-flex max-w-full items-center justify-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700 shadow-2xs backdrop-blur-md sm:px-3.5 dark:text-emerald-300">
-            <span className="relative flex h-2 w-2 shrink-0">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+            <span className="relative flex h-2 w-2 shrink-0 items-center justify-center">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] ring-2 ring-emerald-500/25" />
             </span>
             <span className="font-mono text-[10px] font-bold tracking-wider uppercase min-[360px]:text-[11px] sm:text-xs">
               <span className="hidden min-[420px]:inline">
@@ -217,9 +216,8 @@ export const ArchitectureTrustSection: React.FC = () => {
           {/* Top Live Heartbeat Row */}
           <div className="border-border/60 mb-2.5 flex items-center justify-between gap-2 border-b pb-2 text-xs sm:mb-3 sm:pb-2.5">
             <div className="flex min-w-0 items-center gap-1.5 font-mono text-[10px] min-[360px]:text-[11px] sm:gap-2 sm:text-xs">
-              <span className="relative flex h-2 w-2 shrink-0">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              <span className="relative flex h-2 w-2 shrink-0 items-center justify-center">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 ring-2 ring-emerald-500/25" />
               </span>
               <span className="truncate font-bold text-emerald-600 dark:text-emerald-400">
                 SYSTEM STATE: NOMINAL

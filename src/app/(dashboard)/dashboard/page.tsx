@@ -25,7 +25,6 @@ import {
   Send,
   UserCheck,
   Search,
-  ShieldCheck,
   ArrowRight,
   FolderKanban,
   FileCheck2,
@@ -277,10 +276,6 @@ export default function DashboardOverviewPage() {
             <h1 className="text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
               Welcome back, {userName}
             </h1>
-            <span className="border-primary/20 bg-primary/10 text-primary inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[11px] font-bold">
-              <Sparkles className="h-3 w-3" />
-              Live Hub
-            </span>
           </div>
           <p className="text-muted-foreground mt-1 text-xs leading-relaxed sm:text-sm">
             Operations overview and real-time business activity for{" "}
